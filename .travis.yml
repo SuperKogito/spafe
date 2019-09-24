@@ -14,4 +14,4 @@ before_script:
   - sudo pip3 install -r requirements.txt
 # command to run tests
 script:
-  - travis_wait 3 python3 spafe/signal.py
+  - python3 spafe/signal.py
