@@ -6,10 +6,10 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install python3
   - sudo apt-get install python3-pip
-  - sudo pip3 install --upgrade pip
   - sudo apt-get install python3-setuptools
   - sudo apt install ffmpeg
-  - sudo pip3 install -r requirements.txt
+  - sudo apt-get update
+  - sudo pip3 install --upgrade pip && sudo pip3 install -r requirements.txt
   - sudo apt-get update
 # command to run tests
 script:
