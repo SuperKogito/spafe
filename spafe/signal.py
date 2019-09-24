@@ -1,6 +1,6 @@
-import numpy
 import scipy
 import librosa
+import numpy as np
 import spafe.features
 import spafe.frequencies
 
@@ -122,7 +122,7 @@ class Signal:
         dominant_frequencies           = dominant_frequencies_extractor.main(self.signal, self.rate)
 
         # modulation index calculation
-        changes = numpy.abs(dominant_frequencies[:-1] - dominant_frequencies[1:])
+        changes = np.abs(dominant_frequencies[:-1] - dominant_frequencies[1:])
         dfrange = dominant_frequencies.max() - dominant_frequencies.min()
         if dominant_frequencies.min() == dominant_frequencies.max():
             modulation_index = 0
@@ -143,8 +143,8 @@ class Signal:
         """
         properties           = {}
         signal, rate         = self.signal, self.rate
-        spectrum             = numpy.abs(numpy.fft.rfft(signal))
-        frequencies          = numpy.fft.rfftfreq(len(signal), d=1. / rate)
+        spectrum             = np.abs(np.fft.rfft(signal))
+        frequencies          = np.fft.rfftfreq(len(signal), d=1. / rate)
         amplitudes           = spectrum / spectrum.sum()
 
         import matplotlib.pyplot as plt
@@ -153,9 +153,9 @@ class Signal:
 
         # stats
         mean_frequency       = (frequencies * amplitudes).sum()
-        peak_frequency       = frequencies[numpy.argmax(amplitudes)]
+        peak_frequency       = frequencies[np.argmax(amplitudes)]
         frequencies_std      = frequencies.std()
-        amplitudes_cum_sum   = numpy.cumsum(amplitudes)
+        amplitudes_cum_sum   = np.cumsum(amplitudes)
         median_frequency     = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.5]) + 1]
         mode_frequency       = frequencies[amplitudes.argmax()]
         frequencies_q25      = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.25]) + 1]
@@ -168,7 +168,7 @@ class Signal:
         # assign spectral stats
         properties["meanfreq"]           = frequencies.mean()
         properties["sd"]                 = frequencies.std()
-        properties["medianfreq"]         = numpy.median(frequencies)
+        properties["medianfreq"]         = np.median(frequencies)
         properties["q25"]                = frequencies_q25
         properties["q75"]                = frequencies_q75
         properties["iqr"]                = properties["q75"] - properties["q25"]
@@ -177,7 +177,7 @@ class Signal:
         properties["spectral_entropy"]   = scipy.stats.entropy(amplitudes)
         properties["sfm"]                = librosa.feature.spectral_flatness(signal)
         properties["modef"]              = mode_frequency
-        properties["peakf"]              = frequencies[numpy.argmax(amplitudes)]
+        properties["peakf"]              = frequencies[np.argmax(amplitudes)]
         properties["spectral_centroid"]  = librosa.feature.spectral_centroid(signal,  rate)
         properties["spectral_bandwidth"] = librosa.feature.spectral_bandwidth(signal, rate)
         properties["spectral_spread"]    = self.compute_spectral_spread(properties["spectral_centroid"], properties["spectrum"])
@@ -235,7 +235,7 @@ class Signal:
         properties["rolloff"]  = librosa.feature.spectral_rolloff(signal,  rate)
         properties["skewness"] = librosa.feature.spectral_centroid(signal, rate)
         properties["spread"]   = librosa.feature.spectral_centroid(signal, rate)
-        properties["spectral_variance"] = numpy.var(abs(spectrum))
+        properties["spectral_variance"] = np.var(abs(spectrum))
 
         return properties
 
@@ -261,7 +261,7 @@ class Signal:
             denominator = denominator + abs(bin)
             bin_count   = bin_count + 1
 
-        return numpy.sqrt((numerator * 1.0) / denominator)
+        return np.sqrt((numerator * 1.0) / denominator)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import librosa
 import itertools
+import numpy as np
 
 
 class FeaturesExtractor:
@@ -11,10 +12,10 @@ class FeaturesExtractor:
         delta_mfcc  = librosa.feature.delta(mfcc)
         delta2_mfcc = librosa.feature.delta(mfcc, order=2)
         return [mfcc, delta_mfcc, delta2_mfcc]
-    
+
     def get_linear_features(self, signal, rate):
         # Extract LPCs, LPCCs and LSPs
-        lpc  = librosa.core.lpc(signal, order=3) 
+        lpc  = librosa.core.lpc(signal, order=3)
         lpcc = self.lpcc(lpc)
         lsp  = self.lsp(lpc)
         return [lpc, lpcc, lsp]
@@ -49,27 +50,26 @@ class FeaturesExtractor:
         Function: lsp
         Summary: Computes Line spectrum pairs ( also called  line spectral frequencies [lsf]). Does not use any fancy algorithm except np.roots to solve
         for the zeros of the given polynom A(z) = 0.5(P(z) + Q(z))
-        
-        Examples: 
+
+        Examples:
             audiofile = AudioFile.open('file.wav',16000)
             frames    = audiofile.frames(512,np.hamming)
             for frame in frames:
                 frame.lpcc()
-                
+
         Args:
             lpcseq (array) : The sequence of lpc coefficients as \sum_k=1^{p} a_k z^{-k}
             rectify (bool) : If true returns only the values >= 0, since the result is symmetric. If all values are wished, specify rectify = False, (default = True)
-        
-        Returns: 
+
+        Returns:
             (list) A list with same length as lpcseq (if rectify = True), otherwise 2*len(lpcseq), which represents the line spectrum pairs
         """
-        import numpy as np
         # We obtain 1 - A(z) +/- z^-(p+1) * (1 - A(z))
         # After multiplying everything through it becomes
         # 1 - \sum_k=1^p a_k z^{-k} +/- z^-(p+1) - \sum_k=1^p a_k z^{k-(p+1)}
         # Thus we have on the LHS the usual lpc polynomial and on the RHS we need to reverse the coefficient order
         # We assume further that the lpc polynomial is a valid one ( first coefficient is 1! )
-    
+
         # the rhs does not have a constant expression and we reverse the coefficients
         rhs = [0] + lpcseq[::-1] + [1]
         # init the P and the Q polynomials
@@ -79,7 +79,7 @@ class FeaturesExtractor:
         for l,r in itertools.zip_longest(lpcseq, rhs):
             P.append(l + r)
             Q.append(l - r)
-        # Find the roots of the polynomials P,Q ( numpy assumes we have the form of: p[0] * x**n + p[1] * x**(n-1) + ... + p[n-1]*x + p[n]
+        # Find the roots of the polynomials P,Q ( np assumes we have the form of: p[0] * x**n + p[1] * x**(n-1) + ... + p[n-1]*x + p[n]
         # mso we need to reverse the order)
         p_roots = np.roots(P[::-1])
         q_roots = np.roots(Q[::-1])
