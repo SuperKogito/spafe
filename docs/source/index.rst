@@ -1,12 +1,12 @@
-.. This is a documentation of the Relayr task documentation.
-
-Welcome to task 1  documentation!
+Welcome to *spafe*  documentation!
 ========================================
-The code is written using python 3.6 and can be run from the terminal using (-h: to get more information on the available arguments):
+*spafe* (= simplified python audio features extraction) is a light weight library that aims to unite audio feature extraction algorithms in one simple code.
+
+to install this library
 
 .. code-block:: bash
 
-   $ python measurements.py -h
+   $ pip install spafe
 
 
 Or you can use the test script:
@@ -19,6 +19,6 @@ Or you can use the test script:
 For the documentation of the modules please refer to:
 
 .. toctree::
-   Signal
-   DomFreqs
-   FundFreqs
+   signal
+   frequencies
+   features
