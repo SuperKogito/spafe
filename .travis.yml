@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.6"
+  - "3.7"
 # command to install dependencies
 before_script:
   - sudo apt-get update
@@ -13,7 +13,7 @@ before_script:
   - sudo apt install ffmpeg
   - sudo pip3 install -r requirements.txt
   - sudo pip3 uninstall numpy
-  - sudo pip3 install numpy
+  - yes | sudo pip3 install numpy
 # command to run tests
 script:
   - python3 spafe/signal.py
