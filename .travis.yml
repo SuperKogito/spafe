@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.6"
+  - "3.5"
 # command to install dependencies
 before_script:
   - sudo apt-get update
