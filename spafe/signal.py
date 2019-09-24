@@ -1,3 +1,6 @@
+import subprocess
+print(subprocess.__file__)"
+
 import scipy
 import librosa
 import numpy as np
