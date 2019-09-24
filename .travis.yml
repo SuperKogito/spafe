@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install python3
+  - sudo apt-get install python3-pip
+  - sudo pip3 install --upgrade pip
+  - sudo apt-get install python-enchant
+  - sudo apt-get update
+  - sudo apt install ffmpeg
+  - sudo pip3 install -r requirements.txt
+# command to run tests
+script:
+  - travis_wait 3 python3 signal.py
