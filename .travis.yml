@@ -9,6 +9,7 @@ before_script:
   - sudo apt-get install python3-setuptools
   - sudo apt install ffmpeg
   - sudo apt-get update
+  - sudo rm /opt/python/3.5.6/lib/python3.5/subprocess.py
   - sudo pip3 install --upgrade pip && sudo pip3 install -r requirements.txt
   - python3 -c "import subprocess; print(subprocess.__file__)"
 # command to run tests
