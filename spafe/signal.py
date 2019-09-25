@@ -1,9 +1,11 @@
+import numpy as np
+print(np.__file__)
+
 import scipy
 print(scipy.__file__)
 import librosa
 print(librosa.__file__)
-import numpy as np
-print(np.__file__)
+
 import spafe.features
 import spafe.frequencies
 
