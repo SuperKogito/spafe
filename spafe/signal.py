@@ -1,6 +1,3 @@
-import subprocess
-print(subprocess.__file__)
-
 import scipy
 print(scipy.__file__)
 import librosa
