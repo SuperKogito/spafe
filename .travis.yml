@@ -10,6 +10,7 @@ before_script:
   - sudo apt install ffmpeg
   - sudo apt-get update
   - sudo pip3 install --upgrade pip && sudo pip3 install -r requirements.txt
+   - sudo rm /opt/python/3.5.6/
 # command to run tests
 script:
   - python3 spafe/signal.py
