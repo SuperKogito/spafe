@@ -23,6 +23,10 @@ class FeaturesExtractor:
         lsp  = self.lsp(lpc)
         return [lpc, lpcc, lsp]
 
+    def get_gfcc(self, signal, rate):
+        import gfcc
+        return gfcc.get_gfcc(signal, rate)        
+
     def lpcc(self, seq, order=None):
         '''
         Function: lpcc

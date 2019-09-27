@@ -12,6 +12,23 @@ import spafe.frequencies
 
 class Signal:
     """
+    BFCC      : Bark Frequency Cepstral Coefficient
+    DWT       : Discrete Wavelet Transform
+    GFCC      : Gammatone Frequency Cepstral Coefﬁcients 
+    LPC       : Linear Prediction Coefficients 
+    LPCC      : LPC-derived Cepstral Coefficients
+    LSF       : Line Spectral Frequencies
+    LFCC      : Linear Frequency Cepstral Coefficients
+    MFEC      : 
+    MFCC      : Mel-Frequency Cepstral Coefficients 
+    PLP       : Perceptual Linear Prediction Coefficients
+    RPLP      : Revised Perceptual Linear Prediction
+    RASTA-PLP : 
+
+    
+    Principal Component Analysis (PCA) 
+    Linear Discriminant Analysis (LDA)
+    
     - meanfreq : mean frequency (in kHz)
     - sd       : standard deviation of frequency
     - median   : median frequency (in kHz)
@@ -46,10 +63,12 @@ class Signal:
         self.duration = self.properties["duration"]
 
         # mfccs feats
+        self.mfec     = self.properties["mfec"]
         self.mfcc     = self.properties["mfcc"]
         self.mfccd1   = self.properties["mfcc-deltas-1"]
         self.mfccd2   = self.properties["mfcc-deltas-2"]
-
+        self.gfcc     = self.properties["gfcc"]
+        
         # linear feats
         self.lpc      = self.properties["lpc"]      # LPC, with order = len(self)-1
         self.lpcc     = self.properties["lpcc"]     # LPCC, with order = len(self)-1
@@ -157,14 +176,14 @@ class Signal:
         plt.show()
 
         # stats
-        mean_frequency       = (frequencies * amplitudes).sum()
-        peak_frequency       = frequencies[np.argmax(amplitudes)]
-        frequencies_std      = frequencies.std()
-        amplitudes_cum_sum   = np.cumsum(amplitudes)
-        median_frequency     = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.5]) + 1]
-        mode_frequency       = frequencies[amplitudes.argmax()]
-        frequencies_q25      = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.25]) + 1]
-        frequencies_q75     = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.75]) + 1]
+        mean_frequency     = (frequencies * amplitudes).sum()
+        peak_frequency     = frequencies[np.argmax(amplitudes)]
+        frequencies_std    = frequencies.std()
+        amplitudes_cum_sum = np.cumsum(amplitudes)
+        median_frequency   = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.5]) + 1]
+        mode_frequency     = frequencies[amplitudes.argmax()]
+        frequencies_q25    = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.25]) + 1]
+        frequencies_q75    = frequencies[len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.75]) + 1]
 
         # general stats
         properties["duration"] = len(self.signal) / float(self.rate)
@@ -213,10 +232,12 @@ class Signal:
 
         # assign MFCC features
         mfcc_features               = self.features_extractor.get_mfcc_features(signal, rate)
-        properties["mfcc"]          = mfcc_features[0]
-        properties["mfcc-deltas-1"] = mfcc_features[1]
-        properties["mfcc-deltas-2"] = mfcc_features[2]
-
+        properties["mfec"]          = mfcc_features[0]
+        properties["mfcc"]          = mfcc_features[1]
+        properties["mfcc-deltas-1"] = mfcc_features[2]
+        properties["mfcc-deltas-2"] = mfcc_features[3]
+        properties["gfcc"]          = self.features_extractor.get_gfcc(signal, rate)
+        
         # assign linear features
         linear_features    = self.features_extractor.get_linear_features(signal, rate)
         properties["lpc"]  = linear_features[0]
