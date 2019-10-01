@@ -14,21 +14,24 @@ class Signal:
     """
     BFCC      : Bark Frequency Cepstral Coefficient
     DWT       : Discrete Wavelet Transform
-    GFCC      : Gammatone Frequency Cepstral Coefﬁcients 
-    LPC       : Linear Prediction Coefficients 
+    GFCC      : Gammatone Frequency Cepstral Coefﬁcients
+    IMFC      : Inverse Mel-Frequency Cepstral Coefficients
+    LPC       : Linear Prediction Coefficients
     LPCC      : LPC-derived Cepstral Coefficients
     LSF       : Line Spectral Frequencies
     LFCC      : Linear Frequency Cepstral Coefficients
-    MFEC      : 
-    MFCC      : Mel-Frequency Cepstral Coefficients 
+    MFE       : Mel-Frequency Energies
+    MFCC      : Mel-Frequency Cepstral Coefficients
     PLP       : Perceptual Linear Prediction Coefficients
+    PNCC      :
+    QNCC      :
     RPLP      : Revised Perceptual Linear Prediction
-    RASTA-PLP : 
+    RASTA-PLP :
 
-    
-    Principal Component Analysis (PCA) 
+
+    Principal Component Analysis (PCA)
     Linear Discriminant Analysis (LDA)
-    
+
     - meanfreq : mean frequency (in kHz)
     - sd       : standard deviation of frequency
     - median   : median frequency (in kHz)
@@ -68,7 +71,7 @@ class Signal:
         self.mfccd1   = self.properties["mfcc-deltas-1"]
         self.mfccd2   = self.properties["mfcc-deltas-2"]
         self.gfcc     = self.properties["gfcc"]
-        
+
         # linear feats
         self.lpc      = self.properties["lpc"]      # LPC, with order = len(self)-1
         self.lpcc     = self.properties["lpcc"]     # LPCC, with order = len(self)-1
@@ -237,7 +240,7 @@ class Signal:
         properties["mfcc-deltas-1"] = mfcc_features[2]
         properties["mfcc-deltas-2"] = mfcc_features[3]
         properties["gfcc"]          = self.features_extractor.get_gfcc(signal, rate)
-        
+
         # assign linear features
         linear_features    = self.features_extractor.get_linear_features(signal, rate)
         properties["lpc"]  = linear_features[0]
