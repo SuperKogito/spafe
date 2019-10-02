@@ -1,173 +1,182 @@
+################################################################################
+#                      Bark-filter-banks implementation
+################################################################################
 import numpy as np
 
 
-class Filterbank(np.ndarray):
+def hz2erb(f):
     """
-    Generic filterbank class.
-    A Filterbank is a simple numpy array enhanced with several additional
-    attributes, e.g. number of bands.
-    A Filterbank has a shape of (num_bins, num_bands) and can be used to
-    filter a spectrogram of shape (num_frames, num_bins) to (num_frames,
-    num_bands).
-    Parameters
-    ----------
-    data : numpy array, shape (num_bins, num_bands)
-        Data of the filterbank .
-    bin_frequencies : numpy array, shape (num_bins, )
-        Frequencies of the bins [Hz].
-    Notes
+    Convert Hz frequencies to Bark.
+    
+    Args:
     -----
-    The length of `bin_frequencies` must be equal to the first dimension
-    of the given `data` array.
+    f (np.array) : input frequencies [Hz].
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
     """
-    # pylint: disable=super-on-old-class
-    # pylint: disable=super-init-not-called
-    # pylint: disable=attribute-defined-outside-init
+    return 24.7 * (4.37 * (f / 1000) + 1)  
 
-    def __init__(self, data, bin_frequencies):
-        # this method is for documentation purposes only
-        pass
+def erb2hz(fe):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fb (np.array) : input frequencies [Bark].
+    
+    Returns:
+    --------
+    f (np.array)  : frequencies in Hz [Hz].
+    """
+    return ((fe/24.7) - 1) * (1000. / 4.37)
 
-    def __new__(cls, data, bin_frequencies):
-        # input is an numpy ndarray instance
-        if isinstance(data, np.ndarray) and data.ndim == 2:
-            # cast as Filterbank
-            obj = np.asarray(data, dtype=FILTER_DTYPE).view(cls)
-        else:
-            raise TypeError('wrong input data for Filterbank, must be a 2D '
-                            'np.ndarray')
-        # set bin frequencies
-        if len(bin_frequencies) != obj.shape[0]:
-            raise ValueError('`bin_frequencies` must have the same length as '
-                             'the first dimension of `data`.')
-        obj.bin_frequencies = np.asarray(bin_frequencies, dtype=np.float)
-        # return the object
-        return obj
+def fft2erb(fft, fs=16000, nfft=512):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fft (np.array) : fft bin numbers.
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
+    """
+    return hz2erb((fft * fs) / (nfft + 1))
 
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        # set default values here
-        self.bin_frequencies = getattr(obj, 'bin_frequencies', None)
+def erb2fft(fb, fs=16000, nfft=512):   
+    """
+    Convert Bark frequencies to fft bins.
+    
+    Args:
+    -----
+    fb (np.array): frequencies in Bark [Bark].
+    
+    Returns:
+    --------
+    fft (np.array) : fft bin numbers.
+    """
+    return (nfft + 1) * erb2hz(fb) / fs
 
-    @classmethod
-    def _put_filter(cls, filt, band):
-        """
-        Puts a filter in the band, internal helper function.
-        Parameters
-        ----------
-        filt : :class:`Filter` instance
-            Filter to be put into the band.
-        band : numpy array
-            Band in which the filter should be put.
-        Notes
-        -----
-        The `band` must be an existing numpy array where the filter `filt` is
-        put in, given the position of the filter. Out of range filters are
-        truncated. If there are non-zero values in the filter band at the
-        respective positions, the maximum value of the `band` and the filter
-        `filt` is used.
-        """
-        if not isinstance(filt, Filter):
-            raise ValueError('unable to determine start position of Filter')
-        # determine start and stop positions
-        start = filt.start
-        stop = start + len(filt)
-        # truncate the filter if it starts before the 0th band bin
-        if start < 0:
-            filt = filt[-start:]
-            start = 0
-        # truncate the filter if it ends after the last band bin
-        if stop > len(band):
-            filt = filt[:-(stop - len(band))]
-            stop = len(band)
-        # put the filter in place
-        filter_position = band[start:stop]
-        # TODO: if needed, allow other handling (like summing values)
-        np.maximum(filt, filter_position, out=filter_position)
 
-    @classmethod
-    def from_filters(cls, filters, bin_frequencies):
-        """
-        Create a filterbank with possibly multiple filters per band.
-        Parameters
-        ----------
-        filters : list (of lists) of Filters
-            List of Filters (per band); if multiple filters per band are
-            desired, they should be also contained in a list, resulting in a
-            list of lists of Filters.
-        bin_frequencies : numpy array
-            Frequencies of the bins (needed to determine the expected size of
-            the filterbank).
-        Returns
-        -------
-        filterbank : :class:`Filterbank` instance
-            Filterbank with respective filter elements.
-        """
-        # create filterbank
-        fb = np.zeros((len(bin_frequencies), len(filters)))
-        # iterate over all filters
-        for band_id, band_filter in enumerate(filters):
-            # get the band's corresponding slice of the filterbank
-            band = fb[:, band_id]
-            # if there's a list of filters for the current band, put them all
-            # into this band
-            if isinstance(band_filter, list):
-                for filt in band_filter:
-                    cls._put_filter(filt, band)
-            # otherwise put this filter into that band
-            else:
-                cls._put_filter(band_filter, band)
-        # create Filterbank and cast as class where this method was called from
-        return Filterbank.__new__(cls, fb, bin_frequencies)
 
-    @property
-    def num_bins(self):
-        """Number of bins."""
-        return self.shape[0]
+def hz2bark(f):
+    """
+    Convert Hz frequencies to Bark.
+    
+    Args:
+    -----
+    f (np.array) : input frequencies [Hz].
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
+    """
+    return 6. * np.arcsinh(f / 600. )  
 
-    @property
-    def num_bands(self):
-        """Number of bands."""
-        return self.shape[1]
+def bark2hz(fb):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fb (np.array) : input frequencies [Bark].
+    
+    Returns:
+    --------
+    f (np.array)  : frequencies in Hz [Hz].
+    """
+    return 600. * np.sinh( fb / 6.)
 
-    @property
-    def corner_frequencies(self):
-        """Corner frequencies of the filter bands."""
-        freqs = []
-        for band in range(self.num_bands):
-            # get the non-zero bins per band
-            bins = np.nonzero(self[:, band])[0]
-            # append the lowest and highest bin
-            freqs.append([np.min(bins), np.max(bins)])
-        # map to frequencies
-        return bins2frequencies(freqs, self.bin_frequencies)
+def fft2hz(fft, fs=16000, nfft=512):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fft (np.array) : fft bin numbers.
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
+    """
+    return (fft * fs) / (nfft + 1)
 
-    @property
-    def center_frequencies(self):
-        """Center frequencies of the filter bands."""
-        freqs = []
-        for band in range(self.num_bands):
-            # get the non-zero bins per band
-            bins = np.nonzero(self[:, band])[0]
-            min_bin = np.min(bins)
-            max_bin = np.max(bins)
-            # if we have a uniform filter, use the center bin
-            if self[min_bin, band] == self[max_bin, band]:
-                center = int(min_bin + (max_bin - min_bin) / 2.)
-            # if we have a filter with a peak, use the peak bin
-            else:
-                center = min_bin + np.argmax(self[min_bin: max_bin, band])
-            freqs.append(center)
-        # map to frequencies
-        return bins2frequencies(freqs, self.bin_frequencies)
+def bark2fft(fb, fs=16000, nfft=512):   
+    """
+    Convert Bark frequencies to fft bins.
+    
+    Args:
+    -----
+    fb (np.array): frequencies in Bark [Bark].
+    
+    Returns:
+    --------
+    fft (np.array) : fft bin numbers.
+    """
+    return (nfft + 1) * bark2hz(fb) / fs
 
-    @property
-    def fmin(self):
-        """Minimum frequency of the filterbank."""
-        return self.bin_frequencies[np.nonzero(self)[0][0]]
+def  gammatone_function(t, fc, A=1, b=1, n=4):
+    return A * t**(n-1) * np.exp(-2 * np.pi * b * hz2erb(fc) * t) * np.cos(2 * np.pi * fc *t)
+    
+def Fm(fb, fc):
+    """
+    Compute bark filter around a certain frequency in bark
 
-    @property
-    def fmax(self):
-        """Maximum frequency of the filterbank."""
-        return self.bin_frequencies[np.nonzero(self)[0][-1]]
+    Args:
+    -----
+    fb (int): frequency in Bark [Bark].
+    fc (int): center frequency in Bark [Bark].
+
+    Returns:
+    --------
+    (float) : associated Bark filter value/amplitude.
+    """
+  
+    
+def _filter_banks(nfilt=20, nfft=512, fs=16000, lowfreq=0, highfreq=None):
+    """
+    Compute a Bark-filterbank. The filters are stored in the rows, the columns correspond
+    to fft bins. The filters are returned as an array of size nfilt * (nfft/2 + 1)
+
+    Args:
+        nfilt    : the number of filters in the filterbank, default 20.
+        nfft     : the FFT size. Default is 512.
+        fs       : the sample rate of the signal we are working with, in Hz. Affects mel spacing.
+        lowfreq  : lowest band edge of mel filters, default 0 Hz
+        highfreq : highest band edge of mel filters, default samplerate/2
+
+    Returns:
+        A numpy array of size nfilt * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+    """
+    highfreq  = highfreq or fs/2
+   
+    # compute points evenly spaced in bark
+    lowbark    = hz2bark(lowfreq)
+    highbark   = hz2bark(highfreq)
+    barkpoints = np.linspace(lowbark, highbark, nfilt + 2)
+
+    # The frequencies array/ points are in Bark, but we use fft bins, so we 
+    # have to convert from Bark to fft bin number
+    bin   = np.floor(bark2fft(barkpoints))
+    fbank = np.zeros([nfilt, nfft // 2 + 1])
+
+    for j in range(4, nfilt):
+        for i in range(int(bin[j-2]), int(bin[j+2])):
+            fc            = int(bin[j])
+            fb            = fft2hz(i)
+            fbank[j-2, i] = gammatone_function(1/fb, fc)
+    return fbank
+
+
+import matplotlib.pyplot as plt 
+
+fbanks = _filter_banks(nfilt=20, nfft=512, fs=16000)  
+# plot the Mel filter banks 
+for i in range(len(fbanks)):
+    plt.plot(fbanks[i])
+    plt.ylim(0, 1.1)
+    plt.grid(True)
+plt.show()
