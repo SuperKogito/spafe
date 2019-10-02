@@ -1,186 +1,113 @@
+################################################################################
+#                      Bark-filter-banks implementation
+################################################################################
 import numpy as np
-from _fbank import Filterbank
 
 
-# Bark frequency scale
 def hz2bark(f):
     """
     Convert Hz frequencies to Bark.
-    Parameters
-    ----------
-    f : numpy array
-        Input frequencies [Hz].
-    Returns
-    -------
-    z : numpy array
-        Frequencies in Bark [Bark].
+    
+    Args:
+    -----
+    f (np.array) : input frequencies [Hz].
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
     """
-    raise NotImplementedError('please check this function, it produces '
-                              'negative values')
-    # TODO: use Zwicker's formula?
-    #       return 13 * arctan(0.00076 * f) + 3.5 * arctan((f / 7500.) ** 2)
-    return (26.81 / (1. + 1960. / np.asarray(f))) - 0.53
+    return 6. * np.arcsinh(f / 600. )  
 
-
-def bark2hz(z):
+def bark2hz(fb):
     """
     Convert Bark frequencies to Hz.
-    Parameters
-    ----------
-    z : numpy array
-        Input frequencies [Bark].
-    Returns
-    -------
-    f : numpy array
-        Frequencies in Hz [Hz].
-    """
-    raise NotImplementedError('please check this function, it produces weird '
-                              'values')
-    # TODO: use Zwicker's formula? what's the inverse of the above?
-    return 1960. / (26.81 / (np.asarray(z) + 0.53) - 1.)
-
-
-def bark_frequencies(fmin=20., fmax=15500.):
-    """
-    Returns frequencies aligned on the Bark scale.
-    Parameters
-    ----------
-    fmin : float
-        Minimum frequency [Hz].
-    fmax : float
-        Maximum frequency [Hz].
-    Returns
-    -------
-    bark_frequencies : numpy array
-        Frequencies with Bark spacing [Hz].
-    """
-    # frequencies aligned to the Bark-scale
-    frequencies = np.array([20, 100, 200, 300, 400, 510, 630, 770, 920, 1080,
-                            1270, 1480, 1720, 2000, 2320, 2700, 3150, 3700,
-                            4400, 5300, 6400, 7700, 9500, 12000, 15500])
-    # filter frequencies
-    frequencies = frequencies[np.searchsorted(frequencies, fmin):]
-    frequencies = frequencies[:np.searchsorted(frequencies, fmax, 'right')]
-    # return
-    return frequencies
-
-
-def bark_double_frequencies(fmin=20., fmax=15500.):
-    """
-    Returns frequencies aligned on the Bark-scale.
-    The list also includes center frequencies between the corner frequencies.
-    Parameters
-    ----------
-    fmin : float
-        Minimum frequency [Hz].
-    fmax : float
-        Maximum frequency [Hz].
-    Returns
-    -------
-    bark_frequencies : numpy array
-        Frequencies with Bark spacing [Hz].
-    """
-    # frequencies aligned to the Bark-scale, also includes center frequencies
-    frequencies = np.array([20, 50, 100, 150, 200, 250, 300, 350, 400, 450,
-                            510, 570, 630, 700, 770, 840, 920, 1000, 1080,
-                            1170, 1270, 1370, 1480, 1600, 1720, 1850, 2000,
-                            2150, 2320, 2500, 2700, 2900, 3150, 3400, 3700,
-                            4000, 4400, 4800, 5300, 5800, 6400, 7000, 7700,
-                            8500, 9500, 10500, 12000, 13500, 15500])
-    # filter frequencies
-    frequencies = frequencies[np.searchsorted(frequencies, fmin):]
-    frequencies = frequencies[:np.searchsorted(frequencies, fmax, 'right')]
-    # return
-    return frequencies
-
-# helper functions for filter creation
-def frequencies2bins(frequencies, bin_frequencies, unique_bins=False):
-    """
-    Map frequencies to the closest corresponding bins.
-    Parameters
-    ----------
-    frequencies : numpy array
-        Input frequencies [Hz].
-    bin_frequencies : numpy array
-        Frequencies of the (FFT) bins [Hz].
-    unique_bins : bool, optional
-        Return only unique bins, i.e. remove all duplicate bins resulting from
-        insufficient resolution at low frequencies.
-    Returns
-    -------
-    bins : numpy array
-        Corresponding (unique) bins.
-    Notes
+    
+    Args:
     -----
-    It can be important to return only unique bins, otherwise the lower
-    frequency bins can be given too much weight if all bins are simply summed
-    up (as in the spectral flux onset detection).
+    fb (np.array) : input frequencies [Bark].
+    
+    Returns:
+    --------
+    f (np.array)  : frequencies in Hz [Hz].
     """
-    # cast as numpy arrays
-    frequencies = np.asarray(frequencies)
-    bin_frequencies = np.asarray(bin_frequencies)
-    # map the frequencies to the closest bins
-    # solution found at: http://stackoverflow.com/questions/8914491/
-    indices = bin_frequencies.searchsorted(frequencies)
-    indices = np.clip(indices, 1, len(bin_frequencies) - 1)
-    left = bin_frequencies[indices - 1]
-    right = bin_frequencies[indices]
-    indices -= frequencies - left < right - frequencies
-    # only keep unique bins if requested
-    if unique_bins:
-        indices = np.unique(indices)
-    # return the (unique) bin indices of the closest matches
-    return indices
+    return 600. * np.sinh( fb / 6.)
 
+def fft2bark(fft, fs=16000, nfft=512):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fft (np.array) : fft bin numbers.
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
+    """
+    return hz2bark((fft * fs) / (nfft + 1))
 
+def bark2fft(fb, fs=16000, nfft=512):   
+    """
+    Convert Bark frequencies to fft bins.
+    
+    Args:
+    -----
+    fb (np.array): frequencies in Bark [Bark].
+    
+    Returns:
+    --------
+    fft (np.array) : fft bin numbers.
+    """
+    return (nfft + 1) * bark2hz(fb) / fs
 
-# border definitions of the 24 critical bands of hearing
-bark = [100,   200,  300,  400,  510,  630,   770,   920,
-        1080, 1270, 1480, 1720, 2000, 2320,  2700,  3150,
-        3700, 4400, 5300, 6400, 7700, 9500, 12000, 15500]
+def Fm(fb, fc):
+    """
+    Compute bark filter around a certain frequency in bark
 
-eq_loudness = np.array([[ 55,   40,  32,  24,  19,  14, 10,  6,  4,  3,  2,
-                           2,    0,  -2,  -5,  -4,   0,  5, 10, 14, 25, 35],
-                        [ 66,   52,  43,  37,  32,  27, 23, 21, 20, 20, 20,
-                          20,   19,  16,  13,  13,  18, 22, 25, 30, 40, 50],
-                        [ 76,   64,  57,  51,  47,  43, 41, 41, 40, 40, 40,
-                        39.5,   38,  35,  33,  33,  35, 41, 46, 50, 60, 70],
-                        [ 89,   79,  74,  70,  66,  63, 61, 60, 60, 60, 60,
-                          59,   56,  53,  52,  53,  56, 61, 65, 70, 80, 90],
-                        [103,   96,  92,  88,  85,  83, 81, 80, 80, 80, 80,
-                          79,   76,  72,  70,  70,  75, 79, 83, 87, 95,105],
-                        [118,  110, 107, 105, 103, 102,101,100,100,100,100,
-                          99,   97,  94,  90,  90,  95,100,103,105,108,115]])
+    Args:
+    -----
+    fb (int): frequency in Bark [Bark].
+    fc (int): center frequency in Bark [Bark].
 
-loudn_freq = np.array([31.62,    50,  70.7,   100, 141.4,   200, 316.2,  500,
-                       707.1,  1000,  1414,  1682,  2000,  2515,  3162, 3976,
-                        5000,  7071, 10000, 11890, 14140, 15500])
+    Returns:
+    --------
+    (float) : associated Bark filter value/amplitude.
+    """
+    if   fc - 2.5 <= fb <= fc - 0.5 : return 10**(2.5 * (fb - fc + 0.5))
+    elif fc - 0.5 <  fb <  fc + 0.5 : return 1
+    elif fc + 0.5 <= fb <= fc + 1.3 : return 10**(-2.5 * (fb - fc - 0.5))
+    else                            : return 0
+    
+def bark_filter_banks(nfilt=20, nfft=512, fs=16000, lowfreq=0, highfreq=None):
+    """
+    Compute a Bark-filterbank. The filters are stored in the rows, the columns correspond
+    to fft bins. The filters are returned as an array of size nfilt * (nfft/2 + 1)
 
+    Args:
+        nfilt    : the number of filters in the filterbank, default 20.
+        nfft     : the FFT size. Default is 512.
+        fs       : the sample rate of the signal we are working with, in Hz. Affects mel spacing.
+        lowfreq  : lowest band edge of mel filters, default 0 Hz
+        highfreq : highest band edge of mel filters, default samplerate/2
 
+    Returns:
+        A numpy array of size nfilt * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+    """
+    highfreq  = highfreq or fs/2
+   
+    # compute points evenly spaced in bark
+    lowbark    = hz2bark(lowfreq)
+    highbark   = hz2bark(highfreq)
+    barkpoints = np.linspace(lowbark, highbark, nfilt + 4)
 
-def bark_filter_banks(nfilt=20, nfft= 512, samplerate=16000, lowfreq=0, highfreq=None):
-    # calculate bark-filterbank
-    loudn_bark = np.zeros((eq_loudness.shape[0], len(bark)))
-    i, j       = 0, 0
+    # The frequencies array/ points are in Bark, but we use fft bins, so we 
+    # have to convert from Bark to fft bin number
+    bin   = np.floor(bark2fft(barkpoints))
+    fbank = np.zeros([nfilt, nfft // 2 + 1])
 
-    for bsi in bark:
-
-        while j < len(loudn_freq) and bsi > loudn_freq[j]:
-            j += 1
-
-        j -= 1
-
-        if np.where(loudn_freq == bsi)[0].size != 0: # loudness value for this frequency already exists
-            loudn_bark[:,i] = eq_loudness[:,np.where(loudn_freq == bsi)][:,0,0]
-        else:
-            w1 = 1 / np.abs(loudn_freq[j] - bsi)
-            w2 = 1 / np.abs(loudn_freq[j + 1] - bsi)
-            loudn_bark[:,i] = (eq_loudness[:,j]*w1 + eq_loudness[:,j+1]*w2) / (w1 + w2)
-
-        i += 1
-    return loudn_bark
-
-
-fbanks = bark_filter_banks()
-import matplotlib.pyplot as plt 
-plt.plot(fbanks)
+    for j in range(2, nfilt + 2):
+        for i in range(int(bin[j-2]), int(bin[j+2])):
+            fc            = barkpoints[j]
+            fb            = fft2bark(i)
+            fbank[j-2, i] = Fm(fb, fc)
+    return fbank
