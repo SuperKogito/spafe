@@ -2,140 +2,32 @@
 #                      Bark-filter-banks implementation
 ################################################################################
 import numpy as np
+from spafe.utils.converters import hz2erb, erb2hz 
+from spafe.utils.converters import fft2erb, erb2fft
+from spafe.utils.converters import hz2bark, bark2hz
+from spafe.utils.converters import fft2hz, hz2fft
 
 
-def hz2erb(f):
-    """
-    Convert Hz frequencies to Bark.
-    
-    Args:
-    -----
-    f (np.array) : input frequencies [Hz].
-    
-    Returns:
-    --------
-    fb (np.array): frequencies in Bark [Bark].
-    """
-    return 24.7 * (4.37 * (f / 1000) + 1)  
+def Hz(f, fc, fs):
+    T = 1/fs
+    z = np.exp(1j * 2 * np.pi * f)
+    # pre-computations for simplification
+    b    = hz2erb(fc) * 1.019
+    K    = np.exp(-2*np.pi*b*T)
+    S    = np.sqrt(3+2**(3/2))
+    Cos  = np.cos(2*np.pi*fc*T)
+    Sin  = np.sin(2*np.pi*fc*T)
+    # compute H(z)
+    nominator   = -2 * T + (2 * T * K * Cos  + 2 * S * T * K * Sin) * z**-1
+    denominator = -2 + 4 * K * Cos - 2 * K**2 * z**-2
+    return nominator / denominator
 
-def erb2hz(fe):
-    """
-    Convert Bark frequencies to Hz.
-    
-    Args:
-    -----
-    fb (np.array) : input frequencies [Bark].
-    
-    Returns:
-    --------
-    f (np.array)  : frequencies in Hz [Hz].
-    """
-    return ((fe/24.7) - 1) * (1000. / 4.37)
+def generate_center_frequencies(fl, fh, nfilt):
+    c    = 1000/4.37
+    M    = nfilt
+    fcm  = lambda m, c, fl, fh, M: (-1*c) + (fh + c) * np.exp((m / M) * np.log((fl + c) / (fh + c)))
+    return np.array([fcm(m, c, fl, fh, M) for m in range(1, M)])  
 
-def fft2erb(fft, fs=16000, nfft=512):
-    """
-    Convert Bark frequencies to Hz.
-    
-    Args:
-    -----
-    fft (np.array) : fft bin numbers.
-    
-    Returns:
-    --------
-    fb (np.array): frequencies in Bark [Bark].
-    """
-    return hz2erb((fft * fs) / (nfft + 1))
-
-def erb2fft(fb, fs=16000, nfft=512):   
-    """
-    Convert Bark frequencies to fft bins.
-    
-    Args:
-    -----
-    fb (np.array): frequencies in Bark [Bark].
-    
-    Returns:
-    --------
-    fft (np.array) : fft bin numbers.
-    """
-    return (nfft + 1) * erb2hz(fb) / fs
-
-
-
-def hz2bark(f):
-    """
-    Convert Hz frequencies to Bark.
-    
-    Args:
-    -----
-    f (np.array) : input frequencies [Hz].
-    
-    Returns:
-    --------
-    fb (np.array): frequencies in Bark [Bark].
-    """
-    return 6. * np.arcsinh(f / 600. )  
-
-def bark2hz(fb):
-    """
-    Convert Bark frequencies to Hz.
-    
-    Args:
-    -----
-    fb (np.array) : input frequencies [Bark].
-    
-    Returns:
-    --------
-    f (np.array)  : frequencies in Hz [Hz].
-    """
-    return 600. * np.sinh( fb / 6.)
-
-def fft2hz(fft, fs=16000, nfft=512):
-    """
-    Convert Bark frequencies to Hz.
-    
-    Args:
-    -----
-    fft (np.array) : fft bin numbers.
-    
-    Returns:
-    --------
-    fb (np.array): frequencies in Bark [Bark].
-    """
-    return (fft * fs) / (nfft + 1)
-
-def bark2fft(fb, fs=16000, nfft=512):   
-    """
-    Convert Bark frequencies to fft bins.
-    
-    Args:
-    -----
-    fb (np.array): frequencies in Bark [Bark].
-    
-    Returns:
-    --------
-    fft (np.array) : fft bin numbers.
-    """
-    return (nfft + 1) * bark2hz(fb) / fs
-
-def  gammatone_function(t, fc, A=1, b=1, n=4):
-    return A * t**(n-1) * np.exp(-2 * np.pi * b * hz2erb(fc) * t) * np.cos(2 * np.pi * fc *t)
-    
-def Fm(fb, fc):
-    """
-    Compute bark filter around a certain frequency in bark
-
-    Args:
-    -----
-    fb (int): frequency in Bark [Bark].
-    fc (int): center frequency in Bark [Bark].
-
-    Returns:
-    --------
-    (float) : associated Bark filter value/amplitude.
-    """
-  
-    
 def _filter_banks(nfilt=20, nfft=512, fs=16000, lowfreq=0, highfreq=None):
     """
     Compute a Bark-filterbank. The filters are stored in the rows, the columns correspond
@@ -154,29 +46,29 @@ def _filter_banks(nfilt=20, nfft=512, fs=16000, lowfreq=0, highfreq=None):
     highfreq  = highfreq or fs/2
    
     # compute points evenly spaced in bark
-    lowbark    = hz2bark(lowfreq)
-    highbark   = hz2bark(highfreq)
-    barkpoints = np.linspace(lowbark, highbark, nfilt + 2)
-
+    center_freqs = generate_center_frequencies(lowfreq, highfreq, 10*nfilt + 2)
+    print([round(f, 3) for f in center_freqs])
     # The frequencies array/ points are in Bark, but we use fft bins, so we 
     # have to convert from Bark to fft bin number
-    bin   = np.floor(bark2fft(barkpoints))
+    bin   = np.floor(hz2fft(center_freqs))
     fbank = np.zeros([nfilt, nfft // 2 + 1])
 
-    for j in range(4, nfilt):
-        for i in range(int(bin[j-2]), int(bin[j+2])):
-            fc            = int(bin[j])
-            fb            = fft2hz(i)
-            fbank[j-2, i] = gammatone_function(1/fb, fc)
+
+    for j in range(2, nfilt-2, 10):
+        for i in range(j-2, j+2):
+            fc          = fft2hz(bin[j])
+            f           = fft2hz(bin[i])
+            fbank[j, i] = np.abs(Hz(f, fc, fs)) / np.abs(np.max(Hz(f, fc, fs)))
     return fbank
 
 
 import matplotlib.pyplot as plt 
 
-fbanks = _filter_banks(nfilt=20, nfft=512, fs=16000)  
-# plot the Mel filter banks 
-for i in range(len(fbanks)):
-    plt.plot(fbanks[i])
+fbanks = _filter_banks(nfilt=49, nfft=512, fs=16000)  
+
+# plot the gammatone filter banks 
+for i in range(0, len(fbanks), 2):
+    plt.plot(fbanks[i],  linewidth=2,)
     plt.ylim(0, 1.1)
     plt.grid(True)
 plt.show()
