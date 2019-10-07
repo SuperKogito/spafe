@@ -140,7 +140,7 @@ def mfcc(signal, num_ceps, ceplifter=22):
 
 
 # setup
-sample_rate, signal = scipy.io.wavfile.read('test.wav')            # File assumed to be in the same directory
+sample_rate, signal = scipy.io.wavfile.read('../test.wav')            # File assumed to be in the same directory
 mfccs = mfcc(signal, 13)
 
 

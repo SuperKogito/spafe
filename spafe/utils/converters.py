@@ -57,8 +57,6 @@ def erb2fft(fb, fs=16000, nfft=512):
     """
     return (nfft + 1) * erb2hz(fb) / fs
 
-
-
 def hz2bark(f):
     """
     Convert Hz frequencies to Bark.
@@ -114,3 +112,51 @@ def hz2fft(fb, fs=16000, nfft=512):
     fft (np.array) : fft bin numbers.
     """
     return (nfft + 1) * fb / fs
+
+def fft2bark(fft, fs=16000, nfft=512):
+    """
+    Convert Bark frequencies to Hz.
+    
+    Args:
+    -----
+    fft (np.array) : fft bin numbers.
+    
+    Returns:
+    --------
+    fb (np.array): frequencies in Bark [Bark].
+    """
+    return hz2bark((fft * fs) / (nfft + 1))
+
+def bark2fft(fb, fs=16000, nfft=512):   
+    """
+    Convert Bark frequencies to fft bins.
+    
+    Args:
+    -----
+    fb (np.array): frequencies in Bark [Bark].
+    
+    Returns:
+    --------
+    fft (np.array) : fft bin numbers.
+    """
+    return (nfft + 1) * bark2hz(fb) / fs
+
+def hz2mel(hz):
+    """
+    Convert a value in Hertz to Mels
+    Args:
+         hz: a value in Hz. This can also be a numpy array, conversion proceeds element-wise.
+    Returns:
+        a value in Mels. If an array was passed in, an identical sized array is returned.
+    """
+    return 2595 * np.log10(1 + hz / 700.)
+
+def mel2hz(mel):
+    """
+    Convert a value in Mels to Hertz
+    Args:
+        mel: a value in Mels. This can also be a numpy array, conversion proceeds element-wise.
+    Returns:
+        a value in Hertz. If an array was passed in, an identical sized array is returned.
+    """
+    return 700 * (10**(mel / 2595.0) - 1)
