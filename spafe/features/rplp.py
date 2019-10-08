@@ -140,7 +140,7 @@ def rasta_plp_extractor(x, sr, plp_order=0, do_rasta=True):
     return lpcas
 
 if __name__ == '__main__':
-    sr, wav_data = wavfile.read("clean.wav")
+    sr, wav_data = wavfile.read("../test.wav")
     lpcas = rasta_plp_extractor(wav_data, sr, 16, True)
     pylab.figure()
     #pylab.subplot(211)

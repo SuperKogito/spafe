@@ -3,7 +3,7 @@ import numpy
 
 def lpcc(seq, order=None):
     '''
-    Computes the linear predictive cepstral compoents.
+    Computes the linear predictive cepstral components.
 
     Note:
         Returned values are in the frequency domain

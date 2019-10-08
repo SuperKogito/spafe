@@ -1,4 +1,5 @@
-import numpy
+import itertools
+import numpy as np
 
 
 def lsp(lpcseq, rectify=True):
@@ -42,12 +43,12 @@ def lsp(lpcseq, rectify=True):
 
     # Find the roots of the polynomials P,Q ( np assumes we have the form of: p[0] * x**n + p[1] * x**(n-1) + ... + p[n-1]*x + p[n]
     # mso we need to reverse the order)
-    p_roots = numpy.roots(P[::-1])
-    q_roots = numpy.roots(Q[::-1])
+    p_roots = np.roots(P[::-1])
+    q_roots = np.roots(Q[::-1])
 
     # Keep the roots in order
-    lsf_p = sorted(numpy.angle(p_roots))
-    lsf_q = sorted(numpy.angle(q_roots))
+    lsf_p = sorted(np.angle(p_roots))
+    lsf_q = sorted(np.angle(q_roots))
 
     # print sorted(lsf_p+lsf_q),len([i for  i in lsf_p+lsf_q if i > 0.])
     if rectify:
