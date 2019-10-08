@@ -1,157 +1,313 @@
-import numpy
-import conversion
-import scipy.io.wavfile
-from scipy.fftpack import dct
-import matplotlib.pyplot as plt
+import numpy as np
+from scipy.fftpack import fft2, ifft2 
 
-
-# init global vars
 NFFT = 512
 
-def triangle(x, left, middle, right):
-    out = numpy.zeros(x.shape)
-    out[x <= left]   = 0
-    out[x >= right]  = 0
-    first_half       = numpy.logical_and(left < x, x <= middle)
-    out[first_half]  = (x[first_half] - left) / (middle - left)
-    second_half      = numpy.logical_and(middle <= x, x < right)
-    out[second_half] = (right - x[second_half]) / (right - middle)
-    return out
-
-def zero_handling(x):
-    """
-    This function handle the issue with zero values if the are exposed to become
-     an argument for any log function.
-
-    Args:
-        x: The vector.
-
-    Returns:
-        The vector with zeros substituted with epsilon values.
-    """
-    return numpy.where(x == 0, numpy.finfo(float).eps, x)
-
-def pre_emphasis(signal, pre_emphasis_coeff = 0.97):
-    """
-    perform preemphasis on the input signal.
-
-    Args:
-        signal: The signal to filter.
-        coeff: The preemphasis coefficient. 0 is no filter, default is 0.95.
-
-    Returns:
-        the filtered signal.
-    """
-    return numpy.append(signal[0], signal[1:] - pre_emphasis_coeff * signal[:-1])
-
-def framing(emphasized_signal, frame_size = 0.025, frame_stride = 0.01):
-    # compute frame length and frame step
-    frame_length  = frame_size   * sample_rate
-    frame_step    = frame_stride * sample_rate  # Convert from seconds to samples
-
-    signal_length = len(emphasized_signal)
-    frame_length  = int(round(frame_length))
-    frame_step    = int(round(frame_step))
-
-    # Make sure that we have at least 1 frame
-    num_frames = int(numpy.ceil(float(numpy.abs(signal_length - frame_length)) / frame_step))
-
-    pad_signal_length = num_frames * frame_step + frame_length
-    z          = numpy.zeros((pad_signal_length - signal_length))
-    pad_signal = numpy.append(emphasized_signal, z) # Pad Signal to make sure that all frames have equal number of samples without truncating any samples from the original signal
-
-    indices = numpy.tile(numpy.arange(0, frame_length), (num_frames, 1)) + numpy.tile(numpy.arange(0, num_frames * frame_step, frame_step), (frame_length, 1)).T
-    frames  = pad_signal[indices.astype(numpy.int32, copy=False)]
-    return frames, frame_length
-
-def windowing(frames, frame_length):
-    frames *= numpy.hamming(frame_length)
-    return frames
-
 def fft(frames, nfft = NFFT):
-    return numpy.fft.rfft(frames, nfft)
+    return np.fft.rfft(frames, nfft)
 
-def power_spectrum(fourrier_transform,  nfft = NFFT):
-    magnitude_frames = numpy.absolute(fourrier_transform)          # Magnitude of the FFT
-    power_frames     = ((1.0 / nfft) * ((magnitude_frames) ** 2))  # Power Spectrum
+def psd(fft_vec,  nfft = NFFT):
+    # Magnitude of the FFT
+    magnitude_frames = np.absolute(fft_vec)  
+    # Power Spectrum        
+    power_frames = ((1.0 / nfft) * ((magnitude_frames) ** 2)) 
     return power_frames
 
-def get_filterbanks(nfilt=20, nfft= 512, samplerate=16000, lowfreq=0, highfreq=None):
-    """
-    Compute a Mel-filterbank. The filters are stored in the rows, the columns correspond
-    to fft bins. The filters are returned as an array of size nfilt * (nfft/2 + 1)
+def ceil2(x):
+    x = int(x)
+    assert x > 0
+    return 2**(x - 1).bit_length()
 
-    Args:
-        nfilt: the number of filters in the filterbank, default 20.
-        nfft: the FFT size. Default is 512.
-        samplerate: the sample rate of the signal we are working with, in Hz. Affects mel spacing.
-        lowfreq: lowest band edge of mel filters, default 0 Hz
-        highfreq: highest band edge of mel filters, default samplerate/2
+def pad2(x):
+    return np.r_[x, np.zeros(ceil2(len(x)) - len(x), x.dtype)]
 
-    Returns:
-        A numpy array of size nfilt * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
-    """
-    highfreq  = highfreq or samplerate/2
-    # compute points evenly spaced in mels
-    lowmel    = conversion.hz2mel(lowfreq)
-    highmel   = conversion.hz2mel(highfreq)
-    melpoints = numpy.linspace(lowmel, highmel, nfilt + 2)
-    # our points are in Hz, but we use fft bins, so we have to convert
-    #  from Hz to fft bin number
-    bin   = numpy.floor((nfft + 1) * conversion.mel2hz(melpoints) / samplerate)
-    fbank = numpy.zeros([nfilt, nfft // 2 + 1])
+def fcs(s):  # fast cepstrum
+    return np.fft.ifft(np.log(np.fft.fft(s)))
 
-    for j in range(0, nfilt):
-        for i in range(int(bin[j]),   int(bin[j+1])): fbank[j,i] = (i - bin[j]) / (bin[j+1]-bin[j])
-        for i in range(int(bin[j+1]), int(bin[j+2])): fbank[j,i] = (bin[j+2]-i) / (bin[j+2]-bin[j+1])
-    return fbank
 
-def lifter(cepstra, L=22):
-    """Apply a cepstral lifter the the matrix of cepstra. This has the effect of increasing the
-    magnitude of the high frequency DCT coeffs.
-    :param cepstra: the matrix of mel-cepstra, will be numframes * numcep in size.
-    :param L: the liftering coefficient to use. Default is 22. L <= 0 disables lifter.
-    """
-    if L > 0:
-        nframes, ncoeff = numpy.shape(cepstra)
-        n    = numpy.arange(ncoeff)
-        lift = 1 + (L/2.)*numpy.sin(numpy.pi*n/L)
-        return lift*cepstra
+def ifcs(s):  # inverted fast cepstrum
+    return np.fft.fft(np.exp(np.fft.ifft(s)))
+
+
+def mcs(s):  # magnitude (actually power)
+    return (np.abs(np.fft.ifft(np.log(np.abs(np.fft.fft(s))**2)))**2)[:len(s) // 2]
+
+
+def clipdb(s, cutoff=-100):
+    as_ = np.abs(s)
+    mas = np.max(as_)
+    if mas == 0 or cutoff >= 0:
+        return s
+    thresh = mas*10**(cutoff/20)
+    return np.where(as_ < thresh, thresh, s)
+
+
+def fold(r):
+    # via https://ccrma.stanford.edu/~jos/fp/Matlab_listing_fold_m.html
+    # Fold left wing of vector in "FFT buffer format" onto right wing
+    # J.O. Smith, 1982-2002
+    n = len(r)
+    if n < 3:
+        rw = r
+    elif n % 2 == 1:
+        nt = (n + 1)//2
+        rf = r[1:nt] + np.conj(r[-1:nt-1:-1])
+        rw = np.r_[r[0], rf, np.zeros(n-nt)]
     else:
-        # values of L <= 0, do nothing
-        return cepstra
+        nt = n//2
+        rf = np.r_[r[1:nt], 0] + np.conj(r[-1:nt-1:-1])
+        rw = np.r_[r[0], rf, np.zeros(n-nt-1)]
+    return rw
 
 
-def mfcc(signal, num_ceps, ceplifter=22):
-    pre_emphasised_signal  = pre_emphasis(signal)
-    frames, frame_length   = framing(pre_emphasised_signal)
-    windows                = windowing(frames, frame_length)
-    fourrier_transform     = fft(windows)
-    power_frames           = power_spectrum(fourrier_transform)
-    mel_scale_filter_banks = get_filterbanks()
-    mel_scale_filter_banks -= (numpy.mean(mel_scale_filter_banks, axis=0) + 1e-8)
-    features               = numpy.dot(power_frames, mel_scale_filter_banks.T)            # compute the filterbank energies
-    features               = numpy.where(features == 0, numpy.finfo(float).eps, features) # if feat is zero, we get problems with log
-    mfccs                  = dct(features, type=2, axis=1, norm='ortho')[:,:num_ceps]
-    mfccs                  = lifter(mfccs, ceplifter)
-    mfccs                 -= (numpy.mean(mfccs, axis=0) + 1e-8)
-    return mfccs
+def minphase(s, pad=True):
+    # via https://ccrma.stanford.edu/~jos/fp/Matlab_listing_mps_m.html
+    # TODO: oversampling
+    if pad:
+        s = pad2(s)
+    cepstrum = np.fft.ifft(np.log(clipdb(np.fft.fft(s), -100)))
+    signal = np.real(np.fft.ifft(np.exp(np.fft.fft(fold(cepstrum)))))
+    return signal
+
+def dft(a, s=None, axes=(-2, -1), norm=None):
+    """
+    Compute the 2-dimensional discrete Fourier Transform.
+    """
+    return fft2(a, s, axes, norm)
+
+def idft(a, s=None, axes=(-2, -1), norm=None):
+    """
+    Compute the 2-dimensional inverse discrete Fourier Transform.
+    """
+    return ifft2(a, s, axes, norm)
+
+def equalizeAudio():
+    # Grabs the inDir and outDir variable from the mail file
+    global inDir
+    global outDir
+
+    audioLevels = []
+    audioFiles = []
+
+def findAudioLevel():
+    # Adds the current songs audio level to an array
+    audioLevels.append(song.dBFS)
+
+def findAverageLevel():
+    # Resets value for each time is has to do it
+    averageAudioLevel = 0
+
+    # Adds all decibel levels up
+    for x in audioLevels:
+        averageAudioLevel += x
+
+    # Divides them by total number of files
+    return averageAudioLevel / len(audioLevels)
+
+def normalizeAudio(song):
+    # Finds the difference for apply_gain to use
+    dBDifference = song.dBFS - averageAudioLevel
+
+    # Debug
+    print("Difference: ", dBDifference)
+
+    # Removes the difference from the audio level to set it to the average
+    return song - dBDifference
 
 
 
-# setup
-sample_rate, signal = scipy.io.wavfile.read('../test.wav')            # File assumed to be in the same directory
-mfccs = mfcc(signal, 13)
+
+from scipy.signal.filter_design import bilinear
+from scipy.signal import lfilter
+
+def A_weighting_filter(fs):
+    """construct an a-weighting filter at the specified samplerate
+    from here: http://www.mathworks.com/matlabcentral/fileexchange/69
+    """
+    f1, f2, f3, f4, A1000 = 20.598997, 107.65265, 737.86223, 12194.217, 1.9997
+
+    NUMs = [(2 * np.pi * f4) ** 2 * (10 ** (A1000/20)), 0, 0, 0, 0]
+    DENs = np.convolve([1, 4 * np.pi * f4, (2 * np.pi * f4) ** 2],
+                       [1, 4 * np.pi * f1, (2 * np.pi * f1) ** 2], mode='full')
+    DENs = np.convolve(np.convolve(DENs, [1, 2 * np.pi * f3], mode='full'),
+                       [1, 2 * np.pi * f2], mode='full')
+
+    return bilinear(NUMs, DENs, fs)
+
+#functions for going from stereo to mono
+def to_mono(stereo):
+    return stereo.set_channels(1)
 
 
-plt.imshow(mfccs, origin='lower', aspect='auto', interpolation='nearest')
-plt.ylabel('MFCC Coefficient Index')
-plt.xlabel('Frame Index')
-plt.show()
+#functions for normalizing
+def normalize(sound, target_dBFS):
+    delta = target_dBFS - sound.dBFS
+    return sound.apply_gain(delta)
 
-from python_speech_features import mfcc
-mfcc_feat = mfcc(signal,sample_rate)
-plt.imshow(mfcc_feat, origin='lower', aspect='auto', interpolation='nearest')
-plt.ylabel('MFCC Coefficient Index')
-plt.xlabel('Frame Index')
-plt.show()
+
+def A_weight(sig, fs):
+    B, A = A_weighting_filter(fs)
+    return lfilter(B, A, sig)
+
+def analyze(sig, fs, enc):
+    props = {}
+    props['sig']      =  sig
+    props['fs']       = fs
+    props['enc']      = enc
+    props['dc']       = np.mean(sig)
+    props['peak']     = np.max(np.abs(sig))
+    props['rms']      = rms(sig)
+    props['crest']    = props['peak']/props['rms']
+    weighted_sig      = A_weight(sig, fs)
+    props['weighted'] = rms(weighted_sig)
+    return props
+
+
+
+
+def hamming(N):
+    return np.array([0.54 -0.46 * np.cos(2 * np.pi * n /(N-1)) for n in range(N)])
+
+def intensity(s):
+#Computes the intensity, a.k.a the absolute value of the point of the wave furthest away from 0.
+    M=0
+    for i in range(len(s)):
+        if(abs(float(s[i]))>M):
+            M=abs(float(s[i]))
+    return M
+        
+        
+
+def normalize(file,noise_threshold=-80):
+#Normalizes the total sound wave so that amplitude is equal throughout the sound wave.
+    name=file[:len(file)-4]
+    noise_threshold=pow(10.0,(-6+noise_threshold)/20.0)
+    #convert the decibel threshold to linear representation.
+    #-6 decibels are added because the average section of the chunk is multiplied by 0.5 when the chunks are pieced back together.
+    sound_wave=read(file)[1]
+    padding=list([0]*689)
+    sound_wave=np.concatenate((list(padding),sound_wave,list(padding)))
+    outsound=list([0]*(len(sound_wave)))
+    #outsound is initialized to a array of 0s.
+    i=0
+    current_chunk_intensity=0
+    maximum_intensity=0
+    #maximum intensity of all chunks is calculated.
+    while(i+1378<len(sound_wave)):
+        current_chunk_intensity=intensity(sound_wave[i:i+1378])
+        if(current_chunk_intensity>maximum_intensity):
+            maximum_intensity=current_chunk_intensity
+        i=i+689
+    i=0
+    #all chunks brought back to the same intensity
+    print('Normalization of submitted wav file :')
+    while(i+1378<len(sound_wave)):
+        if(i%137800==0):
+            print(str(i//689)+'/'+str(len(sound_wave)//689)+' chunks normalized.')
+        last_chunk_intensity=current_chunk_intensity
+        current_chunk_intensity=intensity(sound_wave[i:i+1378])
+        for j in range(1378):
+            if(0.5*(last_chunk_intensity+current_chunk_intensity)<maximum_intensity*noise_threshold):
+                pass
+            else:
+                outsound[i+j]+=float(((0.5-0.5*math.cos(2*math.pi*j/1378))*float(sound_wave[i+j]))/(last_chunk_intensity+current_chunk_intensity))
+        i=i+689
+    outsound_scaled=outsound/np.max(np.abs(outsound))
+    #scaled up so that the point of the wave with biggest absolute value is at 1 or -1.
+    outsound_cropped=[]
+    #when scaled up this way, a few points are quite far from the area that contains most of the wave.
+    #There extreme values are cropped out by multiplying the wave by 4/3 and clipping whatever outside of [-1,1].
+    for i in range(len(outsound_scaled)):
+        s=(4/3)*outsound_scaled[i]
+        if(s>1):
+            s=1
+        elif(s<-1):
+            s=-1
+        else:
+            pass
+        outsound_cropped.append(s)
+    write(name+'_optimized.wav',44100,np.asarray(outsound_cropped))
+
+
+
+
+#-----------------------------Helper Functions------------------------------#
+# Note: wavread and _raw_data helper functions were taken from Eric Humphrey's
+# Python tutorial given on behalf of MARL (Music and Auditory Research Lab),
+# Friday 4/27/2012
+
+def wavread(fin):
+	""" Read in an Audio file using the wave library """
+	wfile = wave.open(fin,'rb')
+	x_raw = wfile.readframes(wfile.getnframes())
+	x = _rawdata_to_array(x_raw, wfile.getnchannels(), wfile.getsampwidth())
+	fs = wfile.getframerate()
+	wfile.close()
+	return x, float(fs)
+
+def _rawdata_to_array(data, channels, bytedepth):
+	"""
+	Convert packed byte string into usable numpy arrays
+	Returns
+	-------
+	frame : nd.array of floats
+	    array with shape (N,channels), normalized to [-1.0, 1.0]
+	"""
+
+	if data is None:
+		return None
+
+	N = len(data) / float(channels) / float(bytedepth)
+	frame = np.array(struct.unpack('%dh' % N * channels, data)) / (2.0 ** (8 * bytedepth - 1))
+	return frame.reshape([N, channels])
+
+def pickWinType(winType, N):
+	""" Allow the user to pick a window type"""
+	# Select window type
+	if winType is "bartlett":
+		window = np.bartlett(N)
+	elif winType is "blackman":
+		window = np.blackman(N)
+	elif winType is "hamming":
+		window = np.hamming(N)
+	elif winType is "hanning":
+		window = np.hanning(N)
+	else:
+		window = None
+
+		return window
+
+# Source of interpolation function - https://gist.github.com/255291
+def parabolic(f, x):
+	"""Quadratic interpolation for estimating the true position of an
+	inter-sample maximum when nearby samples are known.
+ 	f is a vector and x is an index for that vector.
+	Returns (vx, vy), the coordinates of the vertex of a parabola that goes
+	through point x and its two neighbors.
+	"""
+	xv = float(1/2 * (f[x-1] - f[x+1] + 1) / (f[x-1] - 2 * f[x] + f[x+1]) + x)
+	yv = float(f[x] - 1/4 * (f[x-1] - f[x+1]) * (xv - x))
+	return (xv, yv)
+
+def split_seq(seq,size):
+	""" Split up seq in pieces of size """
+	return [seq[i:i+size] for i in range(0, len(seq), size)]
+
+def convertToMono(x):
+	""" Take a single channel from a stereo signal """
+	if x.ndim == 2: # Stereo
+		# Limit to one channel
+		x = (x[:,0])
+	elif x.ndim == 1: # Mono
+		x = x
+	else:
+		raise ValueError("Input of wrong shape")
+	return x
+
+def decibels(x):
+	""" Return value in decibles """
+	return 20.0 * np.log10(x + eps)
+
+def normalize(x):
+	""" Normailize values between -1 and 1"""
+	return x / np.abs(x).max()
