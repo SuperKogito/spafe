@@ -43,14 +43,14 @@ def compute_gain(fcs, B, wT, T):
     Gain  = np.abs(G[:,0] * G[:,1] * G[:,2] * G[:, 3] * Coe**-4)
     return A, Gain
 
-def gammatone_filter_banks(nfilts=20, nfft=512, fs=16000, fmin=0, fmax=10000, order=1):
+def gammatone_filter_banks(nfilts=20, nfft=512, fs=16000, fmin=0, fmax=10000, order=4):
     # define custom difference func
     Dif = lambda u, a: u - a.reshape(nfilts, 1) 
 
     # init vars
     fbank  = np.zeros([nfilts, nfft])
     width  = 1.0 
-    maxlen = nfft // 2 + 2
+    maxlen = nfft // 2 + 1
     T      = 1 / fs
     n      = 4
     u      = np.exp(1j * 2 * np.pi * np.array(range(nfft // 2 + 1)) / nfft)
@@ -75,5 +75,6 @@ def gammatone_filter_banks(nfilts=20, nfft=512, fs=16000, fmin=0, fmax=10000, or
                       np.abs(Dif(u, pole) * Dif(u, pole.conj()))**(-n)
                     )           
     # make sure all filters has max value = 1.0
-    fbs = np.array([ f/np.max(f) for f in fbank[:, range(maxlen)] ])
+    try:    fbs = np.array([ f/np.max(f) for f in fbank[:, range(maxlen)] ])
+    except: fbs = fbank[:, idx]
     return fbs
