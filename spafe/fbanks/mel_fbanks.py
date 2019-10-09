@@ -30,11 +30,17 @@ def mel_filter_banks(nfilts=20, nfft= 512, fs=16000, lowfreq=0, highfreq=None):
     # our points are in Hz, but we use fft bins, so we have to convert from Hz to fft bin number
     bin   = np.floor((nfft + 1) * mel2hz(melpoints) / fs)
     fbank = np.zeros([nfilts, nfft // 2 + 1])
-
+#
+#    for j in range(0, nfilts):
+#        for i in range(int(bin[j]),   int(bin[j+1])): 
+#            fbank[j,i] = (i - bin[j]) / (bin[j+1]-bin[j])
+#        
+#        for i in range(int(bin[j+1]), int(bin[j+2])): 
+#            fbank[j,i] = (bin[j+2]-i) / (bin[j+2]-bin[j+1])
+    
     for j in range(0, nfilts):
-        for i in range(int(bin[j]),   int(bin[j+1])): 
-            fbank[j,i] = (i - bin[j]) / (bin[j+1]-bin[j])
-        
-        for i in range(int(bin[j+1]), int(bin[j+2])): 
-            fbank[j,i] = (bin[j+2]-i) / (bin[j+2]-bin[j+1])
+        b0, b1, b2 = bin[j],  bin[j+1], bin[j+2]
+        fbank[j, int(b0): int(b1)] = (np.arange(int(b1), int(b2)) - int(b0)) / (b1-b0)
+        fbank[j, int(b1): int(b2)] = (int(b2) - np.arange(int(b1), int(b2))) / (b2-b1)
+
     return fbank
