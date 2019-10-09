@@ -17,9 +17,10 @@ def lpcc(seq, order=None):
     Note that we already preprocess in the Frame class the lpc conversion!
 
     Args:
-        seq : A sequence of lpc components. Need to be preprocessed by lpc()
-        err_term :Error term for lpc sequence. Returned by lpc()[1]
-        order (default = None) : Return size of the array. Function returns order+1 length array. Default is len(seq)
+        seq                    : A sequence of lpc components. Need to be preprocessed by lpc()
+        err_term               : Error term for lpc sequence. Returned by lpc()[1]
+        order (default = None) : Return size of the array. Function returns order+1 length array. 
+                                 Default is len(seq)
 
     Returns:
         List with lpcc components with default length len(seq), otherwise length order +1

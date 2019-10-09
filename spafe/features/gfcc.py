@@ -30,12 +30,11 @@ def gfcc(signal, num_ceps, ceplifter=22):
     fourrier_transform    = proc.fft(windows)
     abs_fft_values        = np.abs(fourrier_transform)
     
-    #  -> x Mel-fbanks -> log(.) -> DCT(.)
+    #  -> x Gammatone fbanks -> log(.) -> DCT(.)
     gammatone_fbanks_mat = gammatone_filter_banks()
     features             = np.dot(abs_fft_values, gammatone_fbanks_mat.T) # compute the filterbank energies
-    features_no_zero     = proc.zero_handling(features)                     # if feat is zero, we get problems with log
-    log_features         = np.log(features_no_zero)
-    raw_gfccs            = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
+    nonlin_rect_features = np.power(features, 1/3)
+    raw_gfccs            = dct(nonlin_rect_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
     
     # filter and normalize
     gfccs = proc.lifter(raw_gfccs, ceplifter)

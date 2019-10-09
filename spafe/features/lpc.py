@@ -1,7 +1,12 @@
 import numpy as np
-from ..helper import nextpow2
 from scipy.fftpack import fft, ifft
 
+
+def nextpow2(x):
+    """
+    Return the first integer N such that 2**N >= abs(x)
+    """
+    return np.ceil(np.log2(np.abs(x)))
 
 def _acorr_last_axis(x, nfft, maxlag):
     """
@@ -62,19 +67,14 @@ def levinson_1d(r, order):
     in the matrix, the inversion can be done in O(p^2) instead of O(p^3).
     """
     r = np.atleast_1d(r)
-    if r.ndim > 1:
-        raise ValueError("Only rank 1 are supported for now.")
+    if r.ndim > 1                 :raise ValueError("Only rank 1 are supported for now.")
 
     n = r.size
-    if n < 1:
-        raise ValueError("Cannot operate on empty array !")
-    elif order > n - 1:
-        raise ValueError("Order should be <= size-1")
-
-    if not np.isreal(r[0]):
-        raise ValueError("First item of input must be real.")
-    elif not np.isfinite(1 / r[0]):
-        raise ValueError("First item should be != 0")
+    
+    if n < 1                      : raise ValueError("Cannot operate on empty array !")
+    elif order > n - 1            : raise ValueError("Order should be <= size-1")
+    if not np.isreal(r[0])        : raise ValueError("First item of input must be real.")
+    elif not np.isfinite(1 / r[0]): raise ValueError("First item should be != 0")
 
     # Estimated coefficients
     a = np.empty(order + 1, 'float32')
@@ -131,4 +131,4 @@ def lpc(signal, order, axis=-1):
         raise ValueError("Input signal must have length >= order")
 
     r = acorr_lpc(signal, axis)
-    return levinson_1d(r, order)
+    return levinson_1d(r, order)[0]
