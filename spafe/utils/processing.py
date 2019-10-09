@@ -71,6 +71,10 @@ def windowing(frames, frame_length):
 def fft(frames, nfft = NFFT):
     return numpy.fft.rfft(frames, nfft)
 
+
+def ifft(frames, nfft = NFFT):
+    return numpy.fft.irfft(frames, nfft)
+
 def power_spectrum(fourrier_transform,  nfft = NFFT):
     magnitude_frames = numpy.absolute(fourrier_transform)          # Magnitude of the FFT
     power_frames     = ((1.0 / nfft) * ((magnitude_frames) ** 2))  # Power Spectrum
