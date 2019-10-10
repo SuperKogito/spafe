@@ -3,10 +3,8 @@ from: https://github.com/RJTK/Levinson-Durbin-Recursion/blob/master/levinson/lev
 Implementation of Levinson Recursion and other associated routines,
 particularly the Block Toeplitz versions of Whittle and Akaike.
 """
-
-import numpy as np
 import numba
-from numpy import linalg
+import numpy as np
 
 
 @numba.jit(nopython=True, cache=True)
@@ -100,9 +98,9 @@ def _whittle_lev_durb(R):
         A_bar_cpy = np.copy(A_bar)
 
         # These are the real reflection coefficients
-        A_cpy[k + 1] = -linalg.solve(
+        A_cpy[k + 1] = -np.linalg.solve(
             Sigma_bar[k], Delta[k + 1].T).T
-        A_bar_cpy[k + 1] = -linalg.solve(
+        A_bar_cpy[k + 1] = -np.linalg.solve(
             Sigma[k], Delta_bar[k + 1].T).T
 
         for tau in range(1, k + 1):
@@ -157,9 +155,9 @@ def reflection_coefs(Delta, Delta_bar, Sigma, Sigma_bar):
     G[0] = Sigma[0]
     G_bar[0] = Sigma_bar[0]
     for k in range(p - 1):
-        G[k + 1] = -linalg.solve(
+        G[k + 1] = -np.linalg.solve(
             Sigma_bar[k], Delta[k + 1].T).T
-        G_bar[k + 1] = -linalg.solve(
+        G_bar[k + 1] = -np.linalg.solve(
             Sigma[k], Delta_bar[k + 1].T).T
     return G, G_bar
 
@@ -313,7 +311,7 @@ def system_rho(B):
     system with coefficient matrices B[0], B[1], ...
     """
     C = block_companion(B)
-    ev = linalg.eigvals(C)
+    ev = np.linalg.eigvals(C)
     return max(abs(ev))
 
 
