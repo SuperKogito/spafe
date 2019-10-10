@@ -1,13 +1,12 @@
 ##############################################################################################
-#                           Mel-filter-banks implementation
+#                           linear-filter-banks implementation
 ##############################################################################################
 import numpy as np
-from spafe.utils.converters import hz2mel, mel2hz
 
 
-def mel_filter_banks(nfilts=20, nfft= 512, fs=16000, lowfreq=0, highfreq=None):
+def linear_filter_banks(nfilts=20, nfft= 512, fs=16000, lowfreq=0, highfreq=None):
     """
-    Compute Mel-filterbanks.The filters are stored in the rows, the columns
+    Compute linear-filterbanks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
@@ -19,18 +18,16 @@ def mel_filter_banks(nfilts=20, nfft= 512, fs=16000, lowfreq=0, highfreq=None):
         highfreq (int) : highest band edge of mel filters.(Default samplerate/2)
 
     Returns:
-        a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
+        (numpy array) array of size nfilt * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
     highfreq  = highfreq or fs/2
 
-    # compute points evenly spaced in mels (ponts are in Hz)
-    lowmel    = hz2mel(lowfreq)
-    highmel   = hz2mel(highfreq)
-    melpoints = np.linspace(lowmel, highmel, nfilts + 2)
+    # compute points evenly spaced in mels (points are in Hz)
+    melpoints = np.linspace(lowfreq, highfreq, nfilts + 2)
 
     # we use fft bins, so we have to convert from Hz to fft bin number
-    bin   = np.floor((nfft + 1) * mel2hz(melpoints) / fs)
+    bin   = np.floor((nfft + 1) * melpoints / fs)
     fbank = np.zeros([nfilts, nfft // 2 + 1])
 
     # compute amps of fbanks
