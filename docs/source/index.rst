@@ -22,3 +22,4 @@ For the documentation of the modules please refer to:
    signal
    frequencies
    features
+   fbanks/_fbanks
