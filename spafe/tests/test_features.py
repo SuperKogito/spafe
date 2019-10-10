@@ -1,6 +1,9 @@
+import scipy.signal as sg
 import numpy as np
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
+import spafe.utils.processing as proc
+
 
 def visualize(mat, ylabel, xlabel):
     plt.imshow(mat, origin='lower', aspect='auto', interpolation='nearest')
@@ -19,8 +22,16 @@ def padding_factor(vec, j):
     s = vec.shape[0] // j  + 1
     f = np.abs(s * j - vec.shape[0]) 
     return s, f 
+
+
 #read wave file 
 fs, sig = scipy.io.wavfile.read('../test.wav')
+
+# plot spectogram 
+plt.specgram(sig, NFFT=512, Fs=fs)
+plt.ylabel("Frequency (kHz)")
+plt.xlabel("Time (s)")
+plt.show()
 
 
 from spafe.features.mfcc import mfcc, mfe
@@ -32,12 +43,22 @@ visualize(mfccs, 'MFCC Coefficient Index','Frame Index')
 visualize((np.append(mfes, 0)).reshape(277,13),  'MFE Coefficient Index','Frame Index')
 
 
+from spafe.features.lfcc import lfcc
+# compute mfccs and mfes
+lfccs = lfcc(sig, 13)
+
+visualize(lfccs, 'LFCC Coefficient Index','Frame Index')
+
 
 from spafe.features.gfcc import gfcc
 # compute gfccs
 gfccs = gfcc(sig, 13) 
 visualize(gfccs, 'GFCC Coefficient Index','Frame Index')
 
+from spafe.features.ngcc import ngcc
+# compute gfccs
+ngccs = ngcc(sig, 13) 
+visualize(ngccs, 'NGC Coefficient Index','Frame Index')
 
 
 from spafe.features.bfcc import bfcc
