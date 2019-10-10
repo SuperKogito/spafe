@@ -62,7 +62,7 @@ def rplp(signal, num_ceps, ceplifter=22):
 
     # -> IDFT(.)
     idft_features = proc.ifft(features)
-    print(idft_features)
+
     # -> linear prediction  analysis -> cepstral analysis        
     lp_features = lp(idft_features)
     raw_rplps    = cepstral_analysis(lp_features)      

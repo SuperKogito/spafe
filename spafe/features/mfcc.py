@@ -32,8 +32,8 @@ def mfcc(signal, num_ceps, ceplifter=22):
     
     #  -> x Mel-fbanks -> log(.) -> DCT(.)
     mel_fbanks_mat   = mel_filter_banks()
-    features         = np.dot(abs_fft_values, mel_fbanks_mat.T) # compute the filterbank energies
-    features_no_zero = proc.zero_handling(features)             # if feat is zero, we get problems with log
+    features         = np.dot(abs_fft_values, mel_fbanks_mat.T) 
+    features_no_zero = proc.zero_handling(features)
     log_features     = np.log(features_no_zero)
     raw_mfccs        = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
     

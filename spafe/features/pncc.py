@@ -9,14 +9,17 @@ from librosa import filters
 from librosa import to_mono
 
 import scipy
+import matplotlib.pyplot as plt
+
 import numpy as np
 from scipy.fftpack import dct
-
+from spafe.features import cepstral
+import spafe.utils.processing as proc
+from spafe.fbanks.gammatone_fbanks import gammatone_filter_banks
 
 def medium_time_power_calculation(power_stft_signal, M=2):
     medium_time_power = np.zeros_like(power_stft_signal)
-    power_stft_signal = np.pad(power_stft_signal, [(M, M), (0, 0)],
-                               'constant')
+    power_stft_signal = np.pad(power_stft_signal, [(M, M), (0, 0)], 'constant')
     for i in range(medium_time_power.shape[0]):
         medium_time_power[i, :] = sum([1 / float(2 * M + 1)
                 * power_stft_signal[i + k - M, :] for k in range(2 * M
@@ -93,8 +96,7 @@ def weight_smoothing(
     return spectral_weight_smoothing
 
 
-def time_frequency_normalization(power_stft_signal,
-                                 spectral_weight_smoothing):
+def time_frequency_normalization(power_stft_signal, spectral_weight_smoothing):
     return power_stft_signal * spectral_weight_smoothing
 
 
@@ -120,35 +122,18 @@ def power_function_nonlinearity(normalized_power, n=15):
     return normalized_power ** float(1 / n)
 
 
-def pncc(
-    audio_wave,
-    n_pncc=13,
-    n_fft=512,
-    sr=16000,
-    winlen=0.020,
-    winstep=0.010,
-    n_mels=128,
-    weight_N=4,
-    power=2,
-    ):
+def pncc(sig, ncep=13, nfft=512, fs=16000, winlen=0.020, winstep=0.010, n_mels=128, weight_N=4, power=2):
 
-    pre_emphasis_signal = scipy.signal.lfilter([1.0, -0.97], 1,
-            audio_wave)
-    mono_wave = to_mono(pre_emphasis_signal.T)
-    stft_pre_emphasis_signal = np.abs(stft(
-        mono_wave,
-        n_fft=n_fft,
-        hop_length=int(sr * winstep),
-        win_length=int(sr * winlen),
-        window=np.ones(int(sr * winlen)),
-        center=False,
-        )) ** power
+    pre_emphasis_signal       = proc.pre_emphasis(sig)
+    stft_signal               = stft(pre_emphasis_signal, nfft)
+    stft_pre_emphasis_signal  = np.abs(stft_signal)**power
 
-    mel_filter = np.abs(filters.mel(sr, n_fft=n_fft, n_mels=n_mels))** power
-    power_stft_signal = np.dot(stft_pre_emphasis_signal.T, mel_filter.T)
-    medium_time_power = medium_time_power_calculation(power_stft_signal)
-    lower_envelope    = asymmetric_lawpass_filtering(medium_time_power, 0.999, 0.5)
-
+    mel_filter                = np.abs(filters.mel(fs, n_fft=nfft, n_mels=n_mels))** power
+    power_stft_signal         = np.dot(stft_pre_emphasis_signal.T, mel_filter.T)
+   
+    
+    medium_time_power         = medium_time_power_calculation(power_stft_signal)
+    lower_envelope            = asymmetric_lawpass_filtering(medium_time_power, 0.999, 0.5)
     subtracted_lower_envelope = medium_time_power - lower_envelope
 
     rectified_signal       = halfwave_rectification(subtracted_lower_envelope)
@@ -167,15 +152,26 @@ def pncc(
     transfer_function  = time_frequency_normalization(power_stft_signal,
                                                       spectral_weight_smoothing)
 
-    normalized_power = mean_power_normalization(transfer_function,
-            final_output, L=n_mels)
-    power_law_nonlinearity = \
-        power_function_nonlinearity(normalized_power)
+    normalized_power       = mean_power_normalization(transfer_function, final_output, L=n_mels)
+    power_law_nonlinearity = power_function_nonlinearity(normalized_power)
 
-    pnccs = scipy.fftpack.dct(power_law_nonlinearity)[:, :n_pncc]
+    pnccs = scipy.fftpack.dct(power_law_nonlinearity)[:, :ncep]
 
     return pnccs
 
 
 
-			
+def visualize(mat, ylabel, xlabel):
+    plt.imshow(mat.T, origin='lower', aspect='auto', interpolation='nearest')
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.show()
+
+
+#read wave file 
+fs, sig = scipy.io.wavfile.read('../test.wav')
+# compute bfccs
+pnccs = pncc(sig, 13)
+
+visualize(pnccs, 'pnccs Coefficient Index','Frame Index')
+

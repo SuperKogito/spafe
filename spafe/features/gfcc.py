@@ -10,7 +10,7 @@ from spafe.fbanks.gammatone_fbanks import gammatone_filter_banks
 
 def gfcc(signal, num_ceps, ceplifter=22):
     """
-    Compute MFCC features from an audio signal.
+    Compute GFCC features from an audio signal.
     
     Args:
          signal  (array) : the audio signal from which to compute features. Should be an N x 1 array
