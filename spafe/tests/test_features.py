@@ -11,7 +11,6 @@ def visualize(mat, ylabel, xlabel):
     plt.xlabel(xlabel)
     plt.show()
 
-
 def plot(y, ylabel, xlabel):
     plt.plot(y)
     plt.ylabel(ylabel)
@@ -34,19 +33,20 @@ plt.xlabel("Time (s)")
 plt.show()
 
 
-from spafe.features.mfcc import mfcc, mfe
+from spafe.features.mfcc import mfcc, imfcc, mfe
 # compute mfccs and mfes
-mfccs = mfcc(sig, 13)
-mfes  = mfe(sig, fs) 
+mfccs  = mfcc(sig, 13)
+imfccs = imfcc(sig, 13)
+mfes   = mfe(sig, fs) 
 
 visualize(mfccs, 'MFCC Coefficient Index','Frame Index')
+visualize(imfccs, 'IMFCC Coefficient Index','Frame Index')
 visualize((np.append(mfes, 0)).reshape(277,13),  'MFE Coefficient Index','Frame Index')
 
 
 from spafe.features.lfcc import lfcc
 # compute mfccs and mfes
 lfccs = lfcc(sig, 13)
-
 visualize(lfccs, 'LFCC Coefficient Index','Frame Index')
 
 
@@ -64,14 +64,20 @@ visualize(ngccs, 'NGC Coefficient Index','Frame Index')
 from spafe.features.bfcc import bfcc
 # compute bfccs
 bfccs = bfcc(sig, 13)
-
 visualize(bfccs, 'BFCC Coefficient Index','Frame Index')
 
 from spafe.features.pncc import pncc
 # compute bfccs
 pnccs = pncc(sig, 13)
-
 visualize(pnccs, 'pnccs Coefficient Index','Frame Index')
+
+
+
+from spafe.features.cqcc import cqcc
+# compute bfccs
+cqccs= cqcc(sig, 13)
+plot(cqccs, 'CQC Coefficient Index','Frame Index')
+
 
 
 
