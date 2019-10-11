@@ -7,9 +7,8 @@ before_script:
   - sudo apt-get install python3
   - sudo apt-get install python3-pip
   - sudo apt-get install python3-setuptools
-  - sudo apt install ffmpeg
-  - sudo apt-get update
-  - sudo -H pip3 install matplotlib
+  - pip3 install --upgrade setuptools
+  - pip3 install matplotlib
 # command to run tests
 script:
   - python3 spafe/tests/test_fbanks.py
