@@ -1,16 +1,14 @@
 """
-based on:
-    - https://www.researchgate.net/publication/309149564_Robust_Speaker_Verification_Using_GFCC_Based_i-Vectors
-    - https://pdfs.semanticscholar.org/ca55/cfe51172ccc1ea319a13dede9898590f992d.pdf
+baesd on https://www.researchgate.net/publication/326893017_Novel_Spectral_Root_Cepstral_Features_for_Replay_Spoof_Detection
 """
 import numpy as np
 from scipy.fftpack import dct
 from spafe.features import cepstral
 import spafe.utils.processing as proc
-from spafe.fbanks.gammatone_fbanks import gammatone_filter_banks
+from spafe.fbanks.mel_fbanks import mel_filter_banks
 
 
-def ngcc(signal, num_ceps, ceplifter=22):
+def mfcc(signal, num_ceps, ceplifter=22):
     """
     Compute MFCC features from an audio signal.
     
@@ -24,7 +22,7 @@ def ngcc(signal, num_ceps, ceplifter=22):
     
     Returns:
         (array) : features - the MFFC features: num_frames x num_ceps
-    """    
+    """ 
     # pre-emphasis -> framing -> windowing -> FFT -> |.|
     pre_emphasised_signal = proc.pre_emphasis(signal)
     frames, frame_length  = proc.framing(pre_emphasised_signal)
@@ -32,14 +30,14 @@ def ngcc(signal, num_ceps, ceplifter=22):
     fourrier_transform    = proc.fft(windows)
     abs_fft_values        = np.abs(fourrier_transform)**2
     
-    #  -> x Gammatone fbanks -> log(.) -> DCT(.)
-    gammatone_fbanks_mat = gammatone_filter_banks()
-    features             = np.dot(abs_fft_values, gammatone_fbanks_mat.T) # compute the filterbank energies
-    features_no_zero     = proc.zero_handling(features) # if feat is zero, we get problems with log
-    log_features         = np.log(features_no_zero)
-    raw_ngccs            = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
+    #  -> x Mel-fbanks -> log(.) -> DCT(.)
+    mel_fbanks_mat   = mel_filter_banks()
+    features         = np.dot(abs_fft_values, mel_fbanks_mat.T) 
+    features_no_zero = proc.zero_handling(features)
+    log_features     = np.log(features_no_zero)
+    raw_mfccs        = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
     
     # filter and normalize
-    ngccs = proc.lifter(raw_ngccs, ceplifter)
-    ngccs = cepstral.cmvn(cepstral.cms(ngccs))
-    return ngccs
+    mfccs = proc.lifter(raw_mfccs, ceplifter)
+    mfccs = cepstral.cmvn(cepstral.cms(mfccs))
+    return mfccs
