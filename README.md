@@ -12,7 +12,7 @@ spafe is a wrapper to simplify various types of features extractions. The librar
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
 
 # Contributions, feedback and suggestions are welcome
-Contributions are encouraged as the library and any help is appreciated.
+Contributions are encouraged and any hints, or suggestions are appreciated.
 
 
 
