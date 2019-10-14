@@ -18,7 +18,7 @@ Contributions are encouraged as the library and any help is appreciated.
 
 # Examples
 ## spafe.fbanks
-### Bark-Filterbank
+### Bark filterbanks
 
     import matplotlib.pyplot as plt
     from spafe.fbanks import bark_fbanks
@@ -39,7 +39,7 @@ Contributions are encouraged as the library and any help is appreciated.
 <img src="docs/source/fbanks/images/bark_fbanks.png">
 </p>
 
-### Gammatone-Filterbank
+### Gammatone filterbanks
 
     import matplotlib.pyplot as plt
     from spafe.fbanks import gammatone_fbanks
@@ -60,7 +60,7 @@ Contributions are encouraged as the library and any help is appreciated.
 <img src="docs/source/fbanks/images/gammatone_fbanks.png">
 </p>
 
-### Mel-Filterbank
+### Mel filterbanks
     import matplotlib.pyplot as plt
     from spafe.fbanks import mel_fbanks
 
