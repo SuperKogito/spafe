@@ -8,7 +8,7 @@
 </p>
 
 # spafe: Simplified Python Audio-Features Extraction
-spafe is a wrapper to simplify various types of features extractions. The library covers: MFCC, IMFCC, GFCC, LFCC, PNCC, PLP etc.
+spafe aims to simplify features extractions from audio. The library covers: MFCC, IMFCC, GFCC, LFCC, PNCC, PLP etc.
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
 
 # Contributions, feedback and suggestions are welcome
