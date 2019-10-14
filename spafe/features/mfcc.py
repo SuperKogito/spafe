@@ -104,12 +104,12 @@ def imfcc(signal, num_ceps, ceplifter=22):
     features         = np.dot(abs_fft_values, imel_fbanks_mat.T) 
     features_no_zero = proc.zero_handling(features)
     log_features     = np.log(features_no_zero)
-    raw_mfccs        = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
-    
+    raw_imfccs       = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]      
+
     # filter and normalize
-    mfccs = proc.lifter(raw_mfccs, ceplifter)
-    mfccs = cepstral.cmvn(cepstral.cms(mfccs))
-    return mfccs
+    imfccs = proc.lifter(raw_imfccs, ceplifter)
+    imfccs = cepstral.cmvn(cepstral.cms(imfccs))
+    return imfccs
 
 def mfe(signal, fs, frame_length=0.020, frame_stride=0.01, nfilts=40, nfft=512, fl=0, fh=None):
     """

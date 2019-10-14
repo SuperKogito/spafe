@@ -118,4 +118,4 @@ def gammatone_filter_banks(nfilts=20, nfft=512, fs=16000, fmin=0, fmax=10000, or
     # make sure all filters has max value = 1.0
     try:    fbs = np.array([ f/np.max(f) for f in fbank[:, range(maxlen)] ])
     except: fbs = fbank[:, idx]
-    return fbs
+    return np.abs(fbs)

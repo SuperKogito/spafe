@@ -16,7 +16,7 @@ def visualize(fbanks, ylabel, xlabel):
 
 if __name__ == "__main__":
     # compute the Mel, Bark and Gammaton filterbanks
-    mel_filbanks   = mel_fbanks.mel_filter_banks(nfilts=14, nfft=512, fs=16000)
+    mel_filbanks   = mel_fbanks.mel_filter_banks(nfilts=24, nfft=512, fs=16000)
     bark_filbanks  = bark_fbanks.bark_filter_banks(nfilts=24, nfft=512, fs=16000)
     lin_filbanks   = linear_fbanks.linear_filter_banks(nfilts=24, nfft=512, fs=16000)
     gamma_filbanks = gammatone_fbanks.gammatone_filter_banks(nfilts=24, nfft=512, fs=16000)

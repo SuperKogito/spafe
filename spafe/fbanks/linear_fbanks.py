@@ -36,4 +36,4 @@ def linear_filter_banks(nfilts=20, nfft= 512, fs=16000, lowfreq=0, highfreq=None
         fbank[j, int(b0): int(b1)] = (np.arange(int(b0), int(b1)) - int(b0)) / (b1-b0)
         fbank[j, int(b1): int(b2)] = (int(b2) - np.arange(int(b1), int(b2))) / (b2-b1)
 
-    return fbank
+    return np.abs(fbank)

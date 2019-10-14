@@ -54,4 +54,4 @@ def bark_filter_banks(nfilts=20, nfft=512, fs=16000, lowfreq=0, highfreq=None):
             fc            = barkpoints[j]
             fb            = fft2bark(i)
             fbank[j-2, i] = Fm(fb, fc)
-    return fbank
+    return np.abs(fbank)
