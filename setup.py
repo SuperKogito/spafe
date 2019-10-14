@@ -8,7 +8,7 @@ try:
 finally:
     f.close()
 
-requires = ["numpy>=1.17.2", "scipy>=1.3.1", "librosa>=0.7.0"]
+requires = ["numpy>=1.17.2", "scipy>=1.3.1"]
 
 setup (
         name         = 'spafe',
@@ -33,5 +33,4 @@ setup (
         platforms            = 'any',
         include_package_data = True,
         install_requires     = requires,
-        namespace_packages   = ['spafe'],
      )
