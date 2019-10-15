@@ -9,6 +9,7 @@ before_script:
   - sudo apt-get install python3-setuptools
   - pip3 install --upgrade setuptools
   - pip3 install matplotlib
+  - pip3 install numba
 # command to run tests
 script:
   - python3 test_fbanks.py
