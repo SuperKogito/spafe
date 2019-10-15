@@ -19,7 +19,6 @@ before_script:
 script:
   - python3 test_fbanks.py
 #  - python3 test_features.py
- - codecov --token=<repo token>
  - pytest --cov=./
 
 env:
