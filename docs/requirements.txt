@@ -1,3 +1,5 @@
 sphinxcontrib-napoleon==0.6.1
 numpy 
 scipy
+matplotlib
+librosa
