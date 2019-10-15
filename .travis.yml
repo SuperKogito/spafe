@@ -11,4 +11,5 @@ before_script:
   - pip3 install matplotlib
 # command to run tests
 script:
-  - python3 spafe/tests/test_fbanks.py
+  - python3 test_fbanks.py
+  - python3 test_features.py
