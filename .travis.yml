@@ -1,6 +1,7 @@
 language: python
 python:
   - "3.5"
+
 # command to install dependencies
 before_script:
   - sudo apt-get update
@@ -11,7 +12,18 @@ before_script:
   - pip3 install matplotlib
   - pip3 install numba
   - pip3 install librosa
+  - pip3 install pytest-cov pytest
+  - pip3 install codecov
+  
 # command to run tests
 script:
   - python3 test_fbanks.py
 #  - python3 test_features.py
+ - codecov --token=<repo token>
+ - pytest --cov=./
+
+env:
+  - CODECOV_TOKEN="319e8483-0ef5-4a09-bfe7-dad2e3ca4a3b"
+  
+after_success:
+  - codecov
