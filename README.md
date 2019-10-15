@@ -12,7 +12,7 @@ spafe aims to simplify features extractions from audio. The library covers: MFCC
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
 
 # Contributions, feedback and suggestions are welcome
-Contributions are encouraged and any hints, or suggestions are appreciated.
+Contributions are encouraged and any hints, or suggestions are appreciated. Just take a look at the [TO DOs](https://github.com/SuperKogito/spafe/projects/1). 
 
 
 
