@@ -30,6 +30,7 @@ author    = 'Ayoub Malek'
 extensions = [
                 'sphinx.ext.autodoc',
                 'sphinx.ext.viewcode',
+                'sphinx.ext.todo',
                 'sphinxcontrib.napoleon',
              ]
 

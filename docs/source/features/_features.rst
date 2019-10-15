@@ -1,5 +1,5 @@
 spafe.features
-============
+===============
 
 .. toctree::
    bfcc

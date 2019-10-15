@@ -2,7 +2,7 @@
 #                             Bark-filter-banks implementation
 ##############################################################################################
 import numpy as np
-from spafe.utils.converters import hz2bark, fft2bark, bark2fft
+from ..utils.converters import hz2bark, fft2bark, bark2fft
 
 
 def Fm(fb, fc):

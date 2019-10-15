@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 """
 Reference:
     https://dsp.stackexchange.com/questions/40180/the-exact-definition-of-dominant-frequency
 """
 import time
 import scipy
-import librosa
 import numpy as np
+import scipy.io.wavfile
 import matplotlib.pyplot as plt
 
 
@@ -112,7 +113,7 @@ class DominantFrequenciesExtractor:
 
 if __name__ == '__main__':
     # read audio data
-    signal, rate = librosa.load("../test.wav")
+    rate, signal = scipy.io.wavfile.read('../test.wav')
 
     # test dominant frequencies extraction
     dominant_frequencies_extractor = DominantFrequenciesExtractor(debug=False)

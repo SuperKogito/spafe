@@ -2,7 +2,4 @@ spafe.signal
 =============
 
 
-.. automodule:: spafe.t
-    :members:
-    :undoc-members:
-    :show-inheritance:
+This is empty at the moment.

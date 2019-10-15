@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Compute the following spectral stats:    http://ijeee.iust.ac.ir/article-1-1074-en.pdf
+This module is part of the spafe library and has the purpose of of computing the following spectral stats:
     - meanfreq : mean frequency (in kHz)
     - sd       : standard deviation of frequency
     - median   : median frequency (in kHz)
@@ -22,12 +23,20 @@ Compute the following spectral stats:    http://ijeee.iust.ac.ir/article-1-1074-
     - dfrange  : range of dominant frequency measured across acoustic signal
     - modindx  : modulation index. Calculated as the accumulated absolute difference between adjacent measurements of fundamental frequencies divided by the frequency range
     - label    : male or female
+
+
+Todo:
+    * For module TODOs
+    * You have to also use ``sphinx.ext.todo`` extension
+
+Reference:
+    http://ijeee.iust.ac.ir/article-1-1074-en.pdf
 """
-import scipy 
+import scipy
 import numpy as np
-import spafe.features
-import spafe.frequencies
-import spafe.utils.processing as proc
+from .. import features
+from .. import frequencies
+from ..utils import processing as proc
 
 
 def compute_fundamental_frequencies(sig, fs):
@@ -181,17 +190,15 @@ def spectral_feats(sig):
     spectrum = np.abs(fourrier)
     feats    = {}
     # spectral stats
-    feats["spectral_mean"]     = np.mean(spectrum) 
+    feats["spectral_mean"]     = np.mean(spectrum)
     feats["spectral_rms"]      = np.sqrt(np.mean(spectrum**2))
     feats["spectral_std"]      = np.std(spectrum)
     feats["spectral_variance"] = np.var(spectrum)
     feats["spectral_skewness"] = scipy.stats.skew(spectrum)
     feats["spectral_kurtosis"] = scipy.stats.kurtosis(spectrum)
     feats["spectral_entropy"]  = scipy.stats.entropy(spectrum)
-    feats["energy"]            = np.sum(np.abs(spectrum**2)) 
+    feats["energy"]            = np.sum(np.abs(spectrum**2))
     feats["centroid"]          = np.sum(fourrier * spectrum) / np.sum(fourrier)
     feats["rolloff"]           = librosa.feature.spectral_rolloff(signal,  rate)
     feats["spread"]            = spectral_feats(sig, rate)
     return feats
-
-

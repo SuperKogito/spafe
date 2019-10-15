@@ -1,9 +1,9 @@
 import scipy.io.wavfile
-import spafe.utils.vis as vis
+from spafe.utils import vis
 
 
 #read wave file 
-fs, sig = scipy.io.wavfile.read('../test.wav')
+fs, sig = scipy.io.wavfile.read('test.wav')
 
 # plot spectogram 
 vis.spectogram(sig, fs)

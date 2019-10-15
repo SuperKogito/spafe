@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Credits to:
     Patrice Guyot. (2018, April 19).
@@ -6,8 +7,8 @@ Credits to:
 """
 import time
 import scipy
-import librosa
 import numpy as np
+import scipy.io.wavfile
 import matplotlib.pyplot as plt
 
 
@@ -189,7 +190,7 @@ class FundamentalFrequenciesExtractor:
 
 if __name__ == '__main__':
     # read audio data
-    signal, rate = librosa.load("../test.wav")
+    rate, signal = scipy.io.wavfile.read('../test.wav')
 
     #  test fundamental frequencies extraction
     fundamental_frequencies = FundamentalFrequenciesExtractor(False)

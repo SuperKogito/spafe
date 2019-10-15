@@ -10,4 +10,3 @@ spafe.utils
   processing
   stats
   vis
-  wav

@@ -11,11 +11,12 @@ from librosa import to_mono
 import scipy
 import matplotlib.pyplot as plt
 
+
 import numpy as np
+from . import cepstral
 from scipy.fftpack import dct
-from spafe.features import cepstral
-import spafe.utils.processing as proc
-from spafe.fbanks.gammatone_fbanks import gammatone_filter_banks
+from ..utils import processing as proc
+from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 
 def medium_time_power_calculation(power_stft_signal, M=2):
     medium_time_power = np.zeros_like(power_stft_signal)
@@ -130,8 +131,8 @@ def pncc(sig, ncep=13, nfft=512, fs=16000, winlen=0.020, winstep=0.010, n_mels=1
 
     mel_filter                = np.abs(filters.mel(fs, n_fft=nfft, n_mels=n_mels))** power
     power_stft_signal         = np.dot(stft_pre_emphasis_signal.T, mel_filter.T)
-   
-    
+
+
     medium_time_power         = medium_time_power_calculation(power_stft_signal)
     lower_envelope            = asymmetric_lawpass_filtering(medium_time_power, 0.999, 0.5)
     subtracted_lower_envelope = medium_time_power - lower_envelope
@@ -142,13 +143,13 @@ def pncc(sig, ncep=13, nfft=512, fs=16000, winlen=0.020, winstep=0.010, n_mels=1
 
     final_output = switch_excitation_or_non_excitation(temporal_masked_signal,
                                                        floor_level,
-                                                       lower_envelope, 
+                                                       lower_envelope,
                                                        medium_time_power)
 
-    spectral_weight_smoothing = weight_smoothing(final_output, 
-                                                 medium_time_power, 
+    spectral_weight_smoothing = weight_smoothing(final_output,
+                                                 medium_time_power,
                                                  L=n_mels)
-    
+
     transfer_function  = time_frequency_normalization(power_stft_signal,
                                                       spectral_weight_smoothing)
 
@@ -166,12 +167,11 @@ def visualize(mat, ylabel, xlabel):
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.show()
-
-
-#read wave file 
-fs, sig = scipy.io.wavfile.read('../test.wav')
-# compute bfccs
-pnccs = pncc(sig, 13)
-
-visualize(pnccs, 'pnccs Coefficient Index','Frame Index')
-
+#
+#
+##read wave file
+#fs, sig = scipy.io.wavfile.read('../../test.wav')
+## compute bfccs
+#pnccs = pncc(sig, 13)
+#
+#visualize(pnccs, 'pnccs Coefficient Index','Frame Index')

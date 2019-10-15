@@ -2,7 +2,7 @@
 #                           Mel-filter-banks implementation
 ##############################################################################################
 import numpy as np
-from spafe.utils.converters import hz2mel, mel2hz
+from ..utils.converters import hz2mel, mel2hz
 
 
 def mel_filter_banks(nfilts=20, nfft=512, fs=16000, lowfreq=0, highfreq=None, scale="const"):

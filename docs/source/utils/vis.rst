@@ -1,5 +1,5 @@
 spafe.utils.vis
-========================
+================
 
 
 .. automodule:: spafe.utils.vis

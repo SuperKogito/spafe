@@ -1,13 +1,20 @@
+# -*- coding: utf-8 -*-
+"""
+This module is part of the spafe library and has the purpose of: [insert role]
+
+Todo:
+    * For module TODOs
+    * You have to also use ``sphinx.ext.todo`` extension
+"""
+import scipy
+import librosa
 import numpy as np
 print(np.__file__)
-
-import scipy
 print(scipy.__file__)
-import librosa
 print(librosa.__file__)
 
-import spafe.features
-import spafe.frequencies
+from  features import *
+from  frequencies import *
 
 
 class Signal:
