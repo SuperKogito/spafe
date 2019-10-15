@@ -4,9 +4,9 @@ based on https://github.com/supikiti/PNCC/blob/master/pncc.py
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from librosa.core import stft
-from librosa import filters
-from librosa import to_mono
+from scipy.signal import stft
+#from librosa import filters
+from spafe.fbanks import mel_fbanks
 
 import scipy
 import matplotlib.pyplot as plt
@@ -129,7 +129,9 @@ def pncc(sig, ncep=13, nfft=512, fs=16000, winlen=0.020, winstep=0.010, n_mels=1
     stft_signal               = stft(pre_emphasis_signal, nfft)
     stft_pre_emphasis_signal  = np.abs(stft_signal)**power
 
-    mel_filter                = np.abs(filters.mel(fs, n_fft=nfft, n_mels=n_mels))** power
+    mel_filter = np.abs(mel_fbanks.mel_filter_banks(nfilts=n_mels, nfft=nfft, fs=16000))**power
+
+#original    mel_filter                = np.abs(filters.mel(fs, n_fft=nfft, n_mels=n_mels))** power
     power_stft_signal         = np.dot(stft_pre_emphasis_signal.T, mel_filter.T)
 
 
@@ -167,7 +169,7 @@ def visualize(mat, ylabel, xlabel):
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.show()
-#
+
 #
 ##read wave file
 #fs, sig = scipy.io.wavfile.read('../../test.wav')
