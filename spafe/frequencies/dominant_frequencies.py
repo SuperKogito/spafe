@@ -2,6 +2,7 @@
 """
 Reference:
     https://dsp.stackexchange.com/questions/40180/the-exact-definition-of-dominant-frequency
+    https://arxiv.org/pdf/1306.0103.pdf
 """
 import time
 import scipy
