@@ -18,11 +18,7 @@ before_script:
 # command to run tests
 script:
   - python3 test_fbanks.py
-#  - python3 test_features.py
- - pytest --cov=./
-
-env:
-  - CODECOV_TOKEN="319e8483-0ef5-4a09-bfe7-dad2e3ca4a3b"
+  - pytest --cov=./
   
 after_success:
   - codecov
