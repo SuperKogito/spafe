@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .utils import *          # pylint: disable=wildcard-import
-from .fbanks import *         # pylint: disable=wildcard-import
-from .frequencies import *    # pylint: disable=wildcard-import
+from spafe.utils import *          # pylint: disable=wildcard-import
+from spafe.fbanks import *         # pylint: disable=wildcard-import
+from spafe.frequencies import *    # pylint: disable=wildcard-import
 
 __all__ = [_ for _ in dir() if not _.startswith('_')]
 
