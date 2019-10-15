@@ -14,4 +14,4 @@ before_script:
 # command to run tests
 script:
   - python3 test_fbanks.py
-  - python3 test_features.py
+#  - python3 test_features.py
