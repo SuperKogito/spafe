@@ -33,10 +33,9 @@ class FundamentalFrequenciesExtractor:
         x = np.array(x, np.float64)
         w = x.size
         x_cumsum = np.concatenate((np.array([0]), (x * x).cumsum()))
-        conv     = scipy.signal.fftconvolve(x, x[::-1])
-        tmp      = x_cumsum[w:0:-1] + x_cumsum[w] - x_cumsum[:w] - 2 * conv[w - 1:]
+        conv = scipy.signal.fftconvolve(x, x[::-1])
+        tmp = x_cumsum[w:0:-1] + x_cumsum[w] - x_cumsum[:w] - 2 * conv[w - 1:]
         return tmp[:tau_max]
-
 
     def cumulativeMeanNormalizedDifferenceFunction(self, df, N):
         """
@@ -51,7 +50,8 @@ class FundamentalFrequenciesExtractor:
         Returns:
             (list) : cumulative mean normalized difference function
         """
-        cmndf = df[1:] * range(1, N) / np.cumsum(df[1:]).astype(float) # scipy method
+        cmndf = df[1:] * range(1, N) / np.cumsum(df[1:]).astype(
+            float)  # scipy method
         return np.insert(cmndf, 0, 1)
 
     def getPitch(self, cmdf, tau_min, tau_max, harmo_th=0.1):
@@ -75,10 +75,17 @@ class FundamentalFrequenciesExtractor:
                 return tau
             tau += 1
 
-        return 0    #  if unvoiced
+        return 0  # if unvoiced
 
-
-    def compute_yin(self, sig, sr, dataFileName=None, w_len=512, w_step=256, f0_min=50, f0_max=3000, harmo_thresh=0.1):
+    def compute_yin(self,
+                    sig,
+                    sr,
+                    dataFileName=None,
+                    w_len=512,
+                    w_step=256,
+                    f0_min=50,
+                    f0_max=3000,
+                    harmo_thresh=0.1):
         """
         Compute the Yin Algorithm. Return fundamental frequency and harmonic rate.
 
@@ -98,29 +105,32 @@ class FundamentalFrequenciesExtractor:
                           - argmins       : minimums of the Cumulative Mean Normalized DifferenceFunction
                           - times         : list of time of each estimation
         """
-        if self.debug: print('Yin: compute yin algorithm')
+        if self.debug:
+            print('Yin: compute yin algorithm')
         tau_min, tau_max = int(sr / f0_max), int(sr / f0_min)
 
-        timeScale = range(0, len(sig) - w_len, w_step)  #  time values for each analysis window
-        times     = [t / float(sr)    for t in timeScale]
-        frames    = [sig[t:t + w_len] for t in timeScale]
+        timeScale = range(0,
+                          len(sig) - w_len,
+                          w_step)  # time values for each analysis window
+        times = [t / float(sr) for t in timeScale]
+        frames = [sig[t:t + w_len] for t in timeScale]
 
-        pitches        = [0.0] * len(timeScale)
+        pitches = [0.0] * len(timeScale)
         harmonic_rates = [0.0] * len(timeScale)
-        argmins        = [0.0] * len(timeScale)
+        argmins = [0.0] * len(timeScale)
 
         for i, frame in enumerate(frames):
             # Compute YIN
-            df   = self.differenceFunction(frame, w_len, tau_max)
+            df = self.differenceFunction(frame, w_len, tau_max)
             cmdf = self.cumulativeMeanNormalizedDifferenceFunction(df, tau_max)
-            p    = self.getPitch(cmdf, tau_min, tau_max, harmo_thresh)
+            p = self.getPitch(cmdf, tau_min, tau_max, harmo_thresh)
 
             # Get results
             if np.argmin(cmdf) > tau_min:
                 argmins[i] = float(sr / np.argmin(cmdf))
             #  A pitch was found
             if p != 0:
-                pitches[i]        = float(sr / p)
+                pitches[i] = float(sr / p)
                 harmonic_rates[i] = cmdf[p]
             #  No pitch, but we compute a value of the harmonic rate
             else:
@@ -128,7 +138,16 @@ class FundamentalFrequenciesExtractor:
 
         return pitches, harmonic_rates, argmins, times
 
-    def main(self, sr, sig, w_len=1024, w_step=256, f0_min=70, f0_max=200, harmo_thresh=0.85, audioDir="./", dataFileName=None):
+    def main(self,
+             sr,
+             sig,
+             w_len=1024,
+             w_step=256,
+             f0_min=70,
+             f0_max=200,
+             harmo_thresh=0.85,
+             audioDir="./",
+             dataFileName=None):
         """
         Run the computation of the Yin algorithm on a example file.
 
@@ -148,38 +167,56 @@ class FundamentalFrequenciesExtractor:
                           - argmins       : minimums of the Cumulative Mean Normalized DifferenceFunction
                           - times         : list of time of each estimation
         """
-        start    = time.time()
+        start = time.time()
         duration = len(sig) / float(sr)
-        pitches, harmonic_rates, argmins, times = self.compute_yin(sig, sr, dataFileName, w_len, w_step, f0_min, f0_max, harmo_thresh)
+        pitches, harmonic_rates, argmins, times = self.compute_yin(
+            sig, sr, dataFileName, w_len, w_step, f0_min, f0_max, harmo_thresh)
 
         if self.debug:
-            print ("Yin computed in: ", time.time() - start)
+            print("Yin computed in: ", time.time() - start)
             plt.figure(figsize=(20, 10))
-            plt.subplots_adjust(left   = 0.125,  right  = 0.9,
-                                bottom = 0.1,    top    = 0.9,
-                                wspace = 0.2,    hspace = 0.99)
+            plt.subplots_adjust(left=0.125,
+                                right=0.9,
+                                bottom=0.1,
+                                top=0.9,
+                                wspace=0.2,
+                                hspace=0.99)
             # plot audio data
             ax1 = plt.subplot(4, 1, 1)
-            ax1.plot([float(x) * duration / len(sig) for x in range(0, len(sig))], sig)
+            ax1.plot(
+                [float(x) * duration / len(sig) for x in range(0, len(sig))],
+                sig)
             ax1.set_title('Audio data')
             ax1.set_ylabel('Amplitude')
 
             # plot F0
             ax2 = plt.subplot(4, 1, 2)
-            ax2.plot([float(x) * duration / len(pitches) for x in range(0, len(pitches))], pitches)
+            ax2.plot([
+                float(x) * duration / len(pitches)
+                for x in range(0, len(pitches))
+            ], pitches)
             ax2.set_title('F0')
             ax2.set_ylabel('Frequency (Hz)')
 
             # plot Harmonic rate
             ax3 = plt.subplot(4, 1, 3, sharex=ax2)
-            ax3.plot([float(x) * duration / len(harmonic_rates) for x in range(0, len(harmonic_rates))], harmonic_rates, "-x")
-            ax3.plot([float(x) * duration / len(harmonic_rates) for x in range(0, len(harmonic_rates))], [harmo_thresh] * len(harmonic_rates), 'r', "--")
+            ax3.plot([
+                float(x) * duration / len(harmonic_rates)
+                for x in range(0, len(harmonic_rates))
+            ], harmonic_rates, "-x")
+            ax3.plot([
+                float(x) * duration / len(harmonic_rates)
+                for x in range(0, len(harmonic_rates))
+            ], [harmo_thresh] * len(harmonic_rates), 'r', "--")
             ax3.set_title('Harmonic rate')
             ax3.set_ylabel('Rate')
 
             # plot Index of minimums of CMND
             ax4 = plt.subplot(4, 1, 4, sharex=ax2)
-            ax4.plot([float(x) * duration / len(argmins) for x in range(0, len(argmins))], argmins, "-x")
+            ax4.plot([
+                float(x) * duration / len(argmins)
+                for x in range(0, len(argmins))
+            ], argmins, "-x")
             ax4.set_title('Index of minimums of CMND')
             ax4.set_ylabel('Frequency (Hz)')
             ax4.set_xlabel('Time (seconds)')
@@ -194,4 +231,5 @@ if __name__ == '__main__':
 
     #  test fundamental frequencies extraction
     fundamental_frequencies = FundamentalFrequenciesExtractor(False)
-    pitches, harmonic_rates, argmins, times = fundamental_frequencies.main(rate, signal)
+    pitches, harmonic_rates, argmins, times = fundamental_frequencies.main(
+        rate, signal)

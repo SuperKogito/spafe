@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-This module is part of the spafe library and has the purpose of: [insert role]
+This module is part of the spafe library and has the purpose of:
 
-Todo:
-    * For module TODOs
-    * You have to also use ``sphinx.ext.todo`` extension
+.. todo::
+
+    * Clean script
 """
 import numpy as np
 
