@@ -1,134 +1,290 @@
 import numpy as np
+from spafe.utils import levinsondr
 from scipy.fftpack import fft, ifft
+from spafe.utils.filters import rasta_filter
+from spafe.utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from spafe.utils.spectral import (powspec, lifter, audspec, postaud,
+                                  invpostaud, invpowspec, invaudspec)
 
 
-def nextpow2(x):
+def lpcc(sig,
+         fs=16000,
+         num_ceps=13,
+         model_order=13,
+         pre_emph=1,
+         pre_emph_coeff=0.97,
+         win_type="hann",
+         win_len=0.025,
+         win_hop=0.01,
+         do_rasta=True,
+         lifter=1,
+         normalize=1,
+         dither=1):
     """
-    Return the first integer N such that 2**N >= abs(x)
+    Compute the LINEAR PREDICTIVE CEPSTRAL COEFFICIENTS (LPCC) from an audio signal.
+
+    Args:
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        model_order      (int) : order of the model to compute.
+                                 Default is 8.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is hanning.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        do_rasta         (int) : if 1 then apply rasta filtering.
+                                 Default is 0.
+        lifter           (int) : apply liftering if value > 0.
+                                 Default is 22.
+        normalize        (int) : apply normalization if 1.
+                                 Default is 0.
+        dither           (int) : 1 = add offset to spectrum as if dither noise.
+                                 Default is 0.
+    Returns:
+        (array) : 2d array of LPCC features (num_frames x num_ceps)
     """
-    return np.ceil(np.log2(np.abs(x)))
+    lpcs = lpc(sig=sig,
+               fs=fs,
+               num_ceps=num_ceps,
+               model_order=model_order,
+               pre_emph=pre_emph,
+               pre_emph_coeff=pre_emph_coeff,
+               win_len=win_len,
+               win_hop=win_hop,
+               do_rasta=True,
+               dither=dither)
+    lpccs = lpc2cep(lpcs.T)
 
-def _acorr_last_axis(x, nfft, maxlag):
+    # liftering
+    if lifter > 0:
+        lpccs = lifter_ceps(lpccs, lifter)
+
+    # normalization
+    if normalize:
+        lpccs = cmvn(cms(lpccs))
+
+    lpccs = lpccs.T
+    return lpccs[:, :]
+
+
+def lpc(sig,
+        fs=16000,
+        num_ceps=13,
+        model_order=13,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        win_type="hann",
+        win_len=0.025,
+        win_hop=0.01,
+        do_rasta=True,
+        dither=1):
     """
-    compute the auto-correlation.
+    Compute the LINEAR PREDICTIVE COEFFICIENTS (LPC) from an audio signal.
+
+    Args:
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        model_order      (int) : order of the model to compute.
+                                 Default is 8.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is hanning.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        do_rasta         (int) : if 1 then apply rasta filtering.
+                                 Default is 0.
+        lifter           (int) : apply liftering if value > 0.
+                                 Default is 22.
+        normalize        (int) : apply normalization if 1.
+                                 Default is 0.
+        dither           (int) : 1 = add offset to spectrum as if dither noise.
+                                 Default is 0.
+    Returns:
+        (array) : 2d array of LPC features (num_frames x num_ceps)
     """
-    a = np.real(ifft(np.abs(fft(x, n=nfft) ** 2)))
-    return a[..., :maxlag + 1] / x.shape[-1]
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
-def acorr_lpc(x, axis=-1):
+    # compute power spectrum
+    power_spectrum, _ = powspec(sig=sig,
+                                fs=fs,
+                                win_type=win_type,
+                                win_len=win_len,
+                                win_hop=win_hop,
+                                dither=dither)
+
+    # group to critical bands
+    auditory_spectrum = audspec(power_spectrum, fs)
+    nbands = auditory_spectrum.shape[0]
+
+    if do_rasta:
+        # put in log domain
+        log_auditory_spectrum = np.log(auditory_spectrum)
+        # next do rasta filtering
+        rasta_filtered_log_auditory_spectrum = rasta_filter(
+            log_auditory_spectrum)
+        # do inverse log
+        auditory_spectrum = np.exp(rasta_filtered_log_auditory_spectrum)
+
+    post_processing_spectrum, _ = postaud(auditory_spectrum, fs / 2)
+    lpcs = do_lpc(x=post_processing_spectrum, model_order=model_order)
+    lpcs = lpcs.T
+    return lpcs[:, :num_ceps]
+
+
+def do_lpc(x, model_order=8):
     """
-    Compute autocorrelation of x along the given axis.
-    This compute the biased autocorrelation estimator (divided by the size of
-    input signal)
+    Compute the autoregressive model from spectral magnitude samples.
 
-    Notes
-    -----
-        The reason why we do not use acorr directly is for speed issue.
+    Args:
+        x         (array) : array of the audio signal to process.
+        model_order (int) : order of the model to compute.
+
+    Returns:
+        array of the autoregressive model
     """
-    if not np.isrealobj(x):
-        raise ValueError("Complex input not supported yet")
+    nbands, nframes = x.shape
+    ncorr = 2 * (nbands - 1)
+    R = np.zeros((ncorr, nframes))
 
-    maxlag = x.shape[axis]
-    nfft = int(2 ** nextpow2(2 * maxlag - 1))
+    R[0:nbands, :] = x
+    for i in range(nbands - 1):
+        R[i + nbands - 1, :] = x[nbands - (i + 1), :]
 
-    if axis != -1:
-        x = np.swapaxes(x, -1, axis)
-    a = _acorr_last_axis(x, nfft, maxlag)
-    if axis != -1:
-        a = np.swapaxes(a, -1, axis)
-    return a
+    r = ifft(R.T).real.T
+    r = r[0:nbands, :]
 
-def levinson_1d(r, order):
+    y = np.ones((nframes, model_order + 1))
+    e = np.zeros((nframes, 1))
+
+    if model_order == 0:
+        for i in range(nframes):
+            _, e_tmp, _ = levinsondr.LEVINSON(r[:, i],
+                                              model_order,
+                                              allow_singularity=True)
+            e[i, 0] = e_tmp
+    else:
+        for i in range(nframes):
+            y_tmp, e_tmp, _ = levinsondr.LEVINSON(r[:, i],
+                                                  model_order,
+                                                  allow_singularity=True)
+            y[i, 1:model_order + 1] = y_tmp
+            e[i, 0] = e_tmp
+
+    y = y.T / (np.tile(e.T, (model_order + 1, 1)) + 1e-8)
+
+    return y
+
+
+def lpc2cep(a, nout=0):
     """
-    Levinson-Durbin recursion, to efficiently solve symmetric linear systems
-    with toeplitz structure.
+    convert LPC coefficients directly to cepstral values.
+     - convert the LPC 'a' coefficients in each column of lpcs into frames of cepstra.
 
-    Parameters
-    ---------
-    r : array-like
-        input array to invert (since the matrix is symmetric Toeplitz, the
-        corresponding pxp matrix is defined by p items only). Generally the
-        autocorrelation of the signal for linear prediction coefficients
-        estimation. The first item must be a non zero real.
+    Args:
+        a  (array) : cepstral values.
+        nout (int) : number of cepstra to produce
 
-    Notes
-    ----
-    This implementation is in python, hence unsuitable for any serious
-    computation. Use it as educational and reference purpose only.
-    Levinson is a well-known algorithm to solve the Hermitian toeplitz
-    equation:
-                       _          _
-        -R[1] = R[0]   R[1]   ... R[p-1]    a[1]
-         :      :      :          :      *  :
-         :      :      :          _      *  :
-        -R[p] = R[p-1] R[p-2] ... R[0]      a[p]
-                       _
-    with respect to a (  is the complex conjugate). Using the special symmetry
-    in the matrix, the inversion can be done in O(p^2) instead of O(p^3).
+    Returns:
+        array of LPC coefficients.
+        Default size(lpcs, 1)
     """
-    r = np.atleast_1d(r)
-    if r.ndim > 1                 :raise ValueError("Only rank 1 are supported for now.")
+    nin, ncol = a.shape
 
-    n = r.size
-    
-    if n < 1                      : raise ValueError("Cannot operate on empty array !")
-    elif order > n - 1            : raise ValueError("Order should be <= size-1")
-    if not np.isreal(r[0])        : raise ValueError("First item of input must be real.")
-    elif not np.isfinite(1 / r[0]): raise ValueError("First item should be != 0")
+    order = nin - 1
 
-    # Estimated coefficients
-    a = np.empty(order + 1, 'float32')
-    # temporary array
-    t = np.empty(order + 1, 'float32')
-    # Reflection coefficients
-    k = np.empty(order,     'float32')
+    if nout == 0:
+        nout = order + 1
 
-    a[0] = 1.
-    e    = r[0]
+    cep = np.zeros((nout, ncol))
+    cep[0, :] = -np.log(a[0, :])
 
-    for i in range(1, order + 1):
-        acc = r[i]
-        for j in range(1, i):
-            acc += a[j] * r[i - j]
-        k[i - 1] = -acc / e
-        a[i]     = k[i - 1]
+    norm_a = np.divide(a, np.add(np.tile(a[0, :], (nin, 1)), 1e-8))
 
-        for j in range(order): t[j]  = a[j]
-        for j in range(1, i) : a[j] += k[i - 1] * np.conj(t[i - j])
+    for n in range(1, nout):
+        sum = 0
+        for m in range(1, n):
+            sum = np.add(
+                sum,
+                np.multiply(np.multiply((n - m), norm_a[m, :]),
+                            cep[(n - m), :]))
 
-        e *= 1 - k[i - 1] * np.conj(k[i - 1])
+        cep[n, :] = -np.add(norm_a[n, :], np.divide(sum, n))
 
-    return a, e, k
+    return cep
 
-def lpc(signal, order, axis=-1):
+
+def lpc2spec(lpcs, nout=17, FMout=False):
     """
-    Compute the Linear Prediction Coefficients. Return the order + 1 LPC
-    coefficients for the signal. c = lpc(x, k) will find the k+1 coefficients
-     of a k order linear filter:
-      xp[n] = -c[1] * x[n-2] - ... - c[k-1] * x[n-k-1]
-    Such as the sum of the squared-error e[i] = xp[i] - x[i] is minimized.
+    convert LPC coefficients back into spectra by sampling the z-plane.
 
-    Parameters
-    ----------
-        signal: array_like     input signal
-        order : int            LPC order (the output will have order + 1 items)
-
-    Returns
-    -------
-        a : array-like            the solution of the inversion.
-        e : array-like            the prediction error.
-        k : array-like            reflection coefficients.
-
-    Notes
-    -----
-        This uses Levinson-Durbin recursion for the autocorrelation matrix
-        inversion, and fft for the autocorrelation computation.
-        For small order, particularly if order << signal size, direct computation
-        of the autocorrelation is faster: use levinson and correlate in this case.
+    Args:
+        lpcs (array) : array including the LPC coefficients.
+        nout   (int) : number of freq channels, default 17 (i.e. for 8 kHz)
+        FMout (bool) :
+    Returns:
+        list including the features, F and M
     """
-    n = signal.shape[axis]
-    if order > n:
-        raise ValueError("Input signal must have length >= order")
+    rows, cols = lpcs.shape
+    order = rows - 1
 
-    r = acorr_lpc(signal, axis)
-    return levinson_1d(r, order)[0]
+    gg = lpcs[0, :]
+    aa = lpcs / np.tile(gg, (rows, 1))
+
+    # Calculate the actual z-plane polyvals: nout points around unit circle
+    tmp_1 = np.array(np.arange(0, nout), ndmin=2).T
+    tmp_1 = (-1j * tmp_1 * np.pi) / (nout - 1)
+    tmp_2 = np.array(np.arange(0, order + 1), ndmin=2)
+    zz = np.exp(np.matmul(tmp_1, tmp_2))
+
+    # Actual polyvals, in power (mag^2)
+    features = np.tile(gg, (nout, 1)) / np.abs(np.matmul(zz, aa))**2
+    F = np.zeros((cols, int(np.ceil(rows / 2))))
+    M = F
+
+    if FMout:
+        for c in range(cols):
+            aaa = aa[:, c]
+            rr = np.roots(aaa)
+            ff_tmp = np.angle(rr)
+            ff = np.array(ff_tmp, ndmin=2).T
+            zz = np.exp(
+                1j *
+                np.matmul(ff, np.array(np.arange(0, aaa.shape[0]), ndmin=2)))
+            mags = np.sqrt(gg[c] /
+                           np.abs(np.matmul(zz,
+                                            np.array(aaa, ndmin=2).T))**2)
+
+            ix = np.argsort(ff_tmp)
+            dummy = np.sort(ff_tmp)
+            mp_F_list = []
+            tmp_M_list = []
+
+            for i in range(ff.shape[0]):
+                if dummy[i] > 0:
+                    tmp_F_list = np.append(tmp_F_list, dummy[i])
+                    tmp_M_list = np.append(tmp_M_list, mags[ix[i]])
+
+            M[c, 0:tmp_M_list.shape[0]] = tmp_M_list
+            F[c, 0:tmp_F_list.shape[0]] = tmp_F_list
+
+    return features, F, M

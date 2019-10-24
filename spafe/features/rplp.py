@@ -1,78 +1,100 @@
-"""
-paper:
-"""
 import numpy as np
-from ..utils import processing as proc
-from ..utils import levinsondr as ldr
+from ..utils import spectral as spec
+from ..utils.filters import rasta_filter
+from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..features.lpc import do_lpc, lpc2cep, lpc2spec
 
-from ..features import cepstral
-from ..fbanks.mel_fbanks import mel_filter_banks
+
+def plp(sig,
+        fs,
+        num_ceps=13,
+        win_time=0.025,
+        hop_time=0.010,
+        do_rasta=False,
+        modelorder=13,
+        normalize=0):
+    return rastaplp(x=sig,
+                    fs=fs,
+                    win_time=win_time,
+                    hop_time=hop_time,
+                    do_rasta=do_rasta,
+                    modelorder=num_ceps - 1,
+                    normalize=normalize)
 
 
-def padding_factor(vec, j):
-    s = vec.shape[0] // j  + 1
-    f = np.abs(s * j - vec.shape[0])
-    return s, f
+def rplp(sig,
+         fs,
+         num_ceps=13,
+         win_time=0.025,
+         hop_time=0.010,
+         do_rasta=True,
+         normalize=0):
+    return rastaplp(x=sig,
+                    fs=fs,
+                    win_time=win_time,
+                    hop_time=hop_time,
+                    do_rasta=do_rasta,
+                    modelorder=num_ceps - 1,
+                    normalize=normalize)
 
-def cepstral_analysis(feats):
+
+def rastaplp(x,
+             fs=16000,
+             win_time=0.025,
+             hop_time=0.010,
+             do_rasta=True,
+             modelorder=13,
+             normalize=0):
     """
-    Do cepstral analysis.
+    %[cepstra, spectra, lpcas] = rastaplp(samples, sr, do_rasta, modelorder)
+    %
+    % cheap version of log rasta with fixed parameters
+    %
+    % output is matrix of features, row = feature, col = frame
+    %
+    % sr is sampling rate of samples, defaults to 8000
+    % do_rasta defaults to 1; if 0, just calculate PLP
+    % modelorder is order of PLP model, defaults to 8.  0 -> no PLP
+    %
+    % rastaplp(d, sr, 0, 12) is pretty close to the unix command line
+    % feacalc -dith -delta 0 -ras no -plp 12 -dom cep ...
+    % except during very quiet areas, where our approach of adding noise
+    % in the time domain is different from rasta's approach
+    %
+    % 2003-04-12 dpwe@ee.columbia.edu after shire@icsi.berkeley.edu's version
 
-    from: https://pdfs.semanticscholar.org/0b44/265790c6008622c0c3de2aa1aea3ca2e7762.pdf
-        >> Cepstral coefficients are obtained from the predictor coefficients
-        >> by a recursion that is equivalent to the logarithm of the model
-        >> spectrum followed by an inverse Fourier transform
     """
-    feats_spectrum   = np.fft.fft(feats)
-    features_no_zero = proc.zero_handling(feats_spectrum)
-    log_features     = np.log(features_no_zero)
-    return np.abs(np.fft.ifft(log_features))
+    # first compute power spectrum
+    p_spectrum, _ = spec.powspec(x, fs, win_time, hop_time)
 
-def lp(vec):
-    a, G, eps = ldr.lev_durb(vec)
-    return a
+    # next group to critical bands
+    aspectrum = spec.audspec(p_spectrum, fs)
+    nbands = aspectrum.shape[0]
 
-def intensity_power_law(w):
-    E = ((w**2 + 56.8 * 10**6) * w**4) / ((w**2 + 6.3 * 10**6) * (w**2 + .38 * 10**9) * (w**6 + 9.58 * 10**26))
-    return E**(1/3)
+    if do_rasta:
+        # put in log domain
+        nl_aspectrum = np.log(aspectrum)
+        # next do rasta filtering
+        ras_nl_aspectrum = rasta_filter(nl_aspectrum)
+        # do inverse log
+        aspectrum = np.exp(ras_nl_aspectrum)
 
-def rplp(signal, num_ceps, ceplifter=22):
-    """
-    Compute MFCC features from an audio signal.
-    CWT : Continuous wavelet transform.
-    Args:
-         signal  (array) : the audio signal from which to compute features. Should be an N x 1 array
-         fs      (int)   : the sampling frequency of the signal we are working with.
-         nfilts  (int)   : the number of filters in the filterbank, default 40.
-         nfft    (int)   : number of FFT points. Default is 512.
-         fl      (float) : lowest band edge of mel filters. In Hz, default is 0.
-         fh      (float) : highest band edge of mel filters. In Hz, default is samplerate/2
+    postspectrum, _ = spec.postaud(aspectrum, fs / 2)
 
-    Returns:
-        (array) : features - the MFFC features: num_frames x num_ceps
-    """
-    # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = proc.pre_emphasis(signal)
-    frames, frame_length  = proc.framing(pre_emphasised_signal)
-    windows               = proc.windowing(frames, frame_length)
-    fourrier_transform    = proc.fft(windows)
+    lpcas = do_lpc(postspectrum, modelorder)
+    cepstra = lpc2cep(lpcas, modelorder + 1)
 
-    #  -> x Mel-fbanks
-    mel_fbanks_mat = mel_filter_banks()
-    features       = np.dot(fourrier_transform, mel_fbanks_mat.T)
+    if modelorder > 0:
+        lpcas = do_lpc(postspectrum, modelorder)
+        cepstra = lpc2cep(lpcas, modelorder + 1)
+        spectra, F, M = lpc2spec(lpcas, nbands)
+    else:
+        spectra = postspectrum
+        cepstra = ceps.spec2cep(spectra)
 
-    # -> IDFT(.)
-    idft_features = proc.ifft(features)
-
-    # -> linear prediction  analysis -> cepstral analysis
-    lp_features = lp(idft_features)
-    raw_rplps    = cepstral_analysis(lp_features)
-
-    # reshape
-    s, x = padding_factor(raw_rplps, 13)
-    raw_rplps = (np.append(raw_rplps, x*[0])).reshape(s, 13)
-
+    cepstra = spec.lifter(cepstra, 0.6)
     # normalize
-    rplps = proc.lifter(raw_rplps, ceplifter)
-    rplps = cepstral.cmvn(cepstral.cms(rplps))
-    return rplps
+    if normalize == "cms":
+        cepstra = cmvn(cms(cepstra))
+
+    return cepstra.T

@@ -1,122 +1,202 @@
 # -*- coding: utf-8 -*-
-"""Example Google style docstrings.
-
-This module demonstrates documentation as specified by the `Google Python
-Style Guide`_. Docstrings may extend over multiple lines. Sections are created
-with a section header and a colon followed by a block of indented text.
-
-Example:
-    Examples can be given using either the ``Example`` or ``Examples``
-    sections. Sections support any reStructuredText formatting, including
-    literal blocks::
-
-        $ python example_google.py
-
-Section breaks are created by resuming unindented text. Section breaks
-are also implicitly created anytime a new section starts.
-
-Attributes:
-    module_level_variable1 (int): Module level variables may be documented in
-        either the ``Attributes`` section of the module docstring, or in an
-        inline docstring immediately following the variable.
-
-        Either form is acceptable, but the two should not be mixed. Choose
-        one convention to document module level variables and be consistent
-        with it.
-
-Todo:
-    * For module TODOs
-    * You have to also use ``sphinx.ext.todo`` extension
-
-.. _Google Python Style Guide:
-   http://google.github.io/styleguide/pyguide.html
-
 """
+Mel Frequency Cepstral Coefficients Extraction
+===============================================
 """
-based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.8029&rep=rep1&type=pdf
-"""
+import scipy
 import numpy as np
-from scipy.fftpack import dct
-from ..features import cepstral
-from ..utils import processing as proc
+from ..utils.spectral import rfft, dct
+
+from ..features.lpc import do_lpc, lpc2cep
+from ..utils.cepstral import cms, cmvn, lifter_ceps, spec2cep, cep2spec
 from ..fbanks.mel_fbanks import inverse_mel_filter_banks, mel_filter_banks
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
+                              postaud, invpostaud, invpowspec, invaudspec)
 
 
-def mfcc(signal, num_ceps, ceplifter=22):
+def mfcc(sig,
+         fs=16000,
+         num_ceps=13,
+         cep_lifter=22,
+         low_freq=None,
+         high_freq=None,
+         n_mfcc=13,
+         n_bands=40,
+         nfft=512,
+         lifter_exp=0.6,
+         fb_type='fcmel',
+         dct_type=1,
+         use_cmp=True,
+         win_len=0.025,
+         win_hop=0.01,
+         pre_emph=0.97,
+         dither=1,
+         sumpower=1,
+         band_width=1,
+         model_order=0,
+         broaden=0,
+         use_energy=False):
     """
-    Compute MFCC features from an audio signal.
+    Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
+    signal. This function offers multiple approaches to features extraction
+    depending on the input parameters. Implemenation is using FFT and based on
+    http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.8029&rep=rep1&type=pdf
+
+          - take the absolute value of the FFT
+          - warp to a Mel frequency scale
+          - take the DCT of the log-Mel-spectrum
+          - return the first <num_ceps> components
 
     Args:
-         signal  (array) : the audio signal from which to compute features. Should be an N x 1 array
-         fs      (int)   : the sampling frequency of the signal we are working with.
-         nfilts  (int)   : the number of filters in the filterbank, default 40.
-         nfft    (int)   : number of FFT points. Default is 512.
-         fl      (float) : lowest band edge of mel filters. In Hz, default is 0.
-         fh      (float) : highest band edge of mel filters. In Hz, default is samplerate/2
+        sig        (array) : a mono audio signal (Nx1) from which to compute features.
+        fs           (int) : the sampling frequency of the signal we are working with.
+                             Default is 16000.
+        nfilts       (int) : the number of filters in the filterbank.
+                             Default is 40.
+        nfft         (int) : number of FFT points.
+                             Default is 512.
+        win_time   (float) : window length in sec.
+                             Default is 0.025.
+        win_hop   (float) : step between successive windows in sec.
+                             Default is 0.01.
+        num_ceps   (float) : number of cepstra to return.
+                             Default is 13.
+        lifter_exp (float) : exponent for liftering; 0 = none; < 0 = HTK sin lifter.
+                             Default is 0.6.
+        sum_power    (int) : 1 = sum abs(fft)^2; 0 = sum abs(fft).
+                             Default is 1.
+        pre_emph   (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                             Default is 0.97.
+        dither       (int) : 1 = add offset to spectrum as if dither noise.
+                             Default is 0.
+        low_freq     (int) : lowest band edge of mel filters (Hz).
+                             Default is 0.
+        high_freq     (int) : highest band edge of mel filters (Hz).
+                             Default is samplerate / 2 = 8000.
+        nbands       (int) : number of warped spectral bands to use.
+                             Default is 40.
+        bwidth     (float) : width of aud spec filters relative to default.
+                             Default is 1.0.
+        dct_type     (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                             Default is 2.
+        fb_type    ('mel') : frequency warp: 'mel','bark','htkmel','fcmel'.
+                             Default is 'mel'.
+        use_cmp      (int) : apply equal-loudness weighting and cube-root compr.
+                             Default is 0.
+        model_order  (int) : if > 0, fit a PLP model of this order.
+                             Default is 0.
+        broaden      (int) : flag to retain the (useless?) first and last bands
+                             Default is 0.
+        use_energy   (int) : overwrite C0 with true log energy
+                             Default is 0.
+
+    Note:
+        The following non-default values nearly duplicate Malcolm Slaney's mfcc
+        (i.e. melfcc(d,16000,opts...) =~= log(10)*2*mfcc(d*(2^17),16000) )
+            - 'win_time'   : 0.016
+            - 'lifter_exp' : 0
+            - 'low_freq'   : 133.33
+            - 'high_freq'   : 6855.6
+            - 'sum_power'  : 0
+
+        The following non-default values nearly duplicate HTK's MFCC
+        (i.e. melfcc(d,16000,opts...) =~= 2*htkmelfcc(:,[13,[1:12]])'
+        where HTK config has PREEMCOEF = 0.97, NUMCHANS = 20, CEPLIFTER = 22,
+        NUMCEPS = 12, WINDOWSIZE = 250000.0, USEHAMMING = T, TARGETKIND = MFCC_0)
+            - 'lifter_exp' : -22
+            - 'nbands'     : 20
+            - 'high_freq'   : 8000
+            - 'sum_power'  : 0
+            - 'fb_type'    : 'htkmel'
+            - 'dct_type'   : 3
 
     Returns:
         (array) : features - the MFFC features: num_frames x num_ceps
     """
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
+
     # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = proc.pre_emphasis(signal)
-    frames, frame_length  = proc.framing(pre_emphasised_signal)
-    windows               = proc.windowing(frames, frame_length)
-    fourrier_transform    = proc.fft(windows)
-    abs_fft_values        = np.abs(fourrier_transform)
+    pre_emphasised_signal = pre_emphasis(sig)
+    frames, frame_length = framing(pre_emphasised_signal)
+    windows = windowing(frames, frame_length)
+    fourrier_transform = rfft(x=windows, n=nfft)
+    abs_fft_values = np.abs(fourrier_transform)
 
     #  -> x Mel-fbanks -> log(.) -> DCT(.)
-    mel_fbanks_mat   = mel_filter_banks()
-    features         = np.dot(abs_fft_values, mel_fbanks_mat.T)
-    features_no_zero = proc.zero_handling(features)
-    log_features     = np.log(features_no_zero)
-    raw_mfccs        = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]
+    mel_fbanks_mat = mel_filter_banks()
+    features = np.dot(abs_fft_values, mel_fbanks_mat.T)
+    features_no_zero = zero_handling(features)
+    log_features = np.log(features_no_zero)
+    raw_mfccs = dct(log_features, type=2, axis=1, norm='ortho')[:, :num_ceps]
 
     # filter and normalize
-    mfccs = proc.lifter(raw_mfccs, ceplifter)
-    mfccs = cepstral.cmvn(cepstral.cms(mfccs))
+    mfccs = lifter_ceps(raw_mfccs, cep_lifter)
+    mfccs = cmvn(cms(mfccs))
     return mfccs
 
 
-def imfcc(signal, num_ceps, ceplifter=22):
+def imfcc(sig, num_ceps=13, ceplifter=22, nfft=512):
     """
     Compute Inverse MFCC features from an audio signal.
 
     Args:
-         signal  (array) : the audio signal from which to compute features. Should be an N x 1 array
-         fs      (int)   : the sampling frequency of the signal we are working with.
-         nfilts  (int)   : the number of filters in the filterbank, default 40.
-         nfft    (int)   : number of FFT points. Default is 512.
-         fl      (float) : lowest band edge of mel filters. In Hz, default is 0.
-         fh      (float) : highest band edge of mel filters. In Hz, default is samplerate/2
+         sig     (array) : the audio signal (Nx1) from which to compute features.
+         fs      (int)   : the sampling frequency of the signal.
+                           Default is 16000.
+         nfilts  (int)   : the number of filters in the filterbank.
+                           Default is 40.
+         nfft    (int)   : number of FFT points.
+                           Default is 512.
+         fl      (float) : lowest band edge of mel filters in Hz.
+                           Default is 0.
+         fh      (float) : highest band edge of mel filters in Hz.
+                           Default is samplerate/2
 
     Returns:
         (array) : features - the MFFC features: num_frames x num_ceps
     """
     # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = proc.pre_emphasis(signal)
-    frames, frame_length  = proc.framing(pre_emphasised_signal)
-    windows               = proc.windowing(frames, frame_length)
-    fourrier_transform    = proc.fft(windows)
-    abs_fft_values        = np.abs(fourrier_transform)
+    pre_emphasised_signal = pre_emphasis(sig)
+    frames, frame_length = framing(pre_emphasised_signal)
+    windows = windowing(frames, frame_length)
+    fourrier_transform = rfft(x=windows, n=nfft)
+    abs_fft_values = np.abs(fourrier_transform)
 
     #  -> x Mel-fbanks -> log(.) -> DCT(.)
-    imel_fbanks_mat  = inverse_mel_filter_banks()
-    features         = np.dot(abs_fft_values, imel_fbanks_mat.T)
-    features_no_zero = proc.zero_handling(features)
-    log_features     = np.log(features_no_zero)
-    raw_imfccs       = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]
+    imel_fbanks_mat = inverse_mel_filter_banks()
+    features = np.dot(abs_fft_values, imel_fbanks_mat.T)
+    features_no_zero = zero_handling(features)
+    log_features = np.log(features_no_zero)
+    raw_imfccs = dct(log_features, type=2, axis=1, norm='ortho')[:, :num_ceps]
 
     # filter and normalize
-    imfccs = proc.lifter(raw_imfccs, ceplifter)
-    imfccs = cepstral.cmvn(cepstral.cms(imfccs))
+    imfccs = lifter(raw_imfccs, ceplifter)
+    imfccs = cmvn(cms(imfccs))
     return imfccs
 
-def mfe(signal, fs, frame_length=0.020, frame_stride=0.01, nfilts=40, nfft=512, fl=0, fh=None):
+
+def mfe(sig,
+        fs,
+        frame_length=0.025,
+        frame_stride=0.01,
+        nfilts=40,
+        nfft=512,
+        fl=0,
+        fh=None):
     """
     Compute Mel-filterbank energy features from an audio signal.
 
     Args:
-         signal       (array) : the audio signal from which to compute features. Should be an N x 1 array
+         sig       (array) : the audio signal from which to compute features. Should be an N x 1 array
          fs           (int)   : the sampling frequency of the signal we are working with.
          frame_length (float) : the length of each frame in seconds.Default is 0.020s
          frame_stride (float) : the step between successive frames in seconds. Default is 0.02s (means no overlap)
@@ -129,15 +209,273 @@ def mfe(signal, fs, frame_length=0.020, frame_stride=0.01, nfilts=40, nfft=512, 
         (array) : features - the energy of fiterbank of size num_frames x num_filters.
         The energy of each frame: num_frames x 1
     """
-    pre_emphasised_signal   = proc.pre_emphasis(signal)
-    frames, frame_length    = proc.framing(pre_emphasised_signal, fs)
-    windows                 = proc.windowing(frames, frame_length)
-    fourrier_transform      = proc.fft(windows)
-    power_frames            = proc.power_spectrum(fourrier_transform)
+    pre_emphasised_signal = pre_emphasis(sig)
+    frames, frame_length = framing(pre_emphasised_signal, fs)
+    windows = windowing(frames, frame_length)
+    fourrier_transform = rfft(x=windows, n=nfft)
+    power_frames = power_spectrum(fourrier_transform)
 
     # compute total energy in each frame
     frame_energies = np.sum(power_frames, 1)
 
     # Handling zero enegies
-    mel_freq_energies = proc.zero_handling(frame_energies)
+    mel_freq_energies = zero_handling(frame_energies)
     return mel_freq_energies
+
+
+def melfcc(sig,
+           fs=16000,
+           low_freq=None,
+           high_freq=None,
+           n_mfcc=13,
+           n_bands=40,
+           lifter_exp=0.6,
+           fb_type='fcmel',
+           dct_type=1,
+           usecmp=True,
+           win_len=0.025,
+           win_hop=0.01,
+           pre_emph=0.97,
+           dither=1,
+           sumpower=1,
+           band_width=1,
+           modelorder=0,
+           broaden=0,
+           use_energy=False):
+    """
+    Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
+    signal. This function offers multiple approaches to features extraction
+    depending on the input parameters.
+
+    Implementation using STFT based on Dan Ellis notes:
+    link: http://www.ee.columbia.edu/~dpwe/resources/matlab/rastamat/mfccs.html
+
+          - take the absolute value of the STFT
+          - warp to a Mel frequency scale
+          - take the DCT of the log-Mel-spectrum
+          - return the first <num_ceps> components
+
+    Args:
+        sig     (array) : the audio signal from which to compute features. Should be an N x 1 array
+        fs           (int) : the sampling frequency of the signal we are working with.
+                             Default is 16000.
+        nfilts       (int) : the number of filters in the filterbank.
+                             Default is 40.
+        nfft         (int) : number of FFT points.
+                             Default is 512.
+        win_time   (float) : window length in sec.
+                             Default is 0.025.
+        win_hop   (float) : step between successive windows in sec.
+                             Default is 0.01.
+        num_ceps   (float) : number of cepstra to return.
+                             Default is 13.
+        lifter_exp (float) : exponent for liftering; 0 = none; < 0 = HTK sin lifter.
+                             Default is 0.6.
+        sum_power    (int) : 1 = sum abs(fft)^2; 0 = sum abs(fft).
+                             Default is 1.
+        pre_emph   (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                             Default is 0.97.
+        dither       (int) : 1 = add offset to spectrum as if dither noise.
+                             Default is 0.
+        low_freq     (int) : lowest band edge of mel filters (Hz).
+                             Default is 0.
+        high_freq     (int) : highest band edge of mel filters (Hz).
+                             Default is samplerate / 2 = 8000.
+        nbands       (int) : number of warped spectral bands to use.
+                             Default is 40.
+        bwidth     (float) : width of aud spec filters relative to default.
+                             Default is 1.0.
+        dct_type     (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                             Default is 2.
+        fb_type    ('mel') : frequency warp: 'mel','bark','htkmel','fcmel'.
+                             Default is 'mel'.
+        use_cmp      (int) : apply equal-loudness weighting and cube-root compr.
+                             Default is 0.
+        model_order  (int) : if > 0, fit a PLP model of this order.
+                             Default is 0.
+        broaden      (int) : flag to retain the (useless?) first and last bands
+                             Default is 0.
+        use_energy   (int) : overwrite C0 with true log energy
+                             Default is 0.
+
+    Note:
+
+        The following non-default values nearly duplicate Malcolm Slaney's mfcc
+        (i.e. melfcc(d,16000,opts...) =~= log(10)*2*mfcc(d*(2^17),16000) )
+            - 'win_time'   : 0.016
+            - 'lifter_exp' : 0
+            - 'low_freq'   : 133.33
+            - 'high_freq'   : 6855.6
+            - 'sum_power'  : 0
+
+        The following non-default values nearly duplicate HTK's MFCC
+        (i.e. melfcc(d,16000,opts...) =~= 2*htkmelfcc(:,[13,[1:12]])'
+        where HTK config has PREEMCOEF = 0.97, NUMCHANS = 20, CEPLIFTER = 22,
+        NUMCEPS = 12, WINDOWSIZE = 250000.0, USEHAMMING = T, TARGETKIND = MFCC_0)
+            - 'lifter_exp' : -22
+            - 'nbands'     : 20
+            - 'high_freq'  : 8000
+            - 'sum_power'  : 0
+            - 'fb_type'    : 'htkmel'
+            - 'dct_type'   : 3
+
+    Returns:
+        (array) : features - the MFFC features: num_frames x num_ceps
+    """
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    if pre_emph != 0:
+        sig = scipy.signal.lfilter(b=[1, -pre_emph], a=1, x=sig)
+
+    pspectrum, logE = powspec(sig,
+                              fs=fs,
+                              win_len=win_len,
+                              win_hop=win_hop,
+                              dither=dither)
+    aspectrum = audspec(pspectrum,
+                        fs=fs,
+                        nfilts=n_bands,
+                        fb_type=fb_type,
+                        low_freq=low_freq,
+                        high_freq=high_freq)
+    if usecmp:
+        aspectrum, _ = postaud(aspectrum, fmax=high_freq, fb_type=fb_type)
+
+    if modelorder > 0:
+        lpcas = do_lpc(aspectrum, modelorder)
+        cepstra = lpc2cep(lpcas, nout=n_mfcc)
+
+    else:
+        cepstra, _ = spec2cep(aspectrum, ncep=n_mfcc, dct_type=dct_type)
+
+    cepstra = lifter(cepstra, lift=lifter_exp)
+
+    if use_energy:
+        cepstra[0, :] = logE
+
+    return cepstra
+
+
+def invmelfcc(cep,
+              fs=16000,
+              win_time=0.025,
+              win_hop=0.01,
+              lifter_exp=0.6,
+              sumpower=True,
+              pre_emph=0.97,
+              high_freq=6500,
+              low_freq=50,
+              n_bands=40,
+              band_width=1,
+              dct_type=2,
+              fb_type='mel',
+              usecmp=False,
+              modelorder=0,
+              broaden=0,
+              excitation=[]):
+    """
+    Attempt to invert plp cepstra back to a full spectrum and even a waveform.
+    x is (noise-excited) time domain waveform; aspc is the
+    auditory spectrogram, spec is the |STFT| spectrogram.
+    2005-05-15 dpwe@ee.columbia.edu
+
+
+    Args:
+        cep        (array) : the plp ceptra array.
+        fs           (int) : the sampling frequency of the signal we are working with.
+                             Default is 16000.
+        nfilts       (int) : the number of filters in the filterbank.
+                             Default is 40.
+        nfft         (int) : number of FFT points.
+                             Default is 512.
+        win_time   (float) : window length in sec.
+                             Default is 0.025.
+        win_hop   (float) : step between successive windows in sec.
+                             Default is 0.01.
+        num_ceps   (float) : number of cepstra to return.
+                             Default is 13.
+        lifter_exp (float) : exponent for liftering; 0 = none; < 0 = HTK sin lifter.
+                             Default is 0.6.
+        sum_power    (int) : 1 = sum abs(fft)^2; 0 = sum abs(fft).
+                             Default is 1.
+        pre_emph   (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                             Default is 0.97.
+        dither       (int) : 1 = add offset to spectrum as if dither noise.
+                             Default is 0.
+        low_freq     (int) : lowest band edge of mel filters (Hz).
+                             Default is 0.
+        high_freq     (int) : highest band edge of mel filters (Hz).
+                             Default is samplerate / 2 = 8000.
+        nbands       (int) : number of warped spectral bands to use.
+                             Default is 40.
+        bwidth     (float) : width of aud spec filters relative to default.
+                             Default is 1.0.
+        dct_type     (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                             Default is 2.
+        fb_type    ('mel') : frequency warp: 'mel','bark','htkmel','fcmel'.
+                             Default is 'mel'.
+        use_cmp      (int) : apply equal-loudness weighting and cube-root compr.
+                             Default is 0.
+        model_order  (int) : if > 0, fit a PLP model of this order.
+                             Default is 0.
+        broaden      (int) : flag to retain the (useless?) first and last bands
+                             Default is 0.
+        use_energy   (int) : overwrite C0 with true log energy
+                             Default is 0.
+
+    Note:
+        The following non-default values nearly duplicate Malcolm Slaney's mfcc
+        (i.e. melfcc(d,16000,opts...) =~= log(10)*2*mfcc(d*(2^17),16000) )
+            - 'win_time'   : 0.016
+            - 'lifter_exp' : 0
+            - 'low_freq'   : 133.33
+            - 'high_freq'   : 6855.6
+            - 'sum_power'  : 0
+
+        The following non-default values nearly duplicate HTK's MFCC
+        (i.e. melfcc(d,16000,opts...) =~= 2*htkmelfcc(:,[13,[1:12]])'
+        where HTK config has PREEMCOEF = 0.97, NUMCHANS = 20, CEPLIFTER = 22,
+        NUMCEPS = 12, WINDOWSIZE = 250000.0, USEHAMMING = T, TARGETKIND = MFCC_0)
+            - 'lifter_exp' : -22
+            - 'nbands'     : 20
+            - 'high_freq'   : 8000
+            - 'sum_power'  : 0
+            - 'fb_type'    : 'htkmel'
+            - 'dct_type'   : 3
+    """
+    winpts = int(np.round(win_time * fs))
+    nfft = int(np.ceil(np.log(winpts) / np.log(2))**2)
+    cep = lifter(cep, lift=lifter_exp, invs=True)
+
+    pspc, _ = cep2spec(cep,
+                       nfreq=int(n_bands + 2 * broaden),
+                       dct_type=dct_type)
+
+    if usecmp:
+        auditory_spectrum, _ = invpostaud(pspc,
+                                          fmax=high_freq,
+                                          fb_type=fb_type,
+                                          broaden=broaden)
+    else:
+        auditory_spectrum = pspc
+
+    spec, _, _ = invaudspec(auditory_spectrum,
+                            fs=fs,
+                            nfft=nfft,
+                            fb_type=fb_type,
+                            low_freq=low_freq,
+                            high_freq=high_freq,
+                            sumpower=sumpower,
+                            band_width=band_width)
+
+    x = invpowspec(spec,
+                   fs,
+                   win_time=win_time,
+                   win_hop=win_hop,
+                   excit=excitation)
+
+    if pre_emph != 0:
+        x = scipy.signal.lfilter(b=[1, -pre_emph], a=1, x=x)
+    return x, auditory_spectrum, spec, pspc

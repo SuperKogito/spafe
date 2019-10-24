@@ -4,42 +4,135 @@ based on:
     - https://pdfs.semanticscholar.org/ca55/cfe51172ccc1ea319a13dede9898590f992d.pdf
 """
 import numpy as np
-from scipy.fftpack import dct
-from ..features import cepstral
-from ..utils import processing as proc
+from ..utils.spectral import rfft, dct
+
+from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
 
-def ngcc(signal, num_ceps, ceplifter=22):
+def ngcc(sig,
+         fs=16000,
+         num_ceps=13,
+         nfilts=26,
+         nfft=512,
+         lifter=22,
+         low_freq=None,
+         high_freq=None,
+         dct_type=2,
+         use_cmp=True,
+         win_type="hamming",
+         win_len=0.025,
+         win_hop=0.01,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
+         normalize=1,
+         dither=1,
+         sum_power=1,
+         band_width=1,
+         broaden=0,
+         use_energy=False):
     """
-    Compute MFCC features from an audio signal.
+    Compute the normalized gammachirp cepstral coefﬁcients (NGCC features) from an audio signal.
 
     Args:
-         signal  (array) : the audio signal from which to compute features. Should be an N x 1 array
-         fs      (int)   : the sampling frequency of the signal we are working with.
-         nfilts  (int)   : the number of filters in the filterbank, default 40.
-         nfft    (int)   : number of FFT points. Default is 512.
-         fl      (float) : lowest band edge of mel filters. In Hz, default is 0.
-         fh      (float) : highest band edge of mel filters. In Hz, default is samplerate/2
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        nfilts           (int) : the number of filters in the filterbank.
+                                 Default is 40.
+        nfft             (int) : number of FFT points.
+                                 Default is 512.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is hamming.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        dither           (int) : 1 = add offset to spectrum as if dither noise.
+                                 Default is 0.
+        low_freq         (int) : lowest band edge of mel filters (Hz).
+                                 Default is 0.
+        high_freq        (int) : highest band edge of mel filters (Hz).
+                                 Default is samplerate / 2 = 8000.
+        lifter           (int) : apply liftering if value > 0.
+                                 Default is 22.
+        normalize        (int) : apply normalization if 1.
+                                 Default is 0.
+        bwidth         (float) : width of aud spec filters relative to default.
+                                 Default is 1.0.
+        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                                 Default is 2.
+        use_cmp          (int) : apply equal-loudness weighting and cube-root compr.
+                                 Default is 0.
+        broaden          (int) : flag to retain the (useless?) first and last bands
+                                 Default is 0.
+        use_energy       (int) : overwrite C0 with true log energy
+                                 Default is 0.
 
     Returns:
-        (array) : features - the MFFC features: num_frames x num_ceps
+        (array) : 2d array of NGCC features (num_frames x num_ceps)
     """
-    # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = proc.pre_emphasis(signal)
-    frames, frame_length  = proc.framing(pre_emphasised_signal)
-    windows               = proc.windowing(frames, frame_length)
-    fourrier_transform    = proc.fft(windows)
-    abs_fft_values        = np.abs(fourrier_transform)**2
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
+
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
+    # -> framing
+    frames, frame_length = framing(sig=sig,
+                                   fs=fs,
+                                   win_len=win_len,
+                                   win_hop=win_hop)
+
+    # -> windowing
+    windows = windowing(frames=frames,
+                        frame_len=frame_length,
+                        win_type=win_type)
+
+    # -> FFT -> |.|**2
+    fourrier_transform = rfft(x=windows, n=nfft)
+    abs_fft_values = np.abs(fourrier_transform)**2
 
     #  -> x Gammatone fbanks -> log(.) -> DCT(.)
-    gammatone_fbanks_mat = gammatone_filter_banks()
-    features             = np.dot(abs_fft_values, gammatone_fbanks_mat.T) # compute the filterbank energies
-    features_no_zero     = proc.zero_handling(features) # if feat is zero, we get problems with log
-    log_features         = np.log(features_no_zero)
-    raw_ngccs            = dct(log_features, type=2, axis=1, norm='ortho')[:,:num_ceps]
+    gammatone_fbanks_mat = gammatone_filter_banks(nfilts=nfilts,
+                                                  nfft=nfft,
+                                                  fs=fs,
+                                                  low_freq=low_freq,
+                                                  high_freq=high_freq)
 
-    # filter and normalize
-    ngccs = proc.lifter(raw_ngccs, ceplifter)
-    ngccs = cepstral.cmvn(cepstral.cms(ngccs))
+    # compute the filterbank energies
+    features = np.dot(abs_fft_values, gammatone_fbanks_mat.T)
+
+    # -> log(.)
+    # handle zeros: if feat is zero, we get problems with log
+    features_no_zero = zero_handling(x=features)
+    log_features = np.log(features_no_zero)
+
+    #  -> DCT(.)
+    ngccs = dct(x=log_features, type=dct_type, axis=1,
+                norm='ortho')[:, :num_ceps]
+
+    # liftering
+    if lifter > 0:
+        ngccs = lifter_ceps(ngccs, lifter)
+
+    # normalization
+    if normalize:
+        ngccs = cmvn(cms(ngccs))
     return ngccs

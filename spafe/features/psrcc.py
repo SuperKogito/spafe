@@ -1,38 +1,39 @@
 """
-based on https://www.researchgate.net/publication/309149564_Robust_Speaker_Verification_Using_GFCC_Based_i-Vectors
+baesd on: http://www.apsipa.org/proceedings/2018/pdfs/0001945.pdf
 """
 import numpy as np
 from ..utils.spectral import rfft, dct
 
+from ..fbanks.mel_fbanks import mel_filter_banks
 from ..utils.cepstral import cms, cmvn, lifter_ceps
-from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
 
-def gfcc(sig,
-         fs=16000,
-         num_ceps=13,
-         nfilts=26,
-         nfft=512,
-         lifter=22,
-         low_freq=None,
-         high_freq=None,
-         dct_type=2,
-         use_cmp=True,
-         win_type="hamming",
-         win_len=0.025,
-         win_hop=0.01,
-         pre_emph=0,
-         pre_emph_coeff=0.97,
-         normalize=1,
-         dither=1,
-         sum_power=1,
-         band_width=1,
-         broaden=0,
-         use_energy=False):
+def psrcc(sig,
+          fs=16000,
+          num_ceps=13,
+          nfilts=26,
+          nfft=512,
+          lifter=22,
+          low_freq=None,
+          high_freq=None,
+          dct_type=2,
+          use_cmp=True,
+          win_type="hamming",
+          win_len=0.025,
+          win_hop=0.01,
+          pre_emph=0,
+          pre_emph_coeff=0.97,
+          normalize=1,
+          dither=1,
+          sum_power=1,
+          band_width=1,
+          broaden=0,
+          use_energy=False,
+          gamma=-1 / 7):
     """
-    Compute the gammatone-frequency cepstral coefﬁcients (GFCC features) from an audio signal.
+    Compute the Phase-based Spectral Root Cepstral Coefﬁcients (PSRCC) from an
+    audio signal.
 
     Args:
         sig            (array) : a mono audio signal (Nx1) from which to compute features.
@@ -74,9 +75,10 @@ def gfcc(sig,
                                  Default is 0.
         use_energy       (int) : overwrite C0 with true log energy
                                  Default is 0.
+        gamma          (float) : power coefficient for resulting energies
 
     Returns:
-        (array) : 2d array of GFCC features (num_frames x num_ceps)
+        (array) : 2d array of PSRCC features (num_frames x num_ceps)
     """
     # init freqs
     high_freq = high_freq or fs / 2
@@ -103,28 +105,36 @@ def gfcc(sig,
                         frame_len=frame_length,
                         win_type=win_type)
 
-    # -> FFT -> |.|
+    # -> FFT -> unwarp: get phases -> convert phases to positive angles in deg
     fourrier_transform = rfft(x=windows, n=nfft)
-    abs_fft_values = np.abs(fourrier_transform)
+    fft_phases = np.angle(z=fourrier_transform, deg=True)
+    fft_phases = (360 + fft_phases) * (fft_phases <
+                                       0) + fft_phases * (fft_phases > 0)
 
-    #  -> x Gammatone fbanks -> log(.) -> DCT(.)
-    gammatone_fbanks_mat = gammatone_filter_banks(nfilts=nfilts,
-                                                  nfft=nfft,
-                                                  fs=fs,
-                                                  low_freq=low_freq,
-                                                  high_freq=high_freq)
+    # -> x Mel-fbanks
+    mel_fbanks_mat = mel_filter_banks(nfilts=nfilts,
+                                      nfft=nfft,
+                                      fs=fs,
+                                      low_freq=low_freq,
+                                      high_freq=high_freq)
+    features = np.dot(fft_phases, mel_fbanks_mat.T)
 
-    # compute the filterbank energies
-    features = np.dot(abs_fft_values, gammatone_fbanks_mat.T)
-    nonlin_rect_features = np.power(features, 1 / 3)
-    gfccs = dct(x=nonlin_rect_features, type=dct_type, axis=1,
-                norm='ortho')[:, :num_ceps]
+    # -> (.)^(gamma)
+    features = features**gamma
+
+    # assign 0 to values to be computed based on negative phases (otherwise results in nan)
+    features[np.isnan(features)] = 0
+    # assign max to values to be computed based on 0 phases (otherwise results in inf)
+    features[np.isinf(features)] = features.max()
+
+    # -> DCT(.)
+    psrccs = dct(x=features, type=dct_type, axis=1, norm='ortho')[:, :num_ceps]
 
     # liftering
     if lifter > 0:
-        gfccs = lifter_ceps(gfccs, lifter)
+        psrccs = lifter_ceps(psrccs, lifter)
 
     # normalization
     if normalize:
-        gfccs = cmvn(cms(gfccs))
-    return gfccs
+        psrccs = cmvn(cms(psrccs))
+    return psrccs
