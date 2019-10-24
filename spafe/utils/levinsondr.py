@@ -1,335 +1,293 @@
 """
-from:
-    https://github.com/RJTK/Levinson-Durbin-Recursion/blob/master/levinson/levinson.py
-
-Implementation of Levinson Recursion and other associated routines,
-particularly the Block Toeplitz versions of Whittle and Akaike.
+- Levinson module
+- Original author: Thomas Cokelaer, 2011
 """
-import numba
-import numpy as np
+import numpy
 
 
-@numba.jit(nopython=True, cache=True)
-def lev_durb(r):
+__all__ = ["LEVINSON", "rlevinson"]
+
+
+def LEVINSON(r, order=None, allow_singularity=False):
     """
-    Comsumes a length p + 1 vector r = [r(0), ..., r(p)] and returns
-    (a, G, eps) as follows:
+    Levinson-Durbin recursion.
+    Find the coefficients of a length(r)-1 order autoregressive linear process
 
     Args:
-        r (numpy array) : input vector.
-
+        r                (array) : autocorrelation sequence of length N + 1
+                                   (first element being the zero-lag autocorrelation)
+        order              (int) : requested order of the autoregressive coefficients.
+                                   Default is N.
+        allow_singularity (bool) : Other implementations may be True (e.g., octave)
+                                   Default is False.
     Returns:
-        - a (np.array): Length p + 1 array (with a[0] = 1.0) consisting
-        of the filter coefficients for an all-pole model of a signal
-        having autocovariance r.
-        - G (np.array): Length p array of reflection coefficients.
-        It is guaranteed that `\|G[tau]\| <= 1`.
-        - eps (np.array): The sequence of errors achieved by all-pole
-        models of progressively larger order.  eps is guaranteed to
-        satisfy eps >= 0.
-
-    NOTE:
-        We don't handle complex data
-        We get a solution to the system R @ a = eps * e1 where R = toep(r)
-        and e1 is the first canonical basis vector.  The variables are a[1:]
-        and eps.  NOTE: For epsilon we are returning a sequence of errors for
-        progressively larger systems.
-        One of the key advantages of this algorithm is that the resulting
-        filter is guaranteed to be stable, and the prediction error is directly
-        available as a byproduct.
-        Moreover, the sequence G has the property forall tau: `\|G(tau)\| < 1.0`
-        if and only if r is a positive definite covariance sequence.
-
-    Reference:
-        @book{hayes2009statistical,
-        title={Statistical digital signal processing and modeling},
-        author={Hayes, Monson H},
-        year={2009},
-        publisher={John Wiley \& Sons}}
-    """
-    # Initialization
-    p      = len(r) - 1
-    a      = np.zeros(p + 1)
-    a[0]   = 1.0
-    G      = np.zeros(p)
-    eps    = np.zeros(p + 1)
-    eps[0] = r[0]
-
-    for tau in range(p):
-        # Compute reflection coefficient
-        conv = r[tau + 1]
-        for s in range(1, tau + 1):
-            conv = conv + a[s] * r[tau - s + 1]
-        G[tau] = -conv / eps[tau]
-
-        # Update 'a' vector
-        a_cpy = np.copy(a)
-        for s in range(1, tau + 1):
-            a_cpy[s] = a[s] + G[tau] * np.conj(a[tau - s + 1])
-        a = a_cpy
-        a[tau + 1]   = G[tau]
-        eps[tau + 1] = eps[tau] * (1 - np.abs(G[tau])**2)
-    return a, G, eps
-
-
-@numba.jit(nopython=True, cache=True)
-def _whittle_lev_durb(R):
-    p = len(R) - 1
-    n = R[0].shape[0]
-
-    A = np.zeros((p + 1, n, n))
-    A_bar = np.copy(A)  # Backward coeffs
-
-    A[0] = np.eye(n)
-    A_bar[0] = np.eye(n)
-
-    Sigma = np.zeros((p + 1, n, n))  # Forward error variance
-    Sigma_bar = np.zeros((p + 1, n, n))  # Backward error variance
-
-    Delta = np.zeros((p + 1, n, n))  # (Partial) Reflection coefficients
-    Delta_bar = np.zeros((p + 1, n, n))
-    Delta[0] = A[0]
-    Delta_bar[0] = A_bar[0]
-
-    Sigma[0] = R[0]
-    Sigma_bar[0] = R[0]
-
-    for k in range(p):
-        Delta[k + 1] = np.zeros((n, n))
-        Delta_bar[k + 1] = np.zeros((n, n))
-
-        for tau in range(k + 1):
-            Delta[k + 1] = Delta[k + 1] + A[tau] @ R[k - tau + 1]
-            Delta_bar[k + 1] = Delta_bar[k + 1] + A_bar[tau] @ R[k - tau + 1].T
-
-        A_cpy = np.copy(A)
-        A_bar_cpy = np.copy(A_bar)
-
-        # These are the real reflection coefficients
-        A_cpy[k + 1] = -np.linalg.solve(
-            Sigma_bar[k], Delta[k + 1].T).T
-        A_bar_cpy[k + 1] = -np.linalg.solve(
-            Sigma[k], Delta_bar[k + 1].T).T
-
-        for tau in range(1, k + 1):
-            A_cpy[tau] = A[tau] + A_cpy[k + 1] @ A_bar[k - tau + 1]
-            A_bar_cpy[tau] = A_bar[tau] + A_bar_cpy[k + 1] @ A[k - tau + 1]
-
-        A = np.copy(A_cpy)
-        A_bar = np.copy(A_bar_cpy)
-
-        Sigma[k + 1] = Sigma[k] + A[k + 1] @ Delta_bar[k + 1]
-        Sigma_bar[k + 1] = Sigma_bar[k] + A_bar[k + 1] @ Delta[k + 1]
-
-    return A, A_bar, Delta, Delta_bar, Sigma, Sigma_bar
-
-
-@numba.jit(nopython=True, cache=True)
-def whittle_lev_durb(R):
-    """
-    Comsumes a length p + 1 vector R = [R(0), ..., R(p)] of n x n
-    block matrices which must be a valid (vector-)autocovariance sequence
-    (i.e. the block-toeplitz matrix formed from R must be positive
-    semi-definite) and returns (A, G, S) as follows:
-
-    Args:
-        R (numpy array) : input vector
-
-    Returns:
-        - A (List[np.array]): Length p + 1 array (with a[0] = np.eye(n))
-        consisting of the filter coefficients for an all-pole model of a
-        signal having autocovariance R(tau).
-        - G (List[np.array]): Length p list of reflection coefficient matrices.
-        - S (np.array): The variance matrix achieved by the all-pole
-        model.  S is guaranteed to be positive semi-definite
+        * the `N+1` autoregressive coefficients :math:`A=(1, a_1...a_N)`
+        * the prediction errors
+        * the `N` reflections coefficients values
 
     Note:
 
-    We are returning a solution to: block-toep(R) @ A = e1 (x) S where (x)
-    denote kronecker product and e1 is the first canonical basis vector.
-    The (matrix-)variables are A[1:] and S.
-    Fortunately, the block version of this algorithm also enjoys the
-    stability property of the scalar version, i.e. det `\|A(z)\|` has it's
-    zeros within the unit circle.
+        This algorithm solves the set of complex linear simultaneous equations
+        using Levinson algorithm.
+
+    .. math::
+        \bold{T}_M \left( \begin{array}{c} 1 \\ \bold{a}_M \end{array} \right) =
+        \left( \begin{array}{c} \rho_M \\ \bold{0}_M  \end{array} \right)
+    where :math:`\bold{T}_M` is a Hermitian Toeplitz matrix with elements
+    :math:`T_0, T_1, \dots ,T_M`.
+
+    Note:
+        Solving this equations by Gaussian elimination would
+        require :math:`M^3` operations whereas the levinson algorithm
+        requires :math:`M^2+M` additions and :math:`M^2+M` multiplications.
+    This is equivalent to solve the following symmetric Toeplitz system of
+    linear equations
+
+    .. math::
+        \left( \begin{array}{cccc}
+        r_1 & r_2^* & \dots & r_{n}^*\\
+        r_2 & r_1^* & \dots & r_{n-1}^*\\
+        \dots & \dots & \dots & \dots\\
+        r_n & \dots & r_2 & r_1 \end{array} \right)
+        \left( \begin{array}{cccc}
+        a_2\\
+        a_3 \\
+        \dots \\
+        a_{N+1}  \end{array} \right)
+        =
+        \left( \begin{array}{cccc}
+        -r_2\\
+        -r_3 \\
+        \dots \\
+        -r_{N+1}  \end{array} \right)
+    where :math:`r = (r_1  ... r_{N+1})` is the input autocorrelation vector, and
+    :math:`r_i^*` denotes the complex conjugate of :math:`r_i`. The input r is typically
+    a vector of autocorrelation coefficients where lag 0 is the first
+    element :math:`r_1`.
+    .. raw::python
+        import numpy; from spectrum import LEVINSON
+        T = numpy.array([3., -2+0.5j, .7-1j])
+        a, e, k = LEVINSON(T)
     """
-    A, _, Delta, _, V, _ = _whittle_lev_durb(R)
-    return A, Delta, V
+    #from numpy import isrealobj
+    T0  = numpy.real(r[0])
+    T = r[1:]
+    M = len(T)
 
-
-@numba.jit(nopython=True, cache=True)
-def reflection_coefs(Delta, Delta_bar, Sigma, Sigma_bar):
-    """
-    Calculates the reflection coefficients
-    G[tau] = -Delta[tau] @ Sigma_bar[tau]^-1
-    G_bar[tau] = -Delta_bar[tau] @ Sigma[tau]^-1
-    """
-    p, n, _ = Sigma.shape
-    G = np.empty((p, n, n))
-    G_bar = np.empty((p, n, n))
-
-    G[0] = Sigma[0]
-    G_bar[0] = Sigma_bar[0]
-    for k in range(p - 1):
-        G[k + 1] = -np.linalg.solve(
-            Sigma_bar[k], Delta[k + 1].T).T
-        G_bar[k + 1] = -np.linalg.solve(
-            Sigma[k], Delta_bar[k + 1].T).T
-    return G, G_bar
-
-
-@numba.jit(nopython=True, cache=True)
-def partial_autocovariance(R):
-    """
-    Obtains the partial autocovariance sequence from the WLD recursion
-    """
-    _, _, _, Delta_bar, _, _ = _whittle_lev_durb(R)
-    return Delta_bar
-
-
-@numba.jit(nopython=True, cache=True)
-def fit_model_ret_plac(R):
-    """
-    A function which returns the coefficients B for a VAR(p) model
-    as well as the sequence of partialautocorrelation matrices.
-    Essentially this was crafted entirely to construct some particular
-    LASSO weights.
-    """
-    A, _, _, Delta_bar, V, V_bar = _whittle_lev_durb(R)
-    p = len(R) - 1
-
-    Wplac = np.empty_like(Delta_bar)
-    for k in range(p + 1):
-        S_bar = 1. / np.sqrt(np.diag(V_bar[k]))
-        S = 1. / np.sqrt(np.diag(V[k]))
-        # Wplac[k] = S_bar[:, None] * Delta_bar[k] * S[None, :]  # no numba
-        Wplac[k] = S_bar.reshape((-1, 1)) * Delta_bar[k]
-        Wplac[k] = Wplac[k] * S.reshape((1, -1))
-    B = A_to_B(A)
-    return B, Wplac
-
-
-@numba.jit(nopython=True, cache=True)
-def step_up(G, G_bar):
-    """
-    The coefficients A_p(p) are particularly important for the
-    levinson durbin recursion and are often referred to as
-    reflection coefficients.  They are enough to characterize
-    the whole of the sequence of coefficients.
-    """
-    p = len(G) - 1
-    n = G.shape[1]
-    A = np.empty((p + 1, n, n))
-    A_bar = np.copy(A)  # Backward coeffs
-
-    A[0] = np.eye(n)
-    A_bar[0] = np.eye(n)
-
-    A_cpy = np.copy(A)
-    A_bar_cpy = np.copy(A_bar)
-
-    for k in range(p):
-        A_cpy = np.copy(A)
-        A_bar_cpy = np.copy(A_bar)
-        A_cpy[k + 1] = G[k + 1]
-        A_bar_cpy[k + 1] = G_bar[k + 1]
-
-        for tau in range(1, k + 1):
-            A_cpy[tau] = A[tau] + A_cpy[k + 1] @ A_bar[k - tau + 1]
-            A_bar_cpy[tau] = A_bar[tau] + A_bar_cpy[k + 1] @ A[k - tau + 1]
-        A = np.copy(A_cpy)
-        A_bar = np.copy(A_bar_cpy)
-    return A, A_bar
-
-
-@numba.jit(nopython=True, cache=True)
-def compute_covariance(X, p_max):
-    """
-    Estimates covariances of X and returns an n x n x p_max array.
-    The covariance sequence is guaranteed to be positive semidefinite.
-    """
-    T, n = X.shape
-    R = np.empty((p_max + 1, n, n))
-    R[0] = X.T @ X / T
-    for tau in range(1, p_max + 1):
-        R[tau] = X[tau:, :].T @ X[: -tau, :] / T
-    return R
-
-
-@numba.jit(nopython=True, cache=True)
-def yule_walker(A, R):
-    """
-    Computes YW(A, R)(s) = sum_{tau = 0}^p A(tau) R(s - tau) for s = 0, ..., p
-    We should have YW(A, R)(0) = V and YW(A, R)(s) = 0 for s != 0.
-    p = len(A) - 1
-    """
-    p = len(A) - 1
-    if len(A.shape) == 1:
-        n = 1
+    if order is None:
+        M = len(T)
     else:
-        n = A.shape[1]
+        assert order <= M, 'order must be less than size of the input data'
+        M = order
 
-    YW = np.zeros((p + 1, n, n))
+    realdata = numpy.isrealobj(r)
+    if realdata is True:
+        A = numpy.zeros(M, dtype=float)
+        ref = numpy.zeros(M, dtype=float)
+    else:
+        A = numpy.zeros(M, dtype=complex)
+        ref = numpy.zeros(M, dtype=complex)
 
-    for k in range(p + 1):
-        for tau in range(p + 1):
-            if k - tau >= 0:
-                YW[k] += A[tau] @ R[k - tau]
-            else:
-                YW[k] += A[tau] @ R[tau - k].T
-    return YW
+    P = T0
+
+    for k in range(0, M):
+        save = T[k]
+        if k == 0:
+            temp = -save / P
+        else:
+            #save += sum([A[j]*T[k-j-1] for j in range(0,k)])
+            for j in range(0, k):
+                save = save + A[j] * T[k-j-1]
+            temp = -save / P
+        if realdata:
+            P = P * (1. - temp**2.)
+        else:
+            P = P * (1. - (temp.real**2+temp.imag**2))
+        if P <= 0 and allow_singularity==False:
+            raise ValueError("singular matrix")
+        A[k] = temp
+        ref[k] = temp # save reflection coeff at each step
+        if k == 0:
+            continue
+
+        khalf = (k+1)//2
+        if realdata is True:
+            for j in range(0, khalf):
+                kj = k-j-1
+                save = A[j]
+                A[j] = save + temp * A[kj]
+                if j != kj:
+                    A[kj] += temp*save
+        else:
+            for j in range(0, khalf):
+                kj = k-j-1
+                save = A[j]
+                A[j] = save + temp * A[kj].conjugate()
+                if j != kj:
+                    A[kj] = A[kj] + temp * save.conjugate()
+
+    return A, P, ref
 
 
-@numba.jit(nopython=True, cache=True)
-def A_to_B(A):
-    p = len(A) - 1
-    n = A.shape[1]
-    B = np.empty((p, n, n))
-    for tau in range(p):
-        B[tau] = -A[tau + 1]
-    return B
+def rlevinson(a, efinal):
+    """computes the autocorrelation coefficients, R based
+    on the prediction polynomial A and the final prediction error Efinal,
+    using the stepdown algorithm.
+    Works for real or complex data
+    :param a:
+    :param efinal:
 
+    Returns:
+        * R, the autocorrelation
+        * U  prediction coefficient
+        * kr reflection coefficients
+        * e errors
+    A should be a minimum phase polynomial and A(1) is assumed to be unity.
 
-@numba.jit(nopython=True, cache=True)
-def B_to_A(B):
-    p = len(B)
-    n = B.shape[1]
-    A = np.empty((p + 1, n, n))
-    A[0] = np.eye(n)
-    for tau in range(1, p + 1):
-        A[tau] = -B[tau - 1]
-    return A
+    Returns:
+        (P+1) by (P+1) upper triangular matrix, U, that holds the i'th order
+        prediction polynomials Ai, i=1:P, where P is the order of the input
+        polynomial, A.
 
+             [ 1  a1(1)*  a2(2)* ..... aP(P)  * ]
+             [ 0  1       a2(1)* ..... aP(P-1)* ]
+       U  =  [ .................................]
+             [ 0  0       0      ..... 1        ]
 
-def block_companion(B):
+        from which the i'th order prediction polynomial can be extracted
+        using Ai=U(i+1:-1:1,i+1)'. The first row of U contains the
+        conjugates of the reflection coefficients, and the K's may be
+        extracted using, K=conj(U(1,2:end)).
+
+    To do:
+        remove the conjugate when data is real data, clean up the code test and doc.
     """
-    Produces a block companion from the matrices B[0], B[1], ... , B[p - 1]
-    [B0, B1, B2, ... Bp-1]
-    [ I,  0,  0, ... 0   ]
-    [ 0,  I,  0, ... 0   ]
-    [ 0,  0,  I, ... 0   ]
-    [ 0,  0, ..., I, 0   ]
+    a = numpy.array(a)
+    realdata = numpy.isrealobj(a)
+
+
+    assert a[0] == 1, 'First coefficient of the prediction polynomial must be unity'
+
+    p = len(a)
+
+    if p < 2:
+        raise ValueError('Polynomial should have at least two coefficients')
+
+    if realdata == True:
+        U = numpy.zeros((p, p)) # This matrix will have the prediction
+                                # polynomials of orders 1:p
+    else:
+        U = numpy.zeros((p, p), dtype=complex)
+    U[:, p-1] = numpy.conj(a[-1::-1]) # Prediction coefficients of order p
+
+    p = p -1
+    e = numpy.zeros(p)
+
+    # First we find the prediction coefficients of smaller orders and form the
+    # Matrix U
+
+    # Initialize the step down
+
+    e[-1] = efinal # Prediction error of order p
+
+    # Step down
+    for k in range(p-1, 0, -1):
+        [a, e[k-1]] = levdown(a, e[k])
+        U[:, k] = numpy.concatenate((numpy.conj(a[-1::-1].transpose()) ,
+                                      [0]*(p-k) ))
+
+
+
+
+    e0 = e[0]/(1.-abs(a[1]**2)) #% Because a[1]=1 (true polynomial)
+    U[0,0] = 1                #% Prediction coefficient of zeroth order
+    kr = numpy.conj(U[0,1:])     #% The reflection coefficients
+    kr = kr.transpose()                 #% To make it into a column vector
+
+    #   % Once we have the matrix U and the prediction error at various orders, we can
+    #  % use this information to find the autocorrelation coefficients.
+
+    R = numpy.zeros(1, dtype=complex)
+    #% Initialize recursion
+    k = 1
+    R0 = e0 # To take care of the zero indexing problem
+    R[0] = -numpy.conj(U[0,1])*R0   # R[1]=-a1[1]*R[0]
+
+    # Actual recursion
+    for k in range(1,p):
+        r = -sum(numpy.conj(U[k-1::-1,k])*R[-1::-1]) - kr[k]*e[k-1]
+        R = numpy.insert(R, len(R), r)
+
+    # Include R(0) and make it a column vector. Note the dot transpose
+
+    #R = [R0 R].';
+    R = numpy.insert(R, 0, e0)
+    return R, U, kr, e
+
+
+def levdown(anxt, enxt=None):
+    """One step backward Levinson recursion
+    :param anxt:
+    :param enxt:
+    :return:
+        * acur the P'th order prediction polynomial based on the P+1'th order prediction polynomial, anxt.
+        * ecur the the P'th order prediction error  based on the P+1'th order prediction error, enxt.
+    ..  * knxt the P+1'th order reflection coefficient.
     """
-    p = len(B)
-    B = np.hstack([B[k] for k in range(p)])  # The top row
-    n = B.shape[0]
+    #% Some preliminaries first
+    #if nargout>=2 & nargin<2
+    #    raise ValueError('Insufficient number of input arguments');
+    if anxt[0] != 1:
+        raise ValueError('At least one of the reflection coefficients is equal to one.')
+    anxt = anxt[1:] #  Drop the leading 1, it is not needed
+                    #  in the step down
 
-    I = np.eye(n * (p - 1))
-    Z = np.zeros((n * (p - 1), n))
-    R = np.hstack((I, Z))
-    B = np.vstack((B, R))
-    return B
+    # Extract the k+1'th reflection coefficient
+    knxt = anxt[-1]
+    if knxt == 1.0:
+        raise ValueError('At least one of the reflection coefficients is equal to one.')
+
+    # A Matrix formulation from Stoica is used to avoid looping
+    acur = (anxt[0:-1]-knxt*numpy.conj(anxt[-2::-1]))/(1.-abs(knxt)**2)
+    ecur = None
+    if enxt is not None:
+        ecur = enxt/(1.-numpy.dot(knxt.conj().transpose(),knxt))
+
+    acur = numpy.insert(acur, 0, 1)
+
+    return acur, ecur
 
 
-def system_rho(B):
+def levup(acur, knxt, ecur=None):
     """
-    Computes the syste stability coefficient for an all-pole
-    system with coefficient matrices B[0], B[1], ...
+    LEVUP  One step forward Levinson recursion
+
+    Args:
+        acur (array) :
+        knxt (array) :
+
+    Returns:
+        anxt (array) : the P+1'th order prediction polynomial based on the P'th
+                       order prediction polynomial, acur, and the P+1'th order
+                       reflection coefficient, Knxt.
+        enxt (array) : the P+1'th order prediction prediction error, based on the
+                       P'th order prediction error, ecur.
+
+    References:
+        P. Stoica R. Moses, Introduction to Spectral Analysis  Prentice Hall, N.J., 1997, Chapter 3.
     """
-    C = block_companion(B)
-    ev = np.linalg.eigvals(C)
-    return max(abs(ev))
+    if acur[0] != 1:
+        raise ValueError('At least one of the reflection coefficients is equal to one.')
+    acur = acur[1:] #  Drop the leading 1, it is not needed
 
+    # Matrix formulation from Stoica is used to avoid looping
+    anxt = numpy.concatenate((acur, [0])) + knxt * numpy.concatenate((numpy.conj(acur[-1::-1]), [1]))
 
-def is_stable(B):
-    rho = system_rho(B)
-    return rho < 1
+    enxt = None
+    if ecur is not None:
+        # matlab version enxt = (1-knxt'.*knxt)*ecur
+        enxt = (1. - numpy.dot(numpy.conj(knxt), knxt)) * ecur
+
+    anxt = numpy.insert(anxt, 0, 1)
+
+    return anxt, enxt

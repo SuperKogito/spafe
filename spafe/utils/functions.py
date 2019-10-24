@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.fftpack import fft2, ifft2 
+from scipy.fftpack import fft2, ifft2
 
 NFFT = 512
 
@@ -8,9 +8,9 @@ def fft(frames, nfft = NFFT):
 
 def psd(fft_vec,  nfft = NFFT):
     # Magnitude of the FFT
-    magnitude_frames = np.absolute(fft_vec)  
-    # Power Spectrum        
-    power_frames = ((1.0 / nfft) * ((magnitude_frames) ** 2)) 
+    magnitude_frames = np.absolute(fft_vec)
+    # Power Spectrum
+    power_frames = ((1.0 / nfft) * ((magnitude_frames) ** 2))
     return power_frames
 
 def ceil2(x):
@@ -109,7 +109,7 @@ def normalizeAudio(song):
     dBDifference = song.dBFS - averageAudioLevel
 
     # Debug
-    print("Difference: ", dBDifference)
+    #print("Difference: ", dBDifference)
 
     # Removes the difference from the audio level to set it to the average
     return song - dBDifference
@@ -175,8 +175,8 @@ def intensity(s):
         if(abs(float(s[i]))>M):
             M=abs(float(s[i]))
     return M
-        
-        
+
+
 
 def normalize(file,noise_threshold=-80):
 #Normalizes the total sound wave so that amplitude is equal throughout the sound wave.
