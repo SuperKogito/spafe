@@ -6,7 +6,10 @@ spafe.features
    cqcc
    gfcc
    lfcc
+   lpc
    mfcc
+   msrcc
    ngcc
    plp
    pncc
+   psrcc
