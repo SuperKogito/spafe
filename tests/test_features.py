@@ -13,7 +13,7 @@ from spafe.features.rplp import rplp, plp
 from spafe.utils.spectral import stft, display_stft
 from spafe.features.mfcc import mfcc, imfcc, mfe, melfcc
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 
 def get_data(fname):
@@ -22,13 +22,13 @@ def get_data(fname):
 
 @pytest.fixture
 def sig():
-    __EXAMPLE_FILE = 'test21.wav'
+    __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
 
 
 @pytest.fixture
 def fs():
-    __EXAMPLE_FILE = 'test21.wav'
+    __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
 
