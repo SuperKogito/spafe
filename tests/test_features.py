@@ -13,7 +13,7 @@ from spafe.features.rplp import rplp, plp
 from spafe.utils.spectral import stft, display_stft
 from spafe.features.mfcc import mfcc, imfcc, mfe, melfcc
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 
 def get_data(fname):
@@ -33,7 +33,30 @@ def fs():
 
 
 @pytest.mark.test_id(201)
-def test_mfcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_mfcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0,
+              use_energy=False):
     # compute mfccs and mfes
     mfccs = mfcc(sig, 13)
     imfccs = imfcc(sig, 13)
@@ -57,7 +80,29 @@ def test_mfcc(sig, fs):
 
 
 @pytest.mark.test_id(202)
-def test_lfcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_lfcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute mfccs and mfes
     lfccs = lfcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -66,7 +111,29 @@ def test_lfcc(sig, fs):
 
 
 @pytest.mark.test_id(203)
-def test_gfcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_gfcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute gfccs
     gfccs = gfcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -75,7 +142,29 @@ def test_gfcc(sig, fs):
 
 
 @pytest.mark.test_id(204)
-def test_ngcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_ngcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute gfccs
     ngccs = ngcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -84,7 +173,29 @@ def test_ngcc(sig, fs):
 
 
 @pytest.mark.test_id(205)
-def test_bfcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_bfcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute bfccs
     bfccs = bfcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -93,7 +204,29 @@ def test_bfcc(sig, fs):
 
 
 @pytest.mark.test_id(206)
-def test_pncc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_pncc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute bfccs
     pnccs = pncc(sig, fs, 13)
     if DEBUG_MODE:
@@ -102,7 +235,29 @@ def test_pncc(sig, fs):
 
 
 @pytest.mark.test_id(207)
-def test_rplp(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_rplp(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute plps
     plps = plp(sig, fs, 13)
     if DEBUG_MODE:
@@ -115,7 +270,29 @@ def test_rplp(sig, fs):
 
 
 @pytest.mark.test_id(208)
-def test_lpc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_lpc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute lpcs and lsps
     lpcs = lpc(sig, fs, 13)
     lpccs = lpcc(sig, fs, 13)
@@ -127,7 +304,29 @@ def test_lpc(sig, fs):
 
 
 @pytest.mark.test_id(209)
-def test_msrcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_msrcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute lpcs and lsps
     msrccs = msrcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -136,7 +335,29 @@ def test_msrcc(sig, fs):
 
 
 @pytest.mark.test_id(210)
-def test_psrcc(sig, fs):
+@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+def test_psrcc(sig, fs,
+              num_ceps,
+              low_freq,
+              high_freq,
+              n_bands,
+              nfft,
+              lifter_exp=0.6,
+              fb_type='fcmel',
+              dct_type=1,
+              use_cmp=True,
+              win_len=0.025,
+              win_hop=0.01,
+              pre_emph=0.97,
+              dither=1,
+              sumpower=1,
+              band_width=1,
+              model_order=0,
+              broaden=0):
     # compute lpcs and lsps
     psrccs = psrcc(sig, fs, 13)
     if DEBUG_MODE:
@@ -158,7 +379,6 @@ if __name__ == "__main__":
     # run tests
     test_mfcc(sig, fs)
     test_lfcc(sig, fs)
-    test_gfcc(sig, fs)
     test_ngcc(sig, fs)
     test_bfcc(sig, fs)
     test_pncc(sig, fs)
@@ -166,3 +386,4 @@ if __name__ == "__main__":
     test_psrcc(sig, fs)
     test_lpc(sig, fs)
     test_rplp(sig, fs)
+    test_gfcc(sig, fs)

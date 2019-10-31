@@ -9,9 +9,19 @@ DEBUG_MODE = False
 
 
 @pytest.mark.test_id(101)
-def test_melfbanks():
+@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('fs', [8000, 16000])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq):
     # compute the Mel, Bark and Gammaton filterbanks
-    mel_filbanks = mel_fbanks.mel_filter_banks(nfilts=24, nfft=512, fs=16000)
+    mel_filbanks = mel_fbanks.mel_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq)
     # plot the Mel filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(mel_filbanks, "Amplitude", "Frequency (Hz)")
@@ -19,11 +29,19 @@ def test_melfbanks():
 
 
 @pytest.mark.test_id(102)
-def test_barkfbanks():
+@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('fs', [8000, 16000])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+def test_barkfbanks(nfilts, nfft, fs, low_freq, high_freq):
     # compute the Mel, Bark and Gammaton filterbanks
-    bark_filbanks = bark_fbanks.bark_filter_banks(nfilts=24,
-                                                  nfft=512,
-                                                  fs=16000)
+    bark_filbanks = bark_fbanks.bark_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq)
     # plot the Bark filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(bark_filbanks, "Amplitude", "Frequency (Hz)")
@@ -31,11 +49,19 @@ def test_barkfbanks():
 
 
 @pytest.mark.test_id(103)
-def test_linfbanks():
+@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('fs', [8000, 16000])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq):
     # compute the Mel, Bark and Gammaton filterbanks
-    lin_filbanks = linear_fbanks.linear_filter_banks(nfilts=24,
-                                                     nfft=512,
-                                                     fs=16000)
+    lin_filbanks = linear_fbanks.linear_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq)
     # plot the Linear filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(lin_filbanks, "Amplitude", "Frequency (Hz)")
@@ -43,11 +69,19 @@ def test_linfbanks():
 
 
 @pytest.mark.test_id(104)
-def test_gamma_fbanks():
+@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('fs', [8000, 16000])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+def test_gamma_fbanks(nfilts, nfft, fs, low_freq, high_freq):
     # compute the Mel, Bark and Gammaton filterbanks
-    gamma_filbanks = gammatone_fbanks.gammatone_filter_banks(nfilts=24,
-                                                             nfft=512,
-                                                             fs=16000)
+    gamma_filbanks = gammatone_fbanks.gammatone_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq)
     # plot the Gammatone filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(gamma_filbanks, "Amplitude", "Frequency (Hz)")
@@ -55,11 +89,19 @@ def test_gamma_fbanks():
 
 
 @pytest.mark.test_id(105)
-def test_imelfbanks():
+@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('fs', [8000, 16000])
+@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq):
     # compute the Mel, Bark and Gammaton filterbanks
-    imel_filbanks = mel_fbanks.inverse_mel_filter_banks(nfilts=24,
-                                                        nfft=512,
-                                                        fs=16000)
+    imel_filbanks = mel_fbanks.inverse_mel_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq)
     # plot the inverse Mel filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(imel_filbanks, "Amplitude", "Frequency (Hz)")
