@@ -17,7 +17,7 @@ before_script:
   
 # command to run tests
 script:
-  - pytest tests/test_fbanks.py --cov=./
+  - pytest --cov=./
   
 after_success:
   - codecov
