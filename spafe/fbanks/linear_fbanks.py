@@ -2,6 +2,7 @@
 #                           linear-filter-banks implementation
 ##############################################################################################
 import numpy as np
+from ..utils.exceptions import ParameterError, ErrorMsgs
 
 
 def linear_filter_banks(nfilts=20,
@@ -32,6 +33,12 @@ def linear_filter_banks(nfilts=20,
     # init freqs
     high_freq = high_freq or fs / 2
     low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
 
     # compute points evenly spaced in mels (points are in Hz)
     mel_points = np.linspace(low_freq, high_freq, nfilts + 2)

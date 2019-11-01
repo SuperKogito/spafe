@@ -86,6 +86,8 @@ def lfcc(sig,
         raise ParameterError(ErrorMsgs["low_freq"])
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
+    if nfilts < num_ceps:
+        raise ParameterError(ErrorMsgs["nfilts"])
 
     # pre-emphasis
     if pre_emph:

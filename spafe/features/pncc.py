@@ -8,6 +8,7 @@ import numpy as np
 from ..utils.spectral import stft
 from ..utils.preprocessing import pre_emphasis
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 
 
@@ -190,6 +191,8 @@ def pncc(sig,
         raise ParameterError(ErrorMsgs["low_freq"])
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
+    if nfilts < num_ceps:
+        raise ParameterError(ErrorMsgs["nfilts"])
 
     # pre-emphasis
     if pre_emph:

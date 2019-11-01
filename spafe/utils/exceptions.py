@@ -8,6 +8,7 @@ ErrorMsgs = {
                 "high_freq" : "maximum frequency cannot be greater than half sampling frequency.",
                 "nfilts" : "number of filters must be an integer.",
                 "nfft" : "size of the FFT must be an integer.",
+                "nfilts": "number of filters must be bigger than number of cepstrums"
              }
 
 

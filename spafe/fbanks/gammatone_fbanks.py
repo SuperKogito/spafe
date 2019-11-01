@@ -5,6 +5,7 @@
 based on https://github.com/mcusi/gammatonegram/
 """
 import numpy as np
+from ..utils.exceptions import ParameterError, ErrorMsgs
 
 # Slaney's ERB Filter constants
 EarQ = 9.26449
@@ -98,6 +99,15 @@ def gammatone_filter_banks(nfilts=20,
         a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
 
     # define custom difference func
     def Dif(u, a):

@@ -6,6 +6,7 @@ from ..utils.spectral import rfft, dct
 
 from ..fbanks.mel_fbanks import mel_filter_banks
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
 
@@ -89,6 +90,8 @@ def psrcc(sig,
         raise ParameterError(ErrorMsgs["low_freq"])
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
+    if nfilts < num_ceps:
+        raise ParameterError(ErrorMsgs["nfilts"])
 
     # pre-emphasis
     if pre_emph:

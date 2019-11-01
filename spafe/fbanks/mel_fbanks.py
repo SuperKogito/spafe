@@ -3,6 +3,7 @@
 #############################################################################################
 import numpy as np
 from ..utils.converters import hz2mel, mel2hz
+from ..utils.exceptions import ParameterError, ErrorMsgs
 
 
 def mel_filter_banks(nfilts=20,
@@ -31,7 +32,15 @@ def mel_filter_banks(nfilts=20,
         a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
+    # init freqs
     high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
 
     # compute points evenly spaced in mels (ponts are in Hz)
     low_mel = hz2mel(low_freq)
@@ -82,6 +91,16 @@ def inverse_mel_filter_banks(nfilts=20,
         a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
+        
     # generate inverse mel fbanks by inversing regular mel fbanks
     imel_fbanks = mel_filter_banks(nfilts=24,
                                    nfft=512,
