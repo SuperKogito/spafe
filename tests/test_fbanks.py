@@ -4,6 +4,7 @@ from spafe.fbanks import mel_fbanks
 from spafe.fbanks import bark_fbanks
 from spafe.fbanks import linear_fbanks
 from spafe.fbanks import gammatone_fbanks
+from spafe.utils.exceptions import ParameterError, ErrorMsgs
 
 DEBUG_MODE = False
 
@@ -22,6 +23,27 @@ def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq):
         fs=fs,
         low_freq=low_freq,
         high_freq=high_freq)
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        mel_filbanks = mel_fbanks.mel_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=low_freq,
+            high_freq=16000)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        mel_filbanks = mel_fbanks.mel_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=-5,
+            high_freq=high_freq)
+
     # plot the Mel filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(mel_filbanks, "Amplitude", "Frequency (Hz)")
@@ -62,6 +84,27 @@ def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq):
         fs=fs,
         low_freq=low_freq,
         high_freq=high_freq)
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        lin_filbanks = linear_fbanks.linear_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=low_freq,
+            high_freq=16000)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        lin_filbanks = linear_fbanks.linear_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=-5,
+            high_freq=high_freq)
+
     # plot the Linear filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(lin_filbanks, "Amplitude", "Frequency (Hz)")
@@ -82,6 +125,28 @@ def test_gamma_fbanks(nfilts, nfft, fs, low_freq, high_freq):
         fs=fs,
         low_freq=low_freq,
         high_freq=high_freq)
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        gamma_filbanks = gammatone_fbanks.gammatone_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=low_freq,
+            high_freq=16000)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        gamma_filbanks = gammatone_fbanks.gammatone_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=-5,
+            high_freq=high_freq)
+
+
     # plot the Gammatone filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(gamma_filbanks, "Amplitude", "Frequency (Hz)")
@@ -102,6 +167,28 @@ def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq):
         fs=fs,
         low_freq=low_freq,
         high_freq=high_freq)
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        imel_filbanks = mel_fbanks.inverse_mel_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=low_freq,
+            high_freq=16000)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        # compute the Mel, Bark and Gammaton filterbanks
+        imel_filbanks = mel_fbanks.inverse_mel_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=-5,
+            high_freq=high_freq)
+
+
     # plot the inverse Mel filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(imel_filbanks, "Amplitude", "Frequency (Hz)")

@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from spafe.utils.filters import kalman, kalman_xy
 
-
 DEBUG_MODE = False
 warnings.filterwarnings("ignore")
 
@@ -13,13 +12,13 @@ warnings.filterwarnings("ignore")
 @pytest.mark.test_id(401)
 def test_kalman_xy():
     x = np.matrix('0. 0. 0. 0.').T
-    P = np.matrix(np.eye(4))*1000 # initial uncertainty
+    P = np.matrix(np.eye(4)) * 1000  # initial uncertainty
 
     N = 20
     true_x = np.linspace(0.0, 10.0, N)
     true_y = true_x**2
-    observed_x = true_x + 0.05*np.random.random(N)*true_x
-    observed_y = true_y + 0.05*np.random.random(N)*true_y
+    observed_x = true_x + 0.05 * np.random.random(N) * true_x
+    observed_y = true_y + 0.05 * np.random.random(N) * true_y
     plt.plot(observed_x, observed_y, 'ro')
     result = []
     R = 0.01**2
@@ -27,8 +26,8 @@ def test_kalman_xy():
         x, P = kalman_xy(x, P, meas, R)
         result.append((x[:2]).tolist())
     kalman_x, kalman_y = zip(*result)
-    
-    if DEBUG_MODE: 
+
+    if DEBUG_MODE:
         plt.plot(kalman_x, kalman_y, 'g-')
         plt.show()
 

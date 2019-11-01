@@ -1,15 +1,16 @@
 import pytest
 import scipy.io.wavfile
 from spafe.utils import vis
-from spafe.features.lpc import lpc, lpcc
+from spafe.features.pncc import pncc
 from spafe.features.lfcc import lfcc
 from spafe.features.gfcc import gfcc
 from spafe.features.ngcc import ngcc
 from spafe.features.bfcc import bfcc
 from spafe.features.msrcc import msrcc
 from spafe.features.psrcc import psrcc
-from spafe.features.pncc import pncc
+from spafe.features.lpc import lpc, lpcc
 from spafe.features.rplp import rplp, plp
+from spafe.utils.exceptions import ParameterError
 from spafe.utils.spectral import stft, display_stft
 from spafe.features.mfcc import mfcc, imfcc, mfe, melfcc
 
@@ -38,7 +39,8 @@ def fs():
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('n_bands', [12, 18, 24])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_mfcc(sig, fs,
+def test_mfcc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
@@ -83,13 +85,14 @@ def test_mfcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_lfcc(sig, fs,
+def test_lfcc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -103,8 +106,54 @@ def test_lfcc(sig, fs,
               band_width=1,
               model_order=0,
               broaden=0):
+
     # compute mfccs and mfes
-    lfccs = lfcc(sig, fs, 13)
+    lfccs = lfcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert lfccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        lfccs = lfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        lfccs = lfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        lfccs = lfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(lfccs, 'LFCC Index', 'Frame Index')
     assert True
@@ -114,13 +163,14 @@ def test_lfcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_gfcc(sig, fs,
+def test_gfcc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -134,8 +184,54 @@ def test_gfcc(sig, fs,
               band_width=1,
               model_order=0,
               broaden=0):
-    # compute gfccs
-    gfccs = gfcc(sig, fs, 13)
+
+    # compute mfccs and mfes
+    gfccs = gfcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert gfccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        gfccs = gfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        gfccs = gfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        gfccs = gfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(gfccs, 'GFCC Index', 'Frame Index')
     assert True
@@ -145,13 +241,14 @@ def test_gfcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_ngcc(sig, fs,
+def test_ngcc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -165,8 +262,53 @@ def test_ngcc(sig, fs,
               band_width=1,
               model_order=0,
               broaden=0):
-    # compute gfccs
-    ngccs = ngcc(sig, fs, 13)
+
+    # compute mfccs and mfes
+    ngccs = ngcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert ngccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        ngccs = ngcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        ngccs = ngcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        ngccs = ngcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
     if DEBUG_MODE:
         vis.visualize_features(ngccs, 'NGCC Index', 'Frame Index')
     assert True
@@ -176,13 +318,14 @@ def test_ngcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_bfcc(sig, fs,
+def test_bfcc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -196,8 +339,54 @@ def test_bfcc(sig, fs,
               band_width=1,
               model_order=0,
               broaden=0):
-    # compute bfccs
-    bfccs = bfcc(sig, fs, 13)
+
+    # compute mfccs and mfes
+    bfccs = bfcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert bfccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        bfccs = bfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        bfccs = bfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        bfccs = bfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(bfccs, 'BFCC Index', 'Frame Index')
     assert True
@@ -207,13 +396,14 @@ def test_bfcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_pncc(sig, fs,
+def test_pncc(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -227,8 +417,54 @@ def test_pncc(sig, fs,
               band_width=1,
               model_order=0,
               broaden=0):
-    # compute bfccs
-    pnccs = pncc(sig, fs, 13)
+
+    # compute mfccs and mfes
+    pnccs = pncc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert pnccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        pnccs = pncc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        pnccs = pncc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        pnccs = pncc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(pnccs, 'PNCC Index', 'Frame Index')
     assert True
@@ -238,13 +474,14 @@ def test_pncc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_rplp(sig, fs,
+def test_rplp(sig,
+              fs,
               num_ceps,
               low_freq,
               high_freq,
-              n_bands,
+              nfilts,
               nfft,
               lifter_exp=0.6,
               fb_type='fcmel',
@@ -273,26 +510,27 @@ def test_rplp(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_lpc(sig, fs,
-              num_ceps,
-              low_freq,
-              high_freq,
-              n_bands,
-              nfft,
-              lifter_exp=0.6,
-              fb_type='fcmel',
-              dct_type=1,
-              use_cmp=True,
-              win_len=0.025,
-              win_hop=0.01,
-              pre_emph=0.97,
-              dither=1,
-              sumpower=1,
-              band_width=1,
-              model_order=0,
-              broaden=0):
+def test_lpc(sig,
+             fs,
+             num_ceps,
+             low_freq,
+             high_freq,
+             nfilts,
+             nfft,
+             lifter_exp=0.6,
+             fb_type='fcmel',
+             dct_type=1,
+             use_cmp=True,
+             win_len=0.025,
+             win_hop=0.01,
+             pre_emph=0.97,
+             dither=1,
+             sumpower=1,
+             band_width=1,
+             model_order=0,
+             broaden=0):
     # compute lpcs and lsps
     lpcs = lpc(sig, fs, 13)
     lpccs = lpcc(sig, fs, 13)
@@ -307,28 +545,75 @@ def test_lpc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_msrcc(sig, fs,
-              num_ceps,
-              low_freq,
-              high_freq,
-              n_bands,
-              nfft,
-              lifter_exp=0.6,
-              fb_type='fcmel',
-              dct_type=1,
-              use_cmp=True,
-              win_len=0.025,
-              win_hop=0.01,
-              pre_emph=0.97,
-              dither=1,
-              sumpower=1,
-              band_width=1,
-              model_order=0,
-              broaden=0):
-    # compute lpcs and lsps
-    msrccs = msrcc(sig, fs, 13)
+def test_msrcc(sig,
+               fs,
+               num_ceps,
+               low_freq,
+               high_freq,
+               nfilts,
+               nfft,
+               lifter_exp=0.6,
+               fb_type='fcmel',
+               dct_type=1,
+               use_cmp=True,
+               win_len=0.025,
+               win_hop=0.01,
+               pre_emph=0.97,
+               dither=1,
+               sumpower=1,
+               band_width=1,
+               model_order=0,
+               broaden=0):
+
+    # compute mfccs and mfes
+    msrccs = msrcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert msrccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        msrccs = msrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        msrccs = msrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        msrccs = msrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(msrccs, 'MSRCC Index', 'Frame Index')
     assert True
@@ -338,28 +623,75 @@ def test_msrcc(sig, fs,
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('n_bands', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [32, 48, 64])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-def test_psrcc(sig, fs,
-              num_ceps,
-              low_freq,
-              high_freq,
-              n_bands,
-              nfft,
-              lifter_exp=0.6,
-              fb_type='fcmel',
-              dct_type=1,
-              use_cmp=True,
-              win_len=0.025,
-              win_hop=0.01,
-              pre_emph=0.97,
-              dither=1,
-              sumpower=1,
-              band_width=1,
-              model_order=0,
-              broaden=0):
-    # compute lpcs and lsps
-    psrccs = psrcc(sig, fs, 13)
+def test_psrcc(sig,
+               fs,
+               num_ceps,
+               low_freq,
+               high_freq,
+               nfilts,
+               nfft,
+               lifter_exp=0.6,
+               fb_type='fcmel',
+               dct_type=1,
+               use_cmp=True,
+               win_len=0.025,
+               win_hop=0.01,
+               pre_emph=0.97,
+               dither=1,
+               sumpower=1,
+               band_width=1,
+               model_order=0,
+               broaden=0):
+
+    # compute mfccs and mfes
+    psrccs = psrcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        nfilts=nfilts,
+        nfft=nfft)
+
+    # assert number of returned cepstrum coefficients
+    assert psrccs.shape[1] == num_ceps
+
+    # assert number of filters is bigger than number of cepstrums
+    with pytest.raises(ParameterError):
+        # compute mfccs and mfes
+        psrccs = psrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            nfilts=num_ceps - 1,
+            nfft=nfft)
+
+    # check lifter Parameter error for low freq
+    with pytest.raises(ParameterError):
+        psrccs = psrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=-5,
+            high_freq=high_freq,
+            nfilts=nfilts,
+            nfft=nfft)
+
+    # check lifter Parameter error for high freq
+    with pytest.raises(ParameterError):
+        psrccs = psrcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            low_freq=low_freq,
+            high_freq=16000,
+            nfilts=nfilts,
+            nfft=nfft)
+
     if DEBUG_MODE:
         vis.visualize_features(psrccs, 'PSRCC Index', 'Frame Index')
     assert True
