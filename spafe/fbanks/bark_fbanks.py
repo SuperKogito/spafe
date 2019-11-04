@@ -31,13 +31,14 @@ def bark_filter_banks(nfilts=20,
                       nfft=512,
                       fs=16000,
                       low_freq=0,
-                      high_freq=None):
+                      high_freq=None,
+                      scale="constant"):
     """
     Compute Bark-filterbanks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilt     (int) : the number of filters in the filterbank.
+        nfilts    (int) : the number of filters in the filterbank.
                           (Default 20)
         nfft      (int) : the FFT size.
                           (Default is 512)
@@ -47,9 +48,11 @@ def bark_filter_banks(nfilts=20,
                           (Default 0 Hz)
         high_freq (int) : highest band edge of mel filters.
                           (Default samplerate/2)
+        scale    (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
+                          Default is "constant"
 
     Returns:
-        a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
+        a numpy array of size nfilts * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
     # init freqs
@@ -68,12 +71,27 @@ def bark_filter_banks(nfilts=20,
     bark_points = np.linspace(low_bark, high_bark, nfilts + 4)
 
     # we use fft bins, so we have to convert from Bark to fft bin number
-    bin = np.floor(bark2fft(bark_points))
+    bins = np.floor(bark2fft(bark_points))
     fbank = np.zeros([nfilts, nfft // 2 + 1])
 
+    # init scaler
+    if scale == "descendant" or scale == "constant":
+        c = 1
+    else:
+        c  = 0
+
     for j in range(2, nfilts + 2):
-        for i in range(int(bin[j - 2]), int(bin[j + 2])):
+        # compute scaler
+        if scale == "descendant":
+            c -= 1 / nfilts
+            c = c * (c > 0) + 0 * (c < 0)
+
+        elif scale == "ascendant":
+            c += 1 / nfilts
+            c = c * (c < 1) + 1 * (c > 1)
+
+        for i in range(int(bins[j - 2]), int(bins[j + 2])):
             fc = bark_points[j]
             fb = fft2bark(i)
-            fbank[j - 2, i] = Fm(fb, fc)
+            fbank[j - 2, i] = c * Fm(fb, fc)
     return np.abs(fbank)

@@ -11,13 +11,13 @@ def mel_filter_banks(nfilts=20,
                      fs=16000,
                      low_freq=0,
                      high_freq=None,
-                     scale="const"):
+                     scale="constant"):
     """
     Compute Mel-filterbanks.The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilt     (int) : the number of filters in the filterbank.
+        nfilts    (int) : the number of filters in the filterbank.
                           (Default 20)
         nfft      (int) : the FFT size.
                           (Default is 512)
@@ -27,9 +27,11 @@ def mel_filter_banks(nfilts=20,
                           (Default 0 Hz)
         high_freq (int) : highest band edge of mel filters.
                           (Default samplerate/2)
+        scale    (str)  : choose if mx bins amplitudes sum up to one or are constants.
+                          Default is "constant"
 
     Returns:
-        a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
+        a numpy array of size nfilts * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
     # init freqs
@@ -48,16 +50,29 @@ def mel_filter_banks(nfilts=20,
     mel_points = np.linspace(low_mel, high_mel, nfilts + 2)
 
     # we use fft bins, so we have to convert from Hz to fft bin number
-    bin = np.floor((nfft + 1) * mel2hz(mel_points) / fs)
+    bins = np.floor((nfft + 1) * mel2hz(mel_points) / fs)
     fbank = np.zeros([nfilts, nfft // 2 + 1])
-    c = 1
+
+    # init scaler
+    if scale == "descendant" or scale == "constant":
+        c = 1
+    else:
+        c = 0
+
     # compute amps of fbanks
     for j in range(0, nfilts):
-        b0, b1, b2 = bin[j], bin[j + 1], bin[j + 2]
-        if scale == "desc":
+        b0, b1, b2 = bins[j], bins[j + 1], bins[j + 2]
+
+        # compute scaler
+        if scale == "descendant":
             c -= 1 / nfilts
-        else:
-            c = 1
+            c = c * (c > 0) + 0 * (c < 0)
+
+        elif scale == "ascendant":
+            c += 1 / nfilts
+            c = c * (c < 1) + 1 * (c > 1)
+
+        # compute fbank bins
         fbank[j, int(b0):int(b1)] = c * (np.arange(int(b0), int(b1)) -
                                          int(b0)) / (b1 - b0)
         fbank[j, int(b1):int(b2)] = c * (
@@ -70,7 +85,8 @@ def inverse_mel_filter_banks(nfilts=20,
                              nfft=512,
                              fs=16000,
                              low_freq=0,
-                             high_freq=None):
+                             high_freq=None,
+                             scale="constant"):
     """
     Compute inverse Mel-filterbanks. The filters are stored in the rows, the columns
     correspond to fft bins.
@@ -86,6 +102,8 @@ def inverse_mel_filter_banks(nfilts=20,
                           (Default 0 Hz)
         high_freq (int) : highest band edge of mel filters.
                           (Default samplerate/2)
+        scale    (str)  : choose if mx bins amplitudes sum up to one or are constants.
+                          Default is "const"
 
     Returns:
         a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
@@ -100,12 +118,21 @@ def inverse_mel_filter_banks(nfilts=20,
         raise ParameterError(ErrorMsgs["low_freq"])
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
-        
+
+    # inverse scaler value
+    scales = {"ascendant" : "descendant", 
+              "descendant": "ascendant",
+              "constant"  : "constant"}
+    iscale = scales[scale]
     # generate inverse mel fbanks by inversing regular mel fbanks
-    imel_fbanks = mel_filter_banks(nfilts=24,
-                                   nfft=512,
-                                   fs=16000,
-                                   scale="const")
+    imel_fbanks = mel_filter_banks(nfilts=nfilts,
+                                   nfft=nfft,
+                                   fs=fs,
+                                   low_freq=low_freq,
+                                   high_freq=high_freq,
+                                   scale=iscale)
+    # inverse regular filter banks
     for i, pts in enumerate(imel_fbanks):
         imel_fbanks[i] = pts[::-1]
+
     return np.abs(imel_fbanks)

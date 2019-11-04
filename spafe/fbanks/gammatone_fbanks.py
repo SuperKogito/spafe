@@ -12,7 +12,7 @@ EarQ = 9.26449
 minBW = 24.7
 
 
-def generate_center_frequencies(min_freq, max_freq, nfilt):
+def generate_center_frequencies(min_freq, max_freq, nfilts):
     """
     Compute center frequencies in the ERB scale.
 
@@ -26,9 +26,9 @@ def generate_center_frequencies(min_freq, max_freq, nfilt):
         an array of center frequencies.
     """
     # init vars
-    m = np.array(range(nfilt)) + 2
+    m = np.array(range(nfilts)) + 2
     c = EarQ * minBW
-    M = nfilt
+    M = nfilts
 
     # compute center frequencies
     cfreqs = (max_freq + c) * np.exp((m / M) * np.log(
@@ -79,13 +79,14 @@ def gammatone_filter_banks(nfilts=20,
                            fs=16000,
                            low_freq=None,
                            high_freq=None,
+                           scale="contsant",
                            order=4):
     """
     Compute Gammatone-filterbanks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilt     (int) : the number of filters in the filterbank.
+        nfilts    (int) : the number of filters in the filterbank.
                           (Default 20)
         nfft      (int) : the FFT size.
                           (Default is 512)
@@ -95,8 +96,13 @@ def gammatone_filter_banks(nfilts=20,
                           (Default 0 Hz)
         high_freq (int) : highest band edge of mel filters.
                           (Default samplerate/2)
+        scale     (str) : choose if max bins amplitudes ascend, descend or are constant (=1).
+                          Default is "constant"
+        order     (int) : order of the gammatone filter.
+                          Default is 4.
+
     Returns:
-        a numpy array of size nfilt * (nfft/2 + 1) containing filterbank.
+        a numpy array of size nfilts * (nfft/2 + 1) containing filterbank.
         Each row holds 1 filter.
     """
     # init freqs
@@ -149,4 +155,22 @@ def gammatone_filter_banks(nfilts=20,
         fbs = np.array([f / np.max(f) for f in fbank[:, range(maxlen)]])
     except BaseException:
         fbs = fbank[:, idx]
-    return np.abs(fbs)
+        
+    # compute scaler
+    if scale == "ascendant":
+        c = [0, ]
+        for i in range(1, nfilts):
+            x = c[i-1] + 1 / nfilts
+            c.append(x * (x < 1) + 1 * (x > 1))
+    elif scale == "descendant":
+        c = [1, ]
+        for i in range(1, nfilts):
+            x = c[i-1] - 1 / nfilts
+            c.append(x * (x > 0) + 0 * (x < 0))
+    else:
+        c = [1 for i in range(nfilts)]
+
+    # apply scaler
+    c = np.array(c).reshape(nfilts, 1)
+    fbs = c * np.abs(fbs)
+    return fbs
