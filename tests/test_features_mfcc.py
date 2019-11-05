@@ -28,7 +28,7 @@ def fs():
 
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
-@pytest.mark.parametrize('nfilts', [16, 32, 48])
+@pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
@@ -155,7 +155,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
-@pytest.mark.parametrize('nfilts', [32, 48, 64])
+@pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
