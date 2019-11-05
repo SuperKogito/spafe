@@ -14,10 +14,10 @@ before_script:
   - pip3 install librosa
   - pip3 install pytest-cov pytest
   - pip3 install codecov
-  
+
 # command to run tests
 script:
-  - pytest --cov=./
-  
+  -  travis_wait 90 pytest --cov=./
+
 after_success:
   - codecov
