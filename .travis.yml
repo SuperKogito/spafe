@@ -14,29 +14,31 @@ before_script:
   - pip3 install librosa
   - pip3 install pytest-cov pytest
   - pip3 install codecov
+  - pip3 install pytest-xdist
+  - sudo apt-get update
 
 # command to run tests
 script:
-#  -  pytest --cov=./
-  - pytest tests/test_features_lfcc.py --cov=./
-  - pytest tests/test_features_rplp.py --cov=./
-  - pytest tests/test_fbanks_bark.py --cov=./
-  - pytest tests/test_features_lpcc.py --cov=./
-  - pytest tests/test_utils_cepstral.py --cov=./
-  - pytest tests/test_fbanks_gamma.py --cov=./
-  - pytest tests/test_features_mfcc.py --cov=./
-  - pytest tests/test_utils_converters.py --cov=./
-  - pytest tests/test_fbanks_lin.py --cov=./
-  - pytest tests/test_features_msrcc.py --cov=./
-  - pytest tests/test_utils_filters.py --cov=./
-  - pytest tests/test_fbanks_mel.py --cov=./
-  - pytest tests/test_features_ngcc.py --cov=./
-  - pytest tests/test_utils_preprocessing.py --cov=./
-  - pytest tests/test_features_bfcc.py --cov=./
-  - pytest tests/test_features_pncc.py --cov=./
-  - pytest tests/test_utils_spectral.py --cov=./
-  - pytest tests/test_features_gfcc.py--cov=./
-  - pytest tests/test_features_psrcc.py --cov=./
+#  -  pytest --verbose -n 4 -q --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_lfcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_rplp.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_fbanks_bark.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_lpcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_utils_cepstral.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_fbanks_gamma.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_mfcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_utils_converters.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_fbanks_lin.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_msrcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_utils_filters.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_fbanks_mel.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_ngcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_utils_preprocessing.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_bfcc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_pncc.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_utils_spectral.py --cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_gfcc.py--cov=./ --cov=./ || --force-yes
+  - pytest --verbose -n 4 -q tests/test_features_psrcc.py --cov=./ --cov=./ || --force-yes
 
 
 after_success:
