@@ -227,6 +227,16 @@ def pncc(sig,
     # DCT(.)
     pnccs = scipy.fftpack.dct(V)[:, :num_ceps]
 
+    # use energy for 1st features column
+    if use_energy:
+        pspectrum, logE = powspec(sig,
+                                  fs=fs,
+                                  win_len=win_len,
+                                  win_hop=win_hop,
+                                  dither=dither)
+
+        pnccs[:, 0] = logE
+
     # liftering
     if lifter > 0:
         pnccs = lifter_ceps(pnccs, lifter)

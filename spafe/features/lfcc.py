@@ -12,24 +12,20 @@ from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handlin
 def lfcc(sig,
          fs=16000,
          num_ceps=13,
-         nfilts=26,
-         nfft=512,
-         lifter=22,
-         low_freq=None,
-         high_freq=None,
-         dct_type=2,
-         use_cmp=True,
-         win_type="hamming",
-         win_len=0.025,
-         win_hop=0.01,
          pre_emph=0,
          pre_emph_coeff=0.97,
-         normalize=1,
-         dither=1,
-         sum_power=1,
-         band_width=1,
-         broaden=0,
-         use_energy=False):
+         win_len=0.025,
+         win_hop=0.01,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
+         use_energy=False,
+         lifter=22,
+         normalize=1):
     """
     Compute the linear-frequency cepstral coefﬁcients (GFCC features) from an audio signal.
 
@@ -39,39 +35,33 @@ def lfcc(sig,
                                  Default is 16000.
         num_ceps       (float) : number of cepstra to return.
                                  Default is 13.
-        nfilts           (int) : the number of filters in the filterbank.
-                                 Default is 40.
-        nfft             (int) : number of FFT points.
-                                 Default is 512.
-        win_type       (float) : window type to apply for the windowing.
-                                 Default is hamming.
-        win_len        (float) : window length in sec.
-                                 Default is 0.025.
-        win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
         pre_emph         (int) : apply pre-emphasis if 1.
                                  Default is 1.
         pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
                                  Default is 0.97.
-        dither           (int) : 1 = add offset to spectrum as if dither noise.
-                                 Default is 0.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is "hamming".
+        nfilts           (int) : the number of filters in the filterbank.
+                                 Default is 40.
+        nfft             (int) : number of FFT points.
+                                 Default is 512.
         low_freq         (int) : lowest band edge of mel filters (Hz).
                                  Default is 0.
         high_freq        (int) : highest band edge of mel filters (Hz).
                                  Default is samplerate / 2 = 8000.
+        scale           (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
+                                 Default is "constant".
+        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                                 Default is 2.
+        use_energy       (int) : overwrite C0 with true log energy
+                                 Default is 0.
         lifter           (int) : apply liftering if value > 0.
                                  Default is 22.
         normalize        (int) : apply normalization if 1.
-                                 Default is 0.
-        bwidth         (float) : width of aud spec filters relative to default.
-                                 Default is 1.0.
-        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
-                                 Default is 2.
-        use_cmp          (int) : apply equal-loudness weighting and cube-root compr.
-                                 Default is 0.
-        broaden          (int) : flag to retain the (useless?) first and last bands
-                                 Default is 0.
-        use_energy       (int) : overwrite C0 with true log energy
                                  Default is 0.
 
     Returns:
@@ -113,7 +103,8 @@ def lfcc(sig,
                                             nfft=nfft,
                                             fs=fs,
                                             low_freq=low_freq,
-                                            high_freq=high_freq)
+                                            high_freq=high_freq,
+                                            scale=scale)
     features = np.dot(abs_fft_values, linear_fbanks_mat.T)
 
     # -> log(.)
@@ -124,6 +115,18 @@ def lfcc(sig,
     #  -> DCT(.)
     lfccs = dct(x=log_features, type=dct_type, axis=1,
                 norm='ortho')[:, :num_ceps]
+
+    # use energy for 1st features column
+    if use_energy:
+        # compute the power
+        power_frames = power_spectrum(fourrier_transform)
+
+        # compute total energy in each frame
+        frame_energies = np.sum(power_frames, 1)
+
+        # Handling zero enegies
+        energy = zero_handling(frame_energies)
+        bfccs[:, 0] = np.log(energy)
 
     # liftering
     if lifter > 0:

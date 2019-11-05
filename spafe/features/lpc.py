@@ -241,6 +241,7 @@ def lpc2spec(lpcs, nout=17, FMout=False):
         lpcs (array) : array including the LPC coefficients.
         nout   (int) : number of freq channels, default 17 (i.e. for 8 kHz)
         FMout (bool) :
+        
     Returns:
         list including the features, F and M
     """

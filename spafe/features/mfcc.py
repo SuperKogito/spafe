@@ -18,25 +18,31 @@ from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
 def mfcc(sig,
          fs=16000,
          num_ceps=13,
-         cep_lifter=22,
-         low_freq=None,
-         high_freq=None,
-         n_mfcc=13,
-         n_bands=40,
-         nfft=512,
-         lifter_exp=0.6,
-         fb_type='fcmel',
-         dct_type=1,
-         use_cmp=True,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
          win_len=0.025,
          win_hop=0.01,
-         pre_emph=0.97,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
+         use_energy=False,
+         lifter=22,
+         normalize=1,
+
+         use_cmp=True,
+         cep_lifter=22,
+         lifter_exp=0.6,
+         fb_type='fcmel',
+
          dither=1,
          sumpower=1,
          band_width=1,
          model_order=0,
-         broaden=0,
-         use_energy=False):
+         broaden=0):
     """
     Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
     signal. This function offers multiple approaches to features extraction
@@ -123,64 +129,187 @@ def mfcc(sig,
         raise ParameterError(ErrorMsgs["low_freq"])
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
+    if nfilts < num_ceps:
+        raise ParameterError(ErrorMsgs["nfilts"])
 
-    # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = pre_emphasis(sig)
-    frames, frame_length = framing(pre_emphasised_signal)
-    windows = windowing(frames, frame_length)
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
+    # -> framing
+    frames, frame_length = framing(sig=sig,
+                                   fs=fs,
+                                   win_len=win_len,
+                                   win_hop=win_hop)
+
+    # -> windowing
+    windows = windowing(frames=frames,
+                        frame_len=frame_length,
+                        win_type=win_type)
+
+    # -> FFT -> |.|
     fourrier_transform = rfft(x=windows, n=nfft)
     abs_fft_values = np.abs(fourrier_transform)
 
-    #  -> x Mel-fbanks -> log(.) -> DCT(.)
-    mel_fbanks_mat = mel_filter_banks()
+    #  -> x Mel-fbanks
+    mel_fbanks_mat = mel_filter_banks(nfilts=nfilts,
+                                        nfft=nfft,
+                                        fs=fs,
+                                        low_freq=low_freq,
+                                        high_freq=high_freq,
+                                        scale=scale)
     features = np.dot(abs_fft_values, mel_fbanks_mat.T)
+
+    # -> log(.) -> DCT(.)
     features_no_zero = zero_handling(features)
     log_features = np.log(features_no_zero)
-    raw_mfccs = dct(log_features, type=2, axis=1, norm='ortho')[:, :num_ceps]
+    raw_mfccs = dct(x=log_features, type=dct_type, axis=1,
+                norm='ortho')[:, :num_ceps]
 
-    # filter and normalize
-    mfccs = lifter_ceps(raw_mfccs, cep_lifter)
-    mfccs = cmvn(cms(mfccs))
+    # use energy for 1st features column
+    if use_energy:
+        raw_mfccs[:, 0] = np.log(mfe(sig=sig,
+                          fs=fs,
+                          frame_length=win_len,
+                          frame_stride=win_hop,
+                          nfilts=nfilts,
+                          nfft=nfft,
+                          fl=low_freq,
+                          fh=high_freq))
+
+    # liftering
+    if lifter > 0:
+        mfccs = lifter_ceps(raw_mfccs, cep_lifter)
+
+    # normalizatio
+    if normalize:
+        mfccs = cmvn(cms(mfccs))
     return mfccs
 
 
-def imfcc(sig, num_ceps=13, ceplifter=22, nfft=512):
+def imfcc(sig,
+         fs=16000,
+         num_ceps=13,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
+         win_len=0.025,
+         win_hop=0.01,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
+         use_energy=False,
+         lifter=22,
+         normalize=1):
     """
     Compute Inverse MFCC features from an audio signal.
 
     Args:
-         sig     (array) : the audio signal (Nx1) from which to compute features.
-         fs      (int)   : the sampling frequency of the signal.
-                           Default is 16000.
-         nfilts  (int)   : the number of filters in the filterbank.
-                           Default is 40.
-         nfft    (int)   : number of FFT points.
-                           Default is 512.
-         fl      (float) : lowest band edge of mel filters in Hz.
-                           Default is 0.
-         fh      (float) : highest band edge of mel filters in Hz.
-                           Default is samplerate/2
-
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is "hamming".
+        nfilts           (int) : the number of filters in the filterbank.
+                                 Default is 40.
+        nfft             (int) : number of FFT points.
+                                 Default is 512.
+        low_freq         (int) : lowest band edge of mel filters (Hz).
+                                 Default is 0.
+        high_freq        (int) : highest band edge of mel filters (Hz).
+                                 Default is samplerate / 2 = 8000.
+        scale           (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
+                                 Default is "constant".
+        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                                 Default is 2.
+        use_energy       (int) : overwrite C0 with true log energy
+                                 Default is 0.
+        lifter           (int) : apply liftering if value > 0.
+                                 Default is 22.
+        normalize        (int) : apply normalization if 1.
+                                 Default is 0.
     Returns:
         (array) : features - the MFFC features: num_frames x num_ceps
     """
-    # pre-emphasis -> framing -> windowing -> FFT -> |.|
-    pre_emphasised_signal = pre_emphasis(sig)
-    frames, frame_length = framing(pre_emphasised_signal)
-    windows = windowing(frames, frame_length)
+    # init freqs
+    high_freq = high_freq or fs / 2
+    low_freq = low_freq or 0
+
+    # run checks
+    if low_freq < 0:
+        raise ParameterError(ErrorMsgs["low_freq"])
+    if high_freq > (fs / 2):
+        raise ParameterError(ErrorMsgs["high_freq"])
+    if nfilts < num_ceps:
+        raise ParameterError(ErrorMsgs["nfilts"])
+
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
+    # -> framing
+    frames, frame_length = framing(sig=sig,
+                                   fs=fs,
+                                   win_len=win_len,
+                                   win_hop=win_hop)
+
+    # -> windowing
+    windows = windowing(frames=frames,
+                        frame_len=frame_length,
+                        win_type=win_type)
+
+    # -> FFT -> |.|
     fourrier_transform = rfft(x=windows, n=nfft)
     abs_fft_values = np.abs(fourrier_transform)
 
     #  -> x Mel-fbanks -> log(.) -> DCT(.)
-    imel_fbanks_mat = inverse_mel_filter_banks()
+    imel_fbanks_mat = inverse_mel_filter_banks(nfilts=nfilts,
+                                        nfft=nfft,
+                                        fs=fs,
+                                        low_freq=low_freq,
+                                        high_freq=high_freq,
+                                        scale=scale)
     features = np.dot(abs_fft_values, imel_fbanks_mat.T)
+
+    # -> log(.)
     features_no_zero = zero_handling(features)
     log_features = np.log(features_no_zero)
-    raw_imfccs = dct(log_features, type=2, axis=1, norm='ortho')[:, :num_ceps]
 
-    # filter and normalize
-    imfccs = lifter(raw_imfccs, ceplifter)
-    imfccs = cmvn(cms(imfccs))
+    # -> DCT(.)
+    imfccs = dct(log_features, type=2, axis=1, norm='ortho')[:, :num_ceps]
+
+    # use energy for 1st features column
+    if use_energy:
+        # compute the power
+        power_frames = power_spectrum(fourrier_transform)
+
+        # compute total energy in each frame
+        frame_energies = np.sum(power_frames, 1)
+
+        # Handling zero enegies
+        energy = zero_handling(frame_energies)
+        imfccs[:, 0] = np.log(energy)
+
+    # apply filter
+    if lifter > 0:
+        imfcss = lifter_ceps(imfccs, lifter)
+
+    # normalization
+    if normalize:
+        imfccs = cmvn(cms(imfccs))
     return imfccs
 
 
@@ -227,8 +356,8 @@ def melfcc(sig,
            fs=16000,
            low_freq=None,
            high_freq=None,
-           n_mfcc=13,
-           n_bands=40,
+           num_ceps=13,
+           nfilts=40,
            lifter_exp=0.6,
            fb_type='fcmel',
            dct_type=1,
@@ -336,7 +465,7 @@ def melfcc(sig,
                               dither=dither)
     aspectrum = audspec(pspectrum,
                         fs=fs,
-                        nfilts=n_bands,
+                        nfilts=nfilts,
                         fb_type=fb_type,
                         low_freq=low_freq,
                         high_freq=high_freq)
@@ -345,10 +474,10 @@ def melfcc(sig,
 
     if modelorder > 0:
         lpcas = do_lpc(aspectrum, modelorder)
-        cepstra = lpc2cep(lpcas, nout=n_mfcc)
+        cepstra = lpc2cep(lpcas, nout=num_ceps)
 
     else:
-        cepstra, _ = spec2cep(aspectrum, ncep=n_mfcc, dct_type=dct_type)
+        cepstra, _ = spec2cep(aspectrum, ncep=num_ceps, dct_type=dct_type)
 
     cepstra = lifter(cepstra, lift=lifter_exp)
 
@@ -367,7 +496,7 @@ def invmelfcc(cep,
               pre_emph=0.97,
               high_freq=6500,
               low_freq=50,
-              n_bands=40,
+              nfilts=40,
               band_width=1,
               dct_type=2,
               fb_type='mel',
@@ -450,7 +579,7 @@ def invmelfcc(cep,
     cep = lifter(cep, lift=lifter_exp, invs=True)
 
     pspc, _ = cep2spec(cep,
-                       nfreq=int(n_bands + 2 * broaden),
+                       nfreq=int(nfilts + 2 * broaden),
                        dct_type=dct_type)
 
     if usecmp:
