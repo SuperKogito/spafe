@@ -14,7 +14,7 @@ from spafe.utils.exceptions import ParameterError
 from spafe.utils.spectral import stft, display_stft
 from spafe.features.mfcc import mfcc, imfcc, mfe, melfcc
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 
 def get_data(fname):
@@ -60,8 +60,40 @@ def test_mfcc(sig,
               broaden=0,
               use_energy=False):
     # compute mfccs and mfes
-    mfccs = mfcc(sig, 13)
-    imfccs = imfcc(sig, 13)
+    mfccs = mfcc(sig,
+         fs=16000,
+         num_ceps=13,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
+         win_len=0.025,
+         win_hop=0.01,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
+         use_energy=False,
+         lifter=22,
+         normalize=1)
+    imfccs = imfcc(sig,
+         fs=16000,
+         num_ceps=13,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
+         win_len=0.025,
+         win_hop=0.01,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
+         use_energy=False,
+         lifter=22,
+         normalize=1)
     mfes = mfe(sig, fs)
     # visualize the results
     if DEBUG_MODE:
@@ -708,14 +740,21 @@ if __name__ == "__main__":
     if DEBUG_MODE:
         display_stft(X, fs, len(sig), 0, 2000, -10, 0)
 
+    # init input vars
+    num_ceps = 13
+    low_freq = 0
+    high_freq = 2000
+    nfilts = 24
+    nfft = 512
+
     # run tests
-    test_mfcc(sig, fs)
-    test_lfcc(sig, fs)
-    test_ngcc(sig, fs)
-    test_bfcc(sig, fs)
-    test_pncc(sig, fs)
-    test_msrcc(sig, fs)
-    test_psrcc(sig, fs)
-    test_lpc(sig, fs)
-    test_rplp(sig, fs)
-    test_gfcc(sig, fs)
+    test_mfcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_lfcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_ngcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_bfcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_pncc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_msrcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_psrcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_lpc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_rplp(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
+    test_gfcc(sig, fs, num_ceps, low_freq, high_freq, nfilts, nfft)
