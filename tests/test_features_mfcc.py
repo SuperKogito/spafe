@@ -161,7 +161,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('dct_type', [1, 2, 3, 4])
 @pytest.mark.parametrize('use_energy', [False, True])
-@pytest.mark.parametrize('lifter', [0, 5])
+@pytest.mark.parametrize('lifter', [0])
 @pytest.mark.parametrize('normalize', [False, True])
 def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                use_energy, lifter, normalize):
