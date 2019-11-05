@@ -63,7 +63,7 @@ def erb2fft(fb, fs=16000, nfft=512):
 
 def hz2bark(f):
     """
-    Convert Hz frequencies to Bark acoording to:
+    Convert Hz frequencies to Bark acoording to Wang, Sekey & Gersho, 1992.
 
     Args:
         f (np.array) : input frequencies [Hz].
