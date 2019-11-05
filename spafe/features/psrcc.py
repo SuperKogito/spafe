@@ -2,10 +2,9 @@
 baesd on: http://www.apsipa.org/proceedings/2018/pdfs/0001945.pdf
 """
 import numpy as np
-from ..utils.spectral import rfft, dct
-
 from ..fbanks.mel_fbanks import mel_filter_banks
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.spectral import rfft, dct, power_spectrum
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 

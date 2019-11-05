@@ -4,9 +4,8 @@ based on:
     - https://pdfs.semanticscholar.org/ca55/cfe51172ccc1ea319a13dede9898590f992d.pdf
 """
 import numpy as np
-from ..utils.spectral import rfft, dct
-
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.spectral import rfft, dct, power_spectrum
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling

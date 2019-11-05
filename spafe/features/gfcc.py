@@ -2,9 +2,8 @@
 based on https://www.researchgate.net/publication/309149564_Robust_Speaker_Verification_Using_GFCC_Based_i-Vectors
 """
 import numpy as np
-from ..utils.spectral import rfft, dct
-
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.spectral import rfft, dct, power_spectrum
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling

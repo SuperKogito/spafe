@@ -5,7 +5,7 @@ based on https://github.com/supikiti/PNCC/blob/master/pncc.py
 # -*- coding: utf-8 -*-
 import scipy
 import numpy as np
-from ..utils.spectral import stft
+from ..utils.spectral import stft, powspec
 from ..utils.preprocessing import pre_emphasis
 from ..utils.cepstral import cms, cmvn, lifter_ceps
 from ..utils.exceptions import ParameterError, ErrorMsgs
@@ -110,28 +110,22 @@ def medium_time_processing(power_stft_signal, nfilts=22):
 def pncc(sig,
          fs=16000,
          num_ceps=13,
-         nfft=512,
-         winlen=0.020,
-         winstep=0.010,
-         nfilts=26,
-         weight_N=4,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
          power=2,
-         lifter=0,
-         low_freq=None,
-         high_freq=None,
-         dct_type=2,
-         use_cmp=True,
          win_len=0.025,
          win_hop=0.01,
-         pre_emph=1,
-         pre_emph_coeff=0.97,
-         normalize=0,
-         dither=1,
-         sum_power=1,
-         band_width=1,
-         broaden=0,
+         win_type="hamming",
+         nfilts=26,
+         nfft=512,
+         low_freq=None,
+         high_freq=None,
+         scale="constant",
+         dct_type=2,
          use_energy=False,
-         spncc=0):
+         dither=1,
+         lifter=22,
+         normalize=1):
     """
     Compute the power-normalized cepstral coefficients (SPNCC features) from an audio signal.
 
@@ -141,43 +135,39 @@ def pncc(sig,
                                  Default is 16000.
         num_ceps       (float) : number of cepstra to return.
                                  Default is 13.
-        nfilts           (int) : the number of filters in the filterbank.
-                                 Default is 40.
-        nfft             (int) : number of FFT points.
-                                 Default is 512.
-        win_type       (float) : window type to apply for the windowing.
-                                 Default is hamming.
-        win_len        (float) : window length in sec.
-                                 Default is 0.025.
-        win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
         pre_emph         (int) : apply pre-emphasis if 1.
                                  Default is 1.
         pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
                                  Default is 0.97.
-        dither           (int) : 1 = add offset to spectrum as if dither noise.
-                                 Default is 0.
+        power            (int) : spectrum power.
+                                 Default is 2.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is "hamming".
+        nfilts           (int) : the number of filters in the filterbank.
+                                 Default is 40.
+        nfft             (int) : number of FFT points.
+                                 Default is 512.
         low_freq         (int) : lowest band edge of mel filters (Hz).
                                  Default is 0.
         high_freq        (int) : highest band edge of mel filters (Hz).
                                  Default is samplerate / 2 = 8000.
+        scale           (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
+                                 Default is "constant".
+        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
+                                 Default is 2.
+        use_energy       (int) : overwrite C0 with true log energy
+                                 Default is 0.
+        dither           (int) : 1 = add offset to spectrum as if dither noise.
+                                 Default is 0.
         lifter           (int) : apply liftering if value > 0.
                                  Default is 22.
         normalize        (int) : apply normalization if 1.
                                  Default is 0.
-        bwidth         (float) : width of aud spec filters relative to default.
-                                 Default is 1.0.
-        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
-                                 Default is 2.
-        use_cmp          (int) : apply equal-loudness weighting and cube-root compr.
-                                 Default is 0.
-        broaden          (int) : flag to retain the (useless?) first and last bands
-                                 Default is 0.
-        use_energy       (int) : overwrite C0 with true log energy
-                                 Default is 0.
-        spncc            (int) : if 1 then compute the simple power-normalized
-                                 cepstral coefficients (SPNCC).
-                                 Default is 0.
+
 
     Returns:
         (array) : 2d array of PNCC features (num_frames x num_ceps)
@@ -209,7 +199,8 @@ def pncc(sig,
                                               nfft=nfft,
                                               fs=fs,
                                               low_freq=low_freq,
-                                              high_freq=high_freq)
+                                              high_freq=high_freq,
+                                              scale=scale)
     P = np.dot(a=spectrum_power[:, :gammatone_filter.shape[1]],
                b=gammatone_filter.T)
 
@@ -235,7 +226,7 @@ def pncc(sig,
                                   win_hop=win_hop,
                                   dither=dither)
 
-        pnccs[:, 0] = logE
+        # bug: pnccs[:, 0] = logE
 
     # liftering
     if lifter > 0:

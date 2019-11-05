@@ -2,8 +2,8 @@
 based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.8029&rep=rep1&type=pdf
 """
 import numpy as np
-from ..utils.spectral import rfft, dct
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.spectral import rfft, dct, power_spectrum
 from ..fbanks.linear_fbanks import linear_filter_banks
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
@@ -126,7 +126,7 @@ def lfcc(sig,
 
         # Handling zero enegies
         energy = zero_handling(frame_energies)
-        bfccs[:, 0] = np.log(energy)
+        lfccs[:, 0] = np.log(energy)
 
     # liftering
     if lifter > 0:

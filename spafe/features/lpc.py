@@ -11,7 +11,6 @@ from spafe.utils.spectral import (powspec, lifter, audspec, postaud,
 def lpcc(sig,
          fs=16000,
          num_ceps=13,
-         model_order=13,
          pre_emph=1,
          pre_emph_coeff=0.97,
          win_type="hann",
@@ -28,10 +27,8 @@ def lpcc(sig,
         sig            (array) : a mono audio signal (Nx1) from which to compute features.
         fs               (int) : the sampling frequency of the signal we are working with.
                                  Default is 16000.
-        num_ceps       (float) : number of cepstra to return.
+        num_ceps       (float) : number of cepstra to return (order of the model to compute).
                                  Default is 13.
-        model_order      (int) : order of the model to compute.
-                                 Default is 8.
         pre_emph         (int) : apply pre-emphasis if 1.
                                  Default is 1.
         pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
@@ -56,7 +53,6 @@ def lpcc(sig,
     lpcs = lpc(sig=sig,
                fs=fs,
                num_ceps=num_ceps,
-               model_order=model_order,
                pre_emph=pre_emph,
                pre_emph_coeff=pre_emph_coeff,
                win_len=win_len,
@@ -80,7 +76,6 @@ def lpcc(sig,
 def lpc(sig,
         fs=16000,
         num_ceps=13,
-        model_order=13,
         pre_emph=0,
         pre_emph_coeff=0.97,
         win_type="hann",
@@ -95,10 +90,8 @@ def lpc(sig,
         sig            (array) : a mono audio signal (Nx1) from which to compute features.
         fs               (int) : the sampling frequency of the signal we are working with.
                                  Default is 16000.
-        num_ceps       (float) : number of cepstra to return.
+        num_ceps       (int) : number of cepstra to return(order of the model to compute).
                                  Default is 13.
-        model_order      (int) : order of the model to compute.
-                                 Default is 8.
         pre_emph         (int) : apply pre-emphasis if 1.
                                  Default is 1.
         pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
@@ -146,7 +139,7 @@ def lpc(sig,
         auditory_spectrum = np.exp(rasta_filtered_log_auditory_spectrum)
 
     post_processing_spectrum, _ = postaud(auditory_spectrum, fs / 2)
-    lpcs = do_lpc(x=post_processing_spectrum, model_order=model_order)
+    lpcs = do_lpc(x=post_processing_spectrum, model_order=num_ceps)
     lpcs = lpcs.T
     return lpcs[:, :num_ceps]
 
@@ -241,7 +234,7 @@ def lpc2spec(lpcs, nout=17, FMout=False):
         lpcs (array) : array including the LPC coefficients.
         nout   (int) : number of freq channels, default 17 (i.e. for 8 kHz)
         FMout (bool) :
-        
+
     Returns:
         list including the features, F and M
     """

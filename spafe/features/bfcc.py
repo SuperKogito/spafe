@@ -2,10 +2,9 @@
 based on https://asmp-eurasipjournals.springeropen.com/track/pdf/10.1186/s13636-017-0100-x
 """
 import numpy as np
-from ..utils.spectral import rfft, dct
-
 from ..fbanks.bark_fbanks import bark_filter_banks
 from ..utils.cepstral import cms, cmvn, lifter_ceps
+from ..utils.spectral import rfft, dct, power_spectrum
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
