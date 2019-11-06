@@ -27,12 +27,12 @@ def fs():
 
 
 @pytest.mark.test_id(202)
-@pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('num_ceps', [13, 26])
 @pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
-@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('low_freq', [0, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('dct_type', [1, 2, 3, 4])
+@pytest.mark.parametrize('dct_type', [1, 2, 4])
 @pytest.mark.parametrize('use_energy', [False, True])
 @pytest.mark.parametrize('lifter', [0])
 @pytest.mark.parametrize('normalize', [False, True])

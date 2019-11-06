@@ -7,10 +7,10 @@ DEBUG_MODE = False
 
 
 @pytest.mark.test_id(101)
-@pytest.mark.parametrize('nfilts', [12, 18, 24])
+@pytest.mark.parametrize('nfilts', [12, 24])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('fs', [8000, 16000])
-@pytest.mark.parametrize('low_freq', [0, 50, 300])
+@pytest.mark.parametrize('low_freq', [0, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('scale', ["ascendant", "descendant", "constant"])
 def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):

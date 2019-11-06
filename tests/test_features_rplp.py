@@ -27,7 +27,7 @@ def fs():
 
 
 @pytest.mark.test_id(207)
-@pytest.mark.parametrize('num_ceps', [13, 15, 19])
+@pytest.mark.parametrize('num_ceps', [13, 19])
 def test_rplp(sig, fs, num_ceps):
     """
     test RPLP features module for the following:
