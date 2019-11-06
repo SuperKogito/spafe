@@ -79,7 +79,7 @@ class FundamentalFrequenciesExtractor:
 
     def compute_yin(self,
                     sig,
-                    sr,
+                    fs,
                     dataFileName=None,
                     w_len=512,
                     w_step=256,
@@ -91,7 +91,7 @@ class FundamentalFrequenciesExtractor:
 
         Args:
             sig        (list) : Audio signal (list of float)
-            sr          (int) : sampling rate (= average number of samples pro 1 second)
+            fs          (int) : sampling rate (= average number of samples pro 1 second)
             w_len       (int) : size of the analysis window (in #samples)
             w_step      (int) : size of the lag between two consecutives windows (in #samples)
             f0_min      (int) : Minimum fundamental frequency that can be detected (in Hertz)
@@ -107,12 +107,12 @@ class FundamentalFrequenciesExtractor:
         """
         if self.debug:
             print('Yin: compute yin algorithm')
-        tau_min, tau_max = int(sr / f0_max), int(sr / f0_min)
+        tau_min, tau_max = int(fs / f0_max), int(fs / f0_min)
 
         timeScale = range(0,
                           len(sig) - w_len,
                           w_step)  # time values for each analysis window
-        times = [t / float(sr) for t in timeScale]
+        times = [t / float(fs) for t in timeScale]
         frames = [sig[t:t + w_len] for t in timeScale]
 
         pitches = [0.0] * len(timeScale)
@@ -127,10 +127,10 @@ class FundamentalFrequenciesExtractor:
 
             # Get results
             if np.argmin(cmdf) > tau_min:
-                argmins[i] = float(sr / np.argmin(cmdf))
+                argmins[i] = float(fs / np.argmin(cmdf))
             #  A pitch was found
             if p != 0:
-                pitches[i] = float(sr / p)
+                pitches[i] = float(fs / p)
                 harmonic_rates[i] = cmdf[p]
             #  No pitch, but we compute a value of the harmonic rate
             else:
@@ -139,8 +139,8 @@ class FundamentalFrequenciesExtractor:
         return pitches, harmonic_rates, argmins, times
 
     def main(self,
-             sr,
              sig,
+             fs,
              w_len=1024,
              w_step=256,
              f0_min=70,
@@ -153,7 +153,7 @@ class FundamentalFrequenciesExtractor:
 
         Args:
             sig        (list) : Audio signal (list of float)
-            sr          (int) : sampling rate (= average number of samples pro 1 second)
+            fs          (int) : sampling rate (= average number of samples pro 1 second)
             w_len       (int) : size of the analysis window (in #samples)
             w_step      (int) : size of the lag between two consecutives windows (in #samples)
             f0_min      (int) : Minimum fundamental frequency that can be detected (in Hertz)
@@ -168,9 +168,10 @@ class FundamentalFrequenciesExtractor:
                           - times         : list of time of each estimation
         """
         start = time.time()
-        duration = len(sig) / float(sr)
+        print(sig, fs)
+        duration = len(sig) / float(fs)
         pitches, harmonic_rates, argmins, times = self.compute_yin(
-            sig, sr, dataFileName, w_len, w_step, f0_min, f0_max, harmo_thresh)
+            sig, fs, dataFileName, w_len, w_step, f0_min, f0_max, harmo_thresh)
 
         if self.debug:
             print("Yin computed in: ", time.time() - start)
@@ -223,13 +224,3 @@ class FundamentalFrequenciesExtractor:
             plt.show()
 
         return np.array(pitches), harmonic_rates, argmins, times
-
-
-if __name__ == '__main__':
-    # read audio data
-    rate, signal = scipy.io.wavfile.read('../test.wav')
-
-    #  test fundamental frequencies extraction
-    fundamental_frequencies = FundamentalFrequenciesExtractor(False)
-    pitches, harmonic_rates, argmins, times = fundamental_frequencies.main(
-        rate, signal)
