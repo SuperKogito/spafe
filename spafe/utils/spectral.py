@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import librosa
-import librosa.filters
-
 import scipy
 import warnings
 import numpy as np
