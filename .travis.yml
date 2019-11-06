@@ -1,7 +1,7 @@
 language: python
 python:
   - "3.5"
-cache: 
+cache:
   - pip
 # command to install dependencies
 before_script:
@@ -20,7 +20,7 @@ before_script:
 
 # command to run tests
 script:
-  -  pytest -s --cache-clear -q --tb=short -n 8 --cov=./ || --force-yes
+  - pytest --cache-clear -n 8 -q --cov=./ || --force-yes
 #  - pytest --verbose -n 4 -q tests/test_features_lfcc.py --cov=./ --cov=./ || --force-yes
 #  - pytest --verbose -n 4 -q tests/test_features_rplp.py --cov=./ --cov=./ || --force-yes
 #  - pytest --verbose -n 4 -q tests/test_fbanks_bark.py --cov=./ --cov=./ || --force-yes
