@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+import spafe
 import pytest
 import warnings
 import numpy as np
@@ -7,6 +7,13 @@ from spafe.utils.filters import kalman, kalman_xy
 
 DEBUG_MODE = False
 warnings.filterwarnings("ignore")
+
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.filters, 'gaussian_filter')
+    assert hasattr(spafe.utils.filters, 'sobel_filter')
+    assert hasattr(spafe.utils.filters, 'rasta_filter')
+    assert hasattr(spafe.utils.filters, 'kalman_xy')
 
 
 @pytest.mark.test_id(401)

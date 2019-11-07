@@ -1,4 +1,5 @@
 import scipy
+import spafe
 import pytest
 import numpy as np
 from mock import patch
@@ -19,6 +20,12 @@ def fs():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.vis, 'visualize_fbanks')
+    assert hasattr(spafe.utils.vis, 'visualize_features')
+    assert hasattr(spafe.utils.vis, 'plot')
+    assert hasattr(spafe.utils.vis, 'spectogram')
 
 @patch("matplotlib.pyplot.show")
 def test_visualize_fbanks(mock_show):

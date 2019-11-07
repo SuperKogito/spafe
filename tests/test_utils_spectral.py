@@ -21,7 +21,6 @@ def sig():
     __EXAMPLE_FILE = 'test21.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
 
-
 @pytest.fixture
 def fs():
     __EXAMPLE_FILE = 'test21.wav'

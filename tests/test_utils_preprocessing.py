@@ -1,6 +1,14 @@
+import spafe
 import pytest
 import numpy as np
 from spafe.utils.preprocessing import (zero_handling, pre_emphasis, framing, windowing)
+
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.preprocessing, 'zero_handling')
+    assert hasattr(spafe.utils.preprocessing, 'pre_emphasis')
+    assert hasattr(spafe.utils.preprocessing, 'framing')
+    assert hasattr(spafe.utils.preprocessing, 'windowing')
 
 
 @pytest.mark.parametrize('x', [np.arange(4)])

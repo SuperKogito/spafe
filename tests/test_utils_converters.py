@@ -1,3 +1,4 @@
+import spafe
 import pytest
 import numpy as np
 from spafe.utils.exceptions import ParameterError, ErrorMsgs
@@ -44,6 +45,21 @@ def fix_fft():
         0.64125, 5.13, 12.632625, 21.481875, 32.0625, 45.52875, 60.91875,
         78.553125, 100.035, 128.25, 163.51875, 211.6125, 288.5625, 448.875
     ])
+
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.converters, 'hz2erb')
+    assert hasattr(spafe.utils.converters, 'erb2hz')
+    assert hasattr(spafe.utils.converters, 'hz2bark')
+    assert hasattr(spafe.utils.converters, 'bark2hz')
+    assert hasattr(spafe.utils.converters, 'hz2mel')
+    assert hasattr(spafe.utils.converters, 'mel2hz')
+    assert hasattr(spafe.utils.converters, 'hz2fft')
+    assert hasattr(spafe.utils.converters, 'fft2hz')
+    assert hasattr(spafe.utils.converters, 'fft2erb')
+    assert hasattr(spafe.utils.converters, 'erb2fft')
+    assert hasattr(spafe.utils.converters, 'fft2bark')
+    assert hasattr(spafe.utils.converters, 'bark2fft')
 
 
 def test_hz2erb(fhz, ferb):
