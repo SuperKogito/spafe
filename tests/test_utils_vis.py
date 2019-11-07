@@ -27,7 +27,6 @@ def test_visualize_fbanks(mock_show):
     vis.visualize_fbanks(fbanks=lin_filbanks,
                          ylabel="Amplitude",
                          xlabel="Frequency (Hz)")
-    return plt.gcf()
 
 
 @patch("matplotlib.pyplot.show")
@@ -37,17 +36,14 @@ def test_visualize_features(sig, fs):
                            ylabel='LFCC Index',
                            xlabel='Frame Index',
                            cmap='viridis')
-    return plt.gcf()
 
 
 @patch("matplotlib.pyplot.show")
 def test_plot(mock_show):
     y = np.arange(10)
     vis.plot(y=y, ylabel="y", xlabel="x")
-    return plt.gcf()
 
 
 @patch("matplotlib.pyplot.show")
 def test_spectogram(sig, fs):
     vis.spectogram(sig, fs)
-    return plt.gcf()

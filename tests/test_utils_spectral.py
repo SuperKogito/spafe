@@ -1,9 +1,11 @@
 """
 based on: https://github.com/scoreur/cqt/blob/master/cqt.py
 """
+import spafe
 import scipy
 import pytest
 import numpy as np
+from mock import patch
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
 from spafe.utils.spectral import (cqt, stft, istft, display_stft)
@@ -13,13 +15,6 @@ DEBUG_MODE = False
 
 def get_data(fname):
     return scipy.io.wavfile.read(fname)
-
-
-@pytest.fixture
-def x():
-    __EXAMPLE_FILE = 'test21.wav'
-    return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
-
 
 @pytest.fixture
 def sig():
@@ -32,25 +27,44 @@ def fs():
     __EXAMPLE_FILE = 'test21.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.spectral, 'cqt')
+    assert hasattr(spafe.utils.spectral, 'pre_process_x')
+    assert hasattr(spafe.utils.spectral, 'stft')
+    assert hasattr(spafe.utils.spectral, 'compute_stft')
+    assert hasattr(spafe.utils.spectral, 'istft')
+    assert hasattr(spafe.utils.spectral, 'normalize_window')
+    assert hasattr(spafe.utils.spectral, 'display_stft')
+    assert hasattr(spafe.utils.spectral, 'power_spectrum')
+    assert hasattr(spafe.utils.spectral, 'rfft')
+    assert hasattr(spafe.utils.spectral, 'dct')
+    assert hasattr(spafe.utils.spectral, 'powspec')
+    assert hasattr(spafe.utils.spectral, 'lifter')
+    assert hasattr(spafe.utils.spectral, 'audspec')
+    assert hasattr(spafe.utils.spectral, 'postaud')
+    assert hasattr(spafe.utils.spectral, 'invpostaud')
+    assert hasattr(spafe.utils.spectral, 'invpowspec')
+    assert hasattr(spafe.utils.spectral, 'invaudspec')
 
 @pytest.mark.test_id(301)
-def test_stft(x, fs):
+def test_stft(sig, fs):
     """
     test STFT computations.
     """
     # compute and display STFT
-    X, _ = stft(sig=x, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+    X, _ = stft(sig=sig, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
     if DEBUG_MODE:
-        display_stft(X, fs, len(x), 0, 2000, -10, 0, True)
+        display_stft(X, fs, len(sig), 0, 2000, -10, 0, True)
 
 
 @pytest.mark.test_id(302)
-def test_istft(x, fs):
+def test_istft(sig, fs):
     """
     test inverse STFT computations.
     """
     # compute and display STFT
-    X, x_pad = stft(sig=x, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+    X, x_pad = stft(sig=sig, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
 
     # inverse STFT
     y = istft(X=X, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
@@ -83,6 +97,24 @@ def test_cqt(sig, fs):
         plt.plot(ampxcq)
         plt.show()
 
+@patch("matplotlib.pyplot.show")
+@pytest.mark.parametrize('low_freq', [0, 300])
+@pytest.mark.parametrize('high_freq', [2000, 4000])
+@pytest.mark.parametrize('normalize', [False, True])
+def test_display(sig, fs, low_freq, high_freq, normalize):
+    """
+    test display STFT.
+    """
+    # compute and display STFT
+    X, x_pad = stft(sig=sig, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+    display_stft(X,
+                 fs,
+                 len_sig=len(sig),
+                 low_freq=low_freq,
+                 high_freq=high_freq,
+                 min_db=-10,
+                 max_db=0,
+                 normalize=normalize)
 
 if __name__ == "__main__":
     fs, x = get_data('../test21.wav')
