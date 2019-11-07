@@ -5,7 +5,7 @@ def split_signal_in_10ms_frames(self, signal, rate):
                                        len(signal[:samples_count_pro_frame]) / int(samples_pro_10ms_frame))
     try   : frames.append(signal[samples_count_pro_frame:])
     except: pass
-    return frames  
+    return frames
 
 def get_dominant_frequencies(self, slices, rate):
     """
@@ -14,7 +14,7 @@ def get_dominant_frequencies(self, slices, rate):
     dominant_frequencies = []
     for sig in [sig for sig in slices if sig != []]:
         fourrier_transform = np.fft.fft(sig)
-        psd                = (1 / len(fourrier_transform)) * abs(fourrier_transform)**2 
+        psd                = (1 / len(fourrier_transform)) * abs(fourrier_transform)**2
         frequencies        = np.fft.fftfreq(sig.size, 1 / rate)
         idx                = np.argsort(frequencies)
         dominant_frequencies.append(frequencies[np.argmax(psd)])
@@ -24,14 +24,14 @@ def get_dominant_frequencies(self, slices, rate):
         plt.ylabel('Power [dB]')
         plt.xlabel('Frequencies [Hz]')
         plt.ylim(np.min(psd), np.max(psd))
-        plt.show()  
-                              
+        plt.show()
+
     return np.array(dominant_frequencies)
-  
+
 
 def main(self, file_name):
     signal, rate = librosa.load(file_name)
-    
+
 
 
 def gammatonegram(x, sr=20000, twin=0.025, thop=0.010, N=64,
@@ -74,12 +74,12 @@ def gammatonegram(x, sr=20000, twin=0.025, thop=0.010, N=64,
     # in python approx = sps.spectrogram(x, fs=sr, window='hann', nperseg=nwin,
     #                    noverlap=nwin-nhop, nfft=nfft, detrend=False,
     #                    scaling='density', mode='magnitude')
-    plotF, plotT, Sxx = sps.spectrogram(x, 
-                                        fs       = sr, 
-                                        window   = 'hann', 
+    plotF, plotT, Sxx = sps.spectrogram(x,
+                                        fs       = sr,
+                                        window   = 'hann',
                                         nperseg  = nwin,
-                                        noverlap = nwin - nhop, 
-                                        nfft     = nfft, 
+                                        noverlap = nwin - nhop,
+                                        nfft     = nfft,
                                         detrend  = False,
                                         scaling  = 'density',
                                         mode     = 'magnitude')
