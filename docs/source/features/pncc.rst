@@ -1,8 +1,8 @@
-spafe.features.rplp
+spafe.features.pncc
 ====================
 
 
-.. automodule:: spafe.features.rplp
+.. automodule:: spafe.features.pncc
     :members:
     :undoc-members:
     :show-inheritance:

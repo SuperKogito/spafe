@@ -1,8 +1,8 @@
-spafe.utils.cqt
+spafe.utils.cepstral
 ========================
 
 
-.. automodule:: spafe.utils.cqt
+.. automodule:: spafe.utils.cepstral
     :members:
     :undoc-members:
     :show-inheritance:

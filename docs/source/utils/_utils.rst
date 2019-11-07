@@ -2,11 +2,10 @@ spafe.utils
 ============
 
 .. toctree::
+  cepstral
   converters
-  cqt
   filters
-  functions
   levinsondr
-  processing
-  stats
+  preprocessing
+  spectral
   vis

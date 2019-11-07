@@ -15,11 +15,11 @@ to install this library
    $ pip install spafe
 
 
-Or you can use the test script:
+Or you can run the pytests by running the following command:
 
 .. code-block:: bash
 
-   $ python test.py
+   $ pytest
 
 
 For the documentation of the modules please refer to:

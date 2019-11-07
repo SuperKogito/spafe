@@ -1,8 +1,8 @@
-spafe.utils.functions
+spafe.utils.spectral
 ========================
 
 
-.. automodule:: spafe.utils.functions
+.. automodule:: spafe.utils.spectral
     :members:
     :undoc-members:
     :show-inheritance:
