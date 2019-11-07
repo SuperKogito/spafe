@@ -1,8 +1,12 @@
 language: python
 python:
   - "3.5"
+  - "3.6"
+  - "3.7"
+  
 cache:
   - pip
+  
 # command to install dependencies
 before_script:
   - sudo apt-get update
@@ -21,27 +25,7 @@ before_script:
 
 # command to run tests
 script:
-  - pytest --cache-clear -n 8 -q --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_lfcc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_rplp.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_fbanks_bark.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_lpcc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_utils_cepstral.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_fbanks_gamma.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_mfcc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_utils_converters.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_fbanks_lin.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_msrcc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_utils_filters.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_fbanks_mel.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_ngcc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_utils_preprocessing.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_bfcc.py --cov=./ --cov=./ || --force-yes
-#  - travis_wait 30 pytest --verbose -n 4 -q tests/test_features_pncc.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_utils_spectral.py --cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_gfcc.py--cov=./ --cov=./ || --force-yes
-#  - pytest --verbose -n 4 -q tests/test_features_psrcc.py --cov=./ --cov=./ || --force-yes
-
+  - pytest --cache-clear -n 8 -q || --force-yes
 
 after_success:
   - codecov
