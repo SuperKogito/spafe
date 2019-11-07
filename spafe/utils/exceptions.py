@@ -14,7 +14,7 @@ ErrorMsgs = {
 
 class SpafeError(Exception):
     """
-    The root librosa exception class
+    The root spafe exception class
     """
     pass
 

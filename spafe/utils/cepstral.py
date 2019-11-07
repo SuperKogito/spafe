@@ -2,8 +2,6 @@ import scipy
 import numpy as np
 
 
-NFFT = 512
-
 def cmn(x):
     """
     Mean normalization.
@@ -75,7 +73,6 @@ def _helper_idx(i, start, stop, step, dct_type):
         r = r.T
     return np.cos(np.pi * i * r / (stop + start - 1))
 
-
 def _helper_mat(K, ncep, start, stop, step, dct_type):
     """
     Helper function to compute the discrete cosine tranform and the inverse
@@ -102,7 +99,6 @@ def _helper_mat(K, ncep, start, stop, step, dct_type):
         for i in range(ncep)
     ]
     return np.array(mat)
-
 
 def cep2spec(cep, nfreq, dct_type=2):
     """
@@ -159,7 +155,6 @@ def cep2spec(cep, nfreq, dct_type=2):
     spec = np.exp(np.matmul(idctm, cep))
     return spec, idctm
 
-
 def deltas(x, w=9):
     """
     Calculate the deltas (derivatives) of an input sequence with a W-points
@@ -185,7 +180,6 @@ def deltas(x, w=9):
     deltas = scipy.signal.lfilter(win, 1, xx,
                             axis=1)[:, int(2 * hlen):int(2 * hlen + cols)]
     return deltas
-
 
 def spec2cep(spec, ncep=9, dct_type=2):
     """

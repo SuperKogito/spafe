@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import librosa
+# import librosa
 import scipy
 import warnings
 import numpy as np
@@ -539,12 +539,16 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
     steppts = int(win_hop * fs)
     nfft = int(np.power(2, np.ceil(np.divide(np.log(winpts), np.log(2)))))
 
+
     # Can't predict librosa stft length...
-    tmp = librosa.istft(y,
-                        hop_length=steppts,
-                        win_length=winpts,
-                        window='hann',
-                        center=False)
+    tmp = istft(X=y, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+
+    # # Can't predict librosa stft length...
+    # tmp = librosa.istft(y,
+    #                     hop_length=steppts,
+    #                     win_length=winpts,
+    #                     window='hann',
+    #                     center=False)
     xlen = len(tmp)
     # xlen = int(np.add(winpts, np.multiply(steppts, np.subtract(ncol, 1))))
     # xlen = int(np.multiply(steppts, np.subtract(ncol, 1)))
@@ -553,19 +557,21 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
         r = np.squeeze(np.random.randn(xlen, 1))
     r = r[0:xlen]
 
-    R = librosa.stft(np.divide(r, 32768 * 12),
-                     n_fft=nfft,
-                     hop_length=steppts,
-                     win_length=winpts,
-                     window='hann',
-                     center=False)
+    R, _ = stft(sig=sig, fs=fs, win_type=win_type, win_len=win_len, win_hop=win_hop)
+    # R = librosa.stft(np.divide(r, 32768 * 12),
+    #                  n_fft=nfft,
+    #                  hop_length=steppts,
+    #                  win_length=winpts,
+    #                  window='hann',
+    #                  center=False)
 
     R *= np.sqrt(y)
-    x = librosa.istft(R,
-                      hop_length=steppts,
-                      win_length=winpts,
-                      window='hann',
-                      center=False)
+    x = istft(X=R, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+    # x = librosa.istft(R,
+    #                   hop_length=steppts,
+    #                   win_length=winpts,
+    #                   window='hann',
+    #                   center=False)
 
     return x
 
