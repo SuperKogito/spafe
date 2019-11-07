@@ -76,8 +76,7 @@ We expect all community participants (contributors, paid or otherwise; sponsors;
 This code of conduct and its related procedures also applies to unacceptable behavior occurring outside the scope of community activities when such behavior has the potential to adversely affect the safety and well-being of community members.
 
 ## 10. Contact info
-
-user:SuperKogito
+superkogito@gmail.com
 
 ## 11. License and attribution
 
