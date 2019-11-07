@@ -161,8 +161,8 @@ def hz2mel(hz, htk=1):
         def e(i):
             return (hz[i] - F0) / FSP
 
-        def g(i):            return BARK_PT + \
-      (np.log(hz[i] / BARK_FREQ) / np.log(LOGSTEP))
+        def g(i):
+            return BARK_PT + (np.log(hz[i] / BARK_FREQ) / np.log(LOGSTEP))
 
         mel = [e(i) if hz[i] < BARK_PT else g(i) for i in range(hz.shape[0])]
         return np.array(mel)
@@ -191,8 +191,8 @@ def mel2hz(mel, htk=1):
         def e(i):
             return F0 + FSP * mel[i]
 
-        def g(i):            return BARK_FREQ * \
-      np.exp(np.log(LOGSTEP) * (mel[i] - BARK_PT))
+        def g(i):
+            return BARK_FREQ * np.exp(np.log(LOGSTEP) * (mel[i] - BARK_PT))
 
         f = [e(i) if mel[i] < BARK_PT else g(i) for i in range(mel.shape[0])]
         return np.array(f)

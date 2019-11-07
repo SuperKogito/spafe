@@ -1,13 +1,37 @@
-# import scipy
-# import numpy as np
-#
-#
-# def test_cmn(x):
-#
-#
-# def test_cms(x):
-#
-#
-# def test_cvn(x):
-#
-# def test_cmvn(x):
+import spafe
+import scipy
+import pytest
+import numpy as np
+from spafe.utils.cepstral import cms
+
+@pytest.fixture
+def x():
+    return np.round(np.random.normal(loc=0.0, scale=1.0, size=100), 3)
+
+
+def test_functions_availability():
+    # Cheching the availibility of functions in the chosen attribute
+    assert hasattr(spafe.utils.cepstral, 'cmn')
+    assert hasattr(spafe.utils.cepstral, 'cms')
+    assert hasattr(spafe.utils.cepstral, 'cvn')
+    assert hasattr(spafe.utils.cepstral, 'cmvn')
+    assert hasattr(spafe.utils.cepstral, '_helper_idx')
+    assert hasattr(spafe.utils.cepstral, '_helper_mat')
+    assert hasattr(spafe.utils.cepstral, 'cep2spec')
+    assert hasattr(spafe.utils.cepstral, 'deltas')
+    assert hasattr(spafe.utils.cepstral, 'spec2cep')
+    assert hasattr(spafe.utils.cepstral, 'lifter_ceps')
+
+def test_cmn(x):
+    pass
+
+def test_cms(x):
+    y = cms(x)
+    np.testing.assert_almost_equal(y, x, 0)
+
+
+def test_cvn(x):
+    pass
+
+def test_cmvn(x):
+    pass

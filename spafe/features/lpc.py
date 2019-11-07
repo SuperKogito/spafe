@@ -270,7 +270,7 @@ def lpc2spec(lpcs, nout=17, FMout=False):
 
             ix = np.argsort(ff_tmp)
             dummy = np.sort(ff_tmp)
-            mp_F_list = []
+            tmp_F_list = []
             tmp_M_list = []
 
             for i in range(ff.shape[0]):

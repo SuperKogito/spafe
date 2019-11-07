@@ -2,10 +2,10 @@ import pytest
 import numpy as np
 import scipy.io.wavfile
 from spafe.utils import vis
-from spafe.features.lpc import lpc, lpcc
 from spafe.utils.exceptions import ParameterError
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
+from spafe.features.lpc import lpc, lpcc, lpc2spec
 from spafe.utils.spectral import stft, display_stft
+from spafe.utils.cepstral import cms, cmvn, lifter_ceps
 
 DEBUG_MODE = False
 
@@ -25,6 +25,20 @@ def fs():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
+@pytest.mark.parametrize('num_ceps', [13, 17])
+def test_lpc2spec(sig, fs, num_ceps):
+    """
+    test LPC features module for the following:
+        - check that the returned number of cepstrums is correct.
+    """
+    # compute lpcs and lsps
+    lpcs = lpc(sig=sig, fs=fs, num_ceps=num_ceps)
+
+    # checks for lpc2spec
+    specs_from_lpc = lpc2spec(lpcs)
+    np.testing.assert_almost_equal(specs_from_lpc[1], specs_from_lpc[2])
+    np.testing.assert_equal(np.any(np.not_equal(lpc2spec(lpcs, FMout=True)[1],
+                                                specs_from_lpc[2])), True)
 
 @pytest.mark.parametrize('num_ceps', [13, 17])
 def test_lpc(sig, fs, num_ceps):
