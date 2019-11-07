@@ -8,16 +8,47 @@ from ..features.lpc import do_lpc, lpc2cep, lpc2spec
 def plp(sig,
         fs,
         num_ceps=13,
-        win_time=0.025,
-        hop_time=0.010,
-        do_rasta=False,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        win_len=0.025,
+        win_hop=0.010,
         modelorder=13,
         normalize=0):
+    """
+    compute plps.
+
+    Args:
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        win_type       (float) : window type to apply for the windowing.
+                                 Default is "hamming".
+        modelorder       (int) : order of the model / number of cepstra. 0 -> no PLP.
+                                 Default is 13.
+        normalize        (int) : if True apply normalization.
+                                 Default is 0.
+    Returns:
+        plps.
+    """
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
     return rastaplp(x=sig,
                     fs=fs,
-                    win_time=win_time,
-                    hop_time=hop_time,
-                    do_rasta=do_rasta,
+                    win_len=win_len,
+                    win_hop=win_hop,
+                    do_rasta=False,
                     modelorder=num_ceps - 1,
                     normalize=normalize)
 
@@ -25,47 +56,75 @@ def plp(sig,
 def rplp(sig,
          fs,
          num_ceps=13,
-         win_time=0.025,
-         hop_time=0.010,
-         do_rasta=True,
+         pre_emph=0,
+         pre_emph_coeff=0.97,
+         win_len=0.025,
+         win_hop=0.010,
          normalize=0):
+    """
+    compute rasta plps.
+
+    Args:
+        sig            (array) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 Default is 16000.
+        num_ceps       (float) : number of cepstra to return.
+                                 Default is 13.
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 Default is 1.
+        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
+                                 Default is 0.97.
+        win_len        (float) : window length in sec.
+                                 Default is 0.025.
+        win_hop        (float) : step between successive windows in sec.
+                                 Default is 0.01.
+        normalize        (int) : if True apply normalization.
+                                 Default is 0.
+    Returns:
+        rasta plps.
+    """
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
     return rastaplp(x=sig,
                     fs=fs,
-                    win_time=win_time,
-                    hop_time=hop_time,
-                    do_rasta=do_rasta,
+                    win_len=win_len,
+                    win_hop=win_hop,
+                    do_rasta=True,
                     modelorder=num_ceps - 1,
                     normalize=normalize)
 
 
 def rastaplp(x,
              fs=16000,
-             win_time=0.025,
-             hop_time=0.010,
+             win_len=0.025,
+             win_hop=0.010,
              do_rasta=True,
              modelorder=13,
              normalize=0):
     """
-    %[cepstra, spectra, lpcas] = rastaplp(samples, sr, do_rasta, modelorder)
-    %
-    % cheap version of log rasta with fixed parameters
-    %
-    % output is matrix of features, row = feature, col = frame
-    %
-    % sr is sampling rate of samples, defaults to 8000
-    % do_rasta defaults to 1; if 0, just calculate PLP
-    % modelorder is order of PLP model, defaults to 8.  0 -> no PLP
-    %
-    % rastaplp(d, sr, 0, 12) is pretty close to the unix command line
-    % feacalc -dith -delta 0 -ras no -plp 12 -dom cep ...
-    % except during very quiet areas, where our approach of adding noise
-    % in the time domain is different from rasta's approach
-    %
-    % 2003-04-12 dpwe@ee.columbia.edu after shire@icsi.berkeley.edu's version
+    compute rasta Perceptual Linear Prediction coefficients (rasta plp) [cepstra, spectra, lpcas] = rastaplp(samples, sr, do_rasta, modelorder)
 
+    Args:
+        x        (array) : signal array.
+        fs         (int) : sampling rate.
+                           Default is 1600.
+        win_len  (float) : length of window.
+                           Default is 0.025,
+        win_hop  (float) : window hop.
+                           Default is 0.010,
+        do_rasta  (bool) : if True apply rasta filtering. If False PLP is calculated.
+                           Default is True,
+        modelorder (int) : order of the model / number of cepstra. 0 -> no PLP.
+                           Default is 13,
+        normalize (int) : if True apply normalization.
+                           Default is 0
+    Returns:
+        PLP or RPLP coefficients. Matrix of features, row = feature, col = frame.
     """
     # first compute power spectrum
-    p_spectrum, _ = spec.powspec(x, fs, win_time, hop_time)
+    p_spectrum, _ = spec.powspec(x, fs, win_len, win_hop)
 
     # next group to critical bands
     aspectrum = spec.audspec(p_spectrum, fs)

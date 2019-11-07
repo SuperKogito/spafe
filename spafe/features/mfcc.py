@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Mel Frequency Cepstral Coefficients Extraction
-===============================================
-"""
 import scipy
 import numpy as np
 from ..utils.spectral import rfft, dct

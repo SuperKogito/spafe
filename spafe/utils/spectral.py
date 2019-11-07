@@ -18,7 +18,6 @@ def cqt(sig, fs=16000, low_freq=10, high_freq=3000, b=48):
     """
     Compute the constant Q-transform.
 
-
           - take the absolute value of the FFT
           - warp to a Mel frequency scale
           - take the DCT of the log-Mel-spectrum
@@ -34,6 +33,8 @@ def cqt(sig, fs=16000, low_freq=10, high_freq=3000, b=48):
                           Default is 3000.
         b         (int) : number of bins per octave.
                           Default is 48.
+    Returns:
+        array including the Q-transform coefficients.
     """
     # define lambda funcs for clarity
     f  = lambda     k: low_freq * 2**((k-1) / b)
@@ -334,13 +335,15 @@ def powspec(sig,
 
 def lifter(x, lift=0.6, invs=False):
     """
-    y = lifter(x, lift, invs)
-      Apply lifter to matrix of cepstra (one per column)
-      lift = exponent of x i^n liftering
-      or, as a negative integer, the length of HTK-style sin-curve liftering.
-      If inverse == 1 (default 0), undo the liftering.
-    2005-05-19 dpwe@ee.columbia.edu
+    apply lifter to matrix of cepstra (one per column)
 
+    Args:
+      lift   (float) : exponent of x i^n liftering or, as a negative integer, the
+                       length of HTK-style sin-curve liftering.
+      inverse (bool) : if inverse == 1 (default 0), undo the liftering.
+
+    Returns:
+        liftered cepstra.
     """
     ncep = x.shape[0]
 
@@ -348,8 +351,7 @@ def lifter(x, lift=0.6, invs=False):
         y = x
     else:
         if lift < 0:
-            warnings.warn(
-                'HTK liftering does not support yet; default liftering')
+            warnings.warn('HTK liftering does not support yet; default liftering')
             lift = 0.6
         liftwts = np.arange(1, ncep)**lift
         liftwts = np.append(1, liftwts)
