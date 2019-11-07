@@ -6,7 +6,6 @@ Top-level module for spafe
 import sys
 import warnings
 
-# And all the librosa sub-modules
 from . import fbanks
 from . import features
 from . import frequencies

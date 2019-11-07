@@ -15,7 +15,6 @@ from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handlin
 from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
                               postaud, invpostaud, invpowspec, invaudspec)
 
-
 def mfcc(sig,
          fs=16000,
          num_ceps=13,
@@ -148,7 +147,6 @@ def mfcc(sig,
     if normalize:
         mfccs = cmvn(cms(mfccs))
     return mfccs
-
 
 def imfcc(sig,
          fs=16000,

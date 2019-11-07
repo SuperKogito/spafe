@@ -80,7 +80,6 @@ def mel_filter_banks(nfilts=20,
 
     return np.abs(fbank)
 
-
 def inverse_mel_filter_banks(nfilts=20,
                              nfft=512,
                              fs=16000,
@@ -120,7 +119,7 @@ def inverse_mel_filter_banks(nfilts=20,
         raise ParameterError(ErrorMsgs["high_freq"])
 
     # inverse scaler value
-    scales = {"ascendant" : "descendant", 
+    scales = {"ascendant" : "descendant",
               "descendant": "ascendant",
               "constant"  : "constant"}
     iscale = scales[scale]

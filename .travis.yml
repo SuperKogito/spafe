@@ -1,13 +1,13 @@
 language: python
 python:
-  - "2.7"
   - "3.5"
   - "3.6"
   - "3.7"
-  
+  - "3.8"
+
 cache:
   - pip
-  
+
 # command to install dependencies
 before_script:
   - sudo apt-get update
@@ -16,8 +16,6 @@ before_script:
   - sudo apt-get install python3-setuptools
   - pip3 install --upgrade setuptools
   - pip3 install matplotlib
-  - pip3 install numba
-  - pip3 install librosa
   - pip3 install pytest-cov pytest
   - pip3 install codecov
   - pip3 install coveralls
