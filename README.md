@@ -33,7 +33,8 @@ or conda:
 
     conda install xxxx
 
-
+# How to use
+Various examples on how to use spafe filter banks or feature extraction techniques are available under [examples](https://github.com/SuperKogito/spafe/tree/master/examples).
 # Contributing
 Contributions are welcome and encouraged. To learn more about how to contribute to spafe please refer to the [Contributing guidelines](https://github.com/SuperKogito/spafe/blob/master/CONTRIBUTING.md)
 
