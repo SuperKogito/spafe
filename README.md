@@ -10,11 +10,8 @@
 [![codecov](https://codecov.io/gh/SuperKogito/spafe/branch/master/graph/badge.svg)](https://codecov.io/gh/SuperKogito/spafe)
 [![Coverage Status](https://coveralls.io/repos/github/SuperKogito/spafe/badge.svg?branch=master)](https://coveralls.io/github/SuperKogito/spafe?branch=master)
 
-spafe aims to simplify features extractions from audio. The library covers: MFCC, IMFCC, GFCC, LFCC, PNCC, PLP etc.
+spafe aims to simplify features extractions from mono audio files. The library can extract of the following features: ***BFCC, LFCC, LPC, LPCC, MFCC, IMFCC, MSRCC, NGCC, PNCC, PSRCC, PLP, RPLP, Frequency-stats*** etc.
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
-
-# Contributions, feedback and suggestions are welcome
-Contributions are encouraged and any hints, or suggestions are appreciated. Just take a look at the [TO DOs](https://github.com/SuperKogito/spafe/projects/1). 
 
 
 # Installation
