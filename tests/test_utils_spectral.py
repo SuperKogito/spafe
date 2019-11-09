@@ -18,12 +18,12 @@ def get_data(fname):
 
 @pytest.fixture
 def sig():
-    __EXAMPLE_FILE = 'test21.wav'
+    __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
 
 @pytest.fixture
 def fs():
-    __EXAMPLE_FILE = 'test21.wav'
+    __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
 def test_functions_availability():
@@ -116,7 +116,7 @@ def test_display(sig, fs, low_freq, high_freq, normalize):
                  normalize=normalize)
 
 if __name__ == "__main__":
-    fs, x = get_data('../test21.wav')
+    fs, x = get_data('../test.wav')
     # run tests
     test_stft(x, fs)
     test_istft(x, fs)

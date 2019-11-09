@@ -64,7 +64,7 @@ def test_extract_feats(mock_show, sig, fs):
 
 
 if __name__ == "__main__":
-    fs, sig = scipy.io.wavfile.read('../test21.wav')
+    fs, sig = scipy.io.wavfile.read('../test.wav')
     # run tests
     test_dom_freqs(sig, fs)
     test_fund_freqs(sig, fs)

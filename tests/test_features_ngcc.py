@@ -155,7 +155,7 @@ def test_ngcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram
-    fs, sig = get_data('../test21.wav')
+    fs, sig = get_data('../test.wav')
     if DEBUG_MODE:
         vis.spectogram(sig, fs)
 

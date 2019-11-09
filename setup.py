@@ -2,20 +2,25 @@
 
 from setuptools import setup, find_packages
 
+
+# get readme text
 f = open('README.md', 'r')
 try:
     long_desc = f.read()
 finally:
     f.close()
 
+# define requirements
 requires = ["numpy>=1.17.2", "scipy>=1.3.1"]
 
 setup (
         name         = 'spafe',
         version      = '0.1',
-        author       = 'Super Kogito',
+        author       = 'SuperKogito',
         author_email = 'superkogito@gmail.com',
         description  = 'Simplified python Audio Features Extraction',
+        long_description = f,
+        long_description_content_type = long_desc,
         license      = 'BSD',
         url          = 'https://github.com/SuperKogito/spafe',
         packages     = find_packages(),

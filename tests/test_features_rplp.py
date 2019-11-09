@@ -55,7 +55,7 @@ def test_rplp(sig, fs, num_ceps):
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram
-    fs, sig = get_data('../test21.wav')
+    fs, sig = get_data('../test.wav')
     if DEBUG_MODE:
         vis.spectogram(sig, fs)
 

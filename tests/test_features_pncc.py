@@ -29,7 +29,7 @@ def fs():
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 26])
 @pytest.mark.parametrize('nfilts', [32, 48])
-@pytest.mark.parametrize('nfft', [256, 512, 1024])
+@pytest.mark.parametrize('nfft', [256, 512])
 @pytest.mark.parametrize('low_freq', [0, 300])
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('dct_type', [1, 2, 4])
@@ -155,7 +155,7 @@ def test_pncc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram
-    fs, sig = get_data('../test21.wav')
+    fs, sig = get_data('../test.wav')
     if DEBUG_MODE:
         vis.spectogram(sig, fs)
 
