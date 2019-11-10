@@ -25,13 +25,12 @@ spafe requires:
 - SciPy (>= 1.3.1)
 
 ## User installation
-*not available at the moment*
 
 If you already have a working installation of numpy and scipy, you can simply install spafe using pip:
 
     pip install -U spafe
 
-or conda:
+or conda (*not available at the moment*):
 
     conda install spafe
 
