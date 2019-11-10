@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
-
+import pathlib
 from setuptools import setup, find_packages
 
+# The directory containing this file
+path = pathlib.Path(__file__).parent
 
 # get readme text
-f = open('README.md', 'r')
-try:
-    long_desc = f.read()
-finally:
-    f.close()
-
+readme = (path / "README.md").read_text()
 # define requirements
 requires = ["numpy>=1.17.2", "scipy>=1.3.1"]
 
 setup (
         name         = 'spafe',
-        version      = '0.1',
+        version      = '0.1.1',
         author       = 'SuperKogito',
         author_email = 'superkogito@gmail.com',
         description  = 'Simplified python Audio Features Extraction',
-        long_description = f,
-        long_description_content_type = long_desc,
+        long_description = readme,
+        long_description_content_type = "text/markdown",
         license      = 'BSD',
         url          = 'https://github.com/SuperKogito/spafe',
         packages     = find_packages(),

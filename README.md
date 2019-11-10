@@ -27,15 +27,13 @@ spafe requires:
 
 If you already have a working installation of numpy and scipy, you can simply install spafe using pip:
 
-    pip install -U xxx
-    
+    pip install -U spafe
+
 or conda:
 
-    conda install xxxx
+    conda install spafe
 
 # How to use
 Various examples on how to use spafe filter banks or feature extraction techniques are available under [examples](https://github.com/SuperKogito/spafe/tree/master/examples).
 # Contributing
 Contributions are welcome and encouraged. To learn more about how to contribute to spafe please refer to the [Contributing guidelines](https://github.com/SuperKogito/spafe/blob/master/CONTRIBUTING.md)
-
-
