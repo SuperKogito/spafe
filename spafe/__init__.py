@@ -3,6 +3,8 @@
 """
 Top-level module for spafe
 """
+__version__ = '0.1.0'
+
 import sys
 import warnings
 
