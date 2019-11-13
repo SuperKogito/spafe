@@ -11,6 +11,7 @@
 [![codecov](https://codecov.io/gh/SuperKogito/spafe/branch/master/graph/badge.svg)](https://codecov.io/gh/SuperKogito/spafe)
 [![PyPI version](https://badge.fury.io/py/spafe.svg)](https://badge.fury.io/py/spafe)
 [![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e94b18b0e9a040d4bc30d478879f86eb)](https://www.codacy.com/manual/SuperKogito/spafe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SuperKogito/spafe&amp;utm_campaign=Badge_Grade)
 
 spafe aims to simplify features extractions from mono audio files. The library can extract of the following features: ***BFCC, LFCC, LPC, LPCC, MFCC, IMFCC, MSRCC, NGCC, PNCC, PSRCC, PLP, RPLP, Frequency-stats*** etc.
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
