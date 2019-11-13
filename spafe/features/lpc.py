@@ -1,11 +1,11 @@
 import numpy as np
+from scipy.fftpack import ifft
 from spafe.utils import levinsondr
-from scipy.fftpack import fft, ifft
 from spafe.utils.filters import rasta_filter
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.preprocessing import pre_emphasis, framing, windowing
 from spafe.utils.spectral import (powspec, lifter, audspec, postaud,
-                                  invpostaud, invpowspec, invaudspec)
+                                  invpostaud, invpowspec)
 
 
 def lpcc(sig,

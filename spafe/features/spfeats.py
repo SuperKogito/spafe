@@ -34,7 +34,6 @@ Reference:
 import scipy
 import numpy as np
 from ..utils.spectral import stft
-from ..utils import preprocessing as proc
 from ..frequencies.dominant_frequencies import DominantFrequenciesExtractor
 from ..frequencies.fundamental_frequencies import FundamentalFrequenciesExtractor
 

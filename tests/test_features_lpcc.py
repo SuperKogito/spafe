@@ -2,7 +2,6 @@ import pytest
 import numpy as np
 import scipy.io.wavfile
 from spafe.utils import vis
-from spafe.utils.exceptions import ParameterError
 from spafe.features.lpc import lpc, lpcc, lpc2spec
 from spafe.utils.spectral import stft, display_stft
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps

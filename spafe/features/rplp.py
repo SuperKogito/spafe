@@ -1,7 +1,7 @@
 import numpy as np
 from ..utils import spectral as spec
+from ..utils.cepstral import cms, cmvn
 from ..utils.filters import rasta_filter
-from ..utils.cepstral import cms, cmvn, lifter_ceps
 from ..features.lpc import do_lpc, lpc2cep, lpc2spec
 
 

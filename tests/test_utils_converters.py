@@ -1,7 +1,7 @@
 import spafe
 import pytest
 import numpy as np
-from spafe.utils.exceptions import ParameterError, ErrorMsgs
+from spafe.utils.exceptions import ParameterError
 from spafe.utils.converters import (hz2erb, erb2hz, hz2bark, bark2hz, hz2mel,
                                     mel2hz, fft2hz, fft2erb, erb2fft, hz2fft,
                                     fft2bark, bark2fft)

@@ -1,7 +1,7 @@
 import pytest
 from spafe.utils import vis
 from spafe.fbanks import bark_fbanks
-from spafe.utils.exceptions import ParameterError, ErrorMsgs
+from spafe.utils.exceptions import ParameterError
 
 DEBUG_MODE = False
 

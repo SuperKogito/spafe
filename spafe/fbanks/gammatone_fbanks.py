@@ -155,7 +155,7 @@ def gammatone_filter_banks(nfilts=20,
         fbs = np.array([f / np.max(f) for f in fbank[:, range(maxlen)]])
     except BaseException:
         fbs = fbank[:, idx]
-        
+
     # compute scaler
     if scale == "ascendant":
         c = [0, ]

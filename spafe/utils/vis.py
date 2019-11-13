@@ -11,8 +11,8 @@ def visualize_fbanks(fbanks, ylabel, xlabel):
         ylabel   (str) : y-axis label.
         xlabel   (str) : x-axis label.
     """
-    for i in range(len(fbanks)):
-        plt.plot(fbanks[i])
+    for fbank in fbanks:
+        plt.plot(fbank)
         plt.ylim(0, 1.1)
         plt.grid(True)
         plt.ylabel(ylabel)

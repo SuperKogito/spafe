@@ -3,10 +3,8 @@ based on: https://github.com/scoreur/cqt/blob/master/cqt.py
 """
 import scipy
 import pytest
-import numpy as np
 from mock import patch
 import scipy.io.wavfile
-import matplotlib.pyplot as plt
 from spafe.features.spfeats import extract_feats
 from spafe.frequencies.dominant_frequencies import DominantFrequenciesExtractor
 from spafe.frequencies.fundamental_frequencies import FundamentalFrequenciesExtractor

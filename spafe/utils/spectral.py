@@ -3,9 +3,6 @@
 import scipy
 import warnings
 import numpy as np
-from scipy import signal
-import scipy.fftpack as fft
-from spafe.utils import levinsondr
 from spafe.utils.converters import (hz2bark, bark2hz, hz2mel, mel2hz,
                                     fft2barkmx, fft2melmx)
 

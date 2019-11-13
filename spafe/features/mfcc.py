@@ -1,14 +1,11 @@
-import scipy
 import numpy as np
 from ..utils.spectral import rfft, dct
-
-from ..features.lpc import do_lpc, lpc2cep
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.cepstral import cms, cmvn, lifter_ceps, spec2cep, cep2spec
+from ..utils.cepstral import cms, cmvn, lifter_ceps, spec2cep
 from ..fbanks.mel_fbanks import inverse_mel_filter_banks, mel_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
-                              postaud, invpostaud, invpowspec, invaudspec)
+                              postaud, invpostaud, invpowspec)
 
 def mfcc(sig,
          fs=16000,
@@ -262,7 +259,7 @@ def imfcc(sig,
 
     # liftering
     if lifter > 0:
-        mfccs = lifter_ceps(imfccs, lifter)
+        imfccs = lifter_ceps(imfccs, lifter)
 
     # normalization
     if normalize:

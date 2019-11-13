@@ -1,10 +1,8 @@
 import pytest
-import numpy as np
 import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.rplp import rplp, plp
-from spafe.utils.exceptions import ParameterError
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
+from spafe.utils.cepstral import cms, cmvn
 from spafe.utils.spectral import stft, display_stft
 
 DEBUG_MODE = False

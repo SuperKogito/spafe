@@ -2,7 +2,6 @@
 based on: https://github.com/scoreur/cqt/blob/master/cqt.py
 """
 import spafe
-import scipy
 import pytest
 import numpy as np
 from mock import patch

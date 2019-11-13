@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 from mock import patch
 from spafe.utils import vis
-import matplotlib.pyplot as plt
 from spafe.features.lfcc import lfcc
 from spafe.fbanks import linear_fbanks
 
