@@ -296,6 +296,7 @@ def rfft(x, n=NFFT):
 
 
 def dct(x, type=2, axis=1, norm='ortho'):
+    from scipy.fftpack import dct
     return scipy.fftpack.dct(x=x, type=type, axis=axis, norm=norm)
 
 
@@ -314,7 +315,7 @@ def powspec(sig,
      each row represents a frequency
 
      default values:
-         sr = 8000Hz
+         fs = 8000Hz
          wintime = 25ms (200 samps)
          steptime = 10ms (80 samps)
          which means use 256 point fft
@@ -322,7 +323,7 @@ def powspec(sig,
 
      $Header: /Users/dpwe/matlab/rastamat/RCS/powspec.m,v 1.3 2012/09/03 14:02:01 dpwe Exp dpwe $
 
-     for sr = 8000
+     for fs = 8000
          NFFT = 256;
          NOVERLAP = 120;
          SAMPRATE = 8000;
@@ -531,7 +532,7 @@ def invpostaud(y, fmax, fb_type='bark', broaden=0):
 
 def invpowspec(y, fs, win_len, win_hop, excit=[]):
     """
-    x = invpowspec(y, sr, wintime, steptime, excit)
+    x = invpowspec(y, fs, wintime, steptime, excit)
 
     Attempt to go back from specgram-like power spectrum to audio waveform by
     scaling specgram of white noise
@@ -544,7 +545,7 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
         hamming window
 
     excit is input excitation; white noise is used if not specified
-        for sr = 8000
+        for fs = 8000
         NFFT = 256;
         NOVERLAP = 120;
         SAMPRATE = 8000;
@@ -574,7 +575,7 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
         r = np.squeeze(np.random.randn(xlen, 1))
     r = r[0:xlen]
 
-    R, _ = stft(sig=sig,
+    R, _ = stft(sig=r,
                 fs=fs,
                 win_type=win_type,
                 win_len=win_len,

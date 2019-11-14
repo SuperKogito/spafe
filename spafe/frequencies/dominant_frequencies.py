@@ -115,6 +115,6 @@ class DominantFrequenciesExtractor:
         sig = scipy.signal.lfilter(b, a, sig)
 
         # compute dominant frequencies
-        slices = [w for w in self.sliding_window(sig, fs, 10, 5)]
+        slices = [wind for wind in self.sliding_window(sig, fs, 10, 5)]
         dom_freqs = self.get_dominant_frequencies(slices, fs)
         return dom_freqs

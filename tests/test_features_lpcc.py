@@ -102,7 +102,6 @@ def test_lpcc(sig, fs, num_ceps, lifter, normalize):
                          normalize=normalize), lifter), 0)
 
     if DEBUG_MODE:
-        vis.visualize_features(lpcs, 'LPC Index', 'Frame Index')
         vis.visualize_features(lpccs, 'LPCC Index', 'Frame Index')
 
 

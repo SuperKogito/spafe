@@ -15,14 +15,12 @@ class SpafeError(Exception):
     """
     The root spafe exception class
     """
-    pass
 
 
 class ParameterError(SpafeError):
     """
     Exception class for mal-formed inputs
     """
-    pass
 
 
 def assert_function_availability(hasattr_output):

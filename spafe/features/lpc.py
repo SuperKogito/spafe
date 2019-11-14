@@ -4,7 +4,7 @@ from spafe.utils import levinsondr
 from spafe.utils.filters import rasta_filter
 from ..utils.preprocessing import pre_emphasis
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-from spafe.utils.spectral import (powspec, lifter, audspec, postaud, invpostaud, invpowspec)
+from spafe.utils.spectral import (powspec, lifter, audspec, postaud, invpowspec)
 
 
 def lpcc(sig,
@@ -213,14 +213,14 @@ def lpc2cep(a, nout=0):
     norm_a = np.divide(a, np.add(np.tile(a[0, :], (nin, 1)), 1e-8))
 
     for n in range(1, nout):
-        sum = 0
+        sum_var = 0
         for m in range(1, n):
-            sum = np.add(
-                sum,
+            sum_var = np.add(
+                sum_var,
                 np.multiply(np.multiply((n - m), norm_a[m, :]),
                             cep[(n - m), :]))
 
-        cep[n, :] = -np.add(norm_a[n, :], np.divide(sum, n))
+        cep[n, :] = -np.add(norm_a[n, :], np.divide(sum_var, n))
 
     return cep
 

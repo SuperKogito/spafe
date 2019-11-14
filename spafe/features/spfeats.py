@@ -160,11 +160,11 @@ def spectral_spread(centroid, spectrum, fs):
     """
     bin_count, numerator, denominator = 0, 0, 0
 
-    for bin in spectrum:
+    for bin_i in spectrum:
         # Compute center frequency
         f = ((fs / 2.0) / len(spectrum)) * bin_count
-        numerator = numerator + (((f - centroid)**2) * abs(bin))
-        denominator = denominator + abs(bin)
+        numerator = numerator + (((f - centroid)**2) * abs(bin_i))
+        denominator = denominator + abs(bin_i)
         bin_count = bin_count + 1
 
     return np.sqrt((numerator * 1.0) / denominator)

@@ -19,6 +19,7 @@ before_script:
   - pip3 install codecov
   - pip3 install coveralls
   - pip3 install pytest-xdist
+  - pip3 install codacy-coverage
   - sudo apt-get update
 
 # command to run tests
@@ -28,3 +29,6 @@ script:
 after_success:
   - codecov
   - coveralls
+  - coverage xml
+  - export CODACY_PROJECT_TOKEN=88a615a4de8445e1ab801be6962f57ef
+  - python-codacy-coverage -r coverage.xml
