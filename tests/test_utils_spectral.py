@@ -7,6 +7,7 @@ import numpy as np
 from mock import patch
 import scipy.io.wavfile
 import matplotlib.pyplot as plt
+from spafe.utils.exceptions import assert_function_availability
 from spafe.utils.spectral import (cqt, stft, istft, display_stft)
 
 DEBUG_MODE = False
@@ -27,23 +28,23 @@ def fs():
 
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
-    assert hasattr(spafe.utils.spectral, 'cqt')
-    assert hasattr(spafe.utils.spectral, 'pre_process_x')
-    assert hasattr(spafe.utils.spectral, 'stft')
-    assert hasattr(spafe.utils.spectral, 'compute_stft')
-    assert hasattr(spafe.utils.spectral, 'istft')
-    assert hasattr(spafe.utils.spectral, 'normalize_window')
-    assert hasattr(spafe.utils.spectral, 'display_stft')
-    assert hasattr(spafe.utils.spectral, 'power_spectrum')
-    assert hasattr(spafe.utils.spectral, 'rfft')
-    assert hasattr(spafe.utils.spectral, 'dct')
-    assert hasattr(spafe.utils.spectral, 'powspec')
-    assert hasattr(spafe.utils.spectral, 'lifter')
-    assert hasattr(spafe.utils.spectral, 'audspec')
-    assert hasattr(spafe.utils.spectral, 'postaud')
-    assert hasattr(spafe.utils.spectral, 'invpostaud')
-    assert hasattr(spafe.utils.spectral, 'invpowspec')
-    assert hasattr(spafe.utils.spectral, 'invaudspec')
+    assert_function_availability(hasattr(spafe.utils.spectral, 'cqt'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'pre_process_x'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'stft'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'compute_stft'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'istft'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'normalize_window'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'display_stft'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'power_spectrum'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'rfft'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'dct'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'powspec'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'lifter'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'audspec'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'postaud'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'invpostaud'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'invpowspec'))
+    assert_function_availability(hasattr(spafe.utils.spectral, 'invaudspec'))
 
 @pytest.mark.test_id(301)
 def test_stft(sig, fs):

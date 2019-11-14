@@ -68,7 +68,8 @@ def test_lpcc(sig, fs, num_ceps, lifter, normalize):
     """
     lpccs = lpcc(sig=sig, fs=fs, num_ceps=num_ceps, lifter=lifter, normalize=normalize)
     # assert number of returned cepstrum coefficients
-    assert lpccs.shape[1] == num_ceps
+    if not lpccs.shape[1] == num_ceps:
+        raise AssertionError
 
     # TO FIX: normalize
     if normalize:
@@ -95,9 +96,7 @@ def test_lpcc(sig, fs, num_ceps, lifter, normalize):
 
     if DEBUG_MODE:
         vis.visualize_features(lpcs, 'LPC Index', 'Frame Index')
-    if DEBUG_MODE:
         vis.visualize_features(lpccs, 'LPCC Index', 'Frame Index')
-    assert True
 
 
 if __name__ == "__main__":

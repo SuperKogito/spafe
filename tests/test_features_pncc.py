@@ -94,7 +94,8 @@ def test_pncc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                  normalize=normalize)
 
     # assert number of returned cepstrum coefficients
-    assert pnccs.shape[1] == num_ceps
+    if not pnccs.shape[1] == num_ceps:
+        raise AssertionError
 
     # check use energy
     if use_energy:
@@ -150,7 +151,6 @@ def test_pncc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
     if DEBUG_MODE:
         vis.visualize_features(pnccs, 'PNCC Index', 'Frame Index')
-    assert True
 
 
 if __name__ == "__main__":

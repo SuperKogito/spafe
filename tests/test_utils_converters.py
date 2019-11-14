@@ -1,7 +1,7 @@
 import spafe
 import pytest
 import numpy as np
-from spafe.utils.exceptions import ParameterError
+from spafe.utils.exceptions import ParameterError, assert_function_availability
 from spafe.utils.converters import (hz2erb, erb2hz, hz2bark, bark2hz, hz2mel,
                                     mel2hz, fft2hz, fft2erb, erb2fft, hz2fft,
                                     fft2bark, bark2fft)
@@ -48,18 +48,18 @@ def fix_fft():
 
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
-    assert hasattr(spafe.utils.converters, 'hz2erb')
-    assert hasattr(spafe.utils.converters, 'erb2hz')
-    assert hasattr(spafe.utils.converters, 'hz2bark')
-    assert hasattr(spafe.utils.converters, 'bark2hz')
-    assert hasattr(spafe.utils.converters, 'hz2mel')
-    assert hasattr(spafe.utils.converters, 'mel2hz')
-    assert hasattr(spafe.utils.converters, 'hz2fft')
-    assert hasattr(spafe.utils.converters, 'fft2hz')
-    assert hasattr(spafe.utils.converters, 'fft2erb')
-    assert hasattr(spafe.utils.converters, 'erb2fft')
-    assert hasattr(spafe.utils.converters, 'fft2bark')
-    assert hasattr(spafe.utils.converters, 'bark2fft')
+    assert_function_availability(hasattr(spafe.utils.converters, 'hz2erb'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'erb2hz'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'hz2bark'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'bark2hz'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'hz2mel'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'mel2hz'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'hz2fft'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'fft2hz'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'fft2erb'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'erb2fft'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'fft2bark'))
+    assert_function_availability(hasattr(spafe.utils.converters, 'bark2fft'))
 
 
 def test_hz2erb(fhz, ferb):

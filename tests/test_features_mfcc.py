@@ -94,7 +94,8 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                  normalize=normalize)
 
     # assert number of returned cepstrum coefficients
-    assert mfccs.shape[1] == num_ceps
+    if not mfccs.shape[1] == num_ceps:
+        raise AssertionError
 
     # check use energy
     if use_energy:
@@ -112,7 +113,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                             normalize=normalize)[:, 0]
 
         np.testing.assert_almost_equal(mfccs_energy, gfccs_energy, 3)
-    print("Here")
+
     # check normalize
     if normalize:
         np.testing.assert_almost_equal(
@@ -150,7 +151,6 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
     if DEBUG_MODE:
         vis.visualize_features(mfccs, 'MFCC Index', 'Frame Index')
-    assert True
 
 
 @pytest.mark.test_id(202)
@@ -221,7 +221,8 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                    normalize=normalize)
 
     # assert number of returned cepstrum coefficients
-    assert imfccs.shape[1] == num_ceps
+    if not imfccs.shape[1] == num_ceps:
+        raise AssertionError
 
     # check use energy
     if use_energy:
@@ -277,7 +278,6 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
     if DEBUG_MODE:
         vis.visualize_features(imfccs, 'IMFCC Index', 'Frame Index')
-    assert True
 
 
 if __name__ == "__main__":

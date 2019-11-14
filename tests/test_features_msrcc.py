@@ -94,7 +94,8 @@ def test_msrcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                    normalize=normalize)
 
     # assert number of returned cepstrum coefficients
-    assert msrccs.shape[1] == num_ceps
+    if not msrccs.shape[1] == num_ceps:
+        raise AssertionError
 
     # check use energy
     if use_energy:
@@ -150,8 +151,7 @@ def test_msrcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
     if DEBUG_MODE:
         vis.visualize_features(msrccs, 'MSRCC Index', 'Frame Index')
-    assert True
-
+        
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram

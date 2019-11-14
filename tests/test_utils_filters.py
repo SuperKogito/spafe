@@ -4,17 +4,19 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from spafe.utils.filters import kalman, kalman_xy
+from spafe.utils.exceptions import assert_function_availability
+
 
 DEBUG_MODE = False
 warnings.filterwarnings("ignore")
 
+
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
-    assert hasattr(spafe.utils.filters, 'gaussian_filter')
-    assert hasattr(spafe.utils.filters, 'sobel_filter')
-    assert hasattr(spafe.utils.filters, 'rasta_filter')
-    assert hasattr(spafe.utils.filters, 'kalman_xy')
-
+    assert_function_availability(hasattr(spafe.utils.filters, 'gaussian_filter'))
+    assert_function_availability(hasattr(spafe.utils.filters, 'sobel_filter'))
+    assert_function_availability(hasattr(spafe.utils.filters, 'rasta_filter'))
+    assert_function_availability(hasattr(spafe.utils.filters, 'kalman_xy'))
 
 @pytest.mark.test_id(401)
 def test_kalman_xy():

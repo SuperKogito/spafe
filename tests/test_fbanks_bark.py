@@ -50,7 +50,6 @@ def test_barkfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     # plot filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(bark_filbanks, "Amplitude", "Frequency (Hz)")
-    assert True
 
 
 if __name__ == "__main__":

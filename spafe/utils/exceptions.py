@@ -23,3 +23,8 @@ class ParameterError(SpafeError):
     Exception class for mal-formed inputs
     """
     pass
+
+def assert_function_availability(hasattr_output):
+    # raise assertion error if function is not availible
+    if not hasattr_output:
+        raise AssertionError

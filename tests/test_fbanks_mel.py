@@ -50,7 +50,6 @@ def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     # plot the filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(mel_filbanks, "Amplitude", "Frequency (Hz)")
-    assert True
 
 
 @pytest.mark.test_id(105)
@@ -94,7 +93,6 @@ def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     # plot the filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(imel_filbanks, "Amplitude", "Frequency (Hz)")
-    assert True
 
 
 if __name__ == "__main__":

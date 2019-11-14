@@ -50,7 +50,6 @@ def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     # plot the filter banks
     if DEBUG_MODE:
         vis.visualize_fbanks(lin_filbanks, "Amplitude", "Frequency (Hz)")
-    assert True
 
 
 if __name__ == "__main__":

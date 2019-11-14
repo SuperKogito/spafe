@@ -6,6 +6,7 @@ from mock import patch
 from spafe.utils import vis
 from spafe.features.lfcc import lfcc
 from spafe.fbanks import linear_fbanks
+from spafe.utils.exceptions import assert_function_availability
 
 
 @pytest.fixture
@@ -21,10 +22,10 @@ def fs():
 
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
-    assert hasattr(spafe.utils.vis, 'visualize_fbanks')
-    assert hasattr(spafe.utils.vis, 'visualize_features')
-    assert hasattr(spafe.utils.vis, 'plot')
-    assert hasattr(spafe.utils.vis, 'spectogram')
+    assert_function_availability(hasattr(spafe.utils.vis, 'visualize_fbanks'))
+    assert_function_availability(hasattr(spafe.utils.vis, 'visualize_features'))
+    assert_function_availability(hasattr(spafe.utils.vis, 'plot'))
+    assert_function_availability(hasattr(spafe.utils.vis, 'spectogram'))
 
 @patch("matplotlib.pyplot.show")
 def test_visualize_fbanks(mock_show):

@@ -3,6 +3,8 @@ import scipy
 import pytest
 import numpy as np
 from spafe.utils.cepstral import cmn, cms, cvn, cmvn
+from spafe.utils.exceptions import assert_function_availability
+
 
 @pytest.fixture
 def x():
@@ -10,16 +12,16 @@ def x():
 
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
-    assert hasattr(spafe.utils.cepstral, 'cmn')
-    assert hasattr(spafe.utils.cepstral, 'cms')
-    assert hasattr(spafe.utils.cepstral, 'cvn')
-    assert hasattr(spafe.utils.cepstral, 'cmvn')
-    assert hasattr(spafe.utils.cepstral, '_helper_idx')
-    assert hasattr(spafe.utils.cepstral, '_helper_mat')
-    assert hasattr(spafe.utils.cepstral, 'cep2spec')
-    assert hasattr(spafe.utils.cepstral, 'deltas')
-    assert hasattr(spafe.utils.cepstral, 'spec2cep')
-    assert hasattr(spafe.utils.cepstral, 'lifter_ceps')
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'cmn'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'cms'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'cvn'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'cmvn'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, '_helper_idx'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, '_helper_mat'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'cep2spec'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'deltas'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'spec2cep'))
+    assert_function_availability(hasattr(spafe.utils.cepstral, 'lifter_ceps'))
 
 def test_cmn(x):
     # To improve

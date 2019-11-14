@@ -1,7 +1,7 @@
 import numpy as np
 from ..utils.spectral import rfft, dct
+from ..utils.cepstral import cms, cmvn, lifter_ceps
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.cepstral import cms, cmvn, lifter_ceps, spec2cep
 from ..fbanks.mel_fbanks import inverse_mel_filter_banks, mel_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
