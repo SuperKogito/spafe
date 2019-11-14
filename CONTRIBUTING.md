@@ -1,159 +1,146 @@
-# Contributing guidelines
+Contributing guidelines
+=======================
 
-## How to contribute
+How to contribute
+-----------------
 
-The preferred way to contribute to spafe is to fork the
-[main repository](https://github.com/SuperKogito/spafe) on GitHub:
+The preferred way to contribute to spafe is to fork the[main repository](https://github.com/SuperKogito/spafe) on GitHub:
 
-  1. Fork the [project repository](https://github.com/SuperKogito/spafe):
-  click on the 'Fork' button near the top of the page. This creates a copy of
-  the code under your account on the GitHub server.
+1.	Fork the [project repository](https://github.com/SuperKogito/spafe): click on the 'Fork' button near the top of the page. This creates a copy of the code under your account on the GitHub server.
 
-  2. Clone this copy to your local disk:
+2.	Clone this copy to your local disk:
 
-    - Using SSH:
+	-	Using SSH:
 
-    ```bash
-    git clone git@github.com:YourLogin/spafe.git
-    cd spafe
-    ```
+	```bash
+	git clone git@github.com:YourLogin/spafe.git
+	cd spafe
+	```
 
-    - Using HTTPS:
+	-	Using HTTPS&#x3A;
 
-    ```bash
-    git clone https://github.com/YourLogin/spafe.git
-    cd spafe
-    ```
+	```bash
+	git clone https://github.com/YourLogin/spafe.git
+	cd spafe
+	```
 
-  3. Remove any previously installed spafe versions, then install your local
-   copy with testing dependencies:
+3.	Remove any previously installed spafe versions, then install your local copy with testing dependencies:
 
-    ```bash
-    pip uninstall spafe
-    pip install .
-    ```
+	```bash
+	pip uninstall spafe
+	pip install .
+	```
 
-  4. Create a branch to hold your changes:
+4.	Create a branch to hold your changes:
 
-    ```bash
-    git checkout -b my-feature
-    ```
+	```bash
+	git checkout -b my-feature
+	```
 
-  5. Start making changes.
+5.	Start making changes.
 
-    ```diff
-    - Please never work directly on the ``master`` branch!
-    ```
+	\`\``diff
 
-  6. Use Git for the to do the version controlling of this copy. When you're
-   done editing, you know the drill `add`, `commit` then `push`:
+	-	Please never work directly on the `master` branch!\`\`\`
 
-    ```bash
-    git add modified_files
-    git commit
-    ```
+6.	Use Git for the to do the version controlling of this copy. When you're done editing, you know the drill `add`, `commit` then `push`:
 
-    to record your changes in Git, push them to GitHub with:
+	```bash
+	git add modified_files
+	git commit
+	```
 
-    ```bash
-    git push -u origin my-feature
-    ```
+	to record your changes in Git, push them to GitHub with:
 
-  7. Finally, go to the web page of the your spafe fork repo, and click
-   'Pull request' button to send your changes to the maintainers for review.
+	```bash
+	git push -u origin my-feature
+	```
 
-## Remarks
+7.	Finally, go to the web page of the your spafe fork repo, and click 'Pull request' button to send your changes to the maintainers for review.
 
-  It is recommended to check that your contribution complies with the following
-   rules before submitting a pull request:
+Remarks
+-------
 
-  - All public methods should have informative docstrings with sample usage
-   presented.
+It is recommended to check that your contribution complies with the following rules before submitting a pull request:
 
-  You can also check for common programming errors with the following tools:
+-	All public methods should have informative docstrings with sample usage presented.
 
-  - Code with good test coverage (at least 80%), check with:
+	You can also check for common programming errors with the following tools:
 
-    ```bash
-    pytest
-    ```
+-	Code with good test coverage (at least 80%), check with:
 
-  - No pyflakes warnings, check with:
+	```bash
+	pytest
+	```
 
-    ```bash
-    pip install pyflakes
-    pyflakes path/to/module.py
-    ```
+-	No pyflakes warnings, check with:
 
-  - No PEP8 warnings, check with:
+	```bash
+	pip install pyflakes
+	pyflakes path/to/module.py
+	```
 
-    ```bash
-    pip install pycodestyle
-    pycodestyle path/to/module.py
-    ```
+-	No PEP8 warnings, check with:
 
-  - AutoPEP8 and yapf can help you fix some of the easy redundant errors and
-   linter your code:
+	```bash
+	pip install pycodestyle
+	pycodestyle path/to/module.py
+	```
 
-    ```bash
-    pip install autopep8
-    pip install yapf
+-	AutoPEP8 and yapf can help you fix some of the easy redundant errors and linter your code:
 
-    autopep8 path/to/module.py
-    yapf path/to/module.py
-    ```
+	```bash
+	pip install autopep8
+	pip install yapf
 
-## Filing bugs
 
-we use Github issues to track all bugs and feature requests. In the case of
-coming across a bug, having a question or a feature suggestion etc. please feel
-free to open an issue. However, please make sure that your issue comply with our
-rules/follows the provided templates:
+	autopep8 path/to/module.py
+	yapf path/to/module.py
+	```
 
-  - [bug reports template](https://github.com/SuperKogito/spafe/blob/master/.github/ISSUE_TEMPLATE/bug_report.md)
-  - [feature requests template](https://github.com/SuperKogito/spafe/blob/master/.github/ISSUE_TEMPLATE/feature_request.md)
+Filing bugs
+-----------
 
-  In addition, please check that your issue complies with the following rules
-   before submitting:
+we use Github issues to track all bugs and feature requests. In the case of coming across a bug, having a question or a feature suggestion etc. please feel free to open an issue. However, please make sure that your issue comply with our rules/follows the provided templates:
 
-  - Verify that your issue is not being currently addressed by other in
-  [issues](https://github.com/SuperKogito/spafe/issues) or
-   [pull requests](https://github.com/SuperKogito/spafe/pulls).
+-	[bug reports template](https://github.com/SuperKogito/spafe/blob/master/.github/ISSUE_TEMPLATE/bug_report.md)
 
-  - Please ensure all code snippets and error messages are formatted appropriately.
-   See [Creating and highlighting code blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks).
+-	[feature requests template](https://github.com/SuperKogito/spafe/blob/master/.github/ISSUE_TEMPLATE/feature_request.md)
 
-  - Please include your operating system type and version number, as well as your
-   Python, spafe, numpy, and scipy versions. This information can be found by
-    running the following code snippet:
+	In addition, please check that your issue complies with the following rules before submitting:
 
-    ```python
-    import sys
-    import numpy
-    import scipy
-    import spafe
-    import platform
+-	Verify that your issue is not being currently addressed by other in[issues](https://github.com/SuperKogito/spafe/issues) or [pull requests](https://github.com/SuperKogito/spafe/pulls).
 
-    print(platform.platform())
-    print("Python", sys.version)
-    print("NumPy", numpy.__version__)
-    print("SciPy", scipy.__version__)
-    print("spafe", spafe.__version__)
-    ```
+-	Please ensure all code snippets and error messages are formatted appropriately. See [Creating and highlighting code blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks).
 
-## Documentation
+-	Please include your operating system type and version number, as well as your Python, spafe, numpy, and scipy versions. This information can be found by running the following code snippet:
 
-You can edit the documentation using any text editor and then generate the HTML
-output by typing `make html` from the docs/ directory. The resulting HTML files
-will be placed in `_build/html/` and are viewable in a web browser.
-See the README file in the doc/ directory for more information.
+	```python
+	import sys
+	import numpy
+	import scipy
+	import spafe
+	import platform
+
+
+	print(platform.platform())
+	print("Python", sys.version)
+	print("NumPy", numpy.__version__)
+	print("SciPy", scipy.__version__)
+	print("spafe", spafe.__version__)
+	```
+
+Documentation
+-------------
+
+You can edit the documentation using any text editor and then generate the HTML output by typing `make html` from the docs/ directory. The resulting HTML files will be placed in `_build/html/` and are viewable in a web browser. See the README file in the doc/ directory for more information.
 
 To build the documentation, you will need:
 
-  - [sphinx](http://sphinx.pocoo.org/).
-  - [sphinxcontrib-napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/).
+-	[sphinx](http://sphinx.pocoo.org/).
+-	[sphinxcontrib-napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/).
 
-## Note
+Note
+----
 
-This document was based on the [scikit-learn](http://scikit-learn.org/) &
- [librosa](https://github.com/librosa/librosa) contribution guides.
+This document was based on the [scikit-learn](http://scikit-learn.org/) & [librosa](https://github.com/librosa/librosa) contribution guides.
