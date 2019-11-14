@@ -3,7 +3,7 @@ import pytest
 import warnings
 import numpy as np
 import matplotlib.pyplot as plt
-from spafe.utils.filters import kalman, kalman_xy
+from spafe.utils.filters import kalman_xy
 from spafe.utils.exceptions import assert_function_availability
 
 

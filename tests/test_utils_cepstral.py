@@ -1,5 +1,4 @@
 import spafe
-import scipy
 import pytest
 import numpy as np
 from spafe.utils.cepstral import cmn, cms, cvn, cmvn

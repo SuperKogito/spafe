@@ -8,11 +8,6 @@ __version__ = '0.1.0'
 import sys
 import warnings
 
-from . import fbanks
-from . import features
-from . import frequencies
-from . import utils
-
 # Throw a deprecation warning if we're on legacy python
 if sys.version_info < (3,):
     warnings.warn('You are using spafe with Python 2.'
