@@ -1,8 +1,6 @@
 """
 based on https://github.com/supikiti/PNCC/blob/master/pncc.py
 """
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import scipy
 import numpy as np
 from ..utils.spectral import stft, powspec
@@ -30,7 +28,8 @@ def asymmetric_lawpass_filtering(rectified_signal, lm_a=0.999, lm_b=0.5):
     for m in range(floor_level.shape[0]):
         x = lm_a * floor_level[m - 1, :] + (1 - lm_a) * rectified_signal[m, :]
         y = lm_b * floor_level[m - 1, :] + (1 - lm_b) * rectified_signal[m, :]
-        floor_level[m, :] = np.where(rectified_signal[m, ] >= floor_level[m - 1, :], x, y)
+        floor_level[m, :] = np.where(
+            rectified_signal[m, ] >= floor_level[m - 1, :], x, y)
     return floor_level
 
 
@@ -42,12 +41,15 @@ def temporal_masking(rectified_signal, lam_t=0.85, myu_t=0.2):
     temporal_masked_signal[0, :] = rectified_signal[0, ]
     online_peak_power[0, :] = rectified_signal[0, :]
 
-
     for m in range(1, rectified_signal.shape[0]):
-        online_peak_power[m, :] = np.maximum(lam_t * online_peak_power[m - 1, :], rectified_signal[m, :])
-        temporal_masked_signal[m, :] = np.where(rectified_signal[m, :] >= lam_t * online_peak_power[m - 1, :], rectified_signal[m, :], myu_t * online_peak_power[m - 1, :])
+        online_peak_power[m, :] = np.maximum(
+            lam_t * online_peak_power[m - 1, :], rectified_signal[m, :])
+        temporal_masked_signal[m, :] = np.where(
+            rectified_signal[m, :] >= lam_t * online_peak_power[m - 1, :],
+            rectified_signal[m, :], myu_t * online_peak_power[m - 1, :])
 
     return temporal_masked_signal
+
 
 def weight_smoothing(final_output, medium_time_power, N=4, L=128):
 
@@ -78,6 +80,7 @@ def mean_power_normalization(transfer_function,
 
     return normalized_power
 
+
 def medium_time_processing(power_stft_signal, nfilts=22):
     # calculate medium time power
     medium_time_power = medium_time_power_calculation(power_stft_signal)
@@ -91,19 +94,18 @@ def medium_time_processing(power_stft_signal, nfilts=22):
                                 np.zeros_like(subtracted_lower_envelope),
                                 subtracted_lower_envelope)
 
-
     floor_level = asymmetric_lawpass_filtering(rectified_signal)
     temporal_masked_signal = temporal_masking(rectified_signal)
-
 
     # switch excitation or non-excitation
     c = 2
     F = np.where(medium_time_power >= c * lower_envelope,
-                 temporal_masked_signal,
-                 floor_level)
+                 temporal_masked_signal, floor_level)
 
     # weight smoothing
-    spectral_weight_smoothing = weight_smoothing(F, medium_time_power, L=nfilts)
+    spectral_weight_smoothing = weight_smoothing(F,
+                                                 medium_time_power,
+                                                 L=nfilts)
     return spectral_weight_smoothing, F
 
 
@@ -213,7 +215,7 @@ def pncc(sig,
     # -> mean power normalization
     U = mean_power_normalization(T, F, L=nfilts)
     # -> power law non linearity
-    V = U**(1/15)
+    V = U**(1 / 15)
 
     # DCT(.)
     pnccs = scipy.fftpack.dct(V)[:, :num_ceps]

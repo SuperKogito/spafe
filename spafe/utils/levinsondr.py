@@ -4,7 +4,6 @@
 """
 import numpy
 
-
 __all__ = ["LEVINSON", "rlevinson"]
 
 
@@ -70,7 +69,7 @@ def LEVINSON(r, order=None, allow_singularity=False):
         a, e, k = LEVINSON(T)
     """
     #from numpy import isrealobj
-    T0  = numpy.real(r[0])
+    T0 = numpy.real(r[0])
     T = r[1:]
     M = len(T)
 
@@ -97,30 +96,30 @@ def LEVINSON(r, order=None, allow_singularity=False):
         else:
             #save += sum([A[j]*T[k-j-1] for j in range(0,k)])
             for j in range(0, k):
-                save = save + A[j] * T[k-j-1]
+                save = save + A[j] * T[k - j - 1]
             temp = -save / P
         if realdata:
             P = P * (1. - temp**2.)
         else:
-            P = P * (1. - (temp.real**2+temp.imag**2))
-        if P <= 0 and allow_singularity==False:
+            P = P * (1. - (temp.real**2 + temp.imag**2))
+        if P <= 0 and allow_singularity == False:
             raise ValueError("singular matrix")
         A[k] = temp
-        ref[k] = temp # save reflection coeff at each step
+        ref[k] = temp  # save reflection coeff at each step
         if k == 0:
             continue
 
-        khalf = (k+1)//2
+        khalf = (k + 1) // 2
         if realdata is True:
             for j in range(0, khalf):
-                kj = k-j-1
+                kj = k - j - 1
                 save = A[j]
                 A[j] = save + temp * A[kj]
                 if j != kj:
-                    A[kj] += temp*save
+                    A[kj] += temp * save
         else:
             for j in range(0, khalf):
-                kj = k-j-1
+                kj = k - j - 1
                 save = A[j]
                 A[j] = save + temp * A[kj].conjugate()
                 if j != kj:
@@ -165,22 +164,22 @@ def rlevinson(a, efinal):
     a = numpy.array(a)
     realdata = numpy.isrealobj(a)
 
-
-    assert a[0] == 1, 'First coefficient of the prediction polynomial must be unity'
+    assert a[
+        0] == 1, 'First coefficient of the prediction polynomial must be unity'
 
     p = len(a)
 
     if p < 2:
         raise ValueError('Polynomial should have at least two coefficients')
 
-    if realdata == True:
-        U = numpy.zeros((p, p)) # This matrix will have the prediction
-                                # polynomials of orders 1:p
+    if realdata:
+        U = numpy.zeros((p, p))  # This matrix will have the prediction
+        # polynomials of orders 1:p
     else:
         U = numpy.zeros((p, p), dtype=complex)
-    U[:, p-1] = numpy.conj(a[-1::-1]) # Prediction coefficients of order p
+    U[:, p - 1] = numpy.conj(a[-1::-1])  # Prediction coefficients of order p
 
-    p = p -1
+    p = p - 1
     e = numpy.zeros(p)
 
     # First we find the prediction coefficients of smaller orders and form the
@@ -188,21 +187,18 @@ def rlevinson(a, efinal):
 
     # Initialize the step down
 
-    e[-1] = efinal # Prediction error of order p
+    e[-1] = efinal  # Prediction error of order p
 
     # Step down
-    for k in range(p-1, 0, -1):
-        [a, e[k-1]] = levdown(a, e[k])
-        U[:, k] = numpy.concatenate((numpy.conj(a[-1::-1].transpose()) ,
-                                      [0]*(p-k) ))
+    for k in range(p - 1, 0, -1):
+        [a, e[k - 1]] = levdown(a, e[k])
+        U[:, k] = numpy.concatenate(
+            (numpy.conj(a[-1::-1].transpose()), [0] * (p - k)))
 
-
-
-
-    e0 = e[0]/(1.-abs(a[1]**2)) #% Because a[1]=1 (true polynomial)
-    U[0,0] = 1                #% Prediction coefficient of zeroth order
-    kr = numpy.conj(U[0,1:])     #% The reflection coefficients
-    kr = kr.transpose()                 #% To make it into a column vector
+    e0 = e[0] / (1. - abs(a[1]**2))  # % Because a[1]=1 (true polynomial)
+    U[0, 0] = 1  # % Prediction coefficient of zeroth order
+    kr = numpy.conj(U[0, 1:])  # % The reflection coefficients
+    kr = kr.transpose()  # % To make it into a column vector
 
     #   % Once we have the matrix U and the prediction error at various orders, we can
     #  % use this information to find the autocorrelation coefficients.
@@ -210,17 +206,17 @@ def rlevinson(a, efinal):
     R = numpy.zeros(1, dtype=complex)
     #% Initialize recursion
     k = 1
-    R0 = e0 # To take care of the zero indexing problem
-    R[0] = -numpy.conj(U[0,1])*R0   # R[1]=-a1[1]*R[0]
+    R0 = e0  # To take care of the zero indexing problem
+    R[0] = -numpy.conj(U[0, 1]) * R0  # R[1]=-a1[1]*R[0]
 
     # Actual recursion
-    for k in range(1,p):
-        r = -sum(numpy.conj(U[k-1::-1,k])*R[-1::-1]) - kr[k]*e[k-1]
+    for k in range(1, p):
+        r = -sum(numpy.conj(U[k - 1::-1, k]) * R[-1::-1]) - kr[k] * e[k - 1]
         R = numpy.insert(R, len(R), r)
 
     # Include R(0) and make it a column vector. Note the dot transpose
 
-    #R = [R0 R].';
+    # R = [R0 R].';
     R = numpy.insert(R, 0, e0)
     return R, U, kr, e
 
@@ -235,23 +231,25 @@ def levdown(anxt, enxt=None):
     ..  * knxt the P+1'th order reflection coefficient.
     """
     #% Some preliminaries first
-    #if nargout>=2 & nargin<2
+    # if nargout>=2 & nargin<2
     #    raise ValueError('Insufficient number of input arguments');
     if anxt[0] != 1:
-        raise ValueError('At least one of the reflection coefficients is equal to one.')
-    anxt = anxt[1:] #  Drop the leading 1, it is not needed
-                    #  in the step down
+        raise ValueError(
+            'At least one of the reflection coefficients is equal to one.')
+    anxt = anxt[1:]  # Drop the leading 1, it is not needed
+    #  in the step down
 
     # Extract the k+1'th reflection coefficient
     knxt = anxt[-1]
     if knxt == 1.0:
-        raise ValueError('At least one of the reflection coefficients is equal to one.')
+        raise ValueError(
+            'At least one of the reflection coefficients is equal to one.')
 
     # A Matrix formulation from Stoica is used to avoid looping
-    acur = (anxt[0:-1]-knxt*numpy.conj(anxt[-2::-1]))/(1.-abs(knxt)**2)
+    acur = (anxt[0:-1] - knxt * numpy.conj(anxt[-2::-1])) / (1. - abs(knxt)**2)
     ecur = None
     if enxt is not None:
-        ecur = enxt/(1.-numpy.dot(knxt.conj().transpose(),knxt))
+        ecur = enxt / (1. - numpy.dot(knxt.conj().transpose(), knxt))
 
     acur = numpy.insert(acur, 0, 1)
 
@@ -277,11 +275,13 @@ def levup(acur, knxt, ecur=None):
         P. Stoica R. Moses, Introduction to Spectral Analysis  Prentice Hall, N.J., 1997, Chapter 3.
     """
     if acur[0] != 1:
-        raise ValueError('At least one of the reflection coefficients is equal to one.')
-    acur = acur[1:] #  Drop the leading 1, it is not needed
+        raise ValueError(
+            'At least one of the reflection coefficients is equal to one.')
+    acur = acur[1:]  # Drop the leading 1, it is not needed
 
     # Matrix formulation from Stoica is used to avoid looping
-    anxt = numpy.concatenate((acur, [0])) + knxt * numpy.concatenate((numpy.conj(acur[-1::-1]), [1]))
+    anxt = numpy.concatenate((acur, [0])) + knxt * numpy.concatenate(
+        (numpy.conj(acur[-1::-1]), [1]))
 
     enxt = None
     if ecur is not None:

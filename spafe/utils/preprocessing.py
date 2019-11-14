@@ -14,6 +14,7 @@ def zero_handling(x):
     """
     return np.where(x == 0, np.finfo(float).eps, x)
 
+
 def pre_emphasis(sig, pre_emph_coeff=0.97):
     """
     perform preemphasis on the input signal.
@@ -26,6 +27,7 @@ def pre_emphasis(sig, pre_emph_coeff=0.97):
         the filtered signal.
     """
     return np.append(sig[0], sig[1:] - pre_emph_coeff * sig[:-1])
+
 
 def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     """
@@ -45,26 +47,30 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
         frame length.
     """
     # compute frame length and frame step (convert from seconds to samples)
-    frame_length  = win_len * fs
-    frame_step    = win_hop * fs
+    frame_length = win_len * fs
+    frame_step = win_hop * fs
     signal_length = len(sig)
 
     # Make sure that we have at least 1 frame+
-    num_frames = int(np.ceil(float(np.abs(signal_length - frame_length)) / frame_step))
+    num_frames = int(
+        np.ceil(float(np.abs(signal_length - frame_length)) / frame_step))
     frame_length = int(frame_length)
     frame_step = int(frame_step)
 
-    # Pad Signal to make sure that all frames have equal number of samples without truncating any samples from the original signal
+    # Pad Signal to make sure that all frames have equal number of samples
+    # without truncating any samples from the original signal
     pad_signal_length = num_frames * frame_step + frame_length
-    z          = np.zeros((pad_signal_length - signal_length))
+    z = np.zeros((pad_signal_length - signal_length))
     pad_signal = np.append(sig, z)
 
     # compute indices
     idx1 = np.tile(np.arange(0, frame_length), (num_frames, 1))
-    idx2 = np.tile(np.arange(0, num_frames * frame_step, frame_step), (frame_length, 1)).T
+    idx2 = np.tile(np.arange(0, num_frames * frame_step, frame_step),
+                   (frame_length, 1)).T
     indices = idx1 + idx2
-    frames  = pad_signal[indices.astype(np.int32, copy=False)]
+    frames = pad_signal[indices.astype(np.int32, copy=False)]
     return frames, frame_length
+
 
 def windowing(frames, frame_len, win_type="hamming"):
     """
@@ -79,9 +85,14 @@ def windowing(frames, frame_len, win_type="hamming"):
     Returns:
         windowed frames.
     """
-    if win_type == "hamming": frames *= np.hamming(frame_len)
-    if win_type == "hanning": frames *= np.hanning(frame_len)
-    if win_type == "bartlet": frames *= np.bartlet(frame_len)
-    if win_type == "kaiser": frames *= np.kaiser(frame_len)
-    if win_type == "blackman": frames *= np.blackman(frame_len)
+    if win_type == "hamming":
+        frames *= np.hamming(frame_len)
+    if win_type == "hanning":
+        frames *= np.hanning(frame_len)
+    if win_type == "bartlet":
+        frames *= np.bartlet(frame_len)
+    if win_type == "kaiser":
+        frames *= np.kaiser(frame_len)
+    if win_type == "blackman":
+        frames *= np.blackman(frame_len)
     return frames

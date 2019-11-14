@@ -8,6 +8,7 @@ BARK_FREQ = 1000
 BARK_PT = (BARK_FREQ - F0) / FSP
 LOGSTEP = np.exp(np.log(6.4) / 27.0)
 
+
 def hz2erb(f):
     """
     Convert Hz frequencies to Bark.
@@ -19,6 +20,7 @@ def hz2erb(f):
         (np.array): frequencies in Bark [Bark].
     """
     return 24.7 * (4.37 * (f / 1000) + 1)
+
 
 def erb2hz(fe):
     """
@@ -32,6 +34,7 @@ def erb2hz(fe):
     """
     return ((fe / 24.7) - 1) * (1000. / 4.37)
 
+
 def fft2erb(fft, fs=16000, nfft=512):
     """
     Convert Bark frequencies to Hz.
@@ -43,6 +46,7 @@ def fft2erb(fft, fs=16000, nfft=512):
         (np.array): frequencies in Bark [Bark].
     """
     return hz2erb((fft * fs) / (nfft + 1))
+
 
 def erb2fft(fb, fs=16000, nfft=512):
     """
@@ -56,6 +60,7 @@ def erb2fft(fb, fs=16000, nfft=512):
     """
     return (nfft + 1) * erb2hz(fb) / fs
 
+
 def hz2bark(f):
     """
     Convert Hz frequencies to Bark acoording to Wang, Sekey & Gersho, 1992.
@@ -67,6 +72,7 @@ def hz2bark(f):
         (np.array): frequencies in Bark [Bark].
     """
     return 6. * np.arcsinh(f / 600.)
+
 
 def bark2hz(fb):
     """
@@ -80,6 +86,7 @@ def bark2hz(fb):
     """
     return 600. * np.sinh(fb / 6.)
 
+
 def fft2hz(fft, fs=16000, nfft=512):
     """
     Convert Bark frequencies to Hz.
@@ -91,6 +98,7 @@ def fft2hz(fft, fs=16000, nfft=512):
         (np.array): frequencies in Bark [Bark].
     """
     return (fft * fs) / (nfft + 1)
+
 
 def hz2fft(fb, fs=16000, nfft=512):
     """
@@ -116,6 +124,7 @@ def fft2bark(fft, fs=16000, nfft=512):
         (np.array): frequencies in Bark [Bark].
     """
     return hz2bark((fft * fs) / (nfft + 1))
+
 
 def bark2fft(fb, fs=16000, nfft=512):
     """

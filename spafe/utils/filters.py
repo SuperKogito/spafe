@@ -11,6 +11,7 @@ def gaussian_filter(M, std, sym=True):
     """
     return gaussian(M, std, sym)
 
+
 def sobel_filter(sig, axis=-1, mode="reflect", cval=0.0):
     """
     Calculate a Sobel filter.
@@ -41,10 +42,18 @@ def rasta_filter(x):
         y[i, :] = np.append(y1, y2)
     return y
 
+
 ###################################################################################
 # based on https://stackoverflow.com/questions/13901997/kalman-2d-filter-in-python
 ###################################################################################
-def kalman_xy(x, P, measurement, R, motion=np.matrix('0. 0. 0. 0.').T, Q=np.matrix(np.eye(4))):
+
+
+def kalman_xy(x,
+              P,
+              measurement,
+              R,
+              motion=np.matrix('0. 0. 0. 0.').T,
+              Q=np.matrix(np.eye(4))):
     """
     Args:
         x: initial state 4-tuple of location and velocity: (x0, x1, x0_dot, x1_dot)
@@ -54,16 +63,22 @@ def kalman_xy(x, P, measurement, R, motion=np.matrix('0. 0. 0. 0.').T, Q=np.matr
         motion: external motion added to state vector x
         Q: motion noise (same shape as P)
     """
-    return kalman(x, P, measurement, R, motion, Q,
-                  F = np.matrix('''
+    return kalman(x,
+                  P,
+                  measurement,
+                  R,
+                  motion,
+                  Q,
+                  F=np.matrix('''
                       1. 0. 1. 0.;
                       0. 1. 0. 1.;
                       0. 0. 1. 0.;
                       0. 0. 0. 1.
                       '''),
-                  H = np.matrix('''
+                  H=np.matrix('''
                       1. 0. 0. 0.;
                       0. 1. 0. 0.'''))
+
 
 def kalman(x, P, measurement, R, motion, Q, F, H):
     """
@@ -89,14 +104,16 @@ def kalman(x, P, measurement, R, motion, Q, F, H):
     # distance between measured and current position-belief
     y = np.matrix(measurement).T - H * x
     S = H * P * H.T + R  # residual convariance
-    K = P * H.T * S.I    # Kalman gain
-    x = x + K*y
-    I = np.matrix(np.eye(F.shape[0])) # identity matrix
-    P = (I - K*H)*P
+    K = P * H.T * S.I  # Kalman gain
+    x = x + K * y
+    I = np.matrix(np.eye(F.shape[0]))  # identity matrix
+    P = (I - K * H) * P
 
     # PREDICT x, P based on motion
-    x = F*x + motion
-    P = F*P*F.T + Q
+    x = F * x + motion
+    P = F * P * F.T + Q
 
     return x, P
+
+
 ###################################################################################

@@ -20,12 +20,15 @@ def fs():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
+
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
     assert_function_availability(hasattr(spafe.utils.vis, 'visualize_fbanks'))
-    assert_function_availability(hasattr(spafe.utils.vis, 'visualize_features'))
+    assert_function_availability(hasattr(spafe.utils.vis,
+                                         'visualize_features'))
     assert_function_availability(hasattr(spafe.utils.vis, 'plot'))
     assert_function_availability(hasattr(spafe.utils.vis, 'spectogram'))
+
 
 @patch("matplotlib.pyplot.show")
 def test_visualize_fbanks(mock_show):

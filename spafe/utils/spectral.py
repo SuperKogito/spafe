@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# import librosa
+
 import scipy
 import warnings
 import numpy as np
@@ -33,19 +32,31 @@ def cqt(sig, fs=16000, low_freq=10, high_freq=3000, b=48):
     Returns:
         array including the Q-transform coefficients.
     """
+
     # define lambda funcs for clarity
-    f  = lambda     k: low_freq * 2**((k-1) / b)
-    w  = lambda     N: np.hamming(N)
-    nk = lambda     k: np.ceil(Q * fs / f(k))
-    t  = lambda Nk, k: (1 / Nk) * w(Nk) * np.exp(2 * np.pi * 1j * Q * np.arange(Nk) / Nk)
+    def f(k):
+        return low_freq * 2**((k - 1) / b)
+
+    def w(N):
+        return np.hamming(N)
+
+    def nk(k):
+        return np.ceil(Q * fs / f(k))
+
+    def t(Nk, k):
+        return (1 / Nk) * w(Nk) * np.exp(
+            2 * np.pi * 1j * Q * np.arange(Nk) / Nk)
 
     # init vars
-    Q    = 1 / (2**(1/b) - 1)
-    K    = int(np.ceil(b * np.log2(high_freq / low_freq)))
-    nfft = int( 2**np.ceil(np.log2(Q * fs / low_freq)) )
+    Q = 1 / (2**(1 / b) - 1)
+    K = int(np.ceil(b * np.log2(high_freq / low_freq)))
+    nfft = int(2**np.ceil(np.log2(Q * fs / low_freq)))
 
     # define temporal kernal and sparse kernal variables
-    S = [scipy.sparse.coo_matrix(np.fft.fft(t(nk(k), k), nfft)) for k in range(K, 0, -1)]
+    S = [
+        scipy.sparse.coo_matrix(np.fft.fft(t(nk(k), k), nfft))
+        for k in range(K, 0, -1)
+    ]
     S = scipy.sparse.vstack(S[::-1]).tocsc().transpose().conj() / nfft
 
     # compute the constant Q-transform
@@ -53,13 +64,12 @@ def cqt(sig, fs=16000, low_freq=10, high_freq=3000, b=48):
     return xcq
 
 
-
 def pre_process_x(sig, fs=16000, win_type="hann", win_len=0.025, win_hop=0.01):
     """
     Prepare window and pad signal audio
     """
     # convert integer to double
-    #sig = np.double(sig) / 2.**15
+    # sig = np.double(sig) / 2.**15
 
     # STFT parameters
     # convert win_len and win_hop from seconds to samples
@@ -264,17 +274,21 @@ def display_stft(X,
 
 def xstft(sig, fs, nfft, H=None):
     x = sig
-    if H is None: H = nfft // 4 + 1
+    if H is None:
+        H = nfft // 4 + 1
     N = nfft // 2 + 1
     w = scipy.hanning(N + 1)[1:]
-    X = scipy.array([scipy.fft(w*x[i:i+N]) for i in range(0, len(x)-N, H)])
+    X = scipy.array(
+        [scipy.fft(w * x[i:i + N]) for i in range(0,
+                                                  len(x) - N, H)])
     return X
 
 
-def power_spectrum(fourrier_transform,  nfft = NFFT):
-    magnitude_frames = np.absolute(fourrier_transform)          # Magnitude of the FFT
-    power_frames     = ((1.0 / nfft) * ((magnitude_frames) ** 2))  # Power Spectrum
+def power_spectrum(fourrier_transform, nfft=NFFT):
+    magnitude_frames = np.absolute(fourrier_transform)  # Magnitude of the FFT
+    power_frames = ((1.0 / nfft) * ((magnitude_frames)**2))  # Power Spectrum
     return power_frames
+
 
 def rfft(x, n=NFFT):
     """
@@ -282,8 +296,10 @@ def rfft(x, n=NFFT):
     """
     return np.fft.rfft(a=x, n=n)
 
-def dct(x, type=2, axis=1,norm='ortho'):
+
+def dct(x, type=2, axis=1, norm='ortho'):
     return scipy.fftpack.dct(x=x, type=type, axis=axis, norm=norm)
+
 
 def powspec(sig,
             fs=16000,
@@ -320,7 +336,11 @@ def powspec(sig,
     fft_length = int(np.power(2, np.ceil(np.log2(win_len * fs))))
 
     # compute stft
-    X, _ = stft(sig=sig, fs=fs, win_type=win_type, win_len=win_len, win_hop=win_hop)
+    X, _ = stft(sig=sig,
+                fs=fs,
+                win_type=win_type,
+                win_len=win_len,
+                win_hop=win_hop)
 
     pow_X = np.abs(X)**2
     if dither:
@@ -348,7 +368,8 @@ def lifter(x, lift=0.6, invs=False):
         y = x
     else:
         if lift < 0:
-            warnings.warn('HTK liftering does not support yet; default liftering')
+            warnings.warn(
+                'HTK liftering does not support yet; default liftering')
             lift = 0.6
         liftwts = np.arange(1, ncep)**lift
         liftwts = np.append(1, liftwts)
@@ -538,7 +559,6 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
     steppts = int(win_hop * fs)
     nfft = int(np.power(2, np.ceil(np.divide(np.log(winpts), np.log(2)))))
 
-
     # Can't predict librosa stft length...
     tmp = istft(X=y, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
 
@@ -556,7 +576,11 @@ def invpowspec(y, fs, win_len, win_hop, excit=[]):
         r = np.squeeze(np.random.randn(xlen, 1))
     r = r[0:xlen]
 
-    R, _ = stft(sig=sig, fs=fs, win_type=win_type, win_len=win_len, win_hop=win_hop)
+    R, _ = stft(sig=sig,
+                fs=fs,
+                win_type=win_type,
+                win_len=win_len,
+                win_hop=win_hop)
     # R = librosa.stft(np.divide(r, 32768 * 12),
     #                  n_fft=nfft,
     #                  hop_length=steppts,

@@ -24,6 +24,7 @@ def fs():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
 
+
 @pytest.mark.parametrize('num_ceps', [13, 17])
 def test_lpc2spec(sig, fs, num_ceps):
     """
@@ -36,8 +37,10 @@ def test_lpc2spec(sig, fs, num_ceps):
     # checks for lpc2spec
     specs_from_lpc = lpc2spec(lpcs)
     np.testing.assert_almost_equal(specs_from_lpc[1], specs_from_lpc[2])
-    np.testing.assert_equal(np.any(np.not_equal(lpc2spec(lpcs, FMout=True)[1],
-                                                specs_from_lpc[2])), True)
+    np.testing.assert_equal(
+        np.any(np.not_equal(lpc2spec(lpcs, FMout=True)[1], specs_from_lpc[2])),
+        True)
+
 
 @pytest.mark.parametrize('num_ceps', [13, 17])
 def test_lpc(sig, fs, num_ceps):
@@ -66,7 +69,11 @@ def test_lpcc(sig, fs, num_ceps, lifter, normalize):
         - check normalization.
         - check liftering.
     """
-    lpccs = lpcc(sig=sig, fs=fs, num_ceps=num_ceps, lifter=lifter, normalize=normalize)
+    lpccs = lpcc(sig=sig,
+                 fs=fs,
+                 num_ceps=num_ceps,
+                 lifter=lifter,
+                 normalize=normalize)
     # assert number of returned cepstrum coefficients
     if not lpccs.shape[1] == num_ceps:
         raise AssertionError

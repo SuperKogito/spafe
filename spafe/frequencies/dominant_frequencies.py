@@ -54,8 +54,7 @@ class DominantFrequenciesExtractor:
             int(len(sig) / samples_pro_frame) * samples_pro_frame)
         frames = np.split(
             sig[:samples_count_pro_frame],
-            len(sig[:samples_count_pro_frame]) /
-            int(samples_count_pro_frame))
+            len(sig[:samples_count_pro_frame]) / int(samples_count_pro_frame))
         try:
             frames.append(sig[samples_count_pro_frame:])
         except BaseException:
@@ -111,7 +110,7 @@ class DominantFrequenciesExtractor:
 
         # apply Band pass Butterworth filter
         b, a = scipy.signal.butter(6, [(lower_cutoff * 2) / fs,
-                                   (upper_cutoff * 2) / fs], 'band')
+                                       (upper_cutoff * 2) / fs], 'band')
         w, h = scipy.signal.freqs(b, a, len(sig))
         sig = scipy.signal.lfilter(b, a, sig)
 

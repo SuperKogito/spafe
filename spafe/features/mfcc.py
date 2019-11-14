@@ -4,7 +4,9 @@ from ..utils.cepstral import cms, cmvn, lifter_ceps
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.mel_fbanks import inverse_mel_filter_banks, mel_filter_banks
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
-from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec, postaud, invpostaud, invpowspec)
+from ..utils.spectral import (stft, power_spectrum, powspec, lifter, audspec,
+                              postaud, invpostaud, invpowspec)
+
 
 def mfcc(sig,
          fs=16000,
@@ -105,11 +107,11 @@ def mfcc(sig,
 
     #  -> x Mel-fbanks
     mel_fbanks_mat = mel_filter_banks(nfilts=nfilts,
-                                        nfft=nfft,
-                                        fs=fs,
-                                        low_freq=low_freq,
-                                        high_freq=high_freq,
-                                        scale=scale)
+                                      nfft=nfft,
+                                      fs=fs,
+                                      low_freq=low_freq,
+                                      high_freq=high_freq,
+                                      scale=scale)
     features = np.dot(abs_fft_values, mel_fbanks_mat.T)
 
     # -> log(.) -> DCT(.)
@@ -139,23 +141,24 @@ def mfcc(sig,
         mfccs = cmvn(cms(mfccs))
     return mfccs
 
+
 def imfcc(sig,
-         fs=16000,
-         num_ceps=13,
-         pre_emph=0,
-         pre_emph_coeff=0.97,
-         win_len=0.025,
-         win_hop=0.01,
-         win_type="hamming",
-         nfilts=26,
-         nfft=512,
-         low_freq=None,
-         high_freq=None,
-         scale="constant",
-         dct_type=2,
-         use_energy=False,
-         lifter=22,
-         normalize=1):
+          fs=16000,
+          num_ceps=13,
+          pre_emph=0,
+          pre_emph_coeff=0.97,
+          win_len=0.025,
+          win_hop=0.01,
+          win_type="hamming",
+          nfilts=26,
+          nfft=512,
+          low_freq=None,
+          high_freq=None,
+          scale="constant",
+          dct_type=2,
+          use_energy=False,
+          lifter=22,
+          normalize=1):
     """
     Compute Inverse MFCC features from an audio signal.
 
@@ -230,11 +233,11 @@ def imfcc(sig,
 
     #  -> x Mel-fbanks -> log(.) -> DCT(.)
     imel_fbanks_mat = inverse_mel_filter_banks(nfilts=nfilts,
-                                        nfft=nfft,
-                                        fs=fs,
-                                        low_freq=low_freq,
-                                        high_freq=high_freq,
-                                        scale=scale)
+                                               nfft=nfft,
+                                               fs=fs,
+                                               low_freq=low_freq,
+                                               high_freq=high_freq,
+                                               scale=scale)
     features = np.dot(abs_fft_values, imel_fbanks_mat.T)
 
     # -> log(.)

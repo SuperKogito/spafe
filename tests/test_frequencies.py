@@ -9,22 +9,24 @@ from spafe.features.spfeats import extract_feats
 from spafe.frequencies.dominant_frequencies import DominantFrequenciesExtractor
 from spafe.frequencies.fundamental_frequencies import FundamentalFrequenciesExtractor
 
-
 DEBUG_MODE = False
 
 
 def get_data(fname):
     return scipy.io.wavfile.read(fname)
 
+
 @pytest.fixture
 def sig():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
 
+
 @pytest.fixture
 def fs():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
+
 
 @patch("matplotlib.pyplot.show")
 def test_dom_freqs(sig, fs):
@@ -35,6 +37,7 @@ def test_dom_freqs(sig, fs):
     dom_freqs_extractor = DominantFrequenciesExtractor(debug=True)
     dom_freqs = dom_freqs_extractor.main(sig=sig, fs=fs)
 
+
 @patch("matplotlib.pyplot.show")
 def test_fund_freqs(sig, fs):
     """
@@ -42,7 +45,9 @@ def test_fund_freqs(sig, fs):
     """
     #  test fundamental frequencies extraction
     fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=True)
-    pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(sig=sig, fs=fs)
+    pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(
+        sig=sig, fs=fs)
+
 
 @patch("matplotlib.pyplot.show")
 def test_extract_feats(mock_show, sig, fs):

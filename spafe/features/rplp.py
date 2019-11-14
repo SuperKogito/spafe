@@ -104,7 +104,8 @@ def rastaplp(x,
              modelorder=13,
              normalize=0):
     """
-    compute rasta Perceptual Linear Prediction coefficients (rasta plp) [cepstra, spectra, lpcas] = rastaplp(samples, sr, do_rasta, modelorder)
+    compute rasta Perceptual Linear Prediction coefficients (rasta plp).
+    [cepstra, spectra, lpcas] = rastaplp(samples, sr, do_rasta, modelorder)
 
     Args:
         x        (array) : signal array.

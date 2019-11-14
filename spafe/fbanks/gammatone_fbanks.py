@@ -158,14 +158,18 @@ def gammatone_filter_banks(nfilts=20,
 
     # compute scaler
     if scale == "ascendant":
-        c = [0, ]
+        c = [
+            0,
+        ]
         for i in range(1, nfilts):
-            x = c[i-1] + 1 / nfilts
+            x = c[i - 1] + 1 / nfilts
             c.append(x * (x < 1) + 1 * (x > 1))
     elif scale == "descendant":
-        c = [1, ]
+        c = [
+            1,
+        ]
         for i in range(1, nfilts):
-            x = c[i-1] - 1 / nfilts
+            x = c[i - 1] - 1 / nfilts
             c.append(x * (x > 0) + 0 * (x < 0))
     else:
         c = [1 for i in range(nfilts)]

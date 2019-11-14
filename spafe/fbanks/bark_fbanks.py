@@ -78,7 +78,7 @@ def bark_filter_banks(nfilts=20,
     if scale == "descendant" or scale == "constant":
         c = 1
     else:
-        c  = 0
+        c = 0
 
     for j in range(2, nfilts + 2):
         # compute scaler

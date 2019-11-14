@@ -14,6 +14,7 @@ def cmn(x):
     """
     return (x - np.mean(x)) / (np.max(x) - np.min(x))
 
+
 def cms(x):
     """
     Mean Substraction: Centering
@@ -25,6 +26,7 @@ def cms(x):
         array with the centered data.
     """
     return x - np.mean(x, axis=0)
+
 
 def cvn(x):
     """
@@ -38,6 +40,7 @@ def cvn(x):
     """
     return x / np.std(x)
 
+
 def cmvn(x):
     """
     Mean Variance Normalisation
@@ -49,6 +52,7 @@ def cmvn(x):
         array with the mean and variance normalized data.
     """
     return cvn(cms(x))
+
 
 def _helper_idx(i, start, stop, step, dct_type):
     """
@@ -72,6 +76,7 @@ def _helper_idx(i, start, stop, step, dct_type):
     if dct_type not in [2, 3]:
         r = r.T
     return np.cos(np.pi * i * r / (stop + start - 1))
+
 
 def _helper_mat(K, ncep, start, stop, step, dct_type):
     """
@@ -99,6 +104,7 @@ def _helper_mat(K, ncep, start, stop, step, dct_type):
         for i in range(ncep)
     ]
     return np.array(mat)
+
 
 def cep2spec(cep, nfreq, dct_type=2):
     """
@@ -155,6 +161,7 @@ def cep2spec(cep, nfreq, dct_type=2):
     spec = np.exp(np.matmul(idctm, cep))
     return spec, idctm
 
+
 def deltas(x, w=9):
     """
     Calculate the deltas (derivatives) of an input sequence with a W-points
@@ -177,9 +184,10 @@ def deltas(x, w=9):
                    np.tile(x[:, cols - 1], (int(hlen), 1)).T,
                    axis=1)
 
-    deltas = scipy.signal.lfilter(win, 1, xx,
-                            axis=1)[:, int(2 * hlen):int(2 * hlen + cols)]
+    deltas = scipy.signal.lfilter(
+        win, 1, xx, axis=1)[:, int(2 * hlen):int(2 * hlen + cols)]
     return deltas
+
 
 def spec2cep(spec, ncep=9, dct_type=2):
     """
@@ -238,6 +246,7 @@ def spec2cep(spec, ncep=9, dct_type=2):
 
     return cep, dctm
 
+
 def lifter_ceps(cepstra, L=22):
     """
     Apply a cepstral lifter the the matrix of cepstra. This has the effect of
@@ -252,7 +261,7 @@ def lifter_ceps(cepstra, L=22):
     """
     if L > 0:
         nframes, ncoeff = np.shape(cepstra)
-        n    = np.arange(ncoeff)
+        n = np.arange(ncoeff)
         lift = 1 + (L / 2.) * np.sin(np.pi * n / L)
         return lift * cepstra
     else:

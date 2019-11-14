@@ -20,6 +20,7 @@ def visualize_fbanks(fbanks, ylabel, xlabel):
     plt.show(block=False)
     plt.close()
 
+
 def visualize_features(feats, ylabel, xlabel, cmap='viridis'):
     """
     visualize a matrix including the features coefficients. Each row corresponds
@@ -31,12 +32,16 @@ def visualize_features(feats, ylabel, xlabel, cmap='viridis'):
         xlabel   (str) : x-axis label.
         cmap     (str) : matplotlib colormap to use.
     """
-    plt.imshow(feats.T, origin='lower', aspect='auto',
-               cmap=cmap,  interpolation='nearest')
+    plt.imshow(feats.T,
+               origin='lower',
+               aspect='auto',
+               cmap=cmap,
+               interpolation='nearest')
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.show(block=False)
     plt.close()
+
 
 def plot(y, ylabel, xlabel):
     """
@@ -52,6 +57,7 @@ def plot(y, ylabel, xlabel):
     plt.xlabel(xlabel)
     plt.show(block=False)
     plt.close()
+
 
 def spectogram(sig, fs):
     """

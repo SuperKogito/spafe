@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Credits to:
     Patrice Guyot. (2018, April 19).
@@ -62,7 +61,8 @@ class FundamentalFrequenciesExtractor:
         Args:
             tau_min  (int)   : minimum period for speech
             tau_max  (int)   : maximum period for speech
-            harmo_th (float) : harmonicity threshold to determine if it is necessary to compute pitch frequency
+            harmo_th (float) : harmonicity threshold to determine if it is
+                               necessary to compute pitch frequency
 
         Returns:
             (float) : fundamental period if there is values under threshold, 0 otherwise
@@ -96,12 +96,14 @@ class FundamentalFrequenciesExtractor:
             w_step      (int) : size of the lag between two consecutives windows (in #samples)
             f0_min      (int) : Minimum fundamental frequency that can be detected (in Hertz)
             f0_max      (int) : Maximum fundamental frequency that can be detected (in Hertz)
-            harmo_tresh (int) : Threshold of detection. The yalgorithmù return the first minimum of the CMND fubction below this threshold.
+            harmo_tresh (int) : Threshold of detection. The yalgorithmù return the
+                                first minimum of the CMND fubction below this threshold.
 
         Returns:
             (tuple) : tuple include the following
                           - pitches       : list of fundamental frequencies,
-                          - harmonic_rates: list of harmonic rate values for each fundamental frequency value (= confidence value)
+                          - harmonic_rates: list of harmonic rate values for each fundamental
+                                            frequency value (= confidence value)
                           - argmins       : minimums of the Cumulative Mean Normalized DifferenceFunction
                           - times         : list of time of each estimation
         """
@@ -158,12 +160,14 @@ class FundamentalFrequenciesExtractor:
             w_step      (int) : size of the lag between two consecutives windows (in #samples)
             f0_min      (int) : Minimum fundamental frequency that can be detected (in Hertz)
             f0_max      (int) : Maximum fundamental frequency that can be detected (in Hertz)
-            harmo_tresh (int) : Threshold of detection. The yalgorithmù return the first minimum of the CMND fubction below this threshold.
+            harmo_tresh (int) : Threshold of detection. The yalgorithmù return the
+                                first minimum of the CMND fubction below this threshold.
 
         Returns:
             (tuple) : tuple include the following
                           - pitches       : list of fundamental frequencies,
-                          - harmonic_rates: list of harmonic rate values for each fundamental frequency value (= confidence value)
+                          - harmonic_rates: list of harmonic rate values for each
+                                            fundamental frequency value (= confidence value)
                           - argmins       : minimums of the Cumulative Mean Normalized DifferenceFunction
                           - times         : list of time of each estimation
         """

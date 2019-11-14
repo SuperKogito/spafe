@@ -46,6 +46,7 @@ def fix_fft():
         78.553125, 100.035, 128.25, 163.51875, 211.6125, 288.5625, 448.875
     ])
 
+
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
     assert_function_availability(hasattr(spafe.utils.converters, 'hz2erb'))
@@ -77,18 +78,20 @@ def test_hz2bark(fhz, fbark):
 def test_bark2hz(fbark, fhz):
     np.testing.assert_almost_equal(bark2hz(fbark), fhz, 0)
 
+
 @pytest.mark.parametrize('htk', [0, 1])
 def test_hz2mel(fhz, fmel, htk):
     if htk == 0:
         fhz = np.round(mel2hz(fmel, htk))
     np.testing.assert_almost_equal(hz2mel(fhz, htk), fmel, 0)
 
+
 @pytest.mark.parametrize('htk', [0, 1])
 def test_mel2hz(fmel, fhz, htk):
     # TO REVISE
     if htk == 0:
         fmel = np.round(hz2mel(fhz, htk))
-        fhz  = np.round(mel2hz(fmel, htk))
+        fhz = np.round(mel2hz(fmel, htk))
     np.testing.assert_almost_equal(mel2hz(fmel, htk), fhz, 0)
 
 
