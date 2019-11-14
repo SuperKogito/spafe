@@ -151,7 +151,7 @@ def test_msrcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
     if DEBUG_MODE:
         vis.visualize_features(msrccs, 'MSRCC Index', 'Frame Index')
-        
+
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram

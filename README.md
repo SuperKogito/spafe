@@ -17,7 +17,6 @@
 spafe aims to simplify features extractions from mono audio files. The library can extract of the following features: ***BFCC, LFCC, LPC, LPCC, MFCC, IMFCC, MSRCC, NGCC, PNCC, PSRCC, PLP, RPLP, Frequency-stats*** etc.
 It also provides various filterbank modules (Mel, Bark and Gammatone filterbanks) and other spectral statistics.
 
-
 # Installation
 ## Dependencies
 spafe requires:

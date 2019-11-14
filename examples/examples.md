@@ -82,7 +82,6 @@
     vis.visualize(imfccs, 'IMFCC Coefficient Index','Frame Index')
     vis.plot(mfes,  'MFE Coefficient Index','Frame Index')
 
-
 <p align="center">
 <img src="../docs/source/features/images/mfcc.png">
 </p>

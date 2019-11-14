@@ -21,7 +21,6 @@ def sig():
     __EXAMPLE_FILE = 'test.wav'
     return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
 
-
 @pytest.fixture
 def fs():
     __EXAMPLE_FILE = 'test.wav'
@@ -35,7 +34,6 @@ def test_dom_freqs(sig, fs):
     # test dominant frequencies extraction
     dom_freqs_extractor = DominantFrequenciesExtractor(debug=True)
     dom_freqs = dom_freqs_extractor.main(sig=sig, fs=fs)
-    assert True
 
 @patch("matplotlib.pyplot.show")
 def test_fund_freqs(sig, fs):
@@ -52,13 +50,17 @@ def test_extract_feats(mock_show, sig, fs):
     test the computations of spectral features.
     """
     spectral_features = extract_feats(sig=sig, fs=fs)
-    print(len(spectral_features))
 
     # general stats
-    assert len(spectral_features) == 33
-    assert spectral_features["duration"] == (len(sig) / float(fs))
+    if not len(spectral_features) == 33:
+        raise AssertionError
+
+    if not spectral_features["duration"] == (len(sig) / float(fs)):
+        raise AssertionError
+
     for k, v in spectral_features.items():
-        assert v is not None
+        if v is None:
+            raise AssertionError
 
 
 if __name__ == "__main__":

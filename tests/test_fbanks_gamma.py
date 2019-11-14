@@ -30,7 +30,8 @@ def test_gamma_fbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         scale=scale)
 
     # assert that the filterbank shape is correct given nfilts and nfft
-    assert gamma_filbanks.shape == (nfilts, nfft // 2 + 1)
+    if not gamma_filbanks.shape == (nfilts, nfft // 2 + 1):
+        raise AssertionError
 
     # check lifter Parameter error for low freq
     with pytest.raises(ParameterError):

@@ -264,7 +264,7 @@ def display_stft(X,
 
 def xstft(sig, fs, nfft, H=None):
     x = sig
-    if H == None: H = nfft // 4 + 1
+    if H is None: H = nfft // 4 + 1
     N = nfft // 2 + 1
     w = scipy.hanning(N + 1)[1:]
     X = scipy.array([scipy.fft(w*x[i:i+N]) for i in range(0, len(x)-N, H)])

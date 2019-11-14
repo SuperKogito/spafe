@@ -35,7 +35,8 @@ def test_rplp(sig, fs, num_ceps):
     plps = plp(sig, fs, num_ceps)
 
     # assert number of returned cepstrum coefficients
-    assert plps.shape[1] == num_ceps
+    if not plps.shape[1] == num_ceps:
+        raise AssertionError
 
     if DEBUG_MODE:
         vis.visualize_features(plps, 'PLP Coefficient Index', 'Frame Index')
@@ -49,7 +50,6 @@ def test_rplp(sig, fs, num_ceps):
 
     if DEBUG_MODE:
         vis.visualize_features(rplps, 'RPLP Coefficient Index', 'Frame Index')
-    assert True
 
 
 if __name__ == "__main__":

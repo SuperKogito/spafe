@@ -49,11 +49,11 @@ def test_lpc(sig, fs, num_ceps):
     lpcs = lpc(sig=sig, fs=fs, num_ceps=num_ceps)
 
     # assert number of returned cepstrum coefficients
-    assert lpcs.shape[1] == num_ceps
+    if not lpcs.shape[1] == num_ceps:
+        raise AssertionError
 
     if DEBUG_MODE:
         vis.visualize_features(lpcs, 'LPC Index', 'Frame Index')
-    assert True
 
 
 @pytest.mark.parametrize('num_ceps', [13, 17])
