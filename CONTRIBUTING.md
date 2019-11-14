@@ -121,8 +121,8 @@ You can edit the documentation using any text editor and then generate the HTML 
 
 To build the documentation, you will need:
 
-- [sphinx](http://sphinx.pocoo.org/).
-- [sphinxcontrib-napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/).
+  - [sphinx](http://sphinx.pocoo.org/).
+  - [sphinxcontrib-napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/).
 
 ## Note
 

@@ -2,6 +2,7 @@ import numpy as np
 from ..utils import spectral as spec
 from ..utils.cepstral import cms, cmvn
 from ..utils.filters import rasta_filter
+from ..utils.preprocessing import pre_emphasis
 from ..features.lpc import do_lpc, lpc2cep, lpc2spec
 
 

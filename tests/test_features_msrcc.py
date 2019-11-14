@@ -4,8 +4,8 @@ import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.msrcc import msrcc
 from spafe.utils.exceptions import ParameterError
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
 from spafe.utils.spectral import stft, display_stft
+from spafe.utils.cepstral import cms, cmvn, lifter_ceps
 
 DEBUG_MODE = False
 

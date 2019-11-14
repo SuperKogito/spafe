@@ -1,11 +1,9 @@
-
 import scipy
 import warnings
 import numpy as np
-from spafe.utils.converters import (hz2bark, bark2hz, hz2mel, mel2hz,
-                                    fft2barkmx, fft2melmx)
-
 import matplotlib.pyplot as plt
+from spafe.utils.converters import (hz2bark, bark2hz, hz2mel, mel2hz, fft2barkmx, fft2melmx)
+
 
 NFFT = 512
 

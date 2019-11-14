@@ -4,8 +4,7 @@ from spafe.utils import levinsondr
 from spafe.utils.filters import rasta_filter
 from ..utils.preprocessing import pre_emphasis
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-from spafe.utils.spectral import (powspec, lifter, audspec, postaud,
-                                  invpostaud, invpowspec)
+from spafe.utils.spectral import (powspec, lifter, audspec, postaud, invpostaud, invpowspec)
 
 
 def lpcc(sig,
