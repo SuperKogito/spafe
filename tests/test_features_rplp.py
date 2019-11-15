@@ -7,10 +7,6 @@ from spafe.utils.spectral import stft, display_stft
 DEBUG_MODE = False
 
 
-def get_data(fname):
-    return scipy.io.wavfile.read(fname)
-
-
 @pytest.fixture
 def sig():
     __EXAMPLE_FILE = 'test.wav'
@@ -53,14 +49,22 @@ def test_rplp(sig, fs, num_ceps):
 
 if __name__ == "__main__":
     # read wave file  and plot spectogram
-    fs, sig = get_data('../test.wav')
+    fname = '../test.wav'
     if DEBUG_MODE:
-        vis.spectogram(sig, fs)
+        vis.spectogram(
+            scipy.io.wavfile.read(fname)[1],
+            scipy.io.wavfile.read(fname)[0])
 
     # compute and display STFT
-    X, _ = stft(sig=sig, fs=fs, win_type="hann", win_len=0.025, win_hop=0.01)
+    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
+                fs=scipy.io.wavfile.read(fname)[0],
+                win_type="hann",
+                win_len=0.025,
+                win_hop=0.01)
     if DEBUG_MODE:
-        display_stft(X, fs, len(sig), 0, 2000, -10, 0)
+        display_stft(X,
+                     scipy.io.wavfile.read(fname)[0],
+                     len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
 
     # init input vars
     num_ceps = 13

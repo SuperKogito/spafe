@@ -9,6 +9,7 @@ from spafe.utils.spectral import stft, display_stft
 
 DEBUG_MODE = False
 
+
 @pytest.fixture
 def sig():
     __EXAMPLE_FILE = 'test.wav'
@@ -152,15 +153,18 @@ if __name__ == "__main__":
     # read wave file  and plot spectogram
     fname = '../test.wav'
     if DEBUG_MODE:
-        vis.spectogram(scipy.io.wavfile.read(fname)[1], 
-                       scipy.io.wavfile.read(fname)[0])
+        vis.spectogram(
+            scipy.io.wavfile.read(fname)[1],
+            scipy.io.wavfile.read(fname)[0])
 
     # compute and display STFT
-    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1], 
-                fs=scipy.io.wavfile.read(fname)[0], win_type="hann", 
-                win_len=0.025, win_hop=0.01)
+    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
+                fs=scipy.io.wavfile.read(fname)[0],
+                win_type="hann",
+                win_len=0.025,
+                win_hop=0.01)
     if DEBUG_MODE:
-        display_stft(X, 
+        display_stft(X,
                      scipy.io.wavfile.read(fname)[0],
                      len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
 

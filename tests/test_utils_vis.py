@@ -24,7 +24,8 @@ def fs():
 def test_functions_availability():
     # Cheching the availibility of functions in the chosen attribute
     assert_function_availability(hasattr(spafe.utils.vis, 'visualize_fbanks'))
-    assert_function_availability(hasattr(spafe.utils.vis, 'visualize_features'))
+    assert_function_availability(hasattr(spafe.utils.vis,
+                                         'visualize_features'))
     assert_function_availability(hasattr(spafe.utils.vis, 'plot'))
     assert_function_availability(hasattr(spafe.utils.vis, 'spectogram'))
 

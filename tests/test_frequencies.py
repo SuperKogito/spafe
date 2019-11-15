@@ -12,10 +12,6 @@ from spafe.frequencies.fundamental_frequencies import FundamentalFrequenciesExtr
 DEBUG_MODE = False
 
 
-def get_data(fname):
-    return scipy.io.wavfile.read(fname)
-
-
 @pytest.fixture
 def sig():
     __EXAMPLE_FILE = 'test.wav'

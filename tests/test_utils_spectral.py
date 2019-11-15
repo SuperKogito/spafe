@@ -13,10 +13,6 @@ from spafe.utils.spectral import (cqt, stft, istft, display_stft)
 DEBUG_MODE = False
 
 
-def get_data(fname):
-    return scipy.io.wavfile.read(fname)
-
-
 @pytest.fixture
 def sig():
     __EXAMPLE_FILE = 'test.wav'
@@ -133,7 +129,7 @@ def test_display(sig, fs, low_freq, high_freq, normalize):
 
 
 if __name__ == "__main__":
-    fs, x = get_data('../test.wav')
+    fs, x = scipy.io.wavfile.read('../test.wav')
     # run tests
     test_stft(x, fs)
     test_istft(x, fs)
