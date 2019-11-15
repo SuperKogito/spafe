@@ -32,6 +32,9 @@ def test_dom_freqs(sig, fs):
     # test dominant frequencies extraction
     dom_freqs_extractor = DominantFrequenciesExtractor(debug=True)
     dom_freqs = dom_freqs_extractor.main(sig=sig, fs=fs)
+    # assert is not None
+    if dom_freqs is None:
+        raise AssertionError
 
 
 @patch("matplotlib.pyplot.show")
@@ -43,6 +46,9 @@ def test_fund_freqs(sig, fs):
     fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=True)
     pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(
         sig=sig, fs=fs)
+    # assert is not None
+    if pitches is None:
+        raise AssertionError
 
 
 @patch("matplotlib.pyplot.show")
@@ -59,7 +65,7 @@ def test_extract_feats(mock_show, sig, fs):
     if not spectral_features["duration"] == (len(sig) / float(fs)):
         raise AssertionError
 
-    for k, v in spectral_features.items():
+    for _, v in spectral_features.items():
         if v is None:
             raise AssertionError
 

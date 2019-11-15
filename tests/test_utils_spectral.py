@@ -84,7 +84,7 @@ def test_istft(sig, fs):
             yr[:x_pad.size]).max()
 
         # plot the original and the difference of the original from the reconstruction
-        fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+        _, ax = plt.subplots(1, 1, figsize=(10, 5))
         ax.plot(t, diff, 'r-')
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Reconstruction Error value")
@@ -113,11 +113,11 @@ def test_display(sig, fs, low_freq, high_freq, normalize):
     test display STFT.
     """
     # compute and display STFT
-    X, x_pad = stft(sig=sig,
-                    fs=fs,
-                    win_type="hann",
-                    win_len=0.025,
-                    win_hop=0.01)
+    X, _ = stft(sig=sig,
+                fs=fs,
+                win_type="hann",
+                win_len=0.025,
+                win_hop=0.01)
     display_stft(X,
                  fs,
                  len_sig=len(sig),
@@ -129,7 +129,8 @@ def test_display(sig, fs, low_freq, high_freq, normalize):
 
 
 if __name__ == "__main__":
-    fs, x = scipy.io.wavfile.read('../test.wav')
     # run tests
-    test_stft(x, fs)
-    test_istft(x, fs)
+    test_stft(scipy.io.wavfile.read('../test.wav')[1],
+              scipy.io.wavfile.read('../test.wav')[0])
+    test_istft(scipy.io.wavfile.read('../test.wav')[1],
+               scipy.io.wavfile.read('../test.wav')[0])

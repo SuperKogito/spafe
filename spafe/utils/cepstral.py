@@ -120,7 +120,7 @@ def cep2spec(cep, nfreq, dct_type=2):
          2d-array spec, spectrum matrix
          2d-array idctm, the IDCT matrix that spec was multiplied by to give cep.
     """
-    ncep, ncol = cep.shape
+    _, ncol = cep.shape
 
     dctm = np.zeros((ncep, nfreq))
     idctm = np.zeros((nfreq, ncep))
@@ -176,7 +176,7 @@ def deltas(x, w=9):
     Returns:
         2d-arrays containing the derivatives values.
     """
-    rows, cols = x.shape
+    _, cols = x.shape
     hlen = np.floor(w / 2)
     win = np.arange(hlen, -(hlen + 1), -1, dtype='float32')
 
@@ -204,7 +204,7 @@ def spec2cep(spec, ncep=9, dct_type=2):
          2d-array ncep, cepstral rows
          2d-array dctm, the DCT matrix that spec was multiplied by to give cep.
     """
-    nrow, ncol = spec.shape[0], spec.shape[1]
+    nrow, _ = spec.shape[0], spec.shape[1]
     dctm = np.zeros((ncep, nrow))
 
     if dct_type == 2 or dct_type == 3:
@@ -260,7 +260,7 @@ def lifter_ceps(cepstra, L=22):
         liftered cepstra.
     """
     if L > 0:
-        nframes, ncoeff = np.shape(cepstra)
+        _, ncoeff = np.shape(cepstra)
         n = np.arange(ncoeff)
         lift = 1 + (L / 2.) * np.sin(np.pi * n / L)
         return lift * cepstra

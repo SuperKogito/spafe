@@ -23,7 +23,8 @@ def test_zero_handling(x):
     test zero handling and check if it handles all zero values correctly
     """
     y = zero_handling(x=x)
-    # to be implemented ..
+    # check if log can be computed without a problem
+    log_y = np.log(y) 
 
 
 @pytest.mark.parametrize('sig', [np.arange(5)])
