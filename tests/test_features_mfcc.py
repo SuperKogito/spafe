@@ -30,7 +30,7 @@ def fs():
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('dct_type', [1, 2, 4])
 @pytest.mark.parametrize('use_energy', [False, True])
-@pytest.mark.parametrize('lifter', [0])
+@pytest.mark.parametrize('lifter', [0, 5, 22])
 @pytest.mark.parametrize('normalize', [False, True])
 def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
               use_energy, lifter, normalize):
@@ -157,7 +157,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 @pytest.mark.parametrize('high_freq', [2000, 4000])
 @pytest.mark.parametrize('dct_type', [1, 2, 3, 4])
 @pytest.mark.parametrize('use_energy', [False, True])
-@pytest.mark.parametrize('lifter', [0])
+@pytest.mark.parametrize('lifter', [0, 5, 22])
 @pytest.mark.parametrize('normalize', [False, True])
 def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                use_energy, lifter, normalize):
@@ -236,7 +236,7 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                              normalize=normalize)[:, 0]
 
         np.testing.assert_almost_equal(imfccs_energy, gfccs_energy, 3)
-    print("Here")
+
     # check normalize
     if normalize:
         np.testing.assert_almost_equal(

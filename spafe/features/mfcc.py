@@ -102,7 +102,7 @@ def mfcc(sig,
 
     # -> FFT -> |.|
     fourrier_transform = rfft(x=windows, n=nfft)
-    abs_fft_values = np.abs(fourrier_transform)
+    abs_fft_values = (1 / 1) * np.abs(fourrier_transform)
 
     #  -> x Mel-fbanks
     mel_fbanks_mat = mel_filter_banks(nfilts=nfilts,
