@@ -1,8 +1,9 @@
 import spafe
 import pytest
 import numpy as np
-from spafe.utils.cepstral import cmn, cms, cvn, cmvn
 from spafe.utils.exceptions import assert_function_availability
+from spafe.utils.cepstral import (cmn, cms, cvn, cmvn, spec2cep, cep2spec, 
+                                  deltas, lifter_ceps)
 
 
 @pytest.fixture
@@ -51,3 +52,37 @@ def test_cmvn(x):
     x = np.round(np.random.normal(loc=0.0, scale=1.0, size=100), 3)
     y = cmvn(x)
     np.testing.assert_almost_equal(y, cvn(cms(x)), 0)
+
+
+@pytest.mark.parametrize('w', [0, 2])
+def test_deltas(w):
+    features = np.linspace((1, 2), (10, 20), 10)
+    expected_result = {0 : np.linspace((0, 0), ( 0, 0), 10),
+                       2 : np.linspace((1, 1), (10,10), 10) }
+    delta_features = deltas(features, w)
+    np.testing.assert_almost_equal(delta_features, expected_result[w], 1)
+
+# to investigate and fix
+@pytest.mark.xfail(raises=AssertionError)
+@pytest.mark.parametrize('ncep', [9, 12])
+@pytest.mark.parametrize('dct_type', [1, 2, 4])
+def test_specs_and_ceps(ncep, dct_type):
+    x = np.linspace((1, 2, 3), (10, 20, 30), 100)
+    ceps, _ = spec2cep(spec=x, ncep=ncep, dct_type=dct_type)
+    specs, _ = cep2spec(cep=ceps, ncep=ncep, nfreq=x.shape[0], dct_type=dct_type)
+    np.testing.assert_almost_equal(x, specs, 3)
+    
+@pytest.mark.parametrize('lifter_coefficient', [0, 22])
+def test_lifter_ceps(lifter_coefficient):
+    cepstra = np.linspace((1, 2), (10, 20), 10)
+    liftered_cepstra = lifter_ceps(cepstra, lifter_coefficient)
+    
+    # check when liftering should be applied
+    if lifter_coefficient > 0 : 
+        n = np.arange(np.shape(cepstra)[1])
+        lift = 1 + (lifter_coefficient / 2.) * np.sin(np.pi * n / lifter_coefficient)
+        np.testing.assert_almost_equal(liftered_cepstra, cepstra * lift, 3)
+            
+    # check when liftering is not supposed to be applied
+    if lifter_coefficient == 0 : 
+        np.testing.assert_almost_equal(liftered_cepstra, cepstra, 3) 

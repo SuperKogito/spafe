@@ -25,12 +25,13 @@ def fs():
 
 
 @patch("matplotlib.pyplot.show")
-def test_dom_freqs(sig, fs):
+@pytest.mark.parametrize('debug', [False, True])
+def test_dom_freqs(sig, fs, debug):
     """
     test the computation of dominant frequencies
     """
     # test dominant frequencies extraction
-    dom_freqs_extractor = DominantFrequenciesExtractor(debug=True)
+    dom_freqs_extractor = DominantFrequenciesExtractor(debug=debug)
     dom_freqs = dom_freqs_extractor.main(sig=sig, fs=fs)
     # assert is not None
     if dom_freqs is None:
@@ -38,12 +39,13 @@ def test_dom_freqs(sig, fs):
 
 
 @patch("matplotlib.pyplot.show")
-def test_fund_freqs(sig, fs):
+@pytest.mark.parametrize('debug', [False, True])
+def test_fund_freqs(sig, fs, debug):
     """
     test the computation of fundamental frequencies.
     """
     #  test fundamental frequencies extraction
-    fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=True)
+    fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=debug)
     pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(
         sig=sig, fs=fs)
     # assert is not None

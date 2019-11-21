@@ -21,6 +21,7 @@ def fs():
 
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 26])
+@pytest.mark.parametrize('pre_emph', [False, True])
 @pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('low_freq', [0, 300])
@@ -29,8 +30,8 @@ def fs():
 @pytest.mark.parametrize('use_energy', [False, True])
 @pytest.mark.parametrize('lifter', [0, 5])
 @pytest.mark.parametrize('normalize', [False, True])
-def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
-              use_energy, lifter, normalize):
+def test_gfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq,
+              dct_type, use_energy, lifter, normalize):
     """
     test GFCC features module for the following:
         - check if ParameterErrors are raised for:
@@ -77,6 +78,7 @@ def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     gfccs = gfcc(sig=sig,
                  fs=fs,
                  num_ceps=num_ceps,
+                 pre_emph=pre_emph,
                  nfilts=nfilts,
                  nfft=nfft,
                  low_freq=low_freq,
@@ -93,9 +95,10 @@ def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     # check use energy
     if use_energy:
         gfccs_energy = gfccs[:, 0]
-        gfccs_energy = gfcc(sig=sig,
+        xfccs_energy = gfcc(sig=sig,
                             fs=fs,
                             num_ceps=num_ceps,
+                            pre_emph=pre_emph,
                             nfilts=nfilts,
                             nfft=nfft,
                             low_freq=low_freq,
@@ -105,7 +108,7 @@ def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                             lifter=lifter,
                             normalize=normalize)[:, 0]
 
-        np.testing.assert_almost_equal(gfccs_energy, gfccs_energy, 3)
+        np.testing.assert_almost_equal(gfccs_energy, xfccs_energy, 3)
 
     # check normalize
     if normalize:
@@ -116,6 +119,7 @@ def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     gfcc(sig=sig,
                          fs=fs,
                          num_ceps=num_ceps,
+                         pre_emph=pre_emph,
                          nfilts=nfilts,
                          nfft=nfft,
                          low_freq=low_freq,
@@ -133,6 +137,7 @@ def test_gfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     gfcc(sig=sig,
                          fs=fs,
                          num_ceps=num_ceps,
+                         pre_emph=pre_emph,
                          nfilts=nfilts,
                          nfft=nfft,
                          low_freq=low_freq,

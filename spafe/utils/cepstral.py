@@ -106,12 +106,13 @@ def _helper_mat(K, ncep, start, stop, step, dct_type):
     return np.array(mat)
 
 
-def cep2spec(cep, nfreq, dct_type=2):
+def cep2spec(cep, ncep, nfreq, dct_type=2):
     """
     Reverse the cepstrum to recover a spectrum.
 
     Args:
         cep    (array) : cepstral data to convert to spectral data.
+        ncep     (int) : number of cepstrals.
         nfreq    (int) : number of points to reconstruct in spectrum.
         dct_type (int) : the discrete cosine transform type.
                          Default is 2.
@@ -183,9 +184,8 @@ def deltas(x, w=9):
     xx = np.append(np.append(np.tile(x[:, 0], (int(hlen), 1)).T, x, axis=1),
                    np.tile(x[:, cols - 1], (int(hlen), 1)).T,
                    axis=1)
-
-    deltas = scipy.signal.lfilter(
-        win, 1, xx, axis=1)[:, int(2 * hlen):int(2 * hlen + cols)]
+    from scipy.signal import lfilter
+    deltas = lfilter(win, 1, xx, axis=1)[:, int(2 * hlen):int(2 * hlen + cols)]
     return deltas
 
 

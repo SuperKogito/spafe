@@ -36,31 +36,6 @@ class DominantFrequenciesExtractor:
         for i in range(0, len(sig) - int(window_length), int(window_skip)):
             yield sig[i:i + window_length]
 
-    def split_signal_in_frames(self, sig, fs, frame_size_in_ms=100):
-        """
-        Return slices of a signal based on a sliding winding concept with a
-        fixed window width and window step.
-
-        Args:
-            sig       (array) : audio signal (list of float)
-            fs        (int) : sampling rate (= average number of samples pro 1 second)
-            frame_size_in_ms (int) : slicing window and step in milli-seconds.
-
-        Returns:
-            (list) : list of signal slices.
-        """
-        samples_pro_frame = int(fs / 1000) * frame_size_in_ms
-        samples_count_pro_frame = int(
-            int(len(sig) / samples_pro_frame) * samples_pro_frame)
-        frames = np.split(
-            sig[:samples_count_pro_frame],
-            len(sig[:samples_count_pro_frame]) / int(samples_count_pro_frame))
-        try:
-            frames.append(sig[samples_count_pro_frame:])
-        except BaseException:
-            pass
-        return frames
-
     def get_dominant_frequencies(self, slices, fs):
         """
         Returns the dominant audio frequency (in Hertz) of a given audio signal.

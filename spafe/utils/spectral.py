@@ -268,19 +268,7 @@ def display_stft(X,
     plt.ylabel('Frequency (Khz)')
     plt.xlabel('Time (sec)')
     plt.show()
-
-
-def xstft(sig, fs, nfft, H=None):
-    x = sig
-    if H is None:
-        H = nfft // 4 + 1
-    N = nfft // 2 + 1
-    w = scipy.hanning(N + 1)[1:]
-    X = scipy.array(
-        [scipy.fft(w * x[i:i + N]) for i in range(0,
-                                                  len(x) - N, H)])
-    return X
-
+    
 
 def power_spectrum(fourrier_transform, nfft=NFFT):
     magnitude_frames = np.absolute(fourrier_transform)  # Magnitude of the FFT

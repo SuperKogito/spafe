@@ -243,10 +243,10 @@ def fft2melmx(nfft,
     if nfilts == 0:
         nfilts = int(np.ceil(hz2mel(high_freq, htk) / 2))
 
-    if isinstance(nfilts, int) == int:
+    if not isinstance(nfilts, int):
         raise ParameterError(ErrorMsgs["nfilts"])
 
-    if isinstance(nfft, int) == int:
+    if not isinstance(nfft, int):
         raise ParameterError(ErrorMsgs["nfft"])
 
     wts = np.zeros((nfilts, nfft))
@@ -308,10 +308,10 @@ def fft2barkmx(nfft, fs, nfilts=0, bwidth=1, low_freq=0, high_freq=0):
     if nfilts == 0:
         nfilts = int(np.add(np.ceil(nyqbark), 1))
 
-    if isinstance(nfilts, int) == int:
+    if not isinstance(nfilts, int):
         raise ParameterError(ErrorMsgs["nfilts"])
 
-    if isinstance(nfft, int) == int:
+    if not isinstance(nfft, int):
         raise ParameterError(ErrorMsgs["nfft"])
 
     wts = np.zeros((nfilts, nfft))

@@ -21,6 +21,7 @@ def fs():
 
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 26])
+@pytest.mark.parametrize('pre_emph', [False, True])
 @pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('low_freq', [0, 300])
@@ -29,7 +30,7 @@ def fs():
 @pytest.mark.parametrize('use_energy', [False, True])
 @pytest.mark.parametrize('lifter', [0, 5, 22])
 @pytest.mark.parametrize('normalize', [False, True])
-def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
+def test_mfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq, dct_type,
               use_energy, lifter, normalize):
     """
     test MFCC features module for the following:
@@ -77,6 +78,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     mfccs = mfcc(sig=sig,
                  fs=fs,
                  num_ceps=num_ceps,
+                 pre_emph=pre_emph,
                  nfilts=nfilts,
                  nfft=nfft,
                  low_freq=low_freq,
@@ -93,9 +95,10 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     # check use energy
     if use_energy:
         mfccs_energy = mfccs[:, 0]
-        gfccs_energy = mfcc(sig=sig,
+        xfccs_energy = mfcc(sig=sig,
                             fs=fs,
                             num_ceps=num_ceps,
+                            pre_emph=pre_emph,
                             nfilts=nfilts,
                             nfft=nfft,
                             low_freq=low_freq,
@@ -105,7 +108,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                             lifter=lifter,
                             normalize=normalize)[:, 0]
 
-        np.testing.assert_almost_equal(mfccs_energy, gfccs_energy, 3)
+        np.testing.assert_almost_equal(mfccs_energy, xfccs_energy, 3)
 
     # check normalize
     if normalize:
@@ -116,6 +119,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     mfcc(sig=sig,
                          fs=fs,
                          num_ceps=num_ceps,
+                         pre_emph=pre_emph,
                          nfilts=nfilts,
                          nfft=nfft,
                          low_freq=low_freq,
@@ -133,6 +137,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     mfcc(sig=sig,
                          fs=fs,
                          num_ceps=num_ceps,
+                         pre_emph=pre_emph,
                          nfilts=nfilts,
                          nfft=nfft,
                          low_freq=low_freq,
@@ -146,6 +151,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 
 @pytest.mark.test_id(202)
 @pytest.mark.parametrize('num_ceps', [13, 19, 26])
+@pytest.mark.parametrize('pre_emph', [False, True])
 @pytest.mark.parametrize('nfilts', [32, 48])
 @pytest.mark.parametrize('nfft', [256, 512, 1024])
 @pytest.mark.parametrize('low_freq', [0, 50, 300])
@@ -154,7 +160,7 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
 @pytest.mark.parametrize('use_energy', [False, True])
 @pytest.mark.parametrize('lifter', [0, 5, 22])
 @pytest.mark.parametrize('normalize', [False, True])
-def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
+def test_imfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq, dct_type,
                use_energy, lifter, normalize):
     """
     test IMFCC features module for the following:
@@ -202,6 +208,7 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     imfccs = imfcc(sig=sig,
                    fs=fs,
                    num_ceps=num_ceps,
+                   pre_emph=pre_emph,
                    nfilts=nfilts,
                    nfft=nfft,
                    low_freq=low_freq,
@@ -218,9 +225,10 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
     # check use energy
     if use_energy:
         imfccs_energy = imfccs[:, 0]
-        gfccs_energy = imfcc(sig=sig,
+        xfccs_energy = imfcc(sig=sig,
                              fs=fs,
                              num_ceps=num_ceps,
+                             pre_emph=pre_emph,
                              nfilts=nfilts,
                              nfft=nfft,
                              low_freq=low_freq,
@@ -230,7 +238,7 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                              lifter=lifter,
                              normalize=normalize)[:, 0]
 
-        np.testing.assert_almost_equal(imfccs_energy, gfccs_energy, 3)
+        np.testing.assert_almost_equal(imfccs_energy, xfccs_energy, 3)
 
     # check normalize
     if normalize:
@@ -241,6 +249,7 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     imfcc(sig=sig,
                           fs=fs,
                           num_ceps=num_ceps,
+                          pre_emph=pre_emph,
                           nfilts=nfilts,
                           nfft=nfft,
                           low_freq=low_freq,
@@ -258,6 +267,7 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                     imfcc(sig=sig,
                           fs=fs,
                           num_ceps=num_ceps,
+                          pre_emph=pre_emph,
                           nfilts=nfilts,
                           nfft=nfft,
                           low_freq=low_freq,

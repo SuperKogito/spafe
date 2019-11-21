@@ -1,10 +1,11 @@
 import spafe
 import pytest
 import numpy as np
+from spafe.utils.exceptions import ParameterError
 from spafe.utils.exceptions import assert_function_availability
 from spafe.utils.converters import (hz2erb, erb2hz, hz2bark, bark2hz, hz2mel,
                                     mel2hz, fft2hz, fft2erb, erb2fft, hz2fft,
-                                    fft2bark, bark2fft)
+                                    fft2bark, bark2fft, fft2melmx)
 
 
 @pytest.fixture
@@ -112,8 +113,22 @@ def test_erb2fft(fix_fft, ferb):
 
 
 def test_fft2bark(fix_fft, fbark):
+    # check lifter Parameter error for low freq
     np.testing.assert_almost_equal(fft2bark(fix_fft), fbark, 0)
 
 
 def test_bark2fft(fix_fft, fbark):
     np.testing.assert_almost_equal(bark2fft(fbark), fix_fft, 0)
+
+
+def test_fft2melmx():
+
+    # check lifter Parameter error are correctly raised
+    with pytest.raises(ParameterError):
+        melmx = fft2melmx(nfft=0.5,
+                          fs=16000)
+
+    with pytest.raises(ParameterError):
+        melmx = fft2melmx(nfft=512,
+                          fs=16000,
+                          nfilts=0.5)
