@@ -24,7 +24,7 @@ def test_zero_handling(x):
     """
     y = zero_handling(x=x)
     # check if log can be computed without a problem
-    log_y = np.log(y) 
+    log_y = np.log(y)
 
 
 @pytest.mark.parametrize('sig', [np.arange(5)])
@@ -62,11 +62,12 @@ def test_framing(sig, fs, win_len, win_hop):
 
 @pytest.mark.parametrize('frames', [[[7, 8, 9], [1, 2, 3]]])
 @pytest.mark.parametrize('frame_len', [3])
-def test_windowing(frames, frame_len, win_type="hamming"):
+@pytest.mark.parametrize('win_type', ["hamming", "hanning", "bartlet", "kaiser", "blackman"])
+def test_windowing(frames, frame_len, win_type):
     """
     test if windowing is applied correctly.
     """
-    windows = windowing(frames, frame_len, win_type="hamming")
+    windows = windowing(frames, frame_len, win_type)
     for window in windows:
-        if not window[0] < 0.9 and window[-1] < 0.99:
+        if not window[0] < 0.0 and window[-1] < 0.0:
             raise AssertionError

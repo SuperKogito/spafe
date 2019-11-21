@@ -72,7 +72,7 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     return frames, frame_length
 
 
-def windowing(frames, frame_len, win_type="hamming"):
+def windowing(frames, frame_len, win_type="hamming", beta=14):
     """
     generate and apply a window function to avoid spectral leakage.
 
@@ -90,9 +90,9 @@ def windowing(frames, frame_len, win_type="hamming"):
     if win_type == "hanning":
         frames *= np.hanning(frame_len)
     if win_type == "bartlet":
-        frames *= np.bartlet(frame_len)
+        frames *= np.bartlett(frame_len)
     if win_type == "kaiser":
-        frames *= np.kaiser(frame_len)
+        frames *= np.kaiser(frame_len, beta)
     if win_type == "blackman":
         frames *= np.blackman(frame_len)
     return frames
