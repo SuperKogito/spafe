@@ -5,9 +5,6 @@ from spafe.utils import vis
 from spafe.features.bfcc import bfcc
 from spafe.utils.exceptions import ParameterError
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-from spafe.utils.spectral import stft, display_stft
-
-DEBUG_MODE = False
 
 
 @pytest.fixture
@@ -144,50 +141,3 @@ def test_bfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                          use_energy=use_energy,
                          lifter=False,
                          normalize=normalize), lifter), 3)
-
-    if DEBUG_MODE:
-        vis.visualize_features(bfccs, 'BFCC Index', 'Frame Index')
-
-
-if __name__ == "__main__":
-    # read wave file  and plot spectogram
-    fname = '../test.wav'
-    if DEBUG_MODE:
-        vis.spectogram(
-            scipy.io.wavfile.read(fname)[1],
-            scipy.io.wavfile.read(fname)[0])
-
-    # compute and display STFT
-    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
-                fs=scipy.io.wavfile.read(fname)[0],
-                win_type="hann",
-                win_len=0.025,
-                win_hop=0.01)
-    if DEBUG_MODE:
-        display_stft(X,
-                     scipy.io.wavfile.read(fname)[0],
-                     len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
-
-    # init input vars
-    num_ceps = 13
-    low_freq = 0
-    high_freq = 2000
-    nfilts = 24
-    nfft = 512
-    dct_type = 2,
-    use_energy = False,
-    lifter = 5
-    normalize = False
-
-    # run tests for debug mode (with visualization)
-    test_bfcc(sig=scipy.io.wavfile.read(fname)[1],
-              fs=scipy.io.wavfile.read(fname)[0],
-              num_ceps=num_ceps,
-              nfilts=nfilts,
-              nfft=nfft,
-              low_freq=low_freq,
-              high_freq=high_freq,
-              dct_type=dct_type,
-              use_energy=use_energy,
-              lifter=lifter,
-              normalize=normalize)

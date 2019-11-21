@@ -3,8 +3,6 @@ from spafe.utils import vis
 from spafe.fbanks import mel_fbanks
 from spafe.utils.exceptions import ParameterError
 
-DEBUG_MODE = False
-
 
 @pytest.mark.test_id(101)
 @pytest.mark.parametrize('nfilts', [12, 24])
@@ -48,10 +46,6 @@ def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
                                                    low_freq=low_freq,
                                                    high_freq=16000)
 
-    # plot the filter banks
-    if DEBUG_MODE:
-        vis.visualize_fbanks(mel_filbanks, "Amplitude", "Frequency (Hz)")
-
 
 @pytest.mark.test_id(105)
 @pytest.mark.parametrize('nfilts', [12, 18, 24])
@@ -91,21 +85,3 @@ def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
                                                             fs=fs,
                                                             low_freq=low_freq,
                                                             high_freq=16000)
-
-    # plot the filter banks
-    if DEBUG_MODE:
-        vis.visualize_fbanks(imel_filbanks, "Amplitude", "Frequency (Hz)")
-
-
-if __name__ == "__main__":
-    # init vars
-    nfilts = 48
-    nfft = 512
-    fs = 16000
-    low_freq = 0
-    high_freq = 8000
-    scale = "descendant"
-
-    # run tests
-    test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale)
-    test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq, scale)

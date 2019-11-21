@@ -4,8 +4,6 @@ from spafe.utils import vis
 from spafe.features.rplp import rplp, plp
 from spafe.utils.spectral import stft, display_stft
 
-DEBUG_MODE = False
-
 
 @pytest.fixture
 def sig():
@@ -42,32 +40,3 @@ def test_rplp(sig, fs, num_ceps):
     # assert number of returned cepstrum coefficients
     if not rplps.shape[1] == num_ceps:
         raise AssertionError
-
-    if DEBUG_MODE:
-        vis.visualize_features(rplps, 'RPLP Coefficient Index', 'Frame Index')
-
-
-if __name__ == "__main__":
-    # read wave file  and plot spectogram
-    fname = '../test.wav'
-    if DEBUG_MODE:
-        vis.spectogram(
-            scipy.io.wavfile.read(fname)[1],
-            scipy.io.wavfile.read(fname)[0])
-
-    # compute and display STFT
-    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
-                fs=scipy.io.wavfile.read(fname)[0],
-                win_type="hann",
-                win_len=0.025,
-                win_hop=0.01)
-    if DEBUG_MODE:
-        display_stft(X,
-                     scipy.io.wavfile.read(fname)[0],
-                     len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
-
-    # init input vars
-    num_ceps = 13
-
-    # run tests
-    test_rplp(sig=sig, fs=fs, num_ceps=num_ceps)

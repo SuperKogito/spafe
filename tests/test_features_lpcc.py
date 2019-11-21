@@ -3,10 +3,7 @@ import numpy as np
 import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.lpc import lpc, lpcc, lpc2spec
-from spafe.utils.spectral import stft, display_stft
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-
-DEBUG_MODE = False
 
 
 @pytest.fixture
@@ -51,9 +48,6 @@ def test_lpc(sig, fs, num_ceps):
     if not lpcs.shape[1] == num_ceps:
         raise AssertionError
 
-    if DEBUG_MODE:
-        vis.visualize_features(lpcs, 'LPC Index', 'Frame Index')
-
 
 @pytest.mark.parametrize('num_ceps', [13, 17])
 @pytest.mark.parametrize('lifter', [0])
@@ -96,39 +90,3 @@ def test_lpcc(sig, fs, num_ceps, lifter, normalize):
                          num_ceps=num_ceps,
                          lifter=False,
                          normalize=normalize), lifter), 0)
-
-    if DEBUG_MODE:
-        vis.visualize_features(lpccs, 'LPCC Index', 'Frame Index')
-
-
-if __name__ == "__main__":
-    # read wave file  and plot spectogram
-    fname = '../test.wav'
-    if DEBUG_MODE:
-        vis.spectogram(
-            scipy.io.wavfile.read(fname)[1],
-            scipy.io.wavfile.read(fname)[0])
-
-    # compute and display STFT
-    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
-                fs=scipy.io.wavfile.read(fname)[0],
-                win_type="hann",
-                win_len=0.025,
-                win_hop=0.01)
-    if DEBUG_MODE:
-        display_stft(X,
-                     scipy.io.wavfile.read(fname)[0],
-                     len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
-
-    # init input vars
-    num_ceps = 13
-    lifter = 5
-    normalize = False
-
-    # run tests
-    test_lpc(sig=sig, fs=fs, num_ceps=num_ceps)
-    test_lpcc(sig=sig,
-              fs=fs,
-              num_ceps=num_ceps,
-              lifter=lifter,
-              normalize=normalize)

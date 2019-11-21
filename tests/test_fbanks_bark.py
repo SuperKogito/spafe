@@ -3,8 +3,6 @@ from spafe.utils import vis
 from spafe.fbanks import bark_fbanks
 from spafe.utils.exceptions import ParameterError
 
-DEBUG_MODE = False
-
 
 @pytest.mark.test_id(102)
 @pytest.mark.parametrize('nfilts', [12, 24])
@@ -47,20 +45,3 @@ def test_barkfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
                                                       fs=fs,
                                                       low_freq=low_freq,
                                                       high_freq=16000)
-
-    # plot filter banks
-    if DEBUG_MODE:
-        vis.visualize_fbanks(bark_filbanks, "Amplitude", "Frequency (Hz)")
-
-
-if __name__ == "__main__":
-    # init vars
-    nfilts = 48
-    nfft = 512
-    fs = 16000
-    low_freq = 0
-    high_freq = 8000
-    scale = "descendant"
-
-    # run tests
-    test_barkfbanks(nfilts, nfft, fs, low_freq, high_freq, scale)

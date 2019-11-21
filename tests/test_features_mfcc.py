@@ -4,10 +4,7 @@ import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.mfcc import mfcc, imfcc
 from spafe.utils.exceptions import ParameterError
-from spafe.utils.spectral import stft, display_stft
 from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-
-DEBUG_MODE = False
 
 
 @pytest.fixture
@@ -145,8 +142,6 @@ def test_mfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                          lifter=False,
                          normalize=normalize), lifter), 3)
 
-    if DEBUG_MODE:
-        vis.visualize_features(mfccs, 'MFCC Index', 'Frame Index')
 
 
 @pytest.mark.test_id(202)
@@ -271,61 +266,3 @@ def test_imfcc(sig, fs, num_ceps, nfilts, nfft, low_freq, high_freq, dct_type,
                           use_energy=use_energy,
                           lifter=False,
                           normalize=normalize), lifter), 3)
-
-    if DEBUG_MODE:
-        vis.visualize_features(imfccs, 'IMFCC Index', 'Frame Index')
-
-
-if __name__ == "__main__":
-    # read wave file  and plot spectogram
-    fname = '../test.wav'
-    if DEBUG_MODE:
-        vis.spectogram(
-            scipy.io.wavfile.read(fname)[1],
-            scipy.io.wavfile.read(fname)[0])
-
-    # compute and display STFT
-    X, _ = stft(sig=scipy.io.wavfile.read(fname)[1],
-                fs=scipy.io.wavfile.read(fname)[0],
-                win_type="hann",
-                win_len=0.025,
-                win_hop=0.01)
-    if DEBUG_MODE:
-        display_stft(X,
-                     scipy.io.wavfile.read(fname)[0],
-                     len(scipy.io.wavfile.read(fname)[1]), 0, 2000, -10, 0)
-
-    # init input vars
-    num_ceps = 13
-    low_freq = 0
-    high_freq = 2000
-    nfilts = 24
-    nfft = 512
-    dct_type = 2,
-    use_energy = True,
-    lifter = 5
-    normalize = False
-
-    # run tests for debug mode (with visualization)
-    test_mfcc(sig=sig,
-              fs=fs,
-              num_ceps=num_ceps,
-              nfilts=nfilts,
-              nfft=nfft,
-              low_freq=low_freq,
-              high_freq=high_freq,
-              dct_type=dct_type,
-              use_energy=use_energy,
-              lifter=lifter,
-              normalize=normalize)
-    test_imfcc(sig=sig,
-               fs=fs,
-               num_ceps=num_ceps,
-               nfilts=nfilts,
-               nfft=nfft,
-               low_freq=low_freq,
-               high_freq=high_freq,
-               dct_type=dct_type,
-               use_energy=use_energy,
-               lifter=lifter,
-               normalize=normalize)
