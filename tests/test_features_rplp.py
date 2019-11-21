@@ -31,9 +31,6 @@ def test_rplp(sig, fs, num_ceps):
     if not plps.shape[1] == num_ceps:
         raise AssertionError
 
-    if DEBUG_MODE:
-        vis.visualize_features(plps, 'PLP Coefficient Index', 'Frame Index')
-
     # compute bfccs
     rplps = rplp(sig, fs, num_ceps)
 
