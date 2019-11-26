@@ -8,6 +8,7 @@ import time
 import scipy
 import numpy as np
 import scipy.io.wavfile
+from scipy import signal
 import matplotlib.pyplot as plt
 
 
@@ -172,7 +173,6 @@ class FundamentalFrequenciesExtractor:
                           - times         : list of time of each estimation
         """
         start = time.time()
-        print(sig, fs)
         duration = len(sig) / float(fs)
         pitches, harmonic_rates, argmins, times = self.compute_yin(
             sig, fs, dataFileName, w_len, w_step, f0_min, f0_max, harmo_thresh)

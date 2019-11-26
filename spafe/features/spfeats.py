@@ -35,8 +35,8 @@ Reference:
 """
 import scipy
 import numpy as np
-from ..utils.spectral import stft
-from ..frequencies.dominant_frequencies import DominantFrequenciesExtractor
+from ..utils.spectral import stft, rfft
+from ..frequencies.dominant_frequencies import get_dominant_frequencies
 from ..frequencies.fundamental_frequencies import FundamentalFrequenciesExtractor
 
 
@@ -52,14 +52,21 @@ def compute_fund_freqs(sig, fs):
         (float) spectral spread.
     """
     # fundamental frequencies calculations
-    print(sig, fs)
     fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=False)
     pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(
         sig=sig, fs=fs)
     return pitches
 
 
-def compute_dom_freqs_and_mod_index(sig, fs):
+def compute_dom_freqs_and_mod_index(sig,
+                                    fs,
+                                    lower_cutoff=50,
+                                    upper_cutoff=3000,
+                                    nfft=512,
+                                    win_len=3,
+                                    win_hop=1,
+                                    win_type='hamming',
+                                    debug=False):
     """
     compute dominant frequencies and modulation index.
 
@@ -71,8 +78,15 @@ def compute_dom_freqs_and_mod_index(sig, fs):
         (float) spectral spread.
     """
     # dominant frequencies calculations
-    dom_freqs_extractor = DominantFrequenciesExtractor()
-    dom_freqs = dom_freqs_extractor.main(sig=sig, fs=fs)
+    dom_freqs = get_dominant_frequencies(sig=sig,
+                                         fs=fs,
+                                         lower_cutoff=50,
+                                         upper_cutoff=upper_cutoff,
+                                         nfft=nfft,
+                                         win_len=win_len,
+                                         win_hop=win_hop,
+                                         win_type=win_type,
+                                         debug=debug)
 
     # modulation index calculation
     changes = np.abs(dom_freqs[:-1] - dom_freqs[1:])
@@ -202,9 +216,9 @@ def root_mean_square(sig, fs, block_length=256):
         start = i * block_length
         stop = np.min([(start + block_length - 1), len(sig)])
 
-        rms_seg = np.sqrt(np.mean(sig[start:stop]**2))
+        # This is wrong but why? rms_seg = np.sqrt(np.mean(sig[start:stop]**2))
+        rms_seg = np.sqrt(np.mean(np.power(sig[start:stop], 2)))
         rms.append(rms_seg)
-
     return np.asarray(rms), np.asarray(tstamps)
 
 
@@ -212,7 +226,7 @@ def spectral_bandwidth(sig, fs):
     return []
 
 
-def extract_feats(sig, fs):
+def extract_feats(sig, fs, nfft=512):
     """
     Compute the spectral features.
 
@@ -223,45 +237,49 @@ def extract_feats(sig, fs):
     Returns:
         (float) spectral spread.
     """
+    # init features dictionary
     feats = {}
-    spectrum = np.abs(np.fft.rfft(sig))
-    frequencies = np.fft.rfftfreq(len(sig), d=1. / fs)
-    amplitudes = spectrum / spectrum.sum()
+    
+    # compute the fft
+    fourrier_transform = rfft(sig, nfft)
 
-    import matplotlib.pyplot as plt
-    plt.stem(frequencies[:8000:25], spectrum[:8000:25], markerfmt=' ')
-    plt.show()
-
-    # stats
-    mean_frequency = (frequencies * amplitudes).sum()
-    peak_frequency = frequencies[np.argmax(amplitudes)]
-    frequencies_std = frequencies.std()
-    amplitudes_cum_sum = np.cumsum(amplitudes)
-    mode_frequency = frequencies[amplitudes.argmax()]
-    median_frequency = frequencies[
-        len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.50]) + 1]
-    frequencies_q25 = frequencies[
-        len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.25]) + 1]
-    frequencies_q75 = frequencies[
-        len(amplitudes_cum_sum[amplitudes_cum_sum <= 0.75]) + 1]
+    # compute magnitude spectrum
+    magnitude_spectrum = (1/nfft) * np.abs(fourrier_transform)
+    power_spectrum = (1/nfft)**2 * magnitude_spectrum**2
+    
+    # get all frequncies and  only keep positive frequencies 
+    frequencies = np.fft.fftfreq(len(power_spectrum), 1 / fs)
+    frequencies = frequencies[np.where(frequencies >= 0)] // 2 + 1
+    
+    # keep only half of the spectra
+    magnitude_spectrum = magnitude_spectrum[:len(frequencies)]
+    power_spectrum = power_spectrum[:len(frequencies)]
+        
+    # define amplitudes and spectrum
+    spectrum = power_spectrum
+    amplitudes = power_spectrum
+    amp_cumsum = np.cumsum(amplitudes)
 
     # general stats
     feats["duration"] = len(sig) / float(fs)
     feats["spectrum"] = spectrum
+    
+    # spectral stats I
+    feats["mean_frequency"] = frequencies.sum()
+    feats["peak_frequency"] = frequencies[np.argmax(amplitudes)]
+    feats["frequencies_std"] = frequencies.std()
+    feats["amplitudes_cum_sum"] = np.cumsum(amplitudes)
+    feats["mode_frequency"] = frequencies[amplitudes.argmax()]
+    feats["median_frequency"] = np.median(frequencies)
+    feats["frequencies_q25"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.25])-1]
+    feats["frequencies_q75"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.75])-1]
+    feats["iqr"] = feats["frequencies_q75"] - feats["frequencies_q25"]
 
-    # assign spectral stats
-    feats["meanfreq"] = frequencies.mean()
-    feats["sd"] = frequencies.std()
-    feats["medianfreq"] = np.median(frequencies)
-    feats["q25"] = frequencies_q25
-    feats["q75"] = frequencies_q75
-    feats["iqr"] = feats["q75"] - feats["q25"]
+    # spectral stats II
     feats["freqs_skewness"] = scipy.stats.skew(frequencies)
     feats["freqs_kurtosis"] = scipy.stats.kurtosis(frequencies)
     feats["spectral_entropy"] = scipy.stats.entropy(amplitudes)
     feats["spectral_flatness"] = spectral_flatness(sig)
-    feats["modef"] = mode_frequency
-    feats["peakf"] = frequencies[np.argmax(amplitudes)]
     feats["spectral_centroid"] = spectral_centroid(sig, fs)
     feats["spectral_bandwidth"] = spectral_bandwidth(sig, fs)
     feats["spectral_spread"] = spectral_spread(feats["spectral_centroid"],
@@ -270,12 +288,8 @@ def extract_feats(sig, fs):
     feats["spectral_rolloff"] = spectral_rolloff(sig, fs)
 
     # compute energy
-    frame_hop = 256
-    frame_len = 512
-    feats["energy"] = np.array([
-        np.sum(abs(x[i:i + frame_len]**2)) for i in range(len(sig), frame_hop)
-    ])
-
+    feats["energy"] = magnitude_spectrum
+    
     # compute root-mean-square (RMS).
     feats["rms"] = root_mean_square(sig=sig, fs=fs)
 
@@ -295,7 +309,15 @@ def extract_feats(sig, fs):
     feats["maxfun"] = fund_freqs.max()
 
     # assign dominant frequencies stats
-    dom_freqs, mod_idx = compute_dom_freqs_and_mod_index(sig=sig, fs=fs)
+    dom_freqs, mod_idx = compute_dom_freqs_and_mod_index(sig=sig, 
+                                                         fs=fs,
+                                                         lower_cutoff = 50, 
+                                                         upper_cutoff = 3000, 
+                                                         nfft = 512, 
+                                                         win_len = 3, 
+                                                         win_hop = 1, 
+                                                         win_type = 'hamming', 
+                                                         debug = False)
     feats["meandom"] = dom_freqs.mean()
     feats["mindom"] = dom_freqs.min()
     feats["maxdom"] = dom_freqs.max()
