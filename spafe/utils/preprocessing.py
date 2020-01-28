@@ -36,11 +36,11 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     Args:
         sig            (array) : a mono audio signal (Nx1) from which to compute features.
         fs               (int) : the sampling frequency of the signal we are working with.
-                                 Default is 16000.
+                                  Default is 16000.
         win_len        (float) : window length in sec.
-                                 Default is 0.025.
+                                  Default is 0.025.
         win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
+                                  Default is 0.01.
 
     Returns:
         array of frames.
@@ -50,23 +50,31 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     frame_length = win_len * fs
     frame_step = win_hop * fs
     signal_length = len(sig)
-
+    frames_overlap = frame_length - frame_step
+    
     # Make sure that we have at least 1 frame+
-    num_frames = int(
-        np.ceil(float(np.abs(signal_length - frame_length)) / frame_step))
-    frame_length = int(frame_length)
-    frame_step = int(frame_step)
+    num_frames = np.abs(signal_length - frames_overlap) // np.abs(frame_length - frames_overlap)
+    rest_samples = np.abs(signal_length - frames_overlap) % np.abs(frame_length - frames_overlap) 
 
     # Pad Signal to make sure that all frames have equal number of samples
     # without truncating any samples from the original signal
-    pad_signal_length = num_frames * frame_step + frame_length
-    z = np.zeros((pad_signal_length - signal_length))
-    pad_signal = np.append(sig, z)
-
+    if rest_samples != 0:
+        pad_signal_length = int(frame_step - rest_samples)
+        z = np.zeros((pad_signal_length))
+        pad_signal = np.append(sig, z)
+        num_frames += 1 
+    else: 
+        pad_signal = sig
+    
+    # make sure to use integers as indices
+    frame_length = int(frame_length)
+    frame_step = int(frame_step)
+    num_frames = int(num_frames)
+    
     # compute indices
     idx1 = np.tile(np.arange(0, frame_length), (num_frames, 1))
     idx2 = np.tile(np.arange(0, num_frames * frame_step, frame_step),
-                   (frame_length, 1)).T
+                    (frame_length, 1)).T
     indices = idx1 + idx2
     frames = pad_signal[indices.astype(np.int32, copy=False)]
     return frames, frame_length
