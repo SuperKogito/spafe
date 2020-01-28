@@ -63,8 +63,8 @@ def compute_dom_freqs_and_mod_index(sig,
                                     lower_cutoff=50,
                                     upper_cutoff=3000,
                                     nfft=512,
-                                    win_len=3,
-                                    win_hop=1,
+                                    win_len=0.03,
+                                    win_hop=0.015,
                                     win_type='hamming',
                                     debug=False):
     """
@@ -239,22 +239,22 @@ def extract_feats(sig, fs, nfft=512):
     """
     # init features dictionary
     feats = {}
-    
+
     # compute the fft
     fourrier_transform = rfft(sig, nfft)
 
     # compute magnitude spectrum
     magnitude_spectrum = (1/nfft) * np.abs(fourrier_transform)
     power_spectrum = (1/nfft)**2 * magnitude_spectrum**2
-    
-    # get all frequncies and  only keep positive frequencies 
+
+    # get all frequncies and  only keep positive frequencies
     frequencies = np.fft.fftfreq(len(power_spectrum), 1 / fs)
     frequencies = frequencies[np.where(frequencies >= 0)] // 2 + 1
-    
+
     # keep only half of the spectra
     magnitude_spectrum = magnitude_spectrum[:len(frequencies)]
     power_spectrum = power_spectrum[:len(frequencies)]
-        
+
     # define amplitudes and spectrum
     spectrum = power_spectrum
     amplitudes = power_spectrum
@@ -263,7 +263,7 @@ def extract_feats(sig, fs, nfft=512):
     # general stats
     feats["duration"] = len(sig) / float(fs)
     feats["spectrum"] = spectrum
-    
+
     # spectral stats I
     feats["mean_frequency"] = frequencies.sum()
     feats["peak_frequency"] = frequencies[np.argmax(amplitudes)]
@@ -289,7 +289,7 @@ def extract_feats(sig, fs, nfft=512):
 
     # compute energy
     feats["energy"] = magnitude_spectrum
-    
+
     # compute root-mean-square (RMS).
     feats["rms"] = root_mean_square(sig=sig, fs=fs)
 
@@ -309,14 +309,14 @@ def extract_feats(sig, fs, nfft=512):
     feats["maxfun"] = fund_freqs.max()
 
     # assign dominant frequencies stats
-    dom_freqs, mod_idx = compute_dom_freqs_and_mod_index(sig=sig, 
+    dom_freqs, mod_idx = compute_dom_freqs_and_mod_index(sig=sig,
                                                          fs=fs,
-                                                         lower_cutoff = 50, 
-                                                         upper_cutoff = 3000, 
-                                                         nfft = 512, 
-                                                         win_len = 3, 
-                                                         win_hop = 1, 
-                                                         win_type = 'hamming', 
+                                                         lower_cutoff = 50,
+                                                         upper_cutoff = 3000,
+                                                         nfft = 512,
+                                                         win_len = 0.03,
+                                                         win_hop = 0.015,
+                                                         win_type = 'hamming',
                                                          debug = False)
     feats["meandom"] = dom_freqs.mean()
     feats["mindom"] = dom_freqs.min()

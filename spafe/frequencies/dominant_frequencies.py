@@ -53,7 +53,6 @@ def get_dominant_frequencies(sig,
         w, h = scipy.signal.freqs(b, a, len(sig))
         sig = scipy.signal.lfilter(b, a, sig)
 
-
     # -> framing
     frames, frame_length = framing(sig=sig,
                                    fs=fs,

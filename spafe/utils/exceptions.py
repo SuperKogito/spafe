@@ -7,7 +7,8 @@ ErrorMsgs = {
     "high_freq":
     "maximum frequency cannot be greater than half sampling frequency.",
     "nfft": "size of the FFT must be an integer.",
-    "nfilts": "number of filters must be bigger than number of cepstrums"
+    "nfilts": "number of filters must be bigger than number of cepstrums",
+    "win_len_win_hop_comparison": "window's length has to be larger than the window's hop"
 }
 
 
