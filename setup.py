@@ -12,7 +12,7 @@ requires = ["numpy>=1.17.2", "scipy>=1.3.1"]
 
 setup (
         name         = 'spafe',
-        version      = '0.1.1',
+        version      = '0.1.2',
         author       = 'SuperKogito',
         author_email = 'superkogito@gmail.com',
         description  = 'Simplified python Audio Features Extraction',
