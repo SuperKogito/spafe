@@ -1,4 +1,11 @@
 language: python
+
+# safelist
+branches:
+  only:
+  - master
+  - stable
+
 python:
   - "3.5"
   - "3.6"
