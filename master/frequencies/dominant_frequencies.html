@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>spafe.frequencies.dominant_frequencies &mdash; spafe  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="spafe.frequencies.fundamental_frequencies" href="fundamental_frequencies.html" />
+    <link rel="prev" title="spafe.frequencies" href="_frequencies.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> spafe
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../signal.html">spafe.signal</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="_frequencies.html">spafe.frequencies</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spafe.frequencies.dominant_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamental_frequencies.html">spafe.frequencies.fundamental_frequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../features/_features.html">spafe.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fbanks/_fbanks.html">spafe.fbanks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/_utils.html">spafe.utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">spafe</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="_frequencies.html">spafe.frequencies</a> &raquo;</li>
+        
+      <li>spafe.frequencies.dominant_frequencies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/frequencies/dominant_frequencies.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-spafe.frequencies.dominant_frequencies">
+<span id="spafe-frequencies-dominant-frequencies"></span><h1>spafe.frequencies.dominant_frequencies<a class="headerlink" href="#module-spafe.frequencies.dominant_frequencies" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Reference:</dt><dd><p><a class="reference external" href="https://dsp.stackexchange.com/questions/40180/the-exact-definition-of-dominant-frequency">https://dsp.stackexchange.com/questions/40180/the-exact-definition-of-dominant-frequency</a>
+<a class="reference external" href="https://arxiv.org/pdf/1306.0103.pdf">https://arxiv.org/pdf/1306.0103.pdf</a></p>
+</dd>
+</dl>
+<dl class="py function">
+<dt id="spafe.frequencies.dominant_frequencies.get_dominant_frequencies">
+<code class="sig-prename descclassname">spafe.frequencies.dominant_frequencies.</code><code class="sig-name descname">get_dominant_frequencies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">butter_filter</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">lower_cutoff</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">upper_cutoff</span><span class="o">=</span><span class="default_value">3000</span></em>, <em class="sig-param"><span class="n">nfft</span><span class="o">=</span><span class="default_value">512</span></em>, <em class="sig-param"><span class="n">win_len</span><span class="o">=</span><span class="default_value">0.025</span></em>, <em class="sig-param"><span class="n">win_hop</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">win_type</span><span class="o">=</span><span class="default_value">'hamming'</span></em>, <em class="sig-param"><span class="n">debug</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/frequencies/dominant_frequencies.html#get_dominant_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.frequencies.dominant_frequencies.get_dominant_frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of dominant audio frequencies of a given wave file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>array</em>) – name of an audio file name.</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling rate (= average number of samples pro 1 sec)</p></li>
+<li><p><strong>butter_filter</strong> (<em>bool</em>) – choose whether to apply a Butterworth filter or not.
+Default is False.</p></li>
+<li><p><strong>lower_cutoff</strong> (<em>int</em>) – filter lower cut-off frequency.
+Default is 50.</p></li>
+<li><p><strong>upper_cutoff</strong> (<em>int</em>) – filter upper cot-off frequency.
+Default is 3000.</p></li>
+<li><p><strong>nfft</strong> (<em>int</em>) – number of FFT points.
+Default is 512,</p></li>
+<li><p><strong>win_len</strong> (<em>float</em>) – window length in sec.
+Default is 0.025.</p></li>
+<li><p><strong>win_hop</strong> (<em>float</em>) – step between successive windows in sec.
+Default is 0.01.</p></li>
+<li><p><strong>win_type</strong> (<em>float</em>) – window type to apply for the windowing.
+Default is “hamming”.</p></li>
+<li><p><strong>debug</strong> (<em>bool</em>) – choose whether to plot the results or not.
+Default is False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>array of dominant frequencies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="fundamental_frequencies.html" class="btn btn-neutral float-right" title="spafe.frequencies.fundamental_frequencies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="_frequencies.html" class="btn btn-neutral float-left" title="spafe.frequencies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, spafe.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>spafe.utils.vis &mdash; spafe  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../changelog.html" />
+    <link rel="prev" title="spafe.utils.spectral" href="spectral.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> spafe
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../fbanks/_fbanks.html">spafe.fbanks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/_features.html">spafe.features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frequencies/_frequencies.html">spafe.frequencies</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="_utils.html">spafe.utils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cepstral.html">spafe.utils.cepstral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="converters.html">spafe.utils.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filters.html">spafe.utils.filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="levinsondr.html">spafe.utils.levinsondr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html">spafe.utils.preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectral.html">spafe.utils.spectral</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spafe.utils.vis</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://superkogito.github.io/blog/SignalFraming.html">Framing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://superkogito.github.io/blog/SpectralLeakageWindowing.html">Windowing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">spafe</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="_utils.html">spafe.utils</a> &raquo;</li>
+        
+      <li>spafe.utils.vis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/utils/vis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-spafe.utils.vis">
+<span id="spafe-utils-vis"></span><h1>spafe.utils.vis<a class="headerlink" href="#module-spafe.utils.vis" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="spafe.utils.vis.multi_plots">
+<code class="sig-prename descclassname">spafe.utils.vis.</code><code class="sig-name descname">multi_plots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">plot_rows</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">['b', 'r', 'm', 'g', 'b', 'y', 'r-.']</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/utils/vis.html#multi_plots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.utils.vis.multi_plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate multiple plots related to same signal in one figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array</em>) – array of arrays to plot.</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – the sampling frequency of the signal we are working with.</p></li>
+<li><p><strong>plot_rows</strong> (<em>int</em>) – number of rows to plot.</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – array reading step.</p></li>
+<li><p><strong>colors</strong> (<em>list</em>) – list of colors for the plots.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.utils.vis.plot">
+<code class="sig-prename descclassname">spafe.utils.vis.</code><code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">ylabel</span></em>, <em class="sig-param"><span class="n">xlabel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/utils/vis.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.utils.vis.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot an array y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>array</em>) – 1d array to plot.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – y-axis label.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – x-axis label.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.utils.vis.spectogram">
+<code class="sig-prename descclassname">spafe.utils.vis.</code><code class="sig-name descname">spectogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/utils/vis.html#spectogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.utils.vis.spectogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>visualize a the spectogram of the given mono signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>array</em>) – a mono audio signal (Nx1) from which to compute features.</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – the sampling frequency of the signal we are working with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.utils.vis.visualize_fbanks">
+<code class="sig-prename descclassname">spafe.utils.vis.</code><code class="sig-name descname">visualize_fbanks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fbanks</span></em>, <em class="sig-param"><span class="n">ylabel</span></em>, <em class="sig-param"><span class="n">xlabel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/utils/vis.html#visualize_fbanks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.utils.vis.visualize_fbanks" title="Permalink to this definition">¶</a></dt>
+<dd><p>visualize a matrix including the filterbanks coordinates. Each row corresponds
+to a filter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fbanks</strong> (<em>array</em>) – 2d array including the the filterbanks coordinates.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – y-axis label.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – x-axis label.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.utils.vis.visualize_features">
+<code class="sig-prename descclassname">spafe.utils.vis.</code><code class="sig-name descname">visualize_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feats</span></em>, <em class="sig-param"><span class="n">ylabel</span></em>, <em class="sig-param"><span class="n">xlabel</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'viridis'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/utils/vis.html#visualize_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.utils.vis.visualize_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>visualize a matrix including the features coefficients. Each row corresponds
+to a frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feats</strong> (<em>array</em>) – 2d array including the the features coefficients.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – y-axis label.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – x-axis label.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – matplotlib colormap to use.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="spectral.html" class="btn btn-neutral float-left" title="spafe.utils.spectral" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, spafe.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

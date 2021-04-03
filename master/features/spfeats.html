@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>spafe.features.spfeats &mdash; spafe  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="spafe.fbanks" href="../fbanks/_fbanks.html" />
+    <link rel="prev" title="spafe.features.rplp" href="rplp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> spafe
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../signal.html">spafe.signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frequencies/_frequencies.html">spafe.frequencies</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="_features.html">spafe.features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bfcc.html">spafe.features.bfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gfcc.html">spafe.features.gfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lfcc.html">spafe.features.lfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpc.html">spafe.features.lpc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfcc.html">spafe.features.mfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msrcc.html">spafe.features.msrcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ngcc.html">spafe.features.ngcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pncc.html">spafe.features.pncc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psrcc.html">spafe.features.psrcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rplp.html">spafe.features.rplp</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spafe.features.spfeats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../fbanks/_fbanks.html">spafe.fbanks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/_utils.html">spafe.utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">spafe</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="_features.html">spafe.features</a> &raquo;</li>
+        
+      <li>spafe.features.spfeats</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/features/spfeats.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-spafe.features.spfeats">
+<span id="spafe-features-spfeats"></span><h1>spafe.features.spfeats<a class="headerlink" href="#module-spafe.features.spfeats" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>This module is part of the spafe library and has the purpose of of computing the following spectral stats:</dt><dd><ul class="simple">
+<li><p>meanfreq : mean frequency (in kHz)</p></li>
+<li><p>sd       : standard deviation of frequency</p></li>
+<li><p>median   : median frequency (in kHz)</p></li>
+<li><p>Q25      : first quantile (in kHz)</p></li>
+<li><p>Q75      : third quantile (in kHz)</p></li>
+<li><p>IQR      : interquantile range (in kHz)</p></li>
+<li><p>skew     : skewness (see note in specprop description)</p></li>
+<li><p>kurt     : kurtosis (see note in specprop description)</p></li>
+<li><p>sp.ent   : spectral entropy</p></li>
+<li><p>sfm      : spectral flatness</p></li>
+<li><p>mode     : mode frequency</p></li>
+<li><p>centroid : frequency centroid (see specprop)</p></li>
+<li><p>peakf    : peak frequency (frequency with highest energy)</p></li>
+<li><p>meanfun  : average of fundamental frequency measured across acoustic signal</p></li>
+<li><p>minfun   : minimum fundamental frequency measured across acoustic signal</p></li>
+<li><p>maxfun   : maximum fundamental frequency measured across acoustic signal</p></li>
+<li><p>meandom  : average of dominant frequency measured across acoustic signal</p></li>
+<li><p>mindom   : minimum of dominant frequency measured across acoustic signal</p></li>
+<li><p>maxdom   : maximum of dominant frequency measured across acoustic signal</p></li>
+<li><p>dfrange  : range of dominant frequency measured across acoustic signal</p></li>
+<li><dl class="simple">
+<dt>modindx<span class="classifier">modulation index. Calculated as the accumulated absolute difference</span></dt><dd><p>between adjacent measurements of fundamental frequencies divided
+by the frequency range</p>
+</dd>
+</dl>
+</li>
+<li><p>label    : male or female</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>For module TODOs</p></li>
+<li><p>You have to also use <code class="docutils literal notranslate"><span class="pre">sphinx.ext.todo</span></code> extension</p></li>
+</ul>
+</div>
+<dl class="simple">
+<dt>Reference:</dt><dd><p><a class="reference external" href="http://ijeee.iust.ac.ir/article-1-1074-en.pdf">http://ijeee.iust.ac.ir/article-1-1074-en.pdf</a></p>
+</dd>
+</dl>
+<dl class="py function">
+<dt id="spafe.features.spfeats.compute_dom_freqs_and_mod_index">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">compute_dom_freqs_and_mod_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">lower_cutoff</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">upper_cutoff</span><span class="o">=</span><span class="default_value">3000</span></em>, <em class="sig-param"><span class="n">nfft</span><span class="o">=</span><span class="default_value">512</span></em>, <em class="sig-param"><span class="n">win_len</span><span class="o">=</span><span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">win_hop</span><span class="o">=</span><span class="default_value">0.015</span></em>, <em class="sig-param"><span class="n">win_type</span><span class="o">=</span><span class="default_value">'hamming'</span></em>, <em class="sig-param"><span class="n">debug</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#compute_dom_freqs_and_mod_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.compute_dom_freqs_and_mod_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute dominant frequencies and modulation index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>array</em>) – spectral centroid.</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – spectrum array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(float) spectral spread.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.compute_fund_freqs">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">compute_fund_freqs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#compute_fund_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.compute_fund_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute fundamental frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>centroid</strong> (<em>float</em>) – spectral centroid.</p></li>
+<li><p><strong>spectrum</strong> (<em>array</em>) – spectrum array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(float) spectral spread.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.extract_feats">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">extract_feats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">nfft</span><span class="o">=</span><span class="default_value">512</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#extract_feats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.extract_feats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the spectral features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>centroid</strong> (<em>float</em>) – spectral centroid.</p></li>
+<li><p><strong>spectrum</strong> (<em>array</em>) – spectrum array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(float) spectral spread.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.root_mean_square">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">root_mean_square</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">block_length</span><span class="o">=</span><span class="default_value">256</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#root_mean_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.root_mean_square" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_bandwidth">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_bandwidth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_bandwidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_centroid">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_centroid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_centroid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute spectral centroid.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_flatness">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_flatness</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flatness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flatness" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute spectral flatness.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_flux">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_flux</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flux"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flux" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_rolloff">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_rolloff</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">0.85</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_rolloff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_rolloff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.spectral_spread">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">spectral_spread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">centroid</span></em>, <em class="sig-param"><span class="n">spectrum</span></em>, <em class="sig-param"><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_spread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_spread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>centroid</strong> (<em>float</em>) – spectral centroid.</p></li>
+<li><p><strong>spectrum</strong> (<em>array</em>) – spectrum array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(float) spectral spread.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="spafe.features.spfeats.zero_crossing_rate">
+<code class="sig-prename descclassname">spafe.features.spfeats.</code><code class="sig-name descname">zero_crossing_rate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sig</span></em>, <em class="sig-param"><span class="n">fs</span></em>, <em class="sig-param"><span class="n">block_length</span><span class="o">=</span><span class="default_value">256</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#zero_crossing_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spafe.features.spfeats.zero_crossing_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../fbanks/_fbanks.html" class="btn btn-neutral float-right" title="spafe.fbanks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rplp.html" class="btn btn-neutral float-left" title="spafe.features.rplp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, spafe.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
