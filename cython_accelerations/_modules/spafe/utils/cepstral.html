@@ -13,8 +13,12 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/cstyle.css" type="text/css" />
 
   
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
 
   
@@ -44,6 +48,49 @@
 
 <body class="wy-body-for-nav">
 
+  <h1 class="pages_title">Spafe documentation</h1>
+  <div class="sub-title-menu" bis_skin_checked="1">
+  <table class="menu-table" id="menuTable" style="border:hidden;">
+  <tbody><tr>
+  <th>
+  </th><th>
+  </th><th class="icon"> <a href="https://superkogito.github.io/index.html" title="Home"><i class="fa fa-home"></i></a> </th>
+  <th class="menu-label"> <a href="https://superkogito.github.io/index.html" title="Home">Home</a> </th>
+
+
+  <th>
+  </th><th>
+  </th><th class="icon"><a href="https://superkogito.github.io/posts.html" title="Posts"><i class="fa fa-bars"></i></a></th>
+  <th class="menu-label"><a href="https://superkogito.github.io/posts.html" title="Posts">Posts</a></th>
+
+
+  <th>
+  </th><th>
+  </th><th class="icon"> <a href="https://superkogito.github.io/publications.html" title="pubs"><i class="fa fa-file-text"></i></a></th>
+  <th class="menu-label"> <a href="https://superkogito.github.io/publications.html" title="pubs">Publications</a></th>
+
+
+  <th>
+  </th><th>
+  </th><th class="icon"> <a href="https://superkogito.github.io/projects.html" title="projects"><i class="fa fa-code"></i></a></th>
+  <th class="menu-label"> <a href="https://superkogito.github.io/projects.html" title="projects">Projects</a></th>
+
+  <th>
+  </th><th>
+  </th><th class="icon"><a href="https://superkogito.github.io/about.html" title="About"><i class="fa fa-user-circle"></i></a></th>
+  <th class="menu-label"><a href="https://superkogito.github.io/about.html" title="About">About</a></th>
+
+
+  <th>
+  </th><th>
+  </th><th class="icon"> <a href="#" onclick="modeSwitcher()"><i class="fa fa-adjust"></i></a></th>
+  <th class="menu-label"> <a href="#" onclick="modeSwitcher()"><text id="theme-toggle">Light Mode</text></a></th>
+
+
+  </tr>
+  </tbody></table>
+  </div>
+
    
   <div class="wy-grid-for-nav">
     
@@ -53,14 +100,21 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> spafe
+            <a href="../../../index.html">
           
 
+          
+            
+            <img src="../../../_static/logo.jpg" class="logo" alt="Logo"/>
           
           </a>
 
           
             
+            
+              <div class="version">
+                 version 0.1.3 
+              </div>
             
           
 
@@ -87,14 +141,50 @@
               <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#id1">Installation</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">API documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../fbanks/_fbanks.html">spafe.fbanks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../features/_features.html">spafe.features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../frequencies/_frequencies.html">spafe.frequencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../utils/_utils.html">spafe.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fbanks/_fbanks.html">spafe.fbanks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../fbanks/bark_fbanks.html">spafe.fbanks.bark_fbanks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fbanks/gammatone_fbanks.html">spafe.fbanks.gammatone_fbanks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fbanks/linear_fbanks.html">spafe.fbanks.linear_fbanks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fbanks/mel_fbanks.html">spafe.fbanks.mel_fbanks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../features/_features.html">spafe.features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/bfcc.html">spafe.features.bfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/gfcc.html">spafe.features.gfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/lfcc.html">spafe.features.lfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/lpc.html">spafe.features.lpc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/mfcc.html">spafe.features.mfcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/msrcc.html">spafe.features.msrcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/ngcc.html">spafe.features.ngcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/pncc.html">spafe.features.pncc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/psrcc.html">spafe.features.psrcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/rplp.html">spafe.features.rplp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../features/spfeats.html">spafe.features.spfeats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../frequencies/_frequencies.html">spafe.frequencies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../frequencies/dominant_frequencies.html">spafe.frequencies.dominant_frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../frequencies/fundamental_frequencies.html">spafe.frequencies.fundamental_frequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/_utils.html">spafe.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/cepstral.html">spafe.utils.cepstral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/converters.html">spafe.utils.converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/filters.html">spafe.utils.filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/levinsondr.html">spafe.utils.levinsondr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/preprocessing.html">spafe.utils.preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/spectral.html">spafe.utils.spectral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/vis.html">spafe.utils.vis</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -103,15 +193,43 @@
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v1-0-3">v1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v1-0-2">v1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v1-0-1">v1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v1-0-0">v1.0.0</a></li>
+</ul>
+</li>
 </ul>
 
             
           
+
+          <p class="caption"><span class="caption-text">Versions</span></p>
+          <ul class="current">
+             <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+             <span class="rst-current-version" data-toggle="rst-current-version">
+               cython_accelerations
+               <span class="fa fa-caret-down"></span>
+             </span>
+             <div class="rst-other-versions">
+               <dl>
+                   <dd><a href="cepstral.html">cython_accelerations</a></dd>
+                 
+                   <dd><a href="../../../../master/index.html">master</a></dd>
+                 
+                   <dd><a href="../../../../v0.1.2/index.html">v0.1.2</a></dd>
+                 
+               </dl>
+             </div>
+           </div>
+          </ul>
         </div>
         
+
       </div>
     </nav>
+
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
@@ -158,7 +276,9 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
+      <a href="https://github.com/SuperKogito/spafe" title="About"><i class="fa fa-github"></i></a>
+      <a href="https://github.com/SuperKogito/spafe" title="About">Spafe source code</a></th>
+
       </li>
     
   </ul>
@@ -179,10 +299,10 @@
 <span class="sd">    Mean normalization.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x (array) : input data.</span>
+<span class="sd">        x (numpy.ndarray) : input data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        array with the mean normalized data.</span>
+<span class="sd">        numpy.ndarray : array with the mean normalized data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></div>
 
@@ -192,10 +312,10 @@
 <span class="sd">    Mean Substraction: Centering</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x (array) : input data.</span>
+<span class="sd">        x (numpy.ndarray) : input data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        array with the centered data.</span>
+<span class="sd">        numpy.ndarray : array with the centered data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
@@ -205,10 +325,10 @@
 <span class="sd">    Variance Normalisation: Standardization</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x (array) : input data.</span>
+<span class="sd">        x (numpy.ndarray) : input data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        array with the variance normalized data.</span>
+<span class="sd">        numpy.ndarray : array with the variance normalized data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
@@ -218,10 +338,10 @@
 <span class="sd">    Mean Variance Normalisation</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x (array) : input data.</span>
+<span class="sd">        x (numpy.ndarray) : input data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        array with the mean and variance normalized data.</span>
+<span class="sd">        numpy.ndarray : array with the mean and variance normalized data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cvn</span><span class="p">(</span><span class="n">cms</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></div>
 
@@ -241,7 +361,7 @@
 <span class="sd">                         Default is 2.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        array containing the cosine values.</span>
+<span class="sd">        numpy.ndarray : array containing the cosine values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
@@ -268,7 +388,7 @@
 <span class="sd">                         Default is 2.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        2d-array containing the dct coefficients.</span>
+<span class="sd">        numpy.ndarray : 2d-array containing the dct coefficients.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">K</span> <span class="o">*</span>
@@ -283,15 +403,15 @@
 <span class="sd">    Reverse the cepstrum to recover a spectrum.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cep    (array) : cepstral data to convert to spectral data.</span>
+<span class="sd">        cep    (numpy.ndarray) : cepstral data to convert to spectral data.</span>
 <span class="sd">        ncep     (int) : number of cepstrals.</span>
 <span class="sd">        nfreq    (int) : number of points to reconstruct in spectrum.</span>
 <span class="sd">        dct_type (int) : the discrete cosine transform type.</span>
 <span class="sd">                         Default is 2.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">         2d-array spec, spectrum matrix</span>
-<span class="sd">         2d-array idctm, the IDCT matrix that spec was multiplied by to give cep.</span>
+<span class="sd">         numpy.ndarray : 2d-array spec, spectrum matrix</span>
+<span class="sd">         numpy.ndarray : 2d-array idctm, the IDCT matrix that spec was multiplied by to give cep.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">cep</span><span class="o">.</span><span class="n">shape</span>
 
@@ -342,12 +462,12 @@
 <span class="sd">    calculation performed in feacalc etc. Each row of X is filtered separately.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x (array) : input sequence</span>
+<span class="sd">        x (numpy.ndarray) : input sequence</span>
 <span class="sd">        w   (int) : window size to use in the derivatives calculation.</span>
 <span class="sd">                    Default is 9.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        2d-arrays containing the derivatives values.</span>
+<span class="sd">        numpy.ndarray : 2d-array containing the derivatives values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">hlen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -366,15 +486,15 @@
 <span class="sd">    Calculate cepstra from spectral samples (in columns of spec).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        spec   (array) : spectral data to convert to cepstral.</span>
+<span class="sd">        spec   (numpy.ndarray) : spectral data to convert to cepstral.</span>
 <span class="sd">        ncep     (int) : number of cepstrals.</span>
 <span class="sd">                         Default is 9.</span>
 <span class="sd">        dct_type (int) : the discrete cosine transform type.</span>
 <span class="sd">                         Default is 2.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">         2d-array ncep, cepstral rows</span>
-<span class="sd">         2d-array dctm, the DCT matrix that spec was multiplied by to give cep.</span>
+<span class="sd">         numpy.ndarray : 2d-array ncep, cepstral rows</span>
+<span class="sd">         numpy.ndarray : 2d-array dctm, the DCT matrix that spec was multiplied by to give cep.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">nrow</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">dctm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ncep</span><span class="p">,</span> <span class="n">nrow</span><span class="p">))</span>
@@ -425,11 +545,11 @@
 <span class="sd">    increasing the magnitude of the high frequency DCT coeffs.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cepstra (np.array) : the matrix of mel-cepstra, will be numframes * numcep in size.</span>
-<span class="sd">        L            (int) : the liftering coefficient to use. Default is 22. L &lt;= 0 disables lifter.</span>
+<span class="sd">        cepstra (numpy.ndarray) : the matrix of mel-cepstra, will be numframes * numcep in size.</span>
+<span class="sd">        L                 (int) : the liftering coefficient to use. Default is 22. L &lt;= 0 disables lifter.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        liftered cepstra.</span>
+<span class="sd">        numpy.ndarray : liftered cepstra.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">L</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">ncoeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">cepstra</span><span class="p">)</span>
@@ -450,18 +570,16 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, spafe.
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  <div class="footertag">
+      ©2019-2021, Ayoub Malek.
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href=https://github.com/rtfd/sphinx_rtd_theme">Read the Docs theme</a>
+  </div> 
 
 </footer>
         </div>
@@ -471,17 +589,29 @@
 
   </div>
   
-
+  <script src="https://cdn.jsdelivr.net/gh/SuperKogito/SuperKogito.github.io/_static/js/mode-switcher.js"></script>
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.Navigation.enable(false);
       });
   </script>
 
   
   
     
-   
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+    ga('create', 'UA-133660046-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
 </body>
 </html>
