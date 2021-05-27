@@ -22,9 +22,9 @@ def linear_filter_banks(nfilts=20,
                           (Default is 512)
         fs        (int) : sample rate/ sampling frequency of the signal.
                           (Default 16000 Hz)
-        low_freq  (int) : lowest band edge of mel filters.
+        low_freq  (int) : lowest band edge of linear filters.
                           (Default 0 Hz)
-        high_freq (int) : highest band edge of mel filters.
+        high_freq (int) : highest band edge of linear filters.
                           (Default samplerate/2)
         scale    (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
                           Default is "constant"
@@ -43,11 +43,11 @@ def linear_filter_banks(nfilts=20,
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
 
-    # compute points evenly spaced in mels (points are in Hz)
-    mel_points = np.linspace(low_freq, high_freq, nfilts + 2)
+    # compute points evenly spaced in frequency (points are in Hz)
+    linear_points = np.linspace(low_freq, high_freq, nfilts + 2)
 
     # we use fft bins, so we have to convert from Hz to fft bin number
-    bins = np.floor((nfft + 1) * mel_points / fs)
+    bins = np.floor((nfft + 1) * linear_points / fs)
     fbank = np.zeros([nfilts, nfft // 2 + 1])
 
     # init scaler
