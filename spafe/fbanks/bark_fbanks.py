@@ -71,7 +71,7 @@ def bark_filter_banks(nfilts=20,
     bark_points = np.linspace(low_bark, high_bark, nfilts + 4)
 
     # we use fft bins, so we have to convert from Bark to fft bin number
-    bins = np.floor(bark2fft(bark_points))
+    bins = np.floor(bark2fft(bark_points, fs, nfft))
     fbank = np.zeros([nfilts, nfft // 2 + 1])
 
     # init scaler
@@ -92,6 +92,6 @@ def bark_filter_banks(nfilts=20,
 
         for i in range(int(bins[j - 2]), int(bins[j + 2])):
             fc = bark_points[j]
-            fb = fft2bark(i)
+            fb = fft2bark(i, fs, nfft)
             fbank[j - 2, i] = c * Fm(fb, fc)
     return np.abs(fbank)
