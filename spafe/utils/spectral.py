@@ -268,7 +268,7 @@ def display_stft(X,
     plt.ylabel('Frequency (Khz)')
     plt.xlabel('Time (sec)')
     plt.show()
-    
+
 
 def power_spectrum(fourrier_transform, nfft=NFFT):
     magnitude_frames = np.absolute(fourrier_transform)  # Magnitude of the FFT
@@ -443,9 +443,11 @@ def audspec(p_spectrum,
 def postaud(x, fmax, fb_type='bark', broaden=0):
     """
     do loudness equalization and cube root compression
-        - x = critical band filters
-        - rows = critical bands
-        - cols = frames
+
+    Args:
+        x    : critical band filters
+        rows : critical bands
+        cols : frames
     """
     nbands, nframes = x.shape
     nfpts = int(nbands + 2 * broaden)
@@ -455,8 +457,7 @@ def postaud(x, fmax, fb_type='bark', broaden=0):
     elif fb_type == 'mel':
         bandcfhz = mel2hz(np.linspace(0, hz2mel(fmax), nfpts))
     elif fb_type == 'htkmel' or fb_type == 'fcmel':
-        bandcfhz = mel2hz(np.linspace(0, hz2mel(fmax, htk=True), nfpts),
-                          htk=True)
+        bandcfhz = mel2hz(np.linspace(0, hz2mel(fmax, htk=True), nfpts), htk=True)
 
     bandcfhz = bandcfhz[broaden:(nfpts - broaden)]
 
@@ -493,7 +494,7 @@ def invpostaud(y, fmax, fb_type='bark', broaden=0):
     nbands, nframes = y.shape
 
     if fb_type == 'bark':
-        bandcfhz = bark2hz(np.linspace(0, hz2bark(fmax), nbands))
+        bandcfhz = bark2hz(np.linspace(0, hz2bark(fmax), nbands), fs, nfft)
     elif fb_type == 'mel':
         bandcfhz = mel2hz(np.linspace(0, hz2mel(fmax), nbands))
     elif fb_type == 'htkmel' or fb_type == 'fcmel':

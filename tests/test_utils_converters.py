@@ -96,29 +96,41 @@ def test_mel2hz(fmel, fhz, htk):
     np.testing.assert_almost_equal(mel2hz(fmel, htk), fhz, 0)
 
 
-def test_hz2fft(fhz, fix_fft):
-    np.testing.assert_almost_equal(hz2fft(fhz), fix_fft, 0)
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_hz2fft(fhz, fix_fft, fs, nfft):
+    np.testing.assert_almost_equal(hz2fft(fhz, fs, nfft), fix_fft, 0)
 
 
-def test_fft2hz(fix_fft, fhz):
-    np.testing.assert_almost_equal(fft2hz(fix_fft), fhz, 0)
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_fft2hz(fix_fft, fhz, fs, nfft):
+    np.testing.assert_almost_equal(fft2hz(fix_fft, fs, nfft), fhz, 0)
 
 
-def test_fft2erb(fix_fft, ferb):
-    np.testing.assert_almost_equal(fft2erb(fix_fft), ferb, 0)
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_fft2erb(fix_fft, ferb, fs, nfft):
+    np.testing.assert_almost_equal(fft2erb(fix_fft, fs, nfft), ferb, 0)
 
 
-def test_erb2fft(fix_fft, ferb):
-    np.testing.assert_almost_equal(erb2fft(ferb), fix_fft, 0)
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_erb2fft(fix_fft, ferb, fs, nfft):
+    np.testing.assert_almost_equal(erb2fft(ferb, fs, nfft), fix_fft, 0)
 
 
-def test_fft2bark(fix_fft, fbark):
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_fft2bark(fix_fft, fbark, fs, nfft):
     # check lifter Parameter error for low freq
-    np.testing.assert_almost_equal(fft2bark(fix_fft), fbark, 0)
+    np.testing.assert_almost_equal(fft2bark(fix_fft, fs, nfft), fbark, 0)
 
 
-def test_bark2fft(fix_fft, fbark):
-    np.testing.assert_almost_equal(bark2fft(fbark), fix_fft, 0)
+@pytest.mark.parametrize('fs', [16000])
+@pytest.mark.parametrize('nfft', [512])
+def test_bark2fft(fix_fft, fbark, fs, nfft):
+    np.testing.assert_almost_equal(bark2fft(fbark, fs, nfft), fix_fft, 0)
 
 
 def test_fft2melmx():
