@@ -13,7 +13,7 @@ Example:
 
   import scipy.io.wavfile
   import spafe.utils.vis as vis
-  from spafe.features.mfcc import bfcc
+  from spafe.features.bfcc import bfcc
 
 
   #read wave file
