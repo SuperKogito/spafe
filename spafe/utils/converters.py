@@ -35,7 +35,7 @@ def erb2hz(fe):
     return ((fe / 24.7) - 1) * (1000. / 4.37)
 
 
-def fft2erb(fft, fs=16000, nfft=512):
+def fft2erb(fft, fs, nfft):
     """
     Convert Bark frequencies to Hz.
 
@@ -48,13 +48,14 @@ def fft2erb(fft, fs=16000, nfft=512):
     return hz2erb((fft * fs) / (nfft + 1))
 
 
-def erb2fft(fb, fs=16000, nfft=512):
+def erb2fft(fb, fs, nfft):
     """
     Convert Bark frequencies to fft bins.
 
     Args:
-        fb (np.array): frequencies in Bark [Bark].
-
+        fb (np.array):  frequencies in Bark [Bark].
+        fs (int):       sample rate/ sampling frequency of the signal.
+        nfft (int):     the FFT size.
     Returns:
         (np.array) : fft bin numbers.
     """
@@ -87,38 +88,42 @@ def bark2hz(fb):
     return 600. * np.sinh(fb / 6.)
 
 
-def fft2hz(fft, fs=16000, nfft=512):
+def fft2hz(fft, fs, nfft):
     """
     Convert Bark frequencies to Hz.
 
     Args:
-        fft (np.array) : fft bin numbers.
-
+        fft (np.array): fft bin numbers.
+        fs (int):       sample rate/ sampling frequency of the signal.
+        nfft (int):     the FFT size.
     Returns:
         (np.array): frequencies in Bark [Bark].
     """
     return (fft * fs) / (nfft + 1)
 
 
-def hz2fft(fb, fs=16000, nfft=512):
+def hz2fft(fb, fs, nfft):
     """
     Convert Bark frequencies to fft bins.
 
     Args:
-        fb (np.array): frequencies in Bark [Bark].
-
+        fb (np.array):  frequencies in Bark [Bark].
+        fs (int):       sample rate/ sampling frequency of the signal.
+        nfft (int):     the FFT size.
     Returns:
         (np.array) : fft bin numbers.
     """
     return (nfft + 1) * fb / fs
 
 
-def fft2bark(fft, fs=16000, nfft=512):
+def fft2bark(fft, fs, nfft):
     """
     Convert Bark frequencies to Hz.
 
     Args:
-        fft (np.array) : fft bin numbers.
+        fft (np.array): fft bin numbers.
+        fs (int):       sample rate/ sampling frequency of the signal.
+        nfft (int):     the FFT size.
 
     Returns:
         (np.array): frequencies in Bark [Bark].
@@ -126,13 +131,14 @@ def fft2bark(fft, fs=16000, nfft=512):
     return hz2bark((fft * fs) / (nfft + 1))
 
 
-def bark2fft(fb, fs=16000, nfft=512):
+def bark2fft(fb, fs, nfft):
     """
     Convert Bark frequencies to fft bins.
 
     Args:
-        fb (np.array): frequencies in Bark [Bark].
-
+        fb (np.array):  frequencies in Bark [Bark].
+        fs (int):       sample rate/ sampling frequency of the signal.
+        nfft (int):     the FFT size.
     Returns:
         (np.array) : fft bin numbers.
     """
