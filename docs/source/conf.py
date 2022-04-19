@@ -91,7 +91,7 @@ html_theme_options = {
 
     "switcher": {
         "json_url": "_static/switcher.json",
-        "version_match": release,
+        "version_match": version,
     },
 
     "external_links": [
