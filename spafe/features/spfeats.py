@@ -266,10 +266,11 @@ def extract_feats(sig, fs, nfft=512):
 
     # spectral stats I
     feats["mean_frequency"] = frequencies.sum()
-    feats["peak_frequency"] = frequencies[np.argmax(amplitudes)]
+    ampl_arg_max_idx = np.unravel_index(amplitudes.argmax(), amplitudes.shape)[0] if amplitudes.ndim > 1 else amplitudes.argmax()
+    feats["peak_frequency"] = frequencies[ampl_arg_max_idx]
     feats["frequencies_std"] = frequencies.std()
     feats["amplitudes_cum_sum"] = np.cumsum(amplitudes)
-    feats["mode_frequency"] = frequencies[amplitudes.argmax()]
+    feats["mode_frequency"] = frequencies[ampl_arg_max_idx]
     feats["median_frequency"] = np.median(frequencies)
     feats["frequencies_q25"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.25])-1]
     feats["frequencies_q75"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.75])-1]
