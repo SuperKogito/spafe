@@ -43,7 +43,15 @@ The preferred way to contribute to spafe is to fork the[main repository](https:/
 
 	-	Please never work directly on the `master` branch!\`\`\`
 
-6.	Use Git for the to do the version controlling of this copy. When you're done editing, you know the drill `add`, `commit` then `push`:
+6.	Once you are done, make sure to format the code using black to fit spafe's codestyle.
+
+	\`\``black spafe/\`\`\`
+
+7.	Make sure that the tests succeed and have enough coverage.
+
+	\`\``pytest -x --cov-report term-missing --cov=spafe spafe/tests/test_*.py \`\`\`
+
+8.	Use Git for the to do the version controlling of this copy. When you're done editing, you know the drill `add`, `commit` then `push`:
 
 	```bash
 	git add modified_files
@@ -56,7 +64,7 @@ The preferred way to contribute to spafe is to fork the[main repository](https:/
 	git push -u origin my-feature
 	```
 
-7.	Finally, go to the web page of the your spafe fork repo, and click 'Pull request' button to send your changes to the maintainers for review.
+9.	Finally, go to the web page of the your spafe fork repo, and click 'Pull request' button to send your changes to the maintainers to review.
 
 Remarks
 -------
