@@ -3,6 +3,7 @@ spafe.features
 
 .. toctree::
    bfcc
+   cqcc
    gfcc
    lfcc
    lpc

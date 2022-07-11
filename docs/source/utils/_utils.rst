@@ -5,7 +5,6 @@ spafe.utils
   cepstral
   converters
   filters
-  levinsondr
   preprocessing
   spectral
   vis

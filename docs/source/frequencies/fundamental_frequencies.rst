@@ -6,3 +6,4 @@ spafe.frequencies.fundamental_frequencies
   :members:
   :undoc-members:
   :show-inheritance:
+  :member-order: bysource

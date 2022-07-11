@@ -1,6 +1,3 @@
-sphinxcontrib-napoleon==0.6.1
-numpy 
-scipy
-SoundFile
-matplotlib
-librosa
+sphinxcontrib-napoleon==0.7
+nbsphinx==0.8.9
+pydata-sphinx-theme==0.8.1

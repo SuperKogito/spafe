@@ -1,8 +1,8 @@
-spafe.features.bfcc
+spafe.features.cqcc
 ====================
 
 
-.. automodule:: spafe.features.bfcc
+.. automodule:: spafe.features.cqcc
   :members:
   :undoc-members:
   :show-inheritance:
