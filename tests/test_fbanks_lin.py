@@ -4,13 +4,13 @@ from spafe.fbanks import linear_fbanks
 from spafe.utils.exceptions import ParameterError
 
 
-@pytest.mark.test_id(103)
-@pytest.mark.parametrize('nfilts', [12, 24])
-@pytest.mark.parametrize('nfft', [256, 512, 1024])
-@pytest.mark.parametrize('fs', [8000, 16000])
-@pytest.mark.parametrize('low_freq', [0, 300])
-@pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('scale', ["ascendant", "descendant", "constant"])
+@pytest.mark.test_id(104)
+@pytest.mark.parametrize("nfilts", [24])
+@pytest.mark.parametrize("nfft", [256])
+@pytest.mark.parametrize("fs", [8000, 16000])
+@pytest.mark.parametrize("low_freq", [50])
+@pytest.mark.parametrize("high_freq", [2000])
+@pytest.mark.parametrize("scale", ["ascendant", "descendant", "constant"])
 def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     """
     test linear filter banks module for the following:
@@ -19,12 +19,14 @@ def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         - check if parameter errors are raised for high_freq.
     """
     # compute the linear filterbanks
-    lin_filbanks = linear_fbanks.linear_filter_banks(nfilts=nfilts,
-                                                     nfft=nfft,
-                                                     fs=fs,
-                                                     low_freq=low_freq,
-                                                     high_freq=high_freq,
-                                                     scale=scale)
+    lin_filbanks, _ = linear_fbanks.linear_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        scale=scale,
+    )
 
     # assert that the filterbank shape is correct given nfilts and nfft
     if not lin_filbanks.shape == (nfilts, nfft // 2 + 1):
@@ -32,16 +34,12 @@ def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
 
     # check lifter Parameter error for low freq
     with pytest.raises(ParameterError):
-        lin_filbanks = linear_fbanks.linear_filter_banks(nfilts=nfilts,
-                                                         nfft=nfft,
-                                                         fs=fs,
-                                                         low_freq=-5,
-                                                         high_freq=high_freq)
+        lin_filbanks, _ = linear_fbanks.linear_filter_banks(
+            nfilts=nfilts, nfft=nfft, fs=fs, low_freq=-5, high_freq=high_freq
+        )
 
     # check lifter Parameter error for high freq
     with pytest.raises(ParameterError):
-        lin_filbanks = linear_fbanks.linear_filter_banks(nfilts=nfilts,
-                                                         nfft=nfft,
-                                                         fs=fs,
-                                                         low_freq=low_freq,
-                                                         high_freq=16000)
+        lin_filbanks, _ = linear_fbanks.linear_filter_banks(
+            nfilts=nfilts, nfft=nfft, fs=fs, low_freq=low_freq, high_freq=fs * 2
+        )

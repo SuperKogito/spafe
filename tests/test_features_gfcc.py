@@ -4,34 +4,37 @@ import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.gfcc import gfcc
 from spafe.utils.exceptions import ParameterError
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
+from spafe.utils.cepstral import normalize_ceps, lifter_ceps
+from spafe.fbanks.gammatone_fbanks import gammatone_filter_banks
 
 
-@pytest.fixture
-def sig():
-    __EXAMPLE_FILE = 'test.wav'
-    return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
-
-
-@pytest.fixture
-def fs():
-    __EXAMPLE_FILE = 'test.wav'
-    return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
-
-
-@pytest.mark.test_id(202)
-@pytest.mark.parametrize('num_ceps', [13, 26])
-@pytest.mark.parametrize('pre_emph', [False, True])
-@pytest.mark.parametrize('nfilts', [32, 48])
-@pytest.mark.parametrize('nfft', [256, 512, 1024])
-@pytest.mark.parametrize('low_freq', [0, 300])
-@pytest.mark.parametrize('high_freq', [2000, 4000])
-@pytest.mark.parametrize('dct_type', [1, 2, 4])
-@pytest.mark.parametrize('use_energy', [False, True])
-@pytest.mark.parametrize('lifter', [0, 5])
-@pytest.mark.parametrize('normalize', [False, True])
-def test_gfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq,
-              dct_type, use_energy, lifter, normalize):
+@pytest.mark.test_id(203)
+@pytest.mark.usefixtures("sig")
+@pytest.mark.usefixtures("fs")
+@pytest.mark.parametrize("num_ceps", [13, 28])
+@pytest.mark.parametrize("pre_emph", [False, True])
+@pytest.mark.parametrize("nfilts", [128])
+@pytest.mark.parametrize("nfft", [1024])
+@pytest.mark.parametrize("low_freq", [50])
+@pytest.mark.parametrize("high_freq", [2000])
+@pytest.mark.parametrize("dct_type", [1, 2, 4])
+@pytest.mark.parametrize("use_energy", [False, True])
+@pytest.mark.parametrize("lifter", [None, 0.7, -7])
+@pytest.mark.parametrize("normalize", [None, "mvn", "ms"])
+def test_gfcc(
+    sig,
+    fs,
+    num_ceps,
+    pre_emph,
+    nfilts,
+    nfft,
+    low_freq,
+    high_freq,
+    dct_type,
+    use_energy,
+    lifter,
+    normalize,
+):
     """
     test GFCC features module for the following:
         - check if ParameterErrors are raised for:
@@ -46,47 +49,31 @@ def test_gfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq,
 
     # check error for number of filters is smaller than number of cepstrums
     with pytest.raises(ParameterError):
-        gfccs = gfcc(sig=sig,
-                     fs=fs,
-                     num_ceps=num_ceps,
-                     nfilts=num_ceps - 1,
-                     nfft=nfft,
-                     low_freq=low_freq,
-                     high_freq=high_freq)
-
-    # check lifter Parameter error for low freq
-    with pytest.raises(ParameterError):
-        gfccs = gfcc(sig=sig,
-                     fs=fs,
-                     num_ceps=num_ceps,
-                     nfilts=nfilts,
-                     nfft=nfft,
-                     low_freq=-5,
-                     high_freq=high_freq)
-
-    # check lifter Parameter error for high freq
-    with pytest.raises(ParameterError):
-        gfccs = gfcc(sig=sig,
-                     fs=fs,
-                     num_ceps=num_ceps,
-                     nfilts=nfilts,
-                     nfft=nfft,
-                     low_freq=low_freq,
-                     high_freq=16000)
+        gfccs = gfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            nfilts=num_ceps - 1,
+            nfft=nfft,
+            low_freq=low_freq,
+            high_freq=high_freq,
+        )
 
     # compute features
-    gfccs = gfcc(sig=sig,
-                 fs=fs,
-                 num_ceps=num_ceps,
-                 pre_emph=pre_emph,
-                 nfilts=nfilts,
-                 nfft=nfft,
-                 low_freq=low_freq,
-                 high_freq=high_freq,
-                 dct_type=dct_type,
-                 use_energy=use_energy,
-                 lifter=lifter,
-                 normalize=normalize)
+    gfccs = gfcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        pre_emph=pre_emph,
+        nfilts=nfilts,
+        nfft=nfft,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        dct_type=dct_type,
+        use_energy=use_energy,
+        lifter=lifter,
+        normalize=normalize,
+    )
 
     # assert number of returned cepstrum coefficients
     if not gfccs.shape[1] == num_ceps:
@@ -95,54 +82,94 @@ def test_gfcc(sig, fs, num_ceps, pre_emph, nfilts, nfft, low_freq, high_freq,
     # check use energy
     if use_energy:
         gfccs_energy = gfccs[:, 0]
-        xfccs_energy = gfcc(sig=sig,
-                            fs=fs,
-                            num_ceps=num_ceps,
-                            pre_emph=pre_emph,
-                            nfilts=nfilts,
-                            nfft=nfft,
-                            low_freq=low_freq,
-                            high_freq=high_freq,
-                            dct_type=dct_type,
-                            use_energy=use_energy,
-                            lifter=lifter,
-                            normalize=normalize)[:, 0]
+        xfccs_energy = gfcc(
+            sig=sig,
+            fs=fs,
+            num_ceps=num_ceps,
+            pre_emph=pre_emph,
+            nfilts=nfilts,
+            nfft=nfft,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            dct_type=dct_type,
+            use_energy=use_energy,
+            lifter=lifter,
+            normalize=normalize,
+        )[:, 0]
 
-        np.testing.assert_almost_equal(gfccs_energy, xfccs_energy, 3)
+        np.testing.assert_array_almost_equal(gfccs_energy, xfccs_energy, 3)
 
     # check normalize
     if normalize:
-        np.testing.assert_almost_equal(
+        np.testing.assert_array_almost_equal(
             gfccs,
-            cmvn(
-                cms(
-                    gfcc(sig=sig,
-                         fs=fs,
-                         num_ceps=num_ceps,
-                         pre_emph=pre_emph,
-                         nfilts=nfilts,
-                         nfft=nfft,
-                         low_freq=low_freq,
-                         high_freq=high_freq,
-                         dct_type=dct_type,
-                         use_energy=use_energy,
-                         lifter=lifter,
-                         normalize=False))), 3)
+            normalize_ceps(
+                gfcc(
+                    sig=sig,
+                    fs=fs,
+                    num_ceps=num_ceps,
+                    pre_emph=pre_emph,
+                    nfilts=nfilts,
+                    nfft=nfft,
+                    low_freq=low_freq,
+                    high_freq=high_freq,
+                    dct_type=dct_type,
+                    use_energy=use_energy,
+                    lifter=lifter,
+                    normalize=None,
+                ),
+                normalize,
+            ),
+            3,
+        )
     else:
         # check lifter
-        if lifter > 0:
-            np.testing.assert_almost_equal(
+        if lifter:
+            np.testing.assert_array_almost_equal(
                 gfccs,
                 lifter_ceps(
-                    gfcc(sig=sig,
-                         fs=fs,
-                         num_ceps=num_ceps,
-                         pre_emph=pre_emph,
-                         nfilts=nfilts,
-                         nfft=nfft,
-                         low_freq=low_freq,
-                         high_freq=high_freq,
-                         dct_type=dct_type,
-                         use_energy=use_energy,
-                         lifter=False,
-                         normalize=normalize), lifter), 3)
+                    gfcc(
+                        sig=sig,
+                        fs=fs,
+                        num_ceps=num_ceps,
+                        pre_emph=pre_emph,
+                        nfilts=nfilts,
+                        nfft=nfft,
+                        low_freq=low_freq,
+                        high_freq=high_freq,
+                        dct_type=dct_type,
+                        use_energy=use_energy,
+                        lifter=None,
+                        normalize=normalize,
+                    ),
+                    lifter,
+                ),
+                3,
+            )
+
+    # check predifined fbanks features
+    fbanks, _ = gammatone_filter_banks(
+        nfilts=nfilts,
+        nfft=nfft,
+        fs=fs,
+        low_freq=low_freq,
+        high_freq=high_freq,
+    )
+
+    predifined_fbanks_feats = gfcc(
+        sig=sig,
+        fs=fs,
+        num_ceps=num_ceps,
+        pre_emph=pre_emph,
+        nfilts=nfilts,
+        nfft=nfft,
+        low_freq=low_freq,
+        high_freq=high_freq,
+        dct_type=dct_type,
+        use_energy=use_energy,
+        lifter=lifter,
+        normalize=normalize,
+        fbanks=fbanks,
+    )
+
+    np.testing.assert_array_almost_equal(gfccs, predifined_fbanks_feats, 3)

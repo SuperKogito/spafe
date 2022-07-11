@@ -1,92 +1,98 @@
 import pytest
 import numpy as np
-import scipy.io.wavfile
-from spafe.utils import vis
-from spafe.features.lpc import lpc, lpcc, lpc2spec
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
+from spafe.features.lpc import lpc, lpcc
+from spafe.utils.cepstral import normalize_ceps, lifter_ceps
 
 
-@pytest.fixture
-def sig():
-    __EXAMPLE_FILE = 'test.wav'
-    return scipy.io.wavfile.read(__EXAMPLE_FILE)[1]
-
-
-@pytest.fixture
-def fs():
-    __EXAMPLE_FILE = 'test.wav'
-    return scipy.io.wavfile.read(__EXAMPLE_FILE)[0]
-
-
-@pytest.mark.parametrize('num_ceps', [13, 17])
-def test_lpc2spec(sig, fs, num_ceps):
+@pytest.mark.test_id(205)
+@pytest.mark.usefixtures("sig")
+@pytest.mark.usefixtures("fs")
+@pytest.mark.parametrize("order", [13, 28])
+@pytest.mark.parametrize("pre_emph", [False, True])
+def test_lpc(
+    sig,
+    fs,
+    order,
+    pre_emph,
+):
     """
     test LPC features module for the following:
         - check that the returned number of cepstrums is correct.
     """
     # compute lpcs and lsps
-    lpcs = lpc(sig=sig, fs=fs, num_ceps=num_ceps)
-
-    # checks for lpc2spec
-    specs_from_lpc = lpc2spec(lpcs)
-    np.testing.assert_almost_equal(specs_from_lpc[1], specs_from_lpc[2])
-    np.testing.assert_equal(
-        np.any(np.not_equal(lpc2spec(lpcs, FMout=True)[1], specs_from_lpc[2])),
-        True)
-
-
-@pytest.mark.parametrize('num_ceps', [13, 17])
-def test_lpc(sig, fs, num_ceps):
-    """
-    test LPC features module for the following:
-        - check that the returned number of cepstrums is correct.
-    """
-    # compute lpcs and lsps
-    lpcs = lpc(sig=sig, fs=fs, num_ceps=num_ceps)
+    lpcs, _ = lpc(sig=sig, fs=fs, order=order, pre_emph=pre_emph)
 
     # assert number of returned cepstrum coefficients
-    if not lpcs.shape[1] == num_ceps:
+    if not lpcs.shape[1] == order:
         raise AssertionError
 
 
-@pytest.mark.parametrize('num_ceps', [13, 17])
-@pytest.mark.parametrize('lifter', [0])
-@pytest.mark.parametrize('normalize', [False])
-def test_lpcc(sig, fs, num_ceps, lifter, normalize):
+@pytest.mark.test_id(206)
+@pytest.mark.usefixtures("sig")
+@pytest.mark.usefixtures("fs")
+@pytest.mark.parametrize("order", [13, 28])
+@pytest.mark.parametrize("pre_emph", [False, True])
+@pytest.mark.parametrize("lifter", [None, 0.7, -7])
+@pytest.mark.parametrize("normalize", [None, "mvn", "ms"])
+def test_lpcc(
+    sig,
+    fs,
+    order,
+    pre_emph,
+    lifter,
+    normalize,
+):
     """
     test LPCC features module for the following:
         - check that the returned number of cepstrums is correct.
         - check normalization.
         - check liftering.
     """
-    lpccs = lpcc(sig=sig,
-                 fs=fs,
-                 num_ceps=num_ceps,
-                 lifter=lifter,
-                 normalize=normalize)
+    lpccs = lpcc(
+        sig=sig,
+        fs=fs,
+        order=order,
+        pre_emph=pre_emph,
+        lifter=lifter,
+        normalize=normalize,
+    )
+
     # assert number of returned cepstrum coefficients
-    if not lpccs.shape[1] == num_ceps:
+    if not lpccs.shape[1] == order:
         raise AssertionError
 
-    # TO FIX: normalize
+    # Test normalize
     if normalize:
-        np.testing.assert_almost_equal(
+        np.testing.assert_array_almost_equal(
             lpccs,
-            cmvn(
-                cms(
-                    lpcc(sig=sig,
-                         fs=fs,
-                         num_ceps=num_ceps,
-                         lifter=lifter,
-                         normalize=False))), 0)
+            normalize_ceps(
+                lpcc(
+                    sig=sig,
+                    fs=fs,
+                    order=order,
+                    pre_emph=pre_emph,
+                    lifter=lifter,
+                    normalize=None,
+                ),
+                normalize,
+            ),
+            3,
+        )
     else:
-        # TO FIX: lifter
-        if lifter > 0:
-            np.testing.assert_almost_equal(
+        # Test lifter
+        if lifter:
+            np.testing.assert_array_almost_equal(
                 lpccs,
                 lifter_ceps(
-                    lpcc(sig=sig,
-                         fs=fs,
-                         num_ceps=num_ceps,
-                         lifter=False,
-                         normalize=normalize), lifter), 0)
+                    lpcc(
+                        sig=sig,
+                        fs=fs,
+                        order=order,
+                        pre_emph=pre_emph,
+                        lifter=None,
+                        normalize=normalize,
+                    ),
+                    lifter,
+                ),
+                0,
+            )
