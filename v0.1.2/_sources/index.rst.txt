@@ -12,7 +12,7 @@ Welcome to **Spafe**'s  documentation!
 Dependencies
 ------------
 
-pydiogment is built using Python3_  and it requires the following:
+spafe is built using Python3_  and it requires the following:
 
 -	Python packages:
   -	NumPy_ (>= 1.17.2) :  ``pip install numpy``
@@ -21,11 +21,11 @@ pydiogment is built using Python3_  and it requires the following:
 Installation
 ------------
 
-If you already have a working installation of numpy and scipy, you can simply install pydiogment using pip:
+If you already have a working installation of numpy and scipy, you can simply install spafe using pip:
 
   ``pip install spafe``
 
-To update an exisiting pydiogment version use:
+To update an exisiting spafe version use:
 
   ``pip install -U spafe``
 
