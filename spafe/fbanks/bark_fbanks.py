@@ -51,7 +51,7 @@ def bark_filter_banks(
     correspond to fft bins.
 
     Args:
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 20).
         nfft                (int) : the FFT size.
                                     (Default is 512).
@@ -68,7 +68,7 @@ def bark_filter_banks(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
     Raises:

@@ -14,11 +14,11 @@ from spafe.utils.exceptions import ParameterError
 def test_gamma_fbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     """
     test gmma filter banks module for the following:
-        - check if filterbanks have the correct shape.
+        - check if filter banks have the correct shape.
         - check if parameter errors are raised for low_freq.
         - check if parameter errors are raised for high_freq.
     """
-    # compute the gammaton filterbanks
+    # compute the gammaton filter banks
     gamma_filbanks, _ = gammatone_fbanks.gammatone_filter_banks(
         nfilts=nfilts,
         nfft=nfft,
@@ -28,7 +28,7 @@ def test_gamma_fbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         scale=scale,
     )
 
-    # assert that the filterbank shape is correct given nfilts and nfft
+    # assert that the filter bank shape is correct given nfilts and nfft
     if not gamma_filbanks.shape == (nfilts, nfft // 2 + 1):
         raise AssertionError
 

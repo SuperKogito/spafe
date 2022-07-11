@@ -23,11 +23,11 @@ def mel_filter_banks_helper(
     conversion_approach="Oshaghnessy",
 ):
     """
-    Compute Mel-filterbanks.The filters are stored in the rows, the columns
+    Compute Mel-filter banks.The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default 20).
         nfft                (int) : the FFT size.
                                     (Default is 512).
@@ -46,7 +46,7 @@ def mel_filter_banks_helper(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
 
@@ -126,11 +126,11 @@ def mel_filter_banks(
     conversion_approach="Oshaghnessy",
 ):
     """
-    Compute Mel-filterbanks.The filters are stored in the rows, the columns
+    Compute Mel-filter banks.The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default 20).
         nfft                (int) : the FFT size.
                                     (Default is 512).
@@ -147,7 +147,7 @@ def mel_filter_banks(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
     Tip:
@@ -220,11 +220,11 @@ def inverse_mel_filter_banks(
     conversion_approach="Oshaghnessy",
 ):
     """
-    Compute inverse Mel-filterbanks. The filters are stored in the rows, the columns
+    Compute inverse Mel-filter banks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilt               (int) : the number of filters in the filterbank.
+        nfilt               (int) : the number of filters in the filter bank.
                                     (Default 20).
         nfft                (int) : the FFT size.
                                     (Default is 512).
@@ -241,7 +241,7 @@ def inverse_mel_filter_banks(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
     Tip:

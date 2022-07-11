@@ -89,11 +89,11 @@ def gammatone_filter_banks(
     conversion_approach="Glasberg",
 ):
     """
-    Compute Gammatone-filterbanks. The filters are stored in the rows, the columns
+    Compute Gammatone-filter banks. The filters are stored in the rows, the columns
     correspond to fft bins [Ellis-spectrogram]_ and [Cusimano]_ .
 
     Args:
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default 20).
         nfft                (int) : the FFT size.
                                     (Default is 512).
@@ -112,7 +112,7 @@ def gammatone_filter_banks(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
     Tip:

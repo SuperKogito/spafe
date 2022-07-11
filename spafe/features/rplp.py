@@ -56,7 +56,7 @@ def __rastaplp(
                                     (Default is "hamming").
         do_rasta           (bool) : apply Rasta filtering if True.
                                     (Default is False).
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
@@ -123,7 +123,7 @@ def __rastaplp(
     ##  -> |.|^2 (Power Spectrum)
     abs_fft_values = (1.0 / nfft) * np.square(fourrier_transform)
 
-    # -> x filterbank = auditory spectrum
+    # -> x filter bank = auditory spectrum
     auditory_spectrum = np.dot(a=abs_fft_values, b=fbanks.T)
 
     # rasta filtering
@@ -211,7 +211,7 @@ def plp(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming").
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
@@ -333,7 +333,7 @@ def rplp(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming").
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).

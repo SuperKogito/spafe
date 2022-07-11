@@ -1,6 +1,6 @@
 """
 
-- Description : Linear filterbanks implementation.
+- Description : Linear filter banks implementation.
 - Copyright (c) 2019-2022 Ayoub Malek.
   This source code is licensed under the terms of the BSD 3-Clause License.
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
@@ -20,11 +20,11 @@ def linear_filter_banks(
     scale="constant",
 ):
     """
-    Compute linear-filterbanks. The filters are stored in the rows, the columns
+    Compute linear-filter banks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilts    (int) : the number of filters in the filterbank.
+        nfilts    (int) : the number of filters in the filter bank.
                           (Default 20).
         nfft      (int) : the FFT size.
                           (Default is 512).
@@ -39,7 +39,7 @@ def linear_filter_banks(
 
     Returns:
         (tuple) :
-            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filterbank. Each row holds 1 filter.
+            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
             - (numpy.ndarray) : array of center frequencies
 
     Tip:

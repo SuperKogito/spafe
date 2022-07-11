@@ -14,11 +14,11 @@ from spafe.utils.exceptions import ParameterError
 def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     """
     test linear filter banks module for the following:
-        - check if filterbanks have the correct shape.
+        - check if filter banks have the correct shape.
         - check if parameter errors are raised for low_freq.
         - check if parameter errors are raised for high_freq.
     """
-    # compute the linear filterbanks
+    # compute the linear filter banks
     lin_filbanks, _ = linear_fbanks.linear_filter_banks(
         nfilts=nfilts,
         nfft=nfft,
@@ -28,7 +28,7 @@ def test_linfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         scale=scale,
     )
 
-    # assert that the filterbank shape is correct given nfilts and nfft
+    # assert that the filter bank shape is correct given nfilts and nfft
     if not lin_filbanks.shape == (nfilts, nfft // 2 + 1):
         raise AssertionError
 

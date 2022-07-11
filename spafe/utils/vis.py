@@ -43,11 +43,11 @@ def show_fbanks(
     show_center_freqs=True,
 ):
     """
-    visualize a matrix including the filterbanks coordinates. Each row corresponds
+    visualize a matrix including the filter banks coordinates. Each row corresponds
     to a filter.
 
     Args:
-        fbanks    (numpy.ndarray) : 2d array including the the filterbanks coordinates.
+        fbanks    (numpy.ndarray) : 2d array including the the filter banks coordinates.
         ref_freqs (numpy.ndarray) : 1d array reference frequencies
         title               (str) : plot title.
                                     (Default is "Mel filter banks").
@@ -59,7 +59,7 @@ def show_fbanks(
                                     (Default is "Frequency/ mel").
         figsize           (tuple) : size of figure.
                                     (Default is (12, 5)).
-        fb_type             (str) : type of filterbanks.
+        fb_type             (str) : type of filter banks.
                                     (Default is "mel").
         show_center_freqs  (bool) : if true show center frequencies.
                                     (Default is True).

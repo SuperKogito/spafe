@@ -47,7 +47,7 @@ def erb_spectrogram(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming".
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512.
@@ -192,7 +192,7 @@ def gfcc(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming".
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
@@ -295,7 +295,7 @@ def gfcc(
         fbanks=fbanks,
     )
 
-    # compute the filterbank energies
+    # compute the filter bank energies
     nonlin_rect_features = np.power(features, 1 / 3)
     gfccs = dct(x=nonlin_rect_features, type=dct_type, axis=1, norm="ortho")[
         :, :num_ceps

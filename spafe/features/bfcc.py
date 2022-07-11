@@ -70,7 +70,7 @@ def bark_spectrogram(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming").
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
@@ -213,7 +213,7 @@ def bfcc(
                                     (Default is 0.01).
         win_type          (float) : window type to apply for the windowing.
                                     (Default is "hamming").
-        nfilts              (int) : the number of filters in the filterbank.
+        nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).

@@ -14,11 +14,11 @@ from spafe.utils.exceptions import ParameterError
 def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     """
     test mel filter banks module for the following:
-        - check if filterbanks have the correct shape.
+        - check if filter banks have the correct shape.
         - check if parameter errors are raised for low_freq.
         - check if parameter errors are raised for high_freq.
     """
-    # compute the Mel filterbanks
+    # compute the Mel filter banks
     mel_filbanks, _ = mel_fbanks.mel_filter_banks(
         nfilts=nfilts,
         nfft=nfft,
@@ -28,7 +28,7 @@ def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         scale=scale,
     )
 
-    # assert that the filterbank shape is correct given nfilts and nfft
+    # assert that the filter bank shape is correct given nfilts and nfft
     if not mel_filbanks.shape == (nfilts, nfft // 2 + 1):
         raise AssertionError
 
@@ -55,11 +55,11 @@ def test_melfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
 def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
     """
     test inverse mel filter banks module for the following:
-        - check if filterbanks have the correct shape.
+        - check if filter banks have the correct shape.
         - check if parameter errors are raised for low_freq.
         - check if parameter errors are raised for high_freq.
     """
-    # compute the inverse mel filterbanks
+    # compute the inverse mel filter banks
     imel_filbanks, _ = mel_fbanks.inverse_mel_filter_banks(
         nfilts=nfilts,
         nfft=nfft,
@@ -69,7 +69,7 @@ def test_imelfbanks(nfilts, nfft, fs, low_freq, high_freq, scale):
         scale=scale,
     )
 
-    # assert that the filterbank shape is correct given nfilts and nfft
+    # assert that the filter bank shape is correct given nfilts and nfft
     if not imel_filbanks.shape == (nfilts, nfft // 2 + 1):
         raise AssertionError
 
