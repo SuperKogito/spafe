@@ -1,6 +1,13 @@
+"""
+
+- Description : Preprocessing utils implementation.
+- Copyright (c) 2019-2022 Ayoub Malek.
+  This source code is licensed under the terms of the BSD 3-Clause License.
+  For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
+
+"""
 import numpy as np
 import scipy.ndimage
-from spafe.utils.spectral import rfft
 from .exceptions import ParameterError, ErrorMsgs
 
 
@@ -10,10 +17,10 @@ def zero_handling(x):
     for any log function.
 
     Args:
-        x (array): input vector.
+        x (numpy.ndarray): input vector.
 
     Returns:
-        vector with zeros substituted with epsilon values.
+        (numpy.ndarray) : vector with zeros substituted with epsilon values.
     """
     return np.where(x == 0, np.finfo(float).eps, x)
 
@@ -23,11 +30,17 @@ def pre_emphasis(sig, pre_emph_coeff=0.97):
     perform preemphasis on the input signal.
 
     Args:
-        sig   (array) : signal to filter.
-        coeff (float) : preemphasis coefficient. 0 is no filter, default is 0.95.
+        sig (numpy.ndarray) : input signal.
+        coeff       (float) : preemphasis coefficient. 0 is no filter.
+                              (Default is 0.97).
 
     Returns:
-        the filtered signal.
+        (numpy.ndarray) : pre-empahsised signal.
+
+    Note:
+        .. math::
+
+            y[t] = x[t] - \\alpha \\times x[t-1]
     """
     return np.append(sig[0], sig[1:] - pre_emph_coeff * sig[:-1])
 
@@ -37,40 +50,50 @@ def stride_trick(a, stride_length, stride_step):
     apply framing using the stride trick from numpy.
 
     Args:
-        a (array) : signal array.
+        a   (numpy.ndarray) : signal array.
         stride_length (int) : length of the stride.
-        stride_step (int) : stride step.
+        stride_step   (int) : stride step.
 
     Returns:
-        blocked/framed array.
+        (numpy.ndarray) : blocked/framed array.
+
+    Note:
+        You can refer to numpy documentation of this stride trick here:
+        https://numpy.org/doc/stable/reference/generated/numpy.lib.stride_tricks.sliding_window_view.html
     """
+    a = np.array(a)
     nrows = ((a.size - stride_length) // stride_step) + 1
     n = a.strides[0]
-    return np.lib.stride_tricks.as_strided(a,
-                                           shape=(nrows, stride_length),
-                                           strides=(stride_step*n, n))
+    return np.lib.stride_tricks.as_strided(
+        a, shape=(nrows, stride_length), strides=(stride_step * n, n)
+    )
 
 
 def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     """
-    transform a signal into a series of overlapping frames (=Frame blocking).
+    transform a signal into a series of overlapping frames (= Frame blocking)
+    as described in [Malek-framing-blog]_.
 
     Args:
-        sig     (array) : a mono audio signal (Nx1) from which to compute features.
-        fs        (int) : the sampling frequency of the signal we are working with.
-                          Default is 16000.
-        win_len (float) : window length in sec.
-                          Default is 0.025.
-        win_hop (float) : step between successive windows in sec.
-                          Default is 0.01.
+        sig (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs            (int) : the sampling frequency of the signal we are working with.
+                              (Default is 16000).
+        win_len     (float) : window length in sec.
+                              (Default is 0.025).
+        win_hop     (float) : step between successive windows in sec.
+                              (Default is 0.01).
 
     Returns:
-        array of frames.
-        frame length.
+        (tuple) :
+            - (numpy.ndarray) : array of frames.
+            - (int)           : frame length.
 
-    Notes:
-    ------
+    Note:
         Uses the stride trick to accelerate the processing.
+
+    References:
+        .. [Malek-framing-blog] : Malek A., Signal framing, 25.01.2022,
+                                  https://superkogito.github.io/blog/2020/01/25/signal_framing.html
     """
     # run checks and assertions
     if win_len < win_hop:
@@ -82,61 +105,36 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
 
     # make sure to use integers as indices
     frames = stride_trick(sig, frame_length, frame_step)
+
     if len(frames[-1]) < frame_length:
-        frames[-1] = np.append(frames[-1], np.array([0]*(frame_length - len(frames[0]))))
+        frames[-1] = np.append(
+            frames[-1], np.array([0] * (frame_length - len(frames[0])))
+        )
 
     return frames, frame_length
 
 
-def windowing(frames, frame_len, win_type="hamming", beta=14):
+def windowing(frames, frame_len, win_type="hamming"):
     """
-    generate and apply a window function to avoid spectral leakage.
+    generate and apply a window function to avoid spectral leakage [Malek-windowing-blog]_.
 
     Args:
-        frames  (array) : array including the overlapping frames.
-        frame_len (int) : frame length.
-        win_type  (str) : type of window to use.
-                          Default is "hamming"
+        frames  (numpy.ndarray) : array including the overlapping frames.
+        frame_len         (int) : frame length.
+        win_type          (str) : type of window to use.
+                                  (Default is "hamming").
 
     Returns:
-        windowed frames.
+        (numpy.ndarray) : windowed frames.
+
+    References:
+        .. [Malek-windowing-blog] : Malek, A. Specctral leakage, 2022.03.13,
+                                   https://superkogito.github.io/blog/2020/03/13/spectral_leakage_and_windowing.html
+
     """
-    if   win_type == "hamming" : windows = np.hamming(frame_len)
-    elif win_type == "hanning" : windows = np.hanning(frame_len)
-    elif win_type == "bartlet" : windows = np.bartlett(frame_len)
-    elif win_type == "kaiser"  : windows = np.kaiser(frame_len, beta)
-    elif win_type == "blackman": windows = np.blackman(frame_len)
-    windowed_frames = frames * windows
-    return windowed_frames
-
-
-def remove_silence(sig, fs, win_len=0.25, win_hop=0.25, threshold=-35):
-    """
-    generate and apply a window function to avoid spectral leakage.
-
-    Args:
-        frames  (array) : array including the overlapping frames.
-        frame_len (int) : frame length.
-        win_type  (str) : type of window to use.
-                          Default is "hamming"
-
-    Returns:
-        windowed frames.
-    """
-    # framing
-    frames, frames_len = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
-
-    # compute short time energies to get voiced frames
-    amplitudes = np.abs(rfft(frames, len(frames)))
-    energy =  np.sum(amplitudes, axis=-1) / len(frames)**2
-    energy =  10 * np.log10(zero_handling(energy))
-
-    # normalize energy to 0 dB then filter and format
-    energy = energy - energy.max()
-    energy = scipy.ndimage.filters.median_filter(energy, 5)
-    energy = np.repeat(energy, frames_len)
-
-    # compute vad and get speech frames
-    vad = np.array(energy > threshold, dtype=sig.dtype)
-    vframes = np.array(frames.flatten()[np.where(vad==1)], dtype=sig.dtype)
-    return energy, vad, np.array(vframes, dtype=np.float64)
+    return {
+        "hanning": np.hanning(frame_len) * frames,
+        "bartlet": np.bartlett(frame_len) * frames,
+        "kaiser": np.kaiser(frame_len, beta=14) * frames,
+        "blackman": np.blackman(frame_len) * frames,
+    }.get(win_type, np.hamming(frame_len) * frames)

@@ -1,14 +1,18 @@
 """
-Exception classes for Spafe
+
+- Description : Exception classes for Spafe implementation.
+- Copyright (c) 2019-2022 Ayoub Malek.
+  This source code is licensed under the terms of the BSD 3-Clause License.
+  For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
+
 """
 
 ErrorMsgs = {
     "low_freq": "minimal frequency cannot be less than zero.",
-    "high_freq":
-    "maximum frequency cannot be greater than half sampling frequency.",
+    "high_freq": "maximum frequency cannot be greater than half sampling frequency.",
     "nfft": "size of the FFT must be an integer.",
     "nfilts": "number of filters must be bigger than number of cepstrums",
-    "win_len_win_hop_comparison": "window's length has to be larger than the window's hop"
+    "win_len_win_hop_comparison": "window's length has to be larger than the window's hop",
 }
 
 

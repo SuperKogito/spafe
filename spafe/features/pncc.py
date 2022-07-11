@@ -1,240 +1,446 @@
 """
-based on https://github.com/supikiti/PNCC/blob/master/pncc.py
+
+- Description : Power-Normalized Cepstral Coefficients (PNCCs) extraction algorithm implementation.
+- Copyright (c) 2019-2022 Ayoub Malek.
+  This source code is licensed under the terms of the BSD 3-Clause License.
+  For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
+
 """
-import scipy
 import numpy as np
-from ..utils.spectral import stft, powspec
-from ..utils.preprocessing import pre_emphasis
-from ..utils.cepstral import cms, cmvn, lifter_ceps
+from scipy.fftpack import dct
+from ..utils.cepstral import normalize_ceps, lifter_ceps
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
 
-def medium_time_power_calculation(power_stft_signal, M=2):
-    medium_time_power = np.zeros_like(power_stft_signal)
-    power_stft_signal = np.pad(power_stft_signal, [(M, M), (0, 0)], 'constant')
-    for i in range(medium_time_power.shape[0]):
-        medium_time_power[i, :] = sum([
-            1 / float(2 * M + 1) * power_stft_signal[i + k - M, :]
-            for k in range(2 * M + 1)
-        ])
-    return medium_time_power
-
-
-def asymmetric_lawpass_filtering(rectified_signal, lm_a=0.999, lm_b=0.5):
-    floor_level = np.zeros_like(rectified_signal)
-    floor_level[0, ] = 0.9 * rectified_signal[0, ]
-
-    for m in range(floor_level.shape[0]):
-        x = lm_a * floor_level[m - 1, :] + (1 - lm_a) * rectified_signal[m, :]
-        y = lm_b * floor_level[m - 1, :] + (1 - lm_b) * rectified_signal[m, :]
-        floor_level[m, :] = np.where(
-            rectified_signal[m, ] >= floor_level[m - 1, :], x, y)
-    return floor_level
-
-
-def temporal_masking(rectified_signal, lam_t=0.85, myu_t=0.2):
-    # rectified_signal[m, l]
-    temporal_masked_signal = np.zeros_like(rectified_signal)
-    online_peak_power = np.zeros_like(rectified_signal)
-
-    temporal_masked_signal[0, :] = rectified_signal[0, ]
-    online_peak_power[0, :] = rectified_signal[0, :]
-
-    for m in range(1, rectified_signal.shape[0]):
-        online_peak_power[m, :] = np.maximum(
-            lam_t * online_peak_power[m - 1, :], rectified_signal[m, :])
-        temporal_masked_signal[m, :] = np.where(
-            rectified_signal[m, :] >= lam_t * online_peak_power[m - 1, :],
-            rectified_signal[m, :], myu_t * online_peak_power[m - 1, :])
-
-    return temporal_masked_signal
-
-
-def weight_smoothing(final_output, medium_time_power, N=4, L=128):
-
-    spectral_weight_smoothing = np.zeros_like(final_output)
-    for m in range(final_output.shape[0]):
-        for l in range(final_output.shape[1]):
-            l_1 = max(l - N, 1)
-            l_2 = min(l + N, L)
-            spectral_weight_smoothing[m, l] = (1 / float(l_2 - l_1 + 1)) * \
-                sum([(final_output[m, l_] / medium_time_power[m, l_])
-                     for l_ in range(l_1, l_2)])
-    return spectral_weight_smoothing
-
-
-def mean_power_normalization(transfer_function,
-                             final_output,
-                             lam_myu=0.999,
-                             L=80,
-                             k=1):
-    myu = np.zeros(shape=(transfer_function.shape[0]))
-    myu[0] = 0.0001
-    normalized_power = np.zeros_like(transfer_function)
-    for m in range(1, transfer_function.shape[0]):
-        myu[m] = lam_myu * myu[m - 1] + \
-            (1 - lam_myu) / L * \
-            sum([transfer_function[m, s] for s in range(0, L - 1)])
-    normalized_power = k * transfer_function / myu[:, None]
-
-    return normalized_power
-
-
-def medium_time_processing(power_stft_signal, nfilts=22):
-    # calculate medium time power
-    medium_time_power = medium_time_power_calculation(power_stft_signal)
-    lower_envelope = asymmetric_lawpass_filtering(medium_time_power, 0.999,
-                                                  0.5)
-    subtracted_lower_envelope = medium_time_power - lower_envelope
-
-    # half waverectification
-    threshold = 0
-    rectified_signal = np.where(subtracted_lower_envelope < threshold,
-                                np.zeros_like(subtracted_lower_envelope),
-                                subtracted_lower_envelope)
-
-    floor_level = asymmetric_lawpass_filtering(rectified_signal)
-    temporal_masked_signal = temporal_masking(rectified_signal)
-
-    # switch excitation or non-excitation
-    c = 2
-    F = np.where(medium_time_power >= c * lower_envelope,
-                 temporal_masked_signal, floor_level)
-
-    # weight smoothing
-    spectral_weight_smoothing = weight_smoothing(F,
-                                                 medium_time_power,
-                                                 L=nfilts)
-    return spectral_weight_smoothing, F
-
-
-def pncc(sig,
-         fs=16000,
-         num_ceps=13,
-         pre_emph=0,
-         pre_emph_coeff=0.97,
-         power=2,
-         win_len=0.025,
-         win_hop=0.01,
-         win_type="hamming",
-         nfilts=26,
-         nfft=512,
-         low_freq=None,
-         high_freq=None,
-         scale="constant",
-         dct_type=2,
-         use_energy=False,
-         dither=1,
-         lifter=22,
-         normalize=1):
+def medium_time_power_calculation(P, M=2):
     """
-    Compute the power-normalized cepstral coefficients (SPNCC features) from an audio signal.
+    Compute the medium time power calulations according to [Kim]_ .
 
     Args:
-        sig            (array) : a mono audio signal (Nx1) from which to compute features.
-        fs               (int) : the sampling frequency of the signal we are working with.
-                                 Default is 16000.
-        num_ceps       (float) : number of cepstra to return.
-                                 Default is 13.
-        pre_emph         (int) : apply pre-emphasis if 1.
-                                 Default is 1.
-        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
-                                 Default is 0.97.
-        power            (int) : spectrum power.
-                                 Default is 2.
-        win_len        (float) : window length in sec.
-                                 Default is 0.025.
-        win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
-        win_type       (float) : window type to apply for the windowing.
-                                 Default is "hamming".
-        nfilts           (int) : the number of filters in the filterbank.
-                                 Default is 40.
-        nfft             (int) : number of FFT points.
-                                 Default is 512.
-        low_freq         (int) : lowest band edge of mel filters (Hz).
-                                 Default is 0.
-        high_freq        (int) : highest band edge of mel filters (Hz).
-                                 Default is samplerate / 2 = 8000.
-        scale           (str)  : choose if max bins amplitudes ascend, descend or are constant (=1).
-                                 Default is "constant".
-        dct_type         (int) : type of DCT used - 1 or 2 (or 3 for HTK or 4 for feac).
-                                 Default is 2.
-        use_energy       (int) : overwrite C0 with true log energy
-                                 Default is 0.
-        dither           (int) : 1 = add offset to spectrum as if dither noise.
-                                 Default is 0.
-        lifter           (int) : apply liftering if value > 0.
-                                 Default is 22.
-        normalize        (int) : apply normalization if 1.
-                                 Default is 0.
+        P (numpy.ndarray) : signal stft power.
+        M           (int) : the temporal integration factor.
+
+    Returns:
+        (numpy.ndarray) : medium time power values.
+
+    Note:
+        .. math::
+            \\tilde{Q}[m, l]=\\frac{1}{2 M+1} \\sum_{m^{\\prime}=m-M}^{m+M} P[m^{\\prime}]
+
+        where :math:`\\tilde{Q}` is the medium time power, :math:`P` is the power, :math:`m` is the
+        frame index, :math:`l` is te channel index and :math:`M` is the temporal integration factor.
+    """
+    Q_tilde = np.array(
+        [
+            [
+                (1 / (2 * M + 1))
+                * sum(P[max(0, m - M) : min(P.shape[0], m + M + 1), l])
+                for l in range(P.shape[1])
+            ]
+            for m in range(P.shape[0])
+        ]
+    )
+    return Q_tilde
+
+
+def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
+    """
+    Apply asymmetric lowpass filter according to [Kim]_ .
+
+    Args:
+        Q_tilde_in (numpy.ndarray) : rectified signal.
+        lm_a               (float) : filter parameter; lambda a.
+        lm_b               (float) : filter parameter; lambda b.
+
+    Returns:
+        (numpy.ndarray) : filtered signal.
+
+    Note:
+        .. math::
+            \\tilde{Q}_{out}[m, l]=\\left\\{\\begin{array}{l}
+            \\lambda_{a}\\tilde{Q}_{out}[m-1, l]+(1-\\lambda_{a})\\tilde{Q}_{in}[m, l], & \\text{if } \\tilde{Q}_{in}[m, l]\\geq \\tilde{Q}_{out}[m-1, l] \\\\
+            \\lambda_{b}\\tilde{Q}_{out}[m-1, l]+(1-\\lambda_{b})\\tilde{Q}_{in}[m, l], & \\text{if } \\tilde{Q}_{in}[m, l]<\\tilde{Q}_{out}[m-1, l] \\end{array}\\right.
+
+        where :math:`\\tilde{Q}_{in}` and :math:`\\tilde{Q}_{out}` are arbitrary input and output,
+        :math:`\\lambda_{a}` and :math:`\\lambda_{b}` are filter related parameters, :math:`m` is the
+        frame index, :math:`l` is the channel index.
+    """
+    Q_tilde_out = np.zeros_like(Q_tilde_in)
+    Q_tilde_out[0,] = (
+        0.9
+        * Q_tilde_in[
+            0,
+        ]
+    )
+
+    # compute asymmetric nonlinear filter
+    for m in range(Q_tilde_out.shape[0]):
+        Q1 = lm_a * Q_tilde_out[m - 1, :] + (1 - lm_a) * Q_tilde_in[m, :]
+        Q2 = lm_b * Q_tilde_out[m - 1, :] + (1 - lm_b) * Q_tilde_in[m, :]
+
+        Q_tilde_out[m, :] = np.where(
+            Q_tilde_in[
+                m,
+            ]
+            >= Q_tilde_out[m - 1, :],
+            Q1,
+            Q2,
+        )
+    return Q_tilde_out
+
+
+def temporal_masking(Q_tilde_0, lam_t=0.85, myu_t=0.2):
+    """
+
+    Args:
+        Q_tilde_0 (numpy.ndarray) : rectified signal.
+        lam_t             (float) : the forgetting factor-
+        myu_t             (float) : the recognition accuracy.
+
+    Returns:
+        (numpy.ndarray) : Q_tilde_tm = temporal_masking(Q_tilde_0)
+
+    Note:
+        The previous steps can be summarised in the following graph from [Kim]_.
+
+        .. figure:: ../_static/architectures/pncc_temporal_masking.png
+
+            Block diagram of the components that accomplish temporal masking [Kim]_
+    """
+    # rectified_signal[m, l]
+    Q_tilde_tm = np.zeros_like(Q_tilde_0)
+    online_peak_power = np.zeros_like(Q_tilde_0)
+
+    Q_tilde_tm[0, :] = Q_tilde_0[
+        0,
+    ]
+    online_peak_power[0, :] = Q_tilde_0[0, :]
+
+    for m in range(1, Q_tilde_0.shape[0]):
+        online_peak_power[m, :] = np.maximum(
+            lam_t * online_peak_power[m - 1, :], Q_tilde_0[m, :]
+        )
+        Q_tilde_tm[m, :] = np.where(
+            Q_tilde_0[m, :] >= lam_t * online_peak_power[m - 1, :],
+            Q_tilde_0[m, :],
+            myu_t * online_peak_power[m - 1, :],
+        )
+
+    return Q_tilde_tm
+
+
+def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
+    """
+    Apply spectral weight smoothing according to [Kim]_.
+
+    Args:
+        R_tilde (numpy.ndarray) :
+        Q_tilde (numpy.ndarray) : medium time power
+        nfilts            (int) : total number of channels / filters
+
+    Returns:
+        (numpy.ndarray) : time-averaged frequency-averaged transfer function.
+
+    Note:
+        .. math::
+            \\tilde{S}[m, l]=(\\frac{1}{l_{2}-l_{1}+1} \\sum_{l^{\\prime}=l_{1}}^{l_{2}} \\frac{\\tilde{R}[m, l^{\\prime}]}{\\tilde{Q}[m, l^{\\prime}]})
+
+        where :math:`l_{2}=\\min (l+N, L)` and :math:`l_{1}=\\max (l-N, 1)`, and :math:`L` is the total number of channels,
+        and :math:`\\tilde{R}` is the output of the asymmetric noise suppression and temporal masking modules
+        and :math:`\\tilde{S}` is the time-averaged, frequency-averaged transfer function.
+    """
+    L = nfilts
+    S_tilde = np.zeros_like(R_tilde)
+    for m in range(R_tilde.shape[0]):
+        for l in range(R_tilde.shape[1]):
+            l1 = max(l - N, 1)
+            l2 = min(l + N, L)
+            # compute smoothing output
+            S_tilde[m, l] = (1 / float(l2 - l1 + 1)) * sum(
+                [R_tilde[m, lprime] / Q_tilde[m, lprime] for lprime in range(l1, l2)]
+            )
+
+    return S_tilde
+
+
+def mean_power_normalization(T, lam_myu=0.999, nfilts=80, k=1):
+    """
+    Apply mean power normalization according to [Kim]_.
+
+    Args:
+        T (numpy.ndarray) : represents the transfer function.
+        lam_myu   (float) : time constant.
+        nfilts      (int) : total number of channels / filters.
+        k           (int) : arbitrary constant.
 
 
     Returns:
-        (array) : 2d array of PNCC features (num_frames x num_ceps)
-    """
-    # init freqs
-    high_freq = high_freq or fs / 2
-    low_freq = low_freq or 0
+        (numpy.ndarray) normalized mean power.
 
+    Note:
+        .. math::
+            \\mu[m]=\\lambda_{\\mu} \\mu[m-1]+\\frac{(1-\\lambda_{\\mu})}{L} \\sum_{l=0}^{L-1} T[m, l]
+
+            U[m, l]=k \\frac{T[m, l]}{\\mu[m]}
+
+        where :math:`\\lambda_{\\mu}` is the time constant.
+    """
+    L = nfilts
+    myu = np.zeros(shape=(T.shape[0]))
+    myu[0] = 0.0001
+
+    # compute the power estimate
+    for m in range(1, T.shape[0]):
+        myu[m] = lam_myu * myu[m - 1] + ((1 - lam_myu) / L) * sum(
+            [T[m, l] for l in range(0, L)]
+        )
+
+    # compute normalized power: U
+    U = k * T / myu[:, None]
+    return U
+
+
+def asymmetric_noise_suppression_with_temporal_masking(Q_tilde, threshold=0):
+    """
+    Apply asymmetric noise suppression with temporal masking according to [Kim]_.
+
+    Args:
+        Q_tilde (numpy.ndarray) : array representing the "medium-time power".
+        threshold         (int) : threshold for the half wave rectifier.
+
+    Returns:
+        (numpy.ndarray) array after asymmetric noise sup and temporal masking.
+
+    Note:
+        - 2.1 Apply asymmetric lowpass filtering.
+            .. math::
+                \\tilde{Q}_{l e}[m, l]=\\mathcal{A} \\mathcal{F}_{0.999,0.5}[\\tilde{Q}[m, l]]
+
+        - 2.2 Substract from the input medium-time power.
+            .. math::
+                \\tilde{Q}[m, l] - \\tilde{Q}_{l e}[m, l]
+
+        - 2.3 Pass through an ideal half wave linear rectifier.
+        - 2.4 Re-apply asymmetric lowpass filtering.
+        - 2.5 Apply temporal masking.
+        - 2.6 Switch excitation.
+
+        - The previous steps can be summarised in the following graph from [Kim]_.
+
+        .. figure:: ../_static/architectures/pncc_medium_processing.png
+
+            Functional block diagram of the modules for asymmetric noise
+            suppression (ANS) and temporal masking in PNCC processing [Kim]_.
+    """
+    # 2.1. asymmetric low pass filtering (Q_tilde_le : lowpass filter output)
+    Q_tilde_le = asymmetric_lowpass_filtering(Q_tilde, 0.999, 0.5)
+
+    # 2.2. Subtract filtering output from the input
+    subtracted_lower_envelope = Q_tilde - Q_tilde_le
+
+    # 2.3. half wave rectification (Q_tilde_0 : rectifier output/ rectified signal)
+    Q_tilde_0 = np.where(
+        subtracted_lower_envelope < threshold,
+        np.zeros_like(subtracted_lower_envelope),
+        subtracted_lower_envelope,
+    )
+
+    # loor level (Q_tilde_f : lower envelope of the rectifier output/ rectified signal)
+    Q_tilde_f = asymmetric_lowpass_filtering(Q_tilde_0)
+
+    # 2.5. temporal masking (Q_tilde_tm : temporal masked signal)
+    Q_tilde_tm = temporal_masking(Q_tilde_0)
+
+    # 2.6. switch excitation or non-excitation
+    c = 2
+    R_tilde = np.where(Q_tilde >= c * Q_tilde_le, Q_tilde_tm, Q_tilde_f)
+    return R_tilde
+
+
+def pncc(
+    sig,
+    fs=16000,
+    num_ceps=13,
+    pre_emph=0,
+    pre_emph_coeff=0.97,
+    power=2,
+    win_len=0.025,
+    win_hop=0.01,
+    win_type="hamming",
+    nfilts=24,
+    nfft=512,
+    low_freq=None,
+    high_freq=None,
+    scale="constant",
+    dct_type=2,
+    lifter=None,
+    normalize=None,
+    fbanks=None,
+    conversion_approach="Glasberg",
+):
+    """
+    Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,
+    based on [Kim]_ [Nakamura]_ .
+
+    Args:
+        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs                  (int) : the sampling frequency of the signal we are working with.
+                                    (Default is 16000).
+        num_ceps          (float) : number of cepstra to return.
+                                    (Default is 13).
+        pre_emph            (int) : apply pre-emphasis if 1.
+                                    (Default is 1).
+        pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
+                                    (Default is 0.97).
+        power               (int) : power value to use .
+                                    (Default is 2).
+        win_len           (float) : window length in sec.
+                                    (Default is 0.025).
+        win_hop           (float) : step between successive windows in sec.
+                                    (Default is 0.01).
+        win_type          (float) : window type to apply for the windowing.
+                                    (Default is "hamming").
+        nfilts              (int) : the number of filters in the filterbank.
+                                    (Default is 40).
+        nfft                (int) : number of FFT points.
+                                    (Default is 512).
+        low_freq            (int) : lowest band edge of mel filters (Hz).
+                                    (Default is 0).
+        high_freq           (int) : highest band edge of mel filters (Hz).
+                                    (Default is samplerate/2).
+        scale              (str)  : monotonicity behavior of the filter banks.
+                                    (Default is "constant").
+        dct_type            (int) : type of DCT used.
+                                    (Default is 2).
+        lifter              (int) : apply liftering if specifid.
+                                    (Default is 0).
+        normalize           (int) : apply normalization if approach specifid.
+                                    (Default is None).
+        fbanks    (numpy.ndarray) : filter bank matrix.
+                                    (Default is None).
+        conversion_approach (str) : erb scale conversion approach.
+                                    (Default is "Glasberg").
+
+    Returns:
+        (numpy.ndarray) : 2d array of PNCC features (num_frames x num_ceps)
+
+    Tip:
+        - :code:`scale` : can take the following options ["constant", "ascendant", "descendant"].
+        - :code:`dct` : can take the following options [1, 2, 3, 4].
+        - :code:`normalize` : can take the following options ["mvn", "ms", "vn", "mn"].
+        - :code:`conversion_approach` : can take the following options ["Glasberg"].
+          Note that the use of different options than the default can lead to unexpected behavior/issues.
+
+    References:
+        .. [Kim] : Kim C. and Stern R. M., "Power-Normalized Cepstral Coefficients (PNCC) for Robust Speech Recognition,"
+                   in IEEE/ACM Transactions on Audio, Speech, and Language Processing,
+                   vol. 24, no. 7, pp. 1315-1329, July 2016, doi: 10.1109/TASLP.2016.2545928.
+        .. [Nakamura] : Nakamura T., An implementation of Power Normalized Cepstral Coefficients: PNCC
+                        <https://github.com/supikiti/PNCC>
+
+    Note:
+        .. figure:: ../_static/architectures/pnccs.png
+
+           Architecture of power normalized cepstral coefﬁcients extraction algorithm.
+
+    Examples
+        .. plot::
+
+            from scipy.io.wavfile import read
+            from spafe.features.pncc import pncc
+            from spafe.utils.vis import show_features
+
+            # read audio
+            fpath = "../../../test.wav"
+            fs, sig = read(fpath)
+
+            # compute pnccs
+            pnccs  = pncc(sig,
+                          fs=fs,
+                          pre_emph=0,
+                          pre_emph_coeff=0.97,
+                          win_len=0.030,
+                          win_hop=0.015,
+                          win_type="hamming",
+                          nfilts=128,
+                          nfft=1024,
+                          low_freq=0,
+                          high_freq=fs/2,
+                          lifter=0.7,
+                          normalize="mvn")
+
+            # visualize features
+            show_features(pnccs, "Power-Normalized Cepstral Coefficients", "PNCC Index", "Frame Index")
+    """
     # run checks
-    if low_freq < 0:
-        raise ParameterError(ErrorMsgs["low_freq"])
-    if high_freq > (fs / 2):
-        raise ParameterError(ErrorMsgs["high_freq"])
     if nfilts < num_ceps:
         raise ParameterError(ErrorMsgs["nfilts"])
+
+    # get fbanks
+    if fbanks is None:
+        # compute fbanks
+        gamma_fbanks_mat, _ = gammatone_filter_banks(
+            nfilts=nfilts,
+            nfft=nfft,
+            fs=fs,
+            low_freq=low_freq,
+            high_freq=high_freq,
+            scale=scale,
+            conversion_approach=conversion_approach,
+        )
+        fbanks = gamma_fbanks_mat
 
     # pre-emphasis
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
-    # -> STFT()
-    stf_trafo, _ = stft(sig, fs)
+    # -> framing
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
 
-    #  -> |.|^2
-    spectrum_power = np.abs(stf_trafo)**power
+    # -> windowing
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
 
-    # -> x Filterbanks
-    gammatone_filter = gammatone_filter_banks(nfilts=nfilts,
-                                              nfft=nfft,
-                                              fs=fs,
-                                              low_freq=low_freq,
-                                              high_freq=high_freq,
-                                              scale=scale)
-    P = np.dot(a=spectrum_power[:, :gammatone_filter.shape[1]],
-               b=gammatone_filter.T)
+    # -> FFT -> |.|
+    ## Magnitude of the FFT
+    fourrier_transform = np.absolute(np.fft.fft(windows, nfft))
+    fourrier_transform = fourrier_transform[:, : int(nfft / 2) + 1]
+
+    ##  -> |.|^2 (Power Spectrum)
+    abs_fft_values = (1.0 / nfft) * np.square(fourrier_transform)
+
+    # -> x filterbank
+    P = np.dot(a=abs_fft_values, b=fbanks.T)
 
     # medium_time_processing
-    S, F = medium_time_processing(P, nfilts=nfilts)
+    ## 1. medium time power caculations (Q_tilde : medium_time_power)
+    Q_tilde = medium_time_power_calculation(P)
 
-    # time-freq normalization
-    T = P * S
+    ## 2. asymmetric noise suppression with temporal masking
+    R_tilde = asymmetric_noise_suppression_with_temporal_masking(Q_tilde)
+
+    ## 3. weight smoothing
+    S_tilde = weight_smoothing(R_tilde, Q_tilde, nfilts=nfilts)
+
+    # -> time frequency normalization
+    T = P * S_tilde
 
     # -> mean power normalization
-    U = mean_power_normalization(T, F, L=nfilts)
+    U = mean_power_normalization(T, nfilts=nfilts)
+
     # -> power law non linearity
-    V = U**(1 / 15)
+    V = U ** (1 / 15)
 
     # DCT(.)
-    pnccs = scipy.fftpack.dct(V)[:, :num_ceps]
-
-    # use energy for 1st features column
-    if use_energy:
-        pspectrum, logE = powspec(sig,
-                                  fs=fs,
-                                  win_len=win_len,
-                                  win_hop=win_hop,
-                                  dither=dither)
-
-        # bug: pnccs[:, 0] = logE
+    pnccs = dct(x=V, type=dct_type, axis=1, norm="ortho")[:, :num_ceps]
 
     # liftering
-    if lifter > 0:
+    if lifter:
         pnccs = lifter_ceps(pnccs, lifter)
 
     # normalization
     if normalize:
-        pnccs = cmvn(cms(pnccs))
+        pnccs = normalize_ceps(pnccs, normalize)
+
     return pnccs
