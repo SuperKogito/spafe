@@ -9,6 +9,10 @@ Spafe: Simplified Python Audio Features Extraction
 #  Table of Contents
 
 - [Spafe](#Spafe)
+  - [Filter banks](#Filter-banks)
+  - [Spectrograms](#Spectrograms)
+  - [Features](#Features)
+  - [Frequencies](#Frequencies)
 - [Installation](#Installation)
   - [Dependencies](#Dependencies)
   - [Installation guide](#Installation-guide)
@@ -66,8 +70,8 @@ The theory behind features computed using spafe can be summmarized in the follow
 spafe requires:
 
 -	[Python](https://www.python.org/) (>= 3.5)
--	[NumPy](https://numpy.org/) (>= 1.18.1)
--	[SciPy](https://scipy.org/) (>= 1.4.1)
+-	[NumPy](https://numpy.org/) (>= 1.22.0)
+-	[SciPy](https://scipy.org/) (>= 1.8.0)
 
 if you want to use the visualization module/ functions of spafe, you will need to install:
 
