@@ -81,29 +81,10 @@ It is recommended to check that your contribution complies with the following ru
 	pytest
 	```
 
--	No pyflakes warnings, check with:
+-	Check code formatting using black:
 
 	```bash
-	pip install pyflakes
-	pyflakes path/to/module.py
-	```
-
--	No PEP8 warnings, check with:
-
-	```bash
-	pip install pycodestyle
-	pycodestyle path/to/module.py
-	```
-
--	AutoPEP8 and yapf can help you fix some of the easy redundant errors and linter your code:
-
-	```bash
-	pip install autopep8
-	pip install yapf
-
-
-	autopep8 path/to/module.py
-	yapf path/to/module.py
+  black --check spafe
 	```
 
 Filing bugs

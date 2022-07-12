@@ -4,7 +4,7 @@
 
 Simplified Python Audio Features Extraction
 
-[![Build Status](https://travis-ci.org/SuperKogito/spafe.svg?branch=master)](https://travis-ci.org/SuperKogito/spafe)
+[![Build Status](https://github.com/SuperKogito/spafe/actions/workflows/ci.yml/badge.svg)](https://github.com/SuperKogito/spafe/actions)
 [![docs.rs](https://img.shields.io/docsrs/docs)](https://superkogito.github.io/spafe/dev/)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause%20License%20(Revised)%20-blue)](https://github.com/SuperKogito/spafe/blob/master/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue)](https://www.python.org/doc/versions/)
@@ -27,7 +27,7 @@ Simplified Python Audio Features Extraction
   - [Installation guide](#Installation-guide)
 - [How to use](#How-to-use)
 - [Contributing](#Contributing)
-- [Citing](#citing)
+- [Citing](#Citing)
 
 # Structure
 spafe aims to simplify features extractions from **mono audio** files.
