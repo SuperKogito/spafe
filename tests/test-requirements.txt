@@ -1,6 +1,7 @@
-pytest-cov 
+pytest-cov
 pytest
 codecov
 coveralls
 pytest-xdist
 codacy-coverage
+matplotlib==3.5.2
