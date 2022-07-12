@@ -1,0 +1,5 @@
+pytest-cov pytest
+codecov
+coveralls
+pytest-xdist
+codacy-coverage
