@@ -1,11 +1,11 @@
-![](media/logo.png)
+![](https://github.com/SuperKogito/spafe/blob/master/media/logo.png?raw=true)
 
 # Spafe
 
 Simplified Python Audio Features Extraction
 
 [![Build Status](https://github.com/SuperKogito/spafe/actions/workflows/ci.yml/badge.svg)](https://github.com/SuperKogito/spafe/actions)
-[![docs.rs](https://img.shields.io/docsrs/docs)](https://superkogito.github.io/spafe/dev/)
+[![docs.rs](https://img.shields.io/docsrs/docs)](https://superkogito.github.io/spafe/)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause%20License%20(Revised)%20-blue)](https://github.com/SuperKogito/spafe/blob/master/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue)](https://www.python.org/doc/versions/)
 [![codecov](https://codecov.io/gh/SuperKogito/spafe/branch/master/graph/badge.svg)](https://codecov.io/gh/SuperKogito/spafe)
@@ -33,24 +33,24 @@ Simplified Python Audio Features Extraction
 spafe aims to simplify features extractions from **mono audio** files.
 Spafe includes various computations related to filter banks, spectrograms, frequencies and cepstral features .
 The library has the following structure:
-![](media/spafe-structure.png)
+![](https://github.com/SuperKogito/spafe/raw/master/media/spafe-structure.png)
 
 ## Filter banks
-![](media/bark_fbanks.png)
+![](https://github.com/SuperKogito/spafe/blob/master/media/bark_fbanks.png?raw=true)
   - Bark filter banks
   - Gammatone filter banks
   - Linear filter banks
   - Mel filter banks
 
 ## Spectrograms
-![](media/melspectrogram.png)  
+![](https://github.com/SuperKogito/spafe/blob/master/media/melspectrogram.png?raw=true)  
   - Bark spectrogram
   - CQT spectrogram
   - Erb spectrogram
   - Mel spectrogram
 
 ## Features
-![](media/gfcc.png)
+![](https://github.com/SuperKogito/spafe/blob/master/media/gfcc.png?raw=true)
   - Bark Frequency Cepstral Coefﬁcients (BFCCs)
   - Constant Q-transform Cepstral Coeﬃcients (CQCCs)
   - Gammatone Frequency Cepstral Coefﬁcients (GFCCs)
@@ -66,10 +66,10 @@ The library has the following structure:
   - Rasta Perceptual Linear Prediction Coefficents (RPLPs)
 
 The theory behind features computed using spafe can be summmarized in the following graph:
-![](media/features-extraction-algorithms.png)
+![](https://github.com/SuperKogito/spafe/blob/master/media/features-extraction-algorithms.png?raw=true)
 
 ## Frequencies
-![](media/dominant_frequencies.png)
+![](https://github.com/SuperKogito/spafe/blob/master/media/dominant_frequencies.png?raw=true)
   - Dominant frequencies
   - Fundamental frequencies
 
@@ -116,7 +116,7 @@ python setup.py install
 
 ## How to use
 
-Various examples on how to use spafe are present in the documentation [https://superkogito.github.io/spafe/dev/](https://superkogito.github.io/spafe/dev/).
+Various examples on how to use spafe are present in the documentation [https://superkogito.github.io/spafe/dev/](https://superkogito.github.io/spafe).
 
 **<!>** Please make sure you are referring to the correct documentation version.
 
