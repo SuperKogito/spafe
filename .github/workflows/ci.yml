@@ -25,7 +25,7 @@ jobs:
           black --check spafe
 
   testing:
-    needs: type_checking
+    needs: formatting
     runs-on: ubuntu-latest
     strategy:
       matrix:
