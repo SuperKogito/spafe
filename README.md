@@ -1,14 +1,23 @@
 ![](media/logo.png)
 
-Spafe: Simplified Python Audio Features Extraction
-==================================================
+# Spafe
 
-[![Build Status](https://travis-ci.org/SuperKogito/spafe.svg?branch=master)](https://travis-ci.org/SuperKogito/spafe) [![Documentation Status](https://readthedocs.org/projects/spafe/badge/?version=latest)](https://spafe.readthedocs.io/en/latest/?badge=latest) [![License](https://img.shields.io/badge/license-BSD%203--Clause%20License%20(Revised)%20-blue)](https://github.com/SuperKogito/spafe/blob/master/LICENSE) [![Python](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7-blue)](https://www.python.org/doc/versions/) [![Coverage Status](https://coveralls.io/repos/github/SuperKogito/spafe/badge.svg?branch=master)](https://coveralls.io/github/SuperKogito/spafe?branch=master) [![codecov](https://codecov.io/gh/SuperKogito/spafe/branch/master/graph/badge.svg)](https://codecov.io/gh/SuperKogito/spafe) [![PyPI version](https://badge.fury.io/py/spafe.svg)](https://badge.fury.io/py/spafe) [![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe) [![Downloads](https://pepy.tech/badge/spafe)](https://pepy.tech/project/spafe) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e94b18b0e9a040d4bc30d478879f86eb)](https://www.codacy.com/manual/SuperKogito/spafe?utm_source=github.com&utm_medium=referral&utm_content=SuperKogito/spafe&utm_campaign=Badge_Grade) [![codebeat badge](https://codebeat.co/badges/97f81ec3-b8a3-42ff-a9f5-f6cf165f4448)](https://codebeat.co/projects/github-com-superkogito-spafe-master)
+Simplified Python Audio Features Extraction
+
+[![Build Status](https://travis-ci.org/SuperKogito/spafe.svg?branch=master)](https://travis-ci.org/SuperKogito/spafe)
+[![docs.rs](https://img.shields.io/docsrs/docs)](https://superkogito.github.io/spafe/dev/)
+[![License](https://img.shields.io/badge/license-BSD%203--Clause%20License%20(Revised)%20-blue)](https://github.com/SuperKogito/spafe/blob/master/LICENSE)
+[![Python](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue)](https://www.python.org/doc/versions/)
+[![codecov](https://codecov.io/gh/SuperKogito/spafe/branch/master/graph/badge.svg)](https://codecov.io/gh/SuperKogito/spafe)
+[![codebeat badge](https://codebeat.co/badges/97f81ec3-b8a3-42ff-a9f5-f6cf165f4448)](https://codebeat.co/projects/github-com-superkogito-spafe-master)
+[![PyPI version](https://badge.fury.io/py/spafe.svg)](https://badge.fury.io/py/spafe)
+[![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe)
+[![Downloads](https://pepy.tech/badge/spafe)](https://pepy.tech/project/spafe)
 
 
 #  Table of Contents
 
-- [Spafe](#Spafe)
+- [Structure](#Structure)
   - [Filter banks](#Filter-banks)
   - [Spectrograms](#Spectrograms)
   - [Features](#Features)
@@ -20,7 +29,7 @@ Spafe: Simplified Python Audio Features Extraction
 - [Contributing](#Contributing)
 - [Citing](#citing)
 
-# Spafe
+# Structure
 spafe aims to simplify features extractions from **mono audio** files.
 Spafe includes various computations related to filter banks, spectrograms, frequencies and cepstral features .
 The library has the following structure:
@@ -28,41 +37,41 @@ The library has the following structure:
 
 ## Filter banks
 ![](media/bark_fbanks.png)
-  - ***Bark filter banks***
-  - ***Gammatone filter banks***
-  - ***Linear filter banks***
-  - ***Mel filter banks***
+  - Bark filter banks
+  - Gammatone filter banks
+  - Linear filter banks
+  - Mel filter banks
 
 ## Spectrograms
 ![](media/melspectrogram.png)  
-  - ***Bark spectrogram***
-  - ***CQT spectrogram***
-  - ***Erb spectrogram***
-  - ***Mel spectrogram***
+  - Bark spectrogram
+  - CQT spectrogram
+  - Erb spectrogram
+  - Mel spectrogram
 
 ## Features
 ![](media/gfcc.png)
-  - ***Bark Frequency Cepstral Coefﬁcients (BFCCs)***
-  - ***Constant Q-transform Cepstral Coeﬃcients (CQCCs)***
-  - ***Gammatone Frequency Cepstral Coefﬁcients (GFCCs)***
-  - ***Linear Frequency Cepstral Coefﬁcients (LFCCs)***
-  - ***Linear Prediction Components (LPCs)***
-  - ***Mel Frequency Cepstral Coefﬁcients (MFCCs)***
-  - ***Inverse Mel Frequency Cepstral Coefﬁcients (IMFCCs)***
-  - ***Magnitude based Spectral Root Cepstral Coefficients (MSRCCs)***
-  - ***Normalized Gammachirp Cepstral Coefficients (NGCCs)***
-  - ***Power-Normalized Cepstral Coefficients (PNCCs)***
-  - ***Phase based Spectral Root Cepstral Coefficients (PSRCCs)***
-  - ***Perceptual Linear Prediction Coefficents (PLPs)***
-  - ***Rasta Perceptual Linear Prediction Coefficents (RPLPs)***
+  - Bark Frequency Cepstral Coefﬁcients (BFCCs)
+  - Constant Q-transform Cepstral Coeﬃcients (CQCCs)
+  - Gammatone Frequency Cepstral Coefﬁcients (GFCCs)
+  - Linear Frequency Cepstral Coefﬁcients (LFCCs)
+  - Linear Prediction Components (LPCs)
+  - Mel Frequency Cepstral Coefﬁcients (MFCCs)
+  - Inverse Mel Frequency Cepstral Coefﬁcients (IMFCCs)
+  - Magnitude based Spectral Root Cepstral Coefficients (MSRCCs)
+  - Normalized Gammachirp Cepstral Coefficients (NGCCs)
+  - Power-Normalized Cepstral Coefficients (PNCCs)
+  - Phase based Spectral Root Cepstral Coefficients (PSRCCs)
+  - Perceptual Linear Prediction Coefficents (PLPs)
+  - Rasta Perceptual Linear Prediction Coefficents (RPLPs)
 
 The theory behind features computed using spafe can be summmarized in the following graph:
 ![](media/features-extraction-algorithms.png)
 
 ## Frequencies
 ![](media/dominant_frequencies.png)
-  - ***Dominant frequencies***
-  - ***Fundamental frequencies***
+  - Dominant frequencies
+  - Fundamental frequencies
 
 ## Installation
 ### Dependencies
@@ -84,7 +93,7 @@ Once you have the Dependencies installed, use one of the following install optio
 #### Install from PyPI
 - To freshly install spafe:
 ```
-pip install -U spafe
+pip install spafe
 ```
 -  To update an existing installation:
 ```

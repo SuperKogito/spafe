@@ -47,7 +47,3 @@ jobs:
           pip install -r tests/test-requirements.txt
           pytest -x --cache-clear -n 8 -q --cov=./ || --force-yes
           codecov
-          coveralls
-          coverage xml
-          export CODACY_PROJECT_TOKEN={{CODACY_SPAFE_TOKEN}}
-          python-codacy-coverage -r coverage.xml
