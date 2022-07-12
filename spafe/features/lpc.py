@@ -1,283 +1,318 @@
+"""
+
+- Description : Linear Prediction Components and Cepstral Coefﬁcients (LPCs and LPCCs) extraction algorithm implementation.
+- Copyright (c) 2019-2022 Ayoub Malek.
+  This source code is licensed under the terms of the BSD 3-Clause License.
+  For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
+
+"""
+import scipy
 import numpy as np
-from scipy.fftpack import ifft
-from spafe.utils import levinsondr
-from spafe.utils.filters import rasta_filter
-from ..utils.preprocessing import pre_emphasis
-from spafe.utils.cepstral import cms, cmvn, lifter_ceps
-from spafe.utils.spectral import powspec, audspec, postaud, invpowspec
+from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
 
-def lpcc(sig,
-         fs=16000,
-         num_ceps=13,
-         pre_emph=1,
-         pre_emph_coeff=0.97,
-         win_type="hann",
-         win_len=0.025,
-         win_hop=0.01,
-         do_rasta=True,
-         lifter=1,
-         normalize=1,
-         dither=1):
+def __lpc_helper(frame, order):
     """
-    Compute the LINEAR PREDICTIVE CEPSTRAL COEFFICIENTS (LPCC) from an audio signal.
+    Computes for each given sequence the LPC ( Linear predictive components ) as
+    described in . Further references are [Draconi]_ and [Cournapeau] and [Menares]_.
 
     Args:
-        sig            (array) : a mono audio signal (Nx1) from which to compute features.
-        fs               (int) : the sampling frequency of the signal we are working with.
-                                 Default is 16000.
-        num_ceps       (float) : number of cepstra to return (order of the model to compute).
-                                 Default is 13.
-        pre_emph         (int) : apply pre-emphasis if 1.
-                                 Default is 1.
-        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
-                                 Default is 0.97.
-        win_type       (float) : window type to apply for the windowing.
-                                 Default is hanning.
-        win_len        (float) : window length in sec.
-                                 Default is 0.025.
-        win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
-        do_rasta         (int) : if 1 then apply rasta filtering.
-                                 Default is 0.
-        lifter           (int) : apply liftering if value > 0.
-                                 Default is 22.
-        normalize        (int) : apply normalization if 1.
-                                 Default is 0.
-        dither           (int) : 1 = add offset to spectrum as if dither noise.
-                                 Default is 0.
+        sig      (numpy.ndarray) : input mono audio signal (Nx1).
+        fs               (int) : the signal sampling frequency.
+                                 (Default is 16000).
+        order            (int) : Size of the cepstral components/ model order. If None is given,
+                                 we use len(seq) as default, otherwise order+1.
+                                 (Default is 13).
+
     Returns:
-        (array) : 2d array of LPCC features (num_frames x num_ceps)
+        - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).
+        - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).
+
+    Note:
+        The premis of linear predictive analysis is that the nth sample can be estimated by a
+        linear combination of the previous p samples:
+
+        .. math::
+            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] ... - a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor
+        coefficents and p is called the model order and n is the sample index.
+        Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:
+
+        .. math::
+            e[n] = x[n] - xp[n] \\implies  x[n] = e[n] - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        The unknown here are the LP coefficients a, hence we need to minimize e to find those.
+        We can further rewrite the previous equations for all samples [Collomb]_:
+
+        .. math::
+            E = \\sum_{i=1}^{N} (x[i] - (-\\sum_{k=1}^{p+1} a_{k} . x[i-k])) \\text{for x\\in[1,p]}
+
+
+        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0
+                           _          _
+            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]
+             :      :      :          :         :
+             :      :      :          _      *  :
+            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]
+
+        To solve this, one can use the Levinson-Durbin, which is a well-known
+        algorithm to solve the Hermitian toeplitz with respect to a. Using the
+        special symmetry in the matrix, the inversion can be done in O(p^2)
+        instead of O(p^3).
+
+    References:
+        .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,
+                        Stackoverflow, https://stackoverflow.com/a/43457190/6939324
+        .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox
+        .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments
+        .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,
+                       <https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents>
+        .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction
+                         <https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html>
     """
-    lpcs = lpc(sig=sig,
-               fs=fs,
-               num_ceps=num_ceps,
-               pre_emph=pre_emph,
-               pre_emph_coeff=pre_emph_coeff,
-               win_len=win_len,
-               win_hop=win_hop,
-               do_rasta=True,
-               dither=dither)
-    lpccs = lpc2cep(lpcs.T)
+    p = order + 1
+    r = np.zeros(p, frame.dtype)
+
+    # Number of non zero values in autocorrelation one needs for p LPC coefficients
+    nx = np.min([p, frame.size])
+    auto_corr = np.correlate(frame, frame, "full")
+    r[:nx] = auto_corr[frame.size - 1 : frame.size + order]
+
+    phi = np.dot(scipy.linalg.inv(scipy.linalg.toeplitz(r[:-1])), -r[1:])
+    a = np.concatenate(([1.0], phi))
+    e = auto_corr[0] + sum(ac_k * a_k for ac_k, a_k in zip(auto_corr[1:], a))
+    return a, np.sqrt(e**2)
+
+
+def lpc(
+    sig,
+    fs=16000,
+    order=13,
+    pre_emph=0,
+    pre_emph_coeff=0.97,
+    win_len=0.025,
+    win_hop=0.01,
+    win_type="hann",
+):
+    """
+    Compute the Linear prediction coefficents (LPC) from an audio signal.
+
+    Args:
+        sig    (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs               (int) : the sampling frequency of the signal we are working with.
+                                 (Default is 16000).
+        order            (int) : order of the LP model and number of cepstral components.
+                                 (Default is 13).
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 (Default is 1).
+        pre_emph_coeff (float) : pre-emphasis filter coefficient.
+                                 (Default is 0.97).
+        win_len        (float) : window length in sec.
+                                 (Default is 0.025).
+        win_hop        (float) : step between successive windows in sec.
+                                 (Default is 0.01).
+        win_type       (float) : window type to apply for the windowing.
+                                 (Default is hamming).
+
+    Returns:
+        (tuple) :
+            - (numpy.ndarray) : 2d array of LPC features (num_frames x num_ceps).
+            - (numpy.ndarray) : The error term is the sqare root of the squared prediction error.
+
+    Note:
+        .. figure:: ../_static/architectures/lpcs.png
+
+           Architecture of linear prediction components extraction algorithm.
+
+    Examples
+        .. plot::
+
+            from scipy.io.wavfile import read
+            from spafe.features.lpc import lpc
+            from spafe.utils.vis import show_features
+
+            # read audio
+            fpath = "../../../test.wav"
+            fs, sig = read(fpath)
+
+            # compute lpcs
+            lpcs, _ = lpc(sig,
+                          fs=fs,
+                          pre_emph=0,
+                          pre_emph_coeff=0.97,
+                          win_len=0.030,
+                          win_hop=0.015,
+                          win_type="hamming")
+
+            # visualize features
+            show_features(lpcs, "Linear prediction coefficents", "LPCs Index", "Frame Index")
+    """
+    order = order - 1
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
+    # -> framing
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+
+    # -> windowing
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+
+    a_mat = np.zeros((len(windows), order + 1))
+    e_vec = np.zeros((len(windows), 1))
+
+    for i, windowed_frame in enumerate(frames):
+        a, e = __lpc_helper(windowed_frame, order)
+        a_mat[i, :] = a
+        e_vec[i] = e
+
+    return np.array(a_mat), np.sqrt(e_vec)
+
+
+def lpc2lpcc(a, e, nceps):
+    """
+    Convert linear prediction coefficents (LPC) to linear prediction cepstral coefﬁcients (LPCC)
+    as described in [Rao]_ and [Makhoul]_.
+
+    Args:
+        a (numpy.ndarray) : linear prediction coefficents.
+        order       (int) : linear prediction model order.
+
+    Returns:
+        (numpy.ndarray) : linear prediction cepstrum coefficents (LPCC).
+
+    Note:
+        .. math::
+
+            C_{m}=\\left\\{\\begin{array}{l}
+            log_{e}(p), & \\text{if } m = 0 \\\\
+            a_{m} + \\sum_{k=1}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , & \\text{if } 1 < m < p \\\\
+            \\sum_{k=m-p}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , & \\text{if } m > p \\end{array}\\right.
+
+    References:
+        .. [Makhoul] : Makhoul, J. (1975). Linear prediction: A tutorial review.
+                       Proceedings of the IEEE, 63(4), 561–580. doi:10.1109/proc.1975.9792
+        .. [Rao] : Rao, K. S., Reddy, V. R., & Maity, S. (2015). 
+                   Language Identification Using Spectral and Prosodic Features. 
+                   SpringerBriefs in Electrical and Computer Engineering. doi:10.1007/978-3-319-17163-0
+    """
+    p = len(a)
+    c = [0 for i in range(nceps)]
+
+    c[0] = np.log(zero_handling(e))
+    c[1:p] = [
+        a[m] + sum([(k / m) * c[k] * a[m - k] for k in range(1, m)])
+        for m in range(1, p)
+    ]
+
+    if nceps > p:
+        c[p:nceps] = [
+            sum([(k / m) * c[k] * a[m - k] for k in range(m - p, m)])
+            for m in range(p, nceps)
+        ]
+
+    return c
+
+
+def lpcc(
+    sig,
+    fs=16000,
+    order=13,
+    pre_emph=0,
+    pre_emph_coeff=0.97,
+    win_len=0.025,
+    win_hop=0.01,
+    win_type="hamming",
+    lifter=None,
+    normalize=None,
+):
+    """
+    Computes the linear predictive cepstral components / coefficents from an
+    audio signal.
+
+    Args:
+        sig    (numpy.ndarray) : input mono audio signal (Nx1).
+        fs               (int) : the sampling frequency of the signal.
+                                 (Default is 16000).
+        order            (int) : order of the LP model and number of cepstral components.
+                                 (Default is 13).
+        pre_emph         (int) : apply pre-emphasis if 1.
+                                 (Default is 1).
+        pre_emph_coeff (float) : pre-emphasis filter coefficient.
+                                 (Default is 0.97).
+        win_len        (float) : window length in sec.
+                                 (Default is 0.025).
+        win_hop        (float) : step between successive windows in sec.
+                                 (Default is 0.01).
+        win_type       (float) : window type to apply for the windowing.
+                                 (Default is hamming).
+        lifter           (int) : apply liftering if specified.
+                                 (Default is None).
+        normalize        (int) : apply normalization if provided.
+                                 (Default is None).
+
+    Returns:
+        (numpy.ndarray) : 2d array of LPCC features (num_frames x num_ceps)
+
+    Tip:
+        - :code:`normalize` : can take the following options ["mvn", "ms", "vn", "mn"].
+
+    Note:
+        Returned values are in the frequency domain
+
+        .. figure:: ../_static/architectures/lpccs.png
+
+           Architecture of linear prediction cepstral coefﬁcients extraction algorithm.
+
+    Examples
+        .. plot::
+
+            from scipy.io.wavfile import read
+            from spafe.features.lpc import lpcc
+            from spafe.utils.vis import show_features
+
+            # read audio
+            fpath = "../../../test.wav"
+            fs, sig = read(fpath)
+
+            # compute lpccs
+            lpccs = lpcc(sig,
+                         fs=fs,
+                         pre_emph=0,
+                         pre_emph_coeff=0.97,
+                         win_len=0.030,
+                         win_hop=0.015,
+                         win_type="hamming")
+
+            # visualize features
+            show_features(lpccs, "Linear Prediction Cepstral Coefﬁcients", "LPCCs Index","Frame Index")
+    """
+    order = order - 1
+    # pre-emphasis
+    if pre_emph:
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+
+    # -> framing
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+
+    # -> windowing
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+
+    # compute lpccs
+    lpccs = np.zeros((len(windows), order + 1))
+    for i, windowed_frame in enumerate(frames):
+        a, e = __lpc_helper(windowed_frame, order)
+        lpcc_coeffs = lpc2lpcc(a, e, order + 1)
+        lpccs[i, :] = np.array(lpcc_coeffs)
 
     # liftering
-    if lifter > 0:
+    if lifter:
         lpccs = lifter_ceps(lpccs, lifter)
 
     # normalization
     if normalize:
-        lpccs = cmvn(cms(lpccs))
+        lpccs = normalize_ceps(lpccs, normalize)
 
-    lpccs = lpccs.T
-    return lpccs[:, :]
-
-
-def lpc(sig,
-        fs=16000,
-        num_ceps=13,
-        pre_emph=0,
-        pre_emph_coeff=0.97,
-        win_type="hann",
-        win_len=0.025,
-        win_hop=0.01,
-        do_rasta=True,
-        dither=1):
-    """
-    Compute the LINEAR PREDICTIVE COEFFICIENTS (LPC) from an audio signal.
-
-    Args:
-        sig            (array) : a mono audio signal (Nx1) from which to compute features.
-        fs               (int) : the sampling frequency of the signal we are working with.
-                                 Default is 16000.
-        num_ceps       (int) : number of cepstra to return(order of the model to compute).
-                                 Default is 13.
-        pre_emph         (int) : apply pre-emphasis if 1.
-                                 Default is 1.
-        pre_emph_coeff (float) : apply pre-emphasis filter [1 -pre_emph] (0 = none).
-                                 Default is 0.97.
-        win_type       (float) : window type to apply for the windowing.
-                                 Default is hanning.
-        win_len        (float) : window length in sec.
-                                 Default is 0.025.
-        win_hop        (float) : step between successive windows in sec.
-                                 Default is 0.01.
-        do_rasta         (int) : if 1 then apply rasta filtering.
-                                 Default is 0.
-        lifter           (int) : apply liftering if value > 0.
-                                 Default is 22.
-        normalize        (int) : apply normalization if 1.
-                                 Default is 0.
-        dither           (int) : 1 = add offset to spectrum as if dither noise.
-                                 Default is 0.
-    Returns:
-        (array) : 2d array of LPC features (num_frames x num_ceps)
-    """
-    # pre-emphasis
-    if pre_emph:
-        sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
-
-    # compute power spectrum
-    power_spectrum, _ = powspec(sig=sig,
-                                fs=fs,
-                                win_type=win_type,
-                                win_len=win_len,
-                                win_hop=win_hop,
-                                dither=dither)
-
-    # group to critical bands
-    auditory_spectrum = audspec(power_spectrum, fs)
-    nbands = auditory_spectrum.shape[0]
-
-    if do_rasta:
-        # put in log domain
-        log_auditory_spectrum = np.log(auditory_spectrum)
-        # next do rasta filtering
-        rasta_filtered_log_auditory_spectrum = rasta_filter(
-            log_auditory_spectrum)
-        # do inverse log
-        auditory_spectrum = np.exp(rasta_filtered_log_auditory_spectrum)
-
-    post_processing_spectrum, _ = postaud(auditory_spectrum, fs / 2)
-    lpcs = do_lpc(x=post_processing_spectrum, model_order=num_ceps)
-    lpcs = lpcs.T
-    return lpcs[:, :num_ceps]
-
-
-def do_lpc(x, model_order=8):
-    """
-    Compute the autoregressive model from spectral magnitude samples.
-
-    Args:
-        x         (array) : array of the audio signal to process.
-        model_order (int) : order of the model to compute.
-
-    Returns:
-        array of the autoregressive model
-    """
-    nbands, nframes = x.shape
-    ncorr = 2 * (nbands - 1)
-    R = np.zeros((ncorr, nframes))
-
-    R[0:nbands, :] = x
-    for i in range(nbands - 1):
-        R[i + nbands - 1, :] = x[nbands - (i + 1), :]
-
-    r = ifft(R.T).real.T
-    r = r[0:nbands, :]
-
-    y = np.ones((nframes, model_order + 1))
-    e = np.zeros((nframes, 1))
-
-    if model_order == 0:
-        for i in range(nframes):
-            _, e_tmp, _ = levinsondr.LEVINSON(r[:, i],
-                                              model_order,
-                                              allow_singularity=True)
-            e[i, 0] = e_tmp
-    else:
-        for i in range(nframes):
-            y_tmp, e_tmp, _ = levinsondr.LEVINSON(r[:, i],
-                                                  model_order,
-                                                  allow_singularity=True)
-            y[i, 1:model_order + 1] = y_tmp
-            e[i, 0] = e_tmp
-
-    y = y.T / (np.tile(e.T, (model_order + 1, 1)) + 1e-8)
-
-    return y
-
-
-def lpc2cep(a, nout=0):
-    """
-    convert LPC coefficients directly to cepstral values.
-     - convert the LPC 'a' coefficients in each column of lpcs into frames of cepstra.
-
-    Args:
-        a  (array) : cepstral values.
-        nout (int) : number of cepstra to produce
-
-    Returns:
-        array of LPC coefficients.
-        Default size(lpcs, 1)
-    """
-    nin, ncol = a.shape
-
-    order = nin - 1
-
-    if nout == 0:
-        nout = order + 1
-
-    cep = np.zeros((nout, ncol))
-    cep[0, :] = -np.log(a[0, :])
-
-    norm_a = np.divide(a, np.add(np.tile(a[0, :], (nin, 1)), 1e-8))
-
-    for n in range(1, nout):
-        sum_var = 0
-        for m in range(1, n):
-            sum_var = np.add(
-                sum_var,
-                np.multiply(np.multiply((n - m), norm_a[m, :]),
-                            cep[(n - m), :]))
-
-        cep[n, :] = -np.add(norm_a[n, :], np.divide(sum_var, n))
-
-    return cep
-
-
-def lpc2spec(lpcs, nout=17, FMout=False):
-    """
-    convert LPC coefficients back into spectra by sampling the z-plane.
-
-    Args:
-        lpcs (array) : array including the LPC coefficients.
-        nout   (int) : number of freq channels, default 17 (i.e. for 8 kHz)
-        FMout (bool) :
-
-    Returns:
-        list including the features, F and M
-    """
-    rows, cols = lpcs.shape
-    order = rows - 1
-
-    gg = lpcs[0, :]
-    aa = lpcs / np.tile(gg, (rows, 1))
-
-    # Calculate the actual z-plane polyvals: nout points around unit circle
-    tmp_1 = np.array(np.arange(0, nout), ndmin=2).T
-    tmp_1 = (-1j * tmp_1 * np.pi) / (nout - 1)
-    tmp_2 = np.array(np.arange(0, order + 1), ndmin=2)
-    zz = np.exp(np.matmul(tmp_1, tmp_2))
-
-    # Actual polyvals, in power (mag^2)
-    features = np.tile(gg, (nout, 1)) / np.abs(np.matmul(zz, aa))**2
-    F = np.zeros((cols, int(np.ceil(rows / 2))))
-    M = F
-
-    if FMout:
-        for c in range(cols):
-            aaa = aa[:, c]
-            rr = np.roots(aaa)
-            ff_tmp = np.angle(rr)
-            ff = np.array(ff_tmp, ndmin=2).T
-            zz = np.exp(
-                1j *
-                np.matmul(ff, np.array(np.arange(0, aaa.shape[0]), ndmin=2)))
-            mags = np.sqrt(gg[c] /
-                           np.abs(np.matmul(zz,
-                                            np.array(aaa, ndmin=2).T))**2)
-
-            ix = np.argsort(ff_tmp)
-            dummy = np.sort(ff_tmp)
-            tmp_F_list = []
-            tmp_M_list = []
-
-            for i in range(ff.shape[0]):
-                if dummy[i] > 0:
-                    tmp_F_list = np.append(tmp_F_list, dummy[i])
-                    tmp_M_list = np.append(tmp_M_list, mags[ix[i]])
-
-            M[c, 0:tmp_M_list.shape[0]] = tmp_M_list
-            F[c, 0:tmp_F_list.shape[0]] = tmp_F_list
-
-    return features, F, M
+    return lpccs

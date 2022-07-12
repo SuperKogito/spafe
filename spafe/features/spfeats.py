@@ -1,332 +1,328 @@
 # -*- coding: utf-8 -*-
 """
-This module is part of the spafe library and has the purpose of of computing the following spectral stats:
-    - meanfreq : mean frequency (in kHz)
-    - sd       : standard deviation of frequency
-    - median   : median frequency (in kHz)
-    - Q25      : first quantile (in kHz)
-    - Q75      : third quantile (in kHz)
-    - IQR      : interquantile range (in kHz)
-    - skew     : skewness (see note in specprop description)
-    - kurt     : kurtosis (see note in specprop description)
-    - sp.ent   : spectral entropy
-    - sfm      : spectral flatness
-    - mode     : mode frequency
-    - centroid : frequency centroid (see specprop)
-    - peakf    : peak frequency (frequency with highest energy)
-    - meanfun  : average of fundamental frequency measured across acoustic signal
-    - minfun   : minimum fundamental frequency measured across acoustic signal
-    - maxfun   : maximum fundamental frequency measured across acoustic signal
-    - meandom  : average of dominant frequency measured across acoustic signal
-    - mindom   : minimum of dominant frequency measured across acoustic signal
-    - maxdom   : maximum of dominant frequency measured across acoustic signal
-    - dfrange  : range of dominant frequency measured across acoustic signal
-    - modindx  : modulation index. Calculated as the accumulated absolute difference
-                 between adjacent measurements of fundamental frequencies divided
-                 by the frequency range
-    - label    : male or female
 
-Todo:
-    * For module TODOs
-    * You have to also use ``sphinx.ext.todo`` extension
+- Description : Spectral and frequency stats and features extraction algorithms implementation.
+- Copyright (c) 2019-2022 Ayoub Malek.
+  This source code is licensed under the terms of the BSD 3-Clause License.
+  For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
-Reference:
-    http://ijeee.iust.ac.ir/article-1-1074-en.pdf
 """
 import scipy
 import numpy as np
-from ..utils.spectral import stft, rfft
-from ..frequencies.dominant_frequencies import get_dominant_frequencies
-from ..frequencies.fundamental_frequencies import FundamentalFrequenciesExtractor
+from scipy import stats
 
 
-def compute_fund_freqs(sig, fs):
+def spectral_centroid(sig, fs, spectrum, i=1):
     """
-    compute fundamental frequencies.
+    Compute the spectral centroid (which is the barycenter of the spectrum) as
+    described in [Peeters]_.
 
     Args:
-        centroid (float) : spectral centroid.
-        spectrum (array) : spectrum array.
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+        i                  (int) : centroid order.
+                                   (Default is 1).
 
     Returns:
-        (float) spectral spread.
-    """
-    # fundamental frequencies calculations
-    fund_freqs_extractor = FundamentalFrequenciesExtractor(debug=False)
-    pitches, harmonic_rates, argmins, times = fund_freqs_extractor.main(
-        sig=sig, fs=fs)
-    return pitches
+        (float) : spectral centroid.
 
+    Note:
+        .. math::
 
-def compute_dom_freqs_and_mod_index(sig,
-                                    fs,
-                                    lower_cutoff=50,
-                                    upper_cutoff=3000,
-                                    nfft=512,
-                                    win_len=0.03,
-                                    win_hop=0.015,
-                                    win_type='hamming',
-                                    debug=False):
-    """
-    compute dominant frequencies and modulation index.
-
-    Args:
-        sig (array) : spectral centroid.
-        fs (int) : spectrum array.
-
-    Returns:
-        (float) spectral spread.
-    """
-    # dominant frequencies calculations
-    dom_freqs = get_dominant_frequencies(sig=sig,
-                                         fs=fs,
-                                         lower_cutoff=50,
-                                         upper_cutoff=upper_cutoff,
-                                         nfft=nfft,
-                                         win_len=win_len,
-                                         win_hop=win_hop,
-                                         win_type=win_type,
-                                         debug=debug)
-
-    # modulation index calculation
-    changes = np.abs(dom_freqs[:-1] - dom_freqs[1:])
-    dfrange = dom_freqs.max() - dom_freqs.min()
-    if dom_freqs.min() == dom_freqs.max():
-        mod_index = 0
-    else:
-        mod_index = changes.mean() / dfrange
-    return dom_freqs, mod_index
-
-
-def spectral_centroid(sig, fs):
-    """
-    compute spectral centroid.
+            \mu_{i} &= \\frac{\sum_{n=0}^{N}f_{k}^{i}*a_{k}}{\sum_{n=0}^{N}a_{k}}\\\\
+            S_{centroid} &= \mu_{1}\\\\
     """
     # compute magnitude spectrum
-    magnitude_spectrum = np.fft.rfft(sig)
+    magnitude_spectrum = np.abs(spectrum)
+
     # compute positive frequencies
-    freqs = np.abs(np.fft.fftfreq(len(sig), 1.0 / fs)[:len(sig) // 2 + 1])
+    freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
+
     # return weighted mean
-    sc = np.sum(magnitude_spectrum * freqs) / np.sum(magnitude_spectrum)
+    sc = np.sum(magnitude_spectrum * freqs**i) / np.sum(magnitude_spectrum)
     return sc
 
 
-def spectral_flatness(sig):
+def spectral_skewness(sig, fs, spectrum):
     """
-    compute spectral flatness.
+    Compute the spectral skewness (which is a measure of the asymmetry of a
+    distribution around its mean) as described in [Peeters]_.
+
+    Args:
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+
+    Returns:
+        (float) : spectral skewness.
+
+    Note:
+        .. math::
+
+            S_{skewness} = \mu_{3} &= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{3} . a_k}{\\mu_{2}^{3} . \sum_{n=0}^{N}a_{k}}\\\\
+    """
+    # compute magnitude spectrum, and centroids
+    magnitude_spectrum = np.abs(spectrum)
+    mu1 = spectral_centroid(sig, fs, spectrum, i=1)
+    mu2 = spectral_centroid(sig, fs, spectrum, i=2)
+
+    # compute positive frequencies
+    freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
+
+    # return weighted mean
+    sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 3) / (
+        np.sum(magnitude_spectrum) * mu2**3
+    )
+    return sk
+
+
+def spectral_kurtosis(sig, fs, spectrum):
+    """
+    Compute the spectral kurtosis (which is a measure of the flatness of a
+    distribution around its mean) as described in [Peeters]_.
+
+    Args:
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+
+    Returns:
+        (float) : spectral kurtosis.
+
+    Note:
+        .. math::
+
+            S_{kurtosis} = \mu_{4} &= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{4} . a_k}{\\mu_{2}^{4} . \sum_{n=0}^{N}a_{k}}\\\\
+    """
+    # compute magnitude spectrum, and centroids
+    magnitude_spectrum = np.abs(spectrum)
+    mu1 = spectral_centroid(sig, fs, spectrum, i=1)
+    mu2 = spectral_centroid(sig, fs, spectrum, i=2)
+
+    # compute positive frequencies
+    freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
+
+    # return weighted mean
+    sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 4) / (
+        np.sum(magnitude_spectrum) * mu2**4
+    )
+    return sk
+
+
+def spectral_entropy(sig, fs, spectrum):
+    """
+    Compute the spectral entropy as described in [Misra]_.
+
+    Args:
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+
+    Returns:
+        (float) : spectral skewness.
+
+    Note:
+        .. math::
+
+            S_{entropy} &= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{3} . a_k}{\\mu_{2}^{3} . \sum_{n=0}^{N}a_{k}}\\\\
+
+    References:
+        .. [Misra] : Misra, H., S. Ikbal, H. Bourlard, and H. Hermansky.
+                    "Spectral Entropy Based Feature for Robust ASR." 2004 IEEE
+                    International Conference on Acoustics, Speech, and Signal Processing.
+    """
+    # compute magnitude spectrum, and centroids
+    magnitude_spectrum = np.abs(spectrum)
+    en = (
+        -1
+        * np.sum(magnitude_spectrum * np.log(magnitude_spectrum))
+        / np.log(len(magnitude_spectrum))
+    )
+    return en
+
+
+def spectral_spread(sig, fs, spectrum):
+    """
+    Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)
+    as described in [Peeters]_.
+
+    Args:
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+
+    Returns:
+        (numpy.array) : spectral spread.
+
+    Note:
+        .. math::
+            S_{spread} = \\sqrt{\\sum{0}{N}\\frac{(f_k - \\mu_{1}) . s_k}{\\sum{0}{N}a_k}}
     """
     # compute magnitude spectrum
-    magnitude_spectrum = np.fft.rfft(sig)
-    # select half of the spectrum due to symetrie
-    magnitude_spectrum = magnitude_spectrum[:len(sig) // 2 + 1]
-    sf = scipy.stats.mstats.gmean(magnitude_spectrum) / np.mean(
-        magnitude_spectrum)
+    magnitude_spectrum = np.abs(spectrum)
+
+    # compute positive frequencies
+    freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
+
+    # get centroid
+    mu1 = spectral_centroid(sig, fs, spectrum)
+
+    # compute spread
+    spread = np.sqrt(
+        ((np.sum(freqs - mu1) ** 2) * magnitude_spectrum) / np.sum(magnitude_spectrum)
+    )
+    return spread
+
+
+def spectral_flatness(sig, spectrum):
+    """
+    Compute spectral flatness.
+
+    Args:
+        sig      (numpy.ndarray) : audio signal array.
+        spectrum (numpy.ndarray) : signal spectrum.
+
+    Returns:
+        (float) : spectral flatness value.
+
+    Note:
+        .. math::
+
+            S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}
+    """
+    # compute magnitude spectrum
+    magnitude_spectrum = np.abs(spectrum)
+
+    # compute spectral flatness
+    sf = stats.mstats.gmean(magnitude_spectrum) / np.mean(magnitude_spectrum)
     return sf
 
 
-def spectral_rolloff(sig, fs, k=0.85):
-    # convert to frequency domain
-    magnitude_spectrum, _ = stft(sig=sig, fs=fs)
-    power_spectrum = np.abs(magnitude_spectrum)**2
-    tbins, fbins = np.shape(magnitude_spectrum)
-
-    # when do these blocks begin (time in seconds)?
-    tstamps = (np.arange(0, tbins - 1) * (tbins / float(fs)))
-    # compute the spectral sum
-    spectral_sum = np.sum(power_spectrum, axis=1)
-
-    # find frequency-bin indeces where the cummulative sum of all bins is higher
-    # than k-percent of the sum of all bins. Lowest index = Rolloff
-    sr = [
-        np.where(np.cumsum(power_spectrum[t, :]) >= k * spectral_sum[t])[0][0]
-        for t in range(tbins - 1)
-    ]
-    sr = np.asarray(sr).astype(float)
-
-    # convert frequency-bin index to frequency in Hz
-    sr = (sr / fbins) * (fs / 2.0)
-    return sr, np.asarray(tstamps)
-
-
-def spectral_flux(sig, fs):
-    # convert to frequency domain
-    magnitude_spectrum, _ = stft(sig=sig, fs=fs)
-    tbins, fbins = np.shape(magnitude_spectrum)
-
-    # when do these blocks begin (time in seconds)?
-    tstamps = (np.arange(0, tbins - 1) * (tbins / float(fs)))
-    sf = np.sqrt(np.sum(np.diff(np.abs(magnitude_spectrum))**2,
-                        axis=1)) / fbins
-
-    return sf[1:], np.asarray(tstamps)
-
-
-def spectral_spread(centroid, spectrum, fs):
+def spectral_rolloff(sig, fs, spectrum, k=0.85):
     """
-    Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)
+    Compute the spectral roll-off point which measures the bandwidth of the audio
+    signal by determining the frequency bin under which a specified k percentage
+    of the total spectral energy is contained below. see [Scheirer]_.
 
     Args:
-        centroid (float) : spectral centroid.
-        spectrum (array) : spectrum array.
+        sig      (numpy.ndarray) : input mono signal array.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+        k                (float) : constant.
+                                   (Default is 0.85).
 
     Returns:
-        (float) spectral spread.
+        (float) : spectral rolloff point.
     """
-    bin_count, numerator, denominator = 0, 0, 0
+    # convert to frequency domain
+    magnitude_spectrum = np.abs(spectrum)
 
-    for bin_i in spectrum:
-        # Compute center frequency
-        f = ((fs / 2.0) / len(spectrum)) * bin_count
-        numerator = numerator + (((f - centroid)**2) * abs(bin_i))
-        denominator = denominator + abs(bin_i)
-        bin_count = bin_count + 1
-
-    return np.sqrt((numerator * 1.0) / denominator)
+    # compute the spectral rolloff point
+    i = k * np.sum(magnitude_spectrum)
+    return i
 
 
-def zero_crossing_rate(sig, fs, block_length=256):
-    # how many blocks have to be processed?
-    num_blocks = int(np.ceil(len(sig) / block_length))
+def spectral_flux(sig, fs, spectrum, p=2):
+    """
+    Compute the spectral flux, which measures how quickly the power spectrum
+    of a signal is changing. This implementation computes the spectral flux
+    using the L2-norm per default i.e. the square root of the sum of absolute
+    differences squared [Scheirer]_.
 
-    # when do these blocks begin (time in seconds)?
-    timestamps = (np.arange(0, num_blocks - 1) * (block_length / float(fs)))
-    zcr = []
+    Args:
+        sig      (numpy.ndarray) : input mono signal.
+        fs                 (int) : input signal sampling rate.
+        spectrum (numpy.ndarray) : signal spectrum.
+        p                  (int) : norm type.
+                                   (Default is 2).
 
-    for i in range(0, num_blocks - 1):
-        start = i * block_length
-        stop = np.min([(start + block_length - 1), len(sig)])
+    Returns:
+        (float) : spectral flux.
 
-        zc = 0.5 * np.mean(np.abs(np.diff(np.sign(sig[start:stop]))))
-        zcr.append(zc)
+    Note:
+        .. math::
+            S_{flux} = (\sum_{k}(|a_{k}(t) - a_{k}(t-1))^2}{\sqrt{\sum_{k}a_{k}(t-1)|^p)^{\\frac{1}{p}}
 
-    return np.asarray(zcr), np.asarray(timestamps)
-
-
-def root_mean_square(sig, fs, block_length=256):
-    # how many blocks have to be processed?
-    num_blocks = int(np.ceil(len(sig) / block_length))
-
-    # when do these blocks begin (time in seconds)?
-    tstamps = (np.arange(0, num_blocks - 1) * (block_length / float(fs)))
-
-    rms = []
-
-    for i in range(0, num_blocks - 1):
-
-        start = i * block_length
-        stop = np.min([(start + block_length - 1), len(sig)])
-
-        # This is wrong but why? rms_seg = np.sqrt(np.mean(sig[start:stop]**2))
-        rms_seg = np.sqrt(np.mean(np.power(sig[start:stop], 2)))
-        rms.append(rms_seg)
-    return np.asarray(rms), np.asarray(tstamps)
-
-
-def spectral_bandwidth(sig, fs):
-    return []
+    References:
+        .. [Scheirer] : Scheirer, E., and M. Slaney. “Construction and Evaluation
+                        of a Robust Multifeature Speech/Music Discriminator.” 1997
+                        IEEE International Conference on Acoustics, Speech, and Signal
+                        Processing, 1997.
+    """
+    # convert to frequency domain
+    magnitude_spectrum = np.abs(spectrum)
+    sf = (np.sum(np.abs(np.diff(magnitude_spectrum)) ** p)) ** (1 / p)
+    return sf
 
 
 def extract_feats(sig, fs, nfft=512):
     """
-    Compute the spectral features.
+    Compute various spectral features [Peeters]_.
 
     Args:
-        centroid (float) : spectral centroid.
-        spectrum (array) : spectrum array.
+        sig (numpy.ndarray) : input mono signal.
+        fs            (int) : input signal sampling rate.
+        nfft          (int) : number of FFT points.
+                              (Default is 512).
 
     Returns:
-        (float) spectral spread.
+        (dict) : a dictionary including various frequency and spectral features (see Notes).
+
+    Note:
+        The resulting dictionary includes the following elements:
+
+        - spectral features
+            - :code:`spectral_centroid`  : spectral centroid.
+            - :code:`spectral_skewness`  : frequencies skewness.
+            - :code:`spectral_kurtosis`  : frequencies kurtosis.
+            - :code:`spectral_entropy`   : spectral entropy.
+            - :code:`spectral_spread`    : spectral spread.
+            - :code:`spectral_flatness`  : spectral flatness.
+            - :code:`spectral_rolloff`   : spectral rolloff.
+            - :code:`spectral_flux`      : spectral flux.
+            - :code:`spectral_mean`      : spectral mean.
+            - :code:`spectral_rms`       : spectral root mean square.
+            - :code:`spectral_std`       : spectral standard deviation.
+            - :code:`spectral_variance`  : spectral variance.
+
+    Examples:
+        .. plot::
+
+            from spafe.features.spfeats import extract_feats
+            from scipy.io.wavfile import read
+            from pprint import pprint
+
+            # read audio
+            fpath = "../../../test.wav"
+            fs, sig = read(fpath)
+
+            # compute erb spectrogram
+            spectral_feats = extract_feats(sig, fs)
+            pprint(spectral_feats)
+
+    References:
+        .. [Peeters] : Peeters, G. "A Large Set of Audio Features for Sound Description
+                       (Similarity and Classification) in the CUIDADO Project."
+                       Technical Report; IRCAM: Paris, France, 2004.
     """
     # init features dictionary
     feats = {}
 
     # compute the fft
-    fourrier_transform = rfft(sig, nfft)
+    spectrum = np.fft.rfft(a=sig, n=nfft)
 
-    # compute magnitude spectrum
-    magnitude_spectrum = (1/nfft) * np.abs(fourrier_transform)
-    power_spectrum = (1/nfft)**2 * magnitude_spectrum**2
-
-    # get all frequncies and  only keep positive frequencies
-    frequencies = np.fft.fftfreq(len(power_spectrum), 1 / fs)
-    frequencies = frequencies[np.where(frequencies >= 0)] // 2 + 1
-
-    # keep only half of the spectra
-    magnitude_spectrum = magnitude_spectrum[:len(frequencies)]
-    power_spectrum = power_spectrum[:len(frequencies)]
-
-    # define amplitudes and spectrum
-    spectrum = power_spectrum
-    amplitudes = power_spectrum
-    amp_cumsum = np.cumsum(amplitudes)
-
-    # general stats
-    feats["duration"] = len(sig) / float(fs)
-    feats["spectrum"] = spectrum
-
-    # spectral stats I
-    feats["mean_frequency"] = frequencies.sum()
-    feats["peak_frequency"] = frequencies[np.argmax(amplitudes)]
-    feats["frequencies_std"] = frequencies.std()
-    feats["amplitudes_cum_sum"] = np.cumsum(amplitudes)
-    feats["mode_frequency"] = frequencies[amplitudes.argmax()]
-    feats["median_frequency"] = np.median(frequencies)
-    feats["frequencies_q25"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.25])-1]
-    feats["frequencies_q75"] = frequencies[len(amp_cumsum[amp_cumsum <= 0.75])-1]
-    feats["iqr"] = feats["frequencies_q75"] - feats["frequencies_q25"]
-
-    # spectral stats II
-    feats["freqs_skewness"] = scipy.stats.skew(frequencies)
-    feats["freqs_kurtosis"] = scipy.stats.kurtosis(frequencies)
-    feats["spectral_entropy"] = scipy.stats.entropy(amplitudes)
-    feats["spectral_flatness"] = spectral_flatness(sig)
-    feats["spectral_centroid"] = spectral_centroid(sig, fs)
-    feats["spectral_bandwidth"] = spectral_bandwidth(sig, fs)
-    feats["spectral_spread"] = spectral_spread(feats["spectral_centroid"],
-                                               feats["spectrum"], fs)
-    feats["spectral_flatness"] = spectral_flatness(sig)
-    feats["spectral_rolloff"] = spectral_rolloff(sig, fs)
-
-    # compute energy
-    feats["energy"] = magnitude_spectrum
-
-    # compute root-mean-square (RMS).
-    feats["rms"] = root_mean_square(sig=sig, fs=fs)
-
-    # compute the zero-crossing rate of an audio time series
-    feats["zcr"] = zero_crossing_rate(sig=sig, fs=fs)
-
-    # spectral stats
+    # spectral features
+    feats["spectral_centroid"] = spectral_centroid(sig, fs, spectrum)
+    feats["spectral_skewness"] = spectral_skewness(sig, fs, spectrum)
+    feats["spectral_kurtosis"] = spectral_kurtosis(sig, fs, spectrum)
+    feats["spectral_entropy"] = spectral_entropy(sig, fs, spectrum)
+    feats["spectral_spread"] = spectral_spread(sig, fs, spectrum)
+    feats["spectral_flatness"] = spectral_flatness(sig, spectrum)
+    feats["spectral_rolloff"] = spectral_rolloff(sig, fs, spectrum)
+    feats["spectral_flux"] = spectral_flux(sig, fs, spectrum)
     feats["spectral_mean"] = np.mean(spectrum)
     feats["spectral_rms"] = np.sqrt(np.mean(spectrum**2))
     feats["spectral_std"] = np.std(spectrum)
     feats["spectral_variance"] = np.var(spectrum)
-
-    # assign fundamental frequencies stats
-    fund_freqs = compute_fund_freqs(sig=sig, fs=fs)
-    feats["meanfun"] = fund_freqs.mean()
-    feats["minfun"] = fund_freqs.min()
-    feats["maxfun"] = fund_freqs.max()
-
-    # assign dominant frequencies stats
-    dom_freqs, mod_idx = compute_dom_freqs_and_mod_index(sig=sig,
-                                                         fs=fs,
-                                                         lower_cutoff = 50,
-                                                         upper_cutoff = 3000,
-                                                         nfft = 512,
-                                                         win_len = 0.03,
-                                                         win_hop = 0.015,
-                                                         win_type = 'hamming',
-                                                         debug = False)
-    feats["meandom"] = dom_freqs.mean()
-    feats["mindom"] = dom_freqs.min()
-    feats["maxdom"] = dom_freqs.max()
-
-    # range of dominant frequency measured across acoustic signal
-    feats["dfrange"] = feats["maxdom"] - feats["mindom"]
-
-    # modulation index: Calculated as the accumulated absolute difference
-    # between adjacent measurements of fundamental frequencies divided by the
-    # frequency range
-    feats["modindex"] = mod_idx
     return feats

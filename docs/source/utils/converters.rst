@@ -6,3 +6,4 @@ spafe.utils.converters
     :members:
     :undoc-members:
     :show-inheritance:
+    :member-order: bysource

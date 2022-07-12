@@ -1,16 +1,17 @@
 # Changelog
 
-## v0.1.3
-- add Cython accelerations to code (undecided)
-- add predefined filter-banks input to the spafe features functions. (to be implemented)
-- improve tests to include support for different sampling rates (8kHz, 16kHz, 32kHz, 44100Hz, 48kHz).
-- improve/edit the framing script. (should be stable enough)
-- improve tests. (done)
-- converters bug fix (done)
+## v0.2.0
+- add spectrogram implementations.
+- add predefined filter banks input to the spafe features functions for faster batch processing.
+- add the Constant Q Cepstral Coefficients (CQCC) implementation.
+- improve, restyle & add references and examples to the documentation.
+- improve and simplify the code and the tests .
+- inspect Cython and GPU accelerations to code (dropped).
+- test support for different sampling rates (8kHz, 16kHz, 32kHz, 44100Hz, 48kHz).
+- converters bug fixes.
 
-## v0.1.2 
+## v0.1.2
 - framing bug fix
 
-## v0.0.1 
-- initial version 
-
+## v0.0.1
+- initial version
