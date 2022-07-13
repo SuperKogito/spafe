@@ -13,6 +13,7 @@ Simplified Python Audio Features Extraction
 [![PyPI version](https://badge.fury.io/py/spafe.svg)](https://badge.fury.io/py/spafe)
 [![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe)
 [![Downloads](https://pepy.tech/badge/spafe)](https://pepy.tech/project/spafe)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
 
 
 #  Table of Contents
@@ -126,14 +127,22 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
 ## Citing
 
-If you want to cite spafe in your work, use the following:
+If you want to cite spafe as a software used in your work, use the following:
 ```
-@software{ayoub_malek_2020,
-    author  = {Ayoub Malek},
-    title   = {spafe/spafe: 0.1.2},
-    month   = Apr,
-    year    = 2020,
-    version = {0.1.2},
-    url     = {https://github.com/SuperKogito/spafe}
+@software{ayoub_malek_2022_6824667,
+  author       = {Ayoub Malek and
+                  Stefano Borzì and
+                  Christian Heider Nielsen},
+  title        = {SuperKogito/spafe: v0.2.0},
+  month        = jul,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {v0.2.0},
+  doi          = {10.5281/zenodo.6824667},
+  url          = {https://doi.org/10.5281/zenodo.6824667}
 }
 ```
+Please, refer to 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+
+
