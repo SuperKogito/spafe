@@ -130,5 +130,3 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 - If you want to cite spafe as a software used in your work, please cite the version used as indexed at [Zenodo](https://zenodo.org/):
 
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
-
-
