@@ -127,22 +127,8 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
 ## Citing
 
-If you want to cite spafe as a software used in your work, use the following:
-```
-@software{ayoub_malek_2022_6824667,
-  author       = {Ayoub Malek and
-                  Stefano Borzì and
-                  Christian Heider Nielsen},
-  title        = {SuperKogito/spafe: v0.2.0},
-  month        = jul,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {v0.2.0},
-  doi          = {10.5281/zenodo.6824667},
-  url          = {https://doi.org/10.5281/zenodo.6824667}
-}
-```
-Please, refer to 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+- If you want to cite spafe as a software used in your work, please cite the version used as indexed at [Zenodo](https://zenodo.org/):
+
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
 
 
