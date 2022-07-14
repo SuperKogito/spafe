@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.2 20190208//EN"
+                  "JATS-publishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+<front>
+<journal-meta>
+<journal-id></journal-id>
+<journal-title-group>
+<journal-title>Journal of Open Source Software</journal-title>
+<abbrev-journal-title>JOSS</abbrev-journal-title>
+</journal-title-group>
+<issn publication-format="electronic">2475-9066</issn>
+<publisher>
+<publisher-name>Open Journals</publisher-name>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">0</article-id>
+<article-id pub-id-type="doi">N/A</article-id>
+<title-group>
+<article-title>Spafe: Simplified python audio features
+extraction</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0002-9008-7562</contrib-id>
+<name>
+<surname>Malek</surname>
+<given-names>Ayoub</given-names>
+</name>
+<xref ref-type="aff" rid="aff-"/>
+</contrib>
+<aff id="aff-1">
+<institution-wrap>
+<institution>Yoummday GmbH</institution>
+</institution-wrap>
+</aff>
+</contrib-group>
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2022-07-09">
+<day>9</day>
+<month>7</month>
+<year>2022</year>
+</pub-date>
+<volume>¿VOL?</volume>
+<issue>¿ISSUE?</issue>
+<fpage>¿PAGE?</fpage>
+<permissions>
+<copyright-statement>Authors of papers retain copyright and release the
+work under a Creative Commons Attribution 4.0 International License (CC
+BY 4.0)</copyright-statement>
+<copyright-year>2022</copyright-year>
+<copyright-holder>The article authors</copyright-holder>
+<license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+<license-p>Authors of papers retain copyright and release the work under
+a Creative Commons Attribution 4.0 International License (CC BY
+4.0)</license-p>
+</license>
+</permissions>
+<kwd-group kwd-group-type="author">
+<kwd>Python</kwd>
+<kwd>Signal processing</kwd>
+<kwd>time-frequency analysis</kwd>
+<kwd>audio features extraction</kwd>
+</kwd-group>
+</article-meta>
+</front>
+<body>
+<sec id="abstract">
+  <title>Abstract</title>
+  <p>In speech processing, features extraction is essentially the
+  estimation of a parametric representation of an input signal. This is
+  a key step in any audio based modeling and recognition process
+  (e.g. speech recognition, sound classification, speaker authentication
+  etc.). There are several speech features to extract, such as the
+  Linear Frequency Cepstral Coefficients (LFCC), Mel Frequency Cepstral
+  Coefficients (MFCC), Linear Predictive Coding (LPC), and Constant-Q
+  Cepstral Coefficients (CQCC) etc. Each type of features has its own
+  set of characteristics (e.g. noise robustness, complexity,
+  inter-components correlation etc.) that can directly affect the
+  researched topic. Unfortunately, existing libraries for extracting
+  these features (e.g. python_speech_features
+  (<xref alt="Lyons et al., 2020" rid="ref-python_speech_featuresU003A2020" ref-type="bibr">Lyons
+  et al., 2020</xref>), SpeechPy
+  (<xref alt="Torfi, 2018" rid="ref-speechpyU003A2018" ref-type="bibr">Torfi,
+  2018</xref>) and Bob
+  (<xref alt="A. Anjos &amp; Marcel, 2017" rid="ref-bobU003A2017" ref-type="bibr">A.
+  Anjos &amp; Marcel, 2017</xref>)) are limited and mostly focus on one
+  extraction technique (e.g. MFCC), thus it is hard to find reliable
+  implementations of other features extraction algorithms. Consequently,
+  this slows down the research and hinders the possibility of exploring,
+  comparing or leveraging these different techniques against each other.
+  Hence, the need for <monospace>Spafe</monospace>, which provides a
+  straightforward solution that unites all these different techniques in
+  one python package.</p>
+  <p>This paper describes version 0.2.0 of <monospace>Spafe</monospace>:
+  a python package for audio features extraction based on the Numpy
+  (<xref alt="Harris et al., 2020" rid="ref-numpyU003A2020" ref-type="bibr">Harris
+  et al., 2020</xref>) and Scipy
+  (<xref alt="Pauli Virtanen &amp; Vázquez‐Baeza, 2019" rid="ref-scipyU003A2019" ref-type="bibr">Pauli
+  Virtanen &amp; Vázquez‐Baeza, 2019</xref>) libraries.
+  <monospace>Spafe</monospace> implements various features extraction
+  techniques that can be used to solve a wide variety of recognition and
+  classification tasks (speaker verification, spoken emotion
+  recognition, spoken language identification etc.). The paper provides
+  a brief overview of the library’s structure, theory and
+  functionalities.</p>
+</sec>
+<sec id="introduction">
+  <title>Introduction</title>
+  <p>Oftentimes, researchers find themselves constrained by the
+  available tools. This is the case of cepstral features based
+  recognition processes, where most existing research relies on the Mel
+  Frequency Cepstral Coefficents (MFCC) with very few exceptions. To
+  solve this, spafe is introduced.</p>
+  <p>The philosophy of spafe is keeping it simple, flexible and
+  efficient in order to reach a wide range of developers and
+  researchers. Hence, spafe is written in python 3 and only depends on
+  Numpy
+  (<xref alt="Harris et al., 2020" rid="ref-numpyU003A2020" ref-type="bibr">Harris
+  et al., 2020</xref>) and Scipy
+  (<xref alt="Pauli Virtanen &amp; Vázquez‐Baeza, 2019" rid="ref-scipyU003A2019" ref-type="bibr">Pauli
+  Virtanen &amp; Vázquez‐Baeza, 2019</xref>). The library is heavily
+  documented with the help of Sphinx and tested using Pytest. Spafe
+  supports <bold>mono signals processing</bold> and has been tested with
+  different sampling rates (e.g. 8kHz, 16Khz, 44.1kHz, 48kHz etc.).</p>
+  <p>Scripts in spafe are divided into four major groups (see Figure
+  1):</p>
+  <boxed-text>
+    <table-wrap>
+      <table>
+        <tbody>
+          <tr>
+            <td align="left">- <bold>fbanks</bold></td>
+            <td align="left">filter banks implementations.</td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="right"></td>
+          </tr>
+          <tr>
+            <td align="left">- <bold>features</bold></td>
+            <td align="left">features extraction implementations.</td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="right"></td>
+          </tr>
+          <tr>
+            <td align="left">- <bold>frequencies</bold></td>
+            <td align="left">frequencies based features extraction
+            implementations.</td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="right"></td>
+          </tr>
+          <tr>
+            <td align="left">- <bold>utils</bold></td>
+            <td align="left">helper functions for pre- &amp;
+            post-processing and visualization etc.</td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="left"></td>
+            <td align="right"></td>
+          </tr>
+        </tbody>
+      </table>
+    </table-wrap>
+  </boxed-text>
+  <boxed-text>
+    <fig>
+      <caption><p>Structure of spafe.</p></caption>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="figs/spafe-structure.png" xlink:title="" />
+    </fig>
+  </boxed-text>
+</sec>
+<sec id="implementation-and-theory">
+  <title>Implementation and theory</title>
+  <sec id="filter-banks-spafefbanks">
+    <title>Filter banks (<monospace>spafe/fbanks</monospace>)</title>
+    <p>A filter bank is defined as an array of band pass filters that
+    splits the input signal into a set of analysis signals, each one
+    carrying a single frequency sub-band of the original signal
+    (<xref alt="Penedo et al., 2019" rid="ref-penedoU003A2019" ref-type="bibr">Penedo
+    et al., 2019</xref>;
+    <xref alt="Sarangi et al., 2020" rid="ref-sarangiU003A2020" ref-type="bibr">Sarangi
+    et al., 2020</xref>). Each band pass filter is centered at a
+    different frequency, called center frequency. The center frequencies
+    are evenly spaced over a specific scaled frequencies range(e.g. bark
+    scale, erb scale, mel scale etc.). The bandwidths of the filters
+    increase with the frequency, in order to duplicate the human hearing
+    properties, which are characterized by a decreasing sensitivity at
+    higher frequencies. Within this context, Spafe provides
+    implementations for the following filter banks: <bold>Bark filter
+    banks</bold>, <bold>Gammatone filter banks</bold>, <bold>Linear
+    filter banks</bold> and the <bold>Mel filter banks</bold>.</p>
+    <boxed-text>
+      <fig>
+        <caption><p>Bark filter banks computed and visualized using
+        spafe</p></caption>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="figs/bark_fbanks-1_00.png" xlink:title="" />
+      </fig>
+    </boxed-text>
+  </sec>
+  <sec id="features-spafefeatures">
+    <title>Features (<monospace>spafe/features</monospace>)</title>
+    <p>In an attempt to cover most audio features,
+    <monospace>Spafe</monospace> provides various frequency and cepstral
+    domain features extraction algorithms, both filter bank-based and
+    auto-regression-based. The following is a list of the available
+    features extraction routines in the <monospace>Spafe</monospace>
+    python package:</p>
+    <boxed-text>
+      <table-wrap>
+        <table>
+          <tbody>
+            <tr>
+              <td align="left">- Bark Frequency Cepstral
+              Coefﬁcients</td>
+              <td align="left">BFCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Constant Q-transform Cepstral
+              Coeﬃcients</td>
+              <td align="left">CQCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Gammatone Frequency Cepstral
+              Coefﬁcients</td>
+              <td align="left">GFCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Linear Frequency Cepstral
+              Coefﬁcients</td>
+              <td align="left">LFCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Linear Prediction Cepstral
+              Coeﬃcients</td>
+              <td align="left">LPCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Mel Frequency Cepstral Coefﬁcients</td>
+              <td align="left">MFCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Inverse Mel Frequency Cepstral
+              Coefﬁcients</td>
+              <td align="left">IMFCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Magnitude based Spectral Root Cepstral
+              Coefficients</td>
+              <td align="left">MSRCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Normalized Gammachirp Cepstral
+              Coefficients</td>
+              <td align="left">NGCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Power-Normalized Cepstral
+              Coefficients</td>
+              <td align="left">PNCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Phase based Spectral Root Cepstral
+              Coefficients</td>
+              <td align="left">PSRCC</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Perceptual Linear Prediction
+              Coefficents</td>
+              <td align="left">PLP</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+            <tr>
+              <td align="left">- Rasta Perceptual Linear Prediction
+              Coefficents</td>
+              <td align="left">RPLP</td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="left"></td>
+              <td align="right"></td>
+            </tr>
+          </tbody>
+        </table>
+      </table-wrap>
+    </boxed-text>
+    <p>The following figure provide a summary of the included features
+    extraction algorithms and their detailed steps:</p>
+    <boxed-text>
+      <fig>
+        <caption><p>Features extraction algorithms in
+        spafe</p></caption>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="figs/features-extraction-algorithms.png" xlink:title="" />
+      </fig>
+    </boxed-text>
+    <p>In addition to the previously mentioned features, spafe allows
+    for computing the following spectrograms: <bold>Bark
+    spectrogram</bold>, <bold>Cqt spectrogram</bold>, <bold>Erb
+    spectrogram</bold> and <bold>Mel spectrogram</bold>.</p>
+    <boxed-text>
+      <fig>
+        <caption><p>Mel spectrogram computed and visualized using
+        Spafe</p></caption>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="figs/mfcc-1.png" xlink:title="" />
+      </fig>
+    </boxed-text>
+  </sec>
+  <sec id="frequencies-spafefrequencies">
+    <title>Frequencies
+    (<monospace>spafe/frequencies</monospace>)</title>
+    <p>The frequencies modules in spafe focus specifically on the
+    computation of dominant and fundamental frequencies. A dominant
+    frequency is per definition the frequency carrying the maximum
+    energy among all frequencies of the spectrum
+    (<xref alt="Telgarsky, 2013" rid="ref-rastislavU003A2013" ref-type="bibr">Telgarsky,
+    2013</xref>), whereas the fundamental frequency (often noted as
+    <inline-formula><alternatives>
+    <tex-math><![CDATA[F_0]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>F</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:math></alternatives></inline-formula>
+    ) is defined as the inverse of a the period of a periodic signal
+    (<xref alt="Cheveigné &amp; Kawahara, 2002" rid="ref-cheveigneU003A2002" ref-type="bibr">Cheveigné
+    &amp; Kawahara, 2002</xref>).</p>
+    <boxed-text>
+      <fig>
+        <caption><p>Dominant frequencies computed and visualized using
+        Spafe</p></caption>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="figs/dominant_frequencies-1.png" xlink:title="" />
+      </fig>
+    </boxed-text>
+  </sec>
+  <sec id="utils-spafeutils">
+    <title>Utils (<monospace>spafe/utils</monospace>)</title>
+    <p>The utils scripts, handles most of the input signal
+    pre-processing steps including pre-emphasis, framing and windowing.
+    They also include all the conversion computations needed to convert
+    Hertz frequencies to other frequencies scales. In addition all
+    features post-processing routines are in this group. This includes
+    normalization, liftering, deltas computation and visualization.</p>
+  </sec>
+</sec>
+<sec id="conclusion">
+  <title>Conclusion</title>
+  <p>This paper introduced <monospace>Spafe</monospace>, a python
+  package for audio features extractions. Spafe provides a unified
+  solution for audio features extraction, that can help and accelerate
+  the research of various audio based recognition problems.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+  <ref id="ref-numpyU003A2020">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Harris</surname><given-names>Charles R.</given-names></name>
+        <name><surname>Millman</surname><given-names>K. Jarrod</given-names></name>
+        <name><surname>Walt</surname><given-names>Stéfan J. van der</given-names></name>
+        <name><surname>Gommers</surname><given-names>Ralf</given-names></name>
+        <name><surname>Virtanen</surname><given-names>Pauli</given-names></name>
+        <name><surname>Cournapeau</surname><given-names>David</given-names></name>
+        <name><surname>Wieser</surname><given-names>Eric</given-names></name>
+        <name><surname>Taylor</surname><given-names>Julian</given-names></name>
+        <name><surname>Berg</surname><given-names>Sebastian</given-names></name>
+        <name><surname>Smith</surname><given-names>Nathaniel J.</given-names></name>
+        <name><surname>Kern</surname><given-names>Robert</given-names></name>
+        <name><surname>Picus</surname><given-names>Matti</given-names></name>
+        <name><surname>Hoyer</surname><given-names>Stephan</given-names></name>
+        <name><surname>Kerkwijk</surname><given-names>Marten H. van</given-names></name>
+        <name><surname>Brett</surname><given-names>Matthew</given-names></name>
+        <name><surname>Haldane</surname><given-names>Allan</given-names></name>
+        <name><surname>Río</surname><given-names>Jaime Fernández del</given-names></name>
+        <name><surname>Wiebe</surname><given-names>Mark</given-names></name>
+        <name><surname>Peterson</surname><given-names>Pearu</given-names></name>
+        <name><surname>Gérard-Marchant</surname><given-names>Pierre</given-names></name>
+        <name><surname>Sheppard</surname><given-names>Kevin</given-names></name>
+        <name><surname>Reddy</surname><given-names>Tyler</given-names></name>
+        <name><surname>Weckesser</surname><given-names>Warren</given-names></name>
+        <name><surname>Abbasi</surname><given-names>Hameer</given-names></name>
+        <name><surname>Gohlke</surname><given-names>Christoph</given-names></name>
+        <name><surname>Oliphant</surname><given-names>Travis E.</given-names></name>
+      </person-group>
+      <article-title>Array programming with NumPy</article-title>
+      <source>Nature</source>
+      <publisher-name>Springer Science; Business Media LLC</publisher-name>
+      <year iso-8601-date="2020-09">2020</year><month>09</month>
+      <volume>585</volume>
+      <issue>7825</issue>
+      <uri>https://doi.org/10.1038/s41586-020-2649-2</uri>
+      <pub-id pub-id-type="doi">10.1038/s41586-020-2649-2</pub-id>
+      <fpage>357</fpage>
+      <lpage>362</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-scipyU003A2019">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Pauli Virtanen</surname><given-names>Travis E. Oliphant</given-names><suffix>Ralf Gommers</suffix></name>
+        <name><surname>Vázquez‐Baeza</surname><given-names>Yoshiki</given-names></name>
+      </person-group>
+      <article-title>SciPy 1.0: Fundamental algorithms for scientific computing in Python</article-title>
+      <source>Nature Methods</source>
+      <year iso-8601-date="2019">2019</year>
+      <uri>http://www.scipy.org/</uri>
+      <pub-id pub-id-type="doi">10.1038/s41592-019-0686-2</pub-id>
+      <fpage>1</fpage>
+      <lpage>12</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-speechpyU003A2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Torfi</surname><given-names>Amirsina</given-names></name>
+      </person-group>
+      <article-title>SpeechPy - a library for speech processing and recognition</article-title>
+      <source>Journal of Open Source Software</source>
+      <publisher-name>The Open Journal</publisher-name>
+      <year iso-8601-date="2018">2018</year>
+      <volume>3</volume>
+      <issue>27</issue>
+      <uri>https://doi.org/10.21105/joss.00749</uri>
+      <pub-id pub-id-type="doi">10.21105/joss.00749</pub-id>
+      <fpage>749</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-python_speech_featuresU003A2020">
+    <element-citation publication-type="book">
+      <person-group person-group-type="author">
+        <name><surname>Lyons</surname><given-names>James</given-names></name>
+        <name><surname>Wang</surname><given-names>Darren Yow-Bang</given-names></name>
+        <name><given-names>Gianluca</given-names></name>
+        <name><surname>Shteingart</surname><given-names>Hanan</given-names></name>
+        <name><surname>Mavrinac</surname><given-names>Erik</given-names></name>
+        <name><surname>Gaurkar</surname><given-names>Yash</given-names></name>
+        <name><surname>Watcharawisetkul</surname><given-names>Watcharapol</given-names></name>
+        <name><surname>Birch</surname><given-names>Sam</given-names></name>
+        <name><surname>Zhihe</surname><given-names>Lu</given-names></name>
+        <name><surname>Hölzl</surname><given-names>Josef</given-names></name>
+        <name><surname>Lesinskis</surname><given-names>Janis</given-names></name>
+        <name><surname>Almér</surname><given-names>Henrik</given-names></name>
+        <name><surname>Lord</surname><given-names>Chris</given-names></name>
+        <name><surname>Stark</surname><given-names>Adam</given-names></name>
+      </person-group>
+      <source>Jameslyons/python_speech_features: Release v0.6.1</source>
+      <publisher-name>Zenodo</publisher-name>
+      <year iso-8601-date="2020-01">2020</year><month>01</month>
+      <uri>https://zenodo.org/record/3607820</uri>
+      <pub-id pub-id-type="doi">10.5281/ZENODO.3607820</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-bobU003A2017">
+    <element-citation publication-type="paper-conference">
+      <person-group person-group-type="author">
+        <name><surname>A. Anjos</surname><given-names>T. de Freitas Pereira</given-names><suffix>M. Günther</suffix></name>
+        <name><surname>Marcel</surname><given-names>S.</given-names></name>
+      </person-group>
+      <article-title>Continuously reproducing toolchains in pattern recognition and machine learning experiments</article-title>
+      <source>International conference on machine learning (ICML)</source>
+      <year iso-8601-date="2017-08">2017</year><month>08</month>
+      <uri>http://publications.idiap.ch/downloads/papers/2017/Anjos_ICML2017-2_2017.pdf</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-penedoU003A2019">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Penedo</surname><given-names>Sergio R. M.</given-names></name>
+        <name><surname>Netto</surname><given-names>Marcio Lobo</given-names></name>
+        <name><surname>Justo</surname><given-names>João F.</given-names></name>
+      </person-group>
+      <article-title>Designing digital filter banks using wavelets</article-title>
+      <source>EURASIP Journal on Advances in Signal Processing</source>
+      <publisher-name>Springer Science; Business Media LLC</publisher-name>
+      <year iso-8601-date="2019-07">2019</year><month>07</month>
+      <volume>2019</volume>
+      <uri>http://dx.doi.org/10.1186/s13634-019-0632-6</uri>
+      <pub-id pub-id-type="doi">10.1186/s13634-019-0632-6</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-sarangiU003A2020">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Sarangi</surname><given-names>Susanta</given-names></name>
+        <name><surname>Sahidullah</surname><given-names>Md</given-names></name>
+        <name><surname>Saha</surname><given-names>Goutam</given-names></name>
+      </person-group>
+      <article-title>Optimization of data-driven filterbank for automatic speaker verification</article-title>
+      <source>Digital Signal Processing</source>
+      <publisher-name>Elsevier BV</publisher-name>
+      <year iso-8601-date="2020-09">2020</year><month>09</month>
+      <volume>104</volume>
+      <uri>http://dx.doi.org/10.1016/j.dsp.2020.102795</uri>
+      <pub-id pub-id-type="doi">10.1016/j.dsp.2020.102795</pub-id>
+      <fpage>102795</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-rastislavU003A2013">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Telgarsky</surname><given-names>Rastislav</given-names></name>
+      </person-group>
+      <article-title>Dominant frequency extraction</article-title>
+      <source>CoRR</source>
+      <year iso-8601-date="2013">2013</year>
+      <volume>abs/1306.0103</volume>
+      <uri>http://arxiv.org/abs/1306.0103</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-cheveigneU003A2002">
+    <element-citation>
+      <person-group person-group-type="author">
+        <name><surname>Cheveigné</surname><given-names>Alain de</given-names></name>
+        <name><surname>Kawahara</surname><given-names>Hideki</given-names></name>
+      </person-group>
+      <article-title>YIN, a fundamental frequency estimator for speech and music</article-title>
+      <source>The Journal of the Acoustical Society of America</source>
+      <publisher-name>Acoustical Society of America (ASA)</publisher-name>
+      <year iso-8601-date="2002-04">2002</year><month>04</month>
+      <volume>111</volume>
+      <uri>http://dx.doi.org/10.1121/1.1458024</uri>
+      <pub-id pub-id-type="doi">10.1121/1.1458024</pub-id>
+      <fpage>1917</fpage>
+      <lpage>1930</lpage>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+</article>
