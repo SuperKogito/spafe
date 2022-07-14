@@ -10,21 +10,31 @@ Welcome to **Spafe**'s  documentation!
 Dependencies
 ------------
 
-spafe is built using Python3_  and it requires the following Python packages:
+spafe is built using `Python3 <https://www.python.org/download/releases/3.0/>`__  and it requires the following Python packages:
 
--	NumPy_ (>= 1.17.2) :  ``pip install numpy``
--	SciPy_  (>= 1.3.1) :  ``pip install scipy``
+-  `NumPy <https://numpy.org/>`__ (>= 1.22.0)
+-  `SciPy <https://scipy.org/>`__ (>= 1.8.0)
+
+if you want to use the visualization module/ functions of spafe, you
+will need to install:
+
+-  `Matplotlib <https://matplotlib.org/>`__ (>= 3.5.2)
+
 
 Installation
 ------------
 
+Install from PyPI
+~~~~~~~~~~~~~~~~~
+
 - You can simply install spafe using pip: ``pip install spafe``
 - To update an existing spafe version use: ``pip install -U spafe``
 
-.. _Python3 : https://www.python.org/download/releases/3.0/
-..	_NumPy : https://numpy.org/
-..	_SciPy : https://scipy.org/
-.. _FFmpeg : https://www.ffmpeg.org/
+Install from Anaconda
+~~~~~~~~~~~~~~~~~~~~~
+
+-  Spafe is also available on anaconda: ``conda install spafe``
+
 
 Documentation
 -------------
@@ -37,23 +47,13 @@ For the documentation of the modules please refer to:
    api_documentation
 
 
-Contributors
-------------
-
-- `SuperKogito <https://github.com/SuperKogito>`_ : 270 contribution
-- `cnheeider <https://github.com/cnheider>`_ : 1 contribution
-- `Helias <https://github.com/Helias>`_ : 1 contributions
-
 Citation
 --------
 
-.. code-block::
+-  If you want to cite spafe as a software used in your work, please
+   cite the version used as indexed at `Zenodo <https://zenodo.org/>`__: |DOI|
 
-  @software{ayoubmalek2020,
-      author = {Ayoub Malek},
-      title = {spafe/spafe: 0.1.2},
-      month = Apr,
-      year  = 2020,
-      version = {0.1.2},
-      url = {https://github.com/SuperKogito/spafe}
-  }
+
+
+.. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg
+   :target: https://doi.org/10.5281/zenodo.6824667
