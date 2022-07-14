@@ -263,15 +263,22 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#installation">
    Installation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#install-from-pypi">
+     Install from PyPI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#install-from-anaconda">
+     Install from Anaconda
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#documentation">
    Documentation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#contributors">
-   Contributors
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -324,16 +331,30 @@ function checkPageExistsAndRedirect(event) {
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">#</a></h2>
 <p>spafe is built using <a class="reference external" href="https://www.python.org/download/releases/3.0/">Python3</a>  and it requires the following Python packages:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> (&gt;= 1.17.2) :  <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy</span></code></p></li>
-<li><p><a class="reference external" href="https://scipy.org/">SciPy</a>  (&gt;= 1.3.1) :  <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">scipy</span></code></p></li>
+<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> (&gt;= 1.22.0)</p></li>
+<li><p><a class="reference external" href="https://scipy.org/">SciPy</a> (&gt;= 1.8.0)</p></li>
+</ul>
+<p>if you want to use the visualization module/ functions of spafe, you
+will need to install:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://matplotlib.org/">Matplotlib</a> (&gt;= 3.5.2)</p></li>
 </ul>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<section id="install-from-pypi">
+<h3>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>You can simply install spafe using pip: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
 <li><p>To update an existing spafe version use: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">spafe</span></code></p></li>
 </ul>
+</section>
+<section id="install-from-anaconda">
+<h3>Install from Anaconda<a class="headerlink" href="#install-from-anaconda" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Spafe is also available on anaconda: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
+</ul>
+</section>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
@@ -350,26 +371,12 @@ function checkPageExistsAndRedirect(event) {
 </ul>
 </div>
 </section>
-<section id="contributors">
-<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/SuperKogito">SuperKogito</a> : 270 contribution</p></li>
-<li><p><a class="reference external" href="https://github.com/cnheider">cnheeider</a> : 1 contribution</p></li>
-<li><p><a class="reference external" href="https://github.com/Helias">Helias</a> : 1 contributions</p></li>
-</ul>
-</section>
 <section id="citation">
 <h2>Citation<a class="headerlink" href="#citation" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">ayoubmalek2020</span><span class="p">,</span>
-    <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Ayoub</span> <span class="n">Malek</span><span class="p">},</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">spafe</span><span class="o">/</span><span class="n">spafe</span><span class="p">:</span> <span class="mf">0.1.2</span><span class="p">},</span>
-    <span class="n">month</span> <span class="o">=</span> <span class="n">Apr</span><span class="p">,</span>
-    <span class="n">year</span>  <span class="o">=</span> <span class="mi">2020</span><span class="p">,</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.1.2</span><span class="p">},</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">SuperKogito</span><span class="o">/</span><span class="n">spafe</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<ul class="simple">
+<li><p>If you want to cite spafe as a software used in your work, please
+cite the version used as indexed at <a class="reference external" href="https://zenodo.org/">Zenodo</a>: <a class="reference external" href="https://doi.org/10.5281/zenodo.6824667"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg" /></a></p></li>
+</ul>
 </section>
 </section>
 
