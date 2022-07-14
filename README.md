@@ -117,7 +117,7 @@ python setup.py install
 
 ## How to use
 
-Various examples on how to use spafe are present in the documentation [https://superkogito.github.io/spafe/dev/](https://superkogito.github.io/spafe).
+Various examples on how to use spafe are present in the documentation [https://superkogito.github.io/spafe](https://superkogito.github.io/spafe).
 
 **<!>** Please make sure you are referring to the correct documentation version.
 
@@ -127,6 +127,6 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
 ## Citing
 
-- If you want to cite spafe as a software used in your work, please cite the version used as indexed at [Zenodo](https://zenodo.org/):
-
-  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+-  If you want to cite spafe as a software used in your work, please
+   cite the version used as indexed at [Zenodo](https://zenodo.org/):
+   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
