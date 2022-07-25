@@ -8,6 +8,7 @@ tags:
 authors:
   - name: Ayoub Malek
     orcid: 0000-0002-9008-7562
+    affiliation: 1
 affiliations:
  - name: Yoummday GmbH
    index: 1
