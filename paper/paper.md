@@ -16,25 +16,21 @@ date: 09 July 2022
 bibliography: paper.bib
 ---
 
-# Abstract
+# Summary
+This paper describes version 0.2.0 of spafe: a python package for audio features extraction based on the Numpy [@numpy:2020] and Scipy [@scipy:2019] libraries.
+Spafe implements various features extraction techniques that can be used to solve a wide variety of recognition and classification tasks (speaker verification, spoken emotion recognition, spoken language identification etc.).
+The paper provides a brief overview of the library’s structure, theory and functionalities.
+
+# Statement of need
 In speech processing, features extraction is essentially the estimation of a parametric representation of an input signal.
 This is a key step in any audio based modeling and recognition process (e.g. speech recognition, sound classification, speaker authentication etc.).
 There are several speech features to extract, such as the Linear Frequency Cepstral Coefficients (LFCC), Mel Frequency Cepstral Coefficients (MFCC), Linear Predictive Coding (LPC), and Constant-Q Cepstral Coefficients (CQCC) etc.
 Each type of features has its own advantages and drawbacks (e.g. noise robustness, complexity, inter-components correlation etc.) that can directly affect the researched topic.
 Unfortunately, existing libraries for extracting these features (e.g. python_speech_features [@python_speech_features:2020], SpeechPy [@speechpy:2018] and Bob [@bob:2017]) are limited and mostly focus on one extraction technique (e.g. MFCC), thus it is hard to find reliable implementations of other features extraction algorithms.
-Consequently, this slows down the research and hinders the possibility of exploring, comparing or leveraging these different approaches against each other.
+Consequently, this slows down the research and hinders the possibility of exploring and comparing these different approaches.
 Hence, the need for **spafe**, a straightforward solution that unites all these different techniques in one python package.
 
-
-This paper describes version 0.2.0 of spafe: a python package for audio features extraction based on the Numpy [@numpy:2020] and Scipy [@scipy:2019] libraries.
-Spafe implements various features extraction techniques that can be used to solve a wide variety of recognition and classification tasks (speaker verification, spoken emotion recognition, spoken language identification etc.).
-The paper provides a brief overview of the library’s structure, theory and functionalities.
-
 # Introduction
-Oftentimes, researchers find themselves constrained by the available tools.
-This is the case of cepstral features based recognition processes, where most existing research relies on the Mel Frequency Cepstral Coefficents (MFCC) with very few exceptions.
-To solve this, spafe is introduced.
-
 The philosophy of spafe is keeping it simple, flexible and efficient in order to reach a wide range of developers and researchers.
 Hence, spafe is written in python 3 and only depends on Numpy [@numpy:2020] and Scipy [@scipy:2019]. The library is heavily documented with the help of Sphinx and tested using Pytest.
 Spafe supports **mono signals processing** and has been tested with different sampling rates (e.g. 8kHz, 16Khz, 44.1kHz, 48kHz etc.).
@@ -133,7 +129,7 @@ They also include all the conversion computations needed to convert Hertz freque
 On top of that, all features post-processing routines are in this group. This includes normalization, liftering, deltas computation and visualization.
 
 # Conclusion
-This paper introduced spafe, a python package for audio features extractions.
+This paper introduced spafe, a python package for audio feature extractions.
 Spafe provides a unified solution for audio features extraction, that can help simplify and accelerate the research of various audio based recognition experiments.
 
 
