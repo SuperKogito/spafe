@@ -31,7 +31,7 @@ Simplified Python Audio Features Extraction
 - [Citing](#Citing)
 
 # Structure
-spafe aims to simplify features extractions from **mono audio** files.
+spafe aims to simplify feature extractions from **mono audio** files.
 Spafe includes various computations related to filter banks, spectrograms, frequencies and cepstral features .
 The library has the following structure:
 ![](https://github.com/SuperKogito/spafe/raw/master/media/spafe-structure.png)
