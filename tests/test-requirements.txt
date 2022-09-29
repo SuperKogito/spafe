@@ -1,9 +1,0 @@
-pytest-cov
-pytest
-codecov
-coveralls
-pytest-xdist
-codacy-coverage
-matplotlib==3.5.2
-mock==4.0.3
-

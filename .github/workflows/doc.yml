@@ -1,0 +1,33 @@
+# build the sphinx documentation and pushes it to a doc branch, then used by github pages
+
+name: Doc
+
+on:
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install
+        run: |
+          pip install --upgrade pip
+          pip install .[docs]
+      - name: Build documentation
+        run: |
+          make --directory=docs html
+          touch ./docs/build/html/.nojekyll
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html
