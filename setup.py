@@ -56,7 +56,7 @@ setup(
             "mock==4.0.3"
         ],
         "docs": [
-            "sphinxcontrib-napoleon==0.7"
+            "sphinxcontrib-napoleon==0.7",
             "nbsphinx==0.8.9",
             "pydata-sphinx-theme==0.8.1"
         ]
