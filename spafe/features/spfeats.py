@@ -7,12 +7,33 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import scipy
+from typing import Dict
+
 import numpy as np
 from scipy import stats
 
+from typing_extensions import TypedDict
 
-def spectral_centroid(sig, fs, spectrum, i=1):
+
+class SpectralFeats(TypedDict):
+    spectral_skewness: float
+    spectral_kurtosis: float
+    spectral_entropy: float
+    spectral_spread: float
+    spectral_flatness: float
+    spectral_rolloff: float
+    spectral_flux: float
+    spectral_mean: float
+    spectral_rms: float
+    spectral_std: float
+    spectral_variance: float
+
+
+def spectral_centroid(sig,
+                      fs: int,
+                      spectrum: np.ndarray,
+                      i: int = 1) -> float:
+    # TODO: unused sig argument?
     """
     Compute the spectral centroid (which is the barycenter of the spectrum) as
     described in [Peeters]_.
@@ -31,7 +52,7 @@ def spectral_centroid(sig, fs, spectrum, i=1):
         .. math::
 
             \mu_{i} &= \\frac{\sum_{n=0}^{N}f_{k}^{i}*a_{k}}{\sum_{n=0}^{N}a_{k}}\\\\
-            S_{centroid} &= \mu_{1}\\\\
+            S_{centroid} &= \mu_{i}\\\\
     """
     # compute magnitude spectrum
     magnitude_spectrum = np.abs(spectrum)
@@ -40,11 +61,11 @@ def spectral_centroid(sig, fs, spectrum, i=1):
     freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
 
     # return weighted mean
-    sc = np.sum(magnitude_spectrum * freqs**i) / np.sum(magnitude_spectrum)
+    sc = np.sum(magnitude_spectrum * freqs ** i) / np.sum(magnitude_spectrum)
     return sc
 
 
-def spectral_skewness(sig, fs, spectrum):
+def spectral_skewness(sig: np.ndarray, fs: int, spectrum: np.ndarray):
     """
     Compute the spectral skewness (which is a measure of the asymmetry of a
     distribution around its mean) as described in [Peeters]_.
@@ -72,12 +93,12 @@ def spectral_skewness(sig, fs, spectrum):
 
     # return weighted mean
     sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 3) / (
-        np.sum(magnitude_spectrum) * mu2**3
+            np.sum(magnitude_spectrum) * mu2 ** 3
     )
     return sk
 
 
-def spectral_kurtosis(sig, fs, spectrum):
+def spectral_kurtosis(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
     """
     Compute the spectral kurtosis (which is a measure of the flatness of a
     distribution around its mean) as described in [Peeters]_.
@@ -105,12 +126,13 @@ def spectral_kurtosis(sig, fs, spectrum):
 
     # return weighted mean
     sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 4) / (
-        np.sum(magnitude_spectrum) * mu2**4
+            np.sum(magnitude_spectrum) * mu2 ** 4
     )
     return sk
 
 
-def spectral_entropy(sig, fs, spectrum):
+def spectral_entropy(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
+    # TODO: unused sig and fs arguments
     """
     Compute the spectral entropy as described in [Misra]_.
 
@@ -120,7 +142,7 @@ def spectral_entropy(sig, fs, spectrum):
         spectrum (numpy.ndarray) : signal spectrum.
 
     Returns:
-        (float) : spectral skewness.
+        (float) : spectral entropy.
 
     Note:
         .. math::
@@ -135,14 +157,15 @@ def spectral_entropy(sig, fs, spectrum):
     # compute magnitude spectrum, and centroids
     magnitude_spectrum = np.abs(spectrum)
     en = (
-        -1
-        * np.sum(magnitude_spectrum * np.log(magnitude_spectrum))
-        / np.log(len(magnitude_spectrum))
+            -1
+            * np.sum(magnitude_spectrum * np.log(magnitude_spectrum))
+            / np.log(len(magnitude_spectrum))
     )
     return en
 
 
-def spectral_spread(sig, fs, spectrum):
+def spectral_spread(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
+    # TODO: shouldn't output be float?
     """
     Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)
     as described in [Peeters]_.
@@ -175,7 +198,8 @@ def spectral_spread(sig, fs, spectrum):
     return spread
 
 
-def spectral_flatness(sig, spectrum):
+def spectral_flatness(sig, spectrum: np.ndarray) -> float:
+    # TODO: unused sig arg?
     """
     Compute spectral flatness.
 
@@ -199,7 +223,7 @@ def spectral_flatness(sig, spectrum):
     return sf
 
 
-def spectral_rolloff(sig, fs, spectrum, k=0.85):
+def spectral_rolloff(sig, fs, spectrum: np.ndarray, k=0.85) -> float:
     """
     Compute the spectral roll-off point which measures the bandwidth of the audio
     signal by determining the frequency bin under which a specified k percentage
@@ -223,7 +247,8 @@ def spectral_rolloff(sig, fs, spectrum, k=0.85):
     return i
 
 
-def spectral_flux(sig, fs, spectrum, p=2):
+def spectral_flux(sig, fs, spectrum: np.ndarray, p: int = 2) -> float:
+    # TODO: unused sig and fs arguments
     """
     Compute the spectral flux, which measures how quickly the power spectrum
     of a signal is changing. This implementation computes the spectral flux
@@ -256,7 +281,7 @@ def spectral_flux(sig, fs, spectrum, p=2):
     return sf
 
 
-def extract_feats(sig, fs, nfft=512):
+def extract_feats(sig: np.ndarray, fs: int, nfft: int = 512) -> SpectralFeats:
     """
     Compute various spectral features [Peeters]_.
 
@@ -322,7 +347,7 @@ def extract_feats(sig, fs, nfft=512):
     feats["spectral_rolloff"] = spectral_rolloff(sig, fs, spectrum)
     feats["spectral_flux"] = spectral_flux(sig, fs, spectrum)
     feats["spectral_mean"] = np.mean(spectrum)
-    feats["spectral_rms"] = np.sqrt(np.mean(spectrum**2))
+    feats["spectral_rms"] = np.sqrt(np.mean(spectrum ** 2))
     feats["spectral_std"] = np.std(spectrum)
     feats["spectral_variance"] = np.var(spectrum)
     return feats

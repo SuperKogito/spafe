@@ -9,21 +9,23 @@
 """
 import scipy
 import numpy as np
-from ..utils.preprocessing import framing, windowing
+from ..utils.preprocessing import framing, windowing, WindowType
 
 
 def get_dominant_frequencies(
-    sig,
-    fs,
-    butter_filter=False,
-    lower_cutoff=50,
-    upper_cutoff=3000,
-    nfft=512,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    only_positive=True,
-):
+        sig: np.ndarray,
+        fs: int,
+        butter_filter: bool = False,
+        lower_cutoff: float = 50,
+        upper_cutoff: float = 3000,
+        nfft: int = 512,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        only_positive: bool = True,
+) -> np.ndarray:
+    # TODO: is "sig" really a filename?
+    # TODO: are lower/upper cutoff frequencies integers?
     """
     Returns a list of dominant audio frequencies of a given wave file based
     on [Rastislav]_ and [Luca]_.
@@ -120,6 +122,7 @@ def get_dominant_frequencies(
         b, a = scipy.signal.butter(
             6, [(lower_cutoff * 2) / fs, (upper_cutoff * 2) / fs], "band"
         )
+        # TODO: unused line line?
         w, h = scipy.signal.freqs(b, a, len(sig))
         sig = scipy.signal.lfilter(b, a, sig)
 
@@ -129,7 +132,7 @@ def get_dominant_frequencies(
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
 
-    # init dominant frequncies list
+    # init dominant frequencies list
     dominant_frequencies = []
 
     # get dominant frequency for each frame
@@ -139,7 +142,7 @@ def get_dominant_frequencies(
 
         # compute magnitude spectrum
         magnitude_spectrum = (1 / nfft) * np.abs(fourrier_transform)
-        power_spectrum = (1 / nfft) * magnitude_spectrum**2
+        power_spectrum = (1 / nfft) * magnitude_spectrum ** 2
 
         # get all frequncies and  only keep positive frequencies
         frequencies = np.fft.fftfreq(len(power_spectrum), 1 / fs)
