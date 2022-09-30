@@ -8,9 +8,13 @@
 """
 import numpy as np
 from scipy.signal import lfilter
+from typing_extensions import Literal
+
+NormalizationType = Literal["mvn", "ms", "vn", "mn"]
 
 
-def normalize_ceps(x, normalization_type="mvn"):
+def normalize_ceps(x: np.ndarray,
+                   normalization_type: NormalizationType = "mvn") -> np.ndarray:
     """
     Apply normalization to array.
 
@@ -50,7 +54,7 @@ def normalize_ceps(x, normalization_type="mvn"):
     }[normalization_type]
 
 
-def lifter_ceps(ceps, lift=3):
+def lifter_ceps(ceps: np.ndarray, lift: int = 3) -> np.ndarray:
     """
     Apply a cepstral lifter the the matrix of cepstra. This has the effect of
     increasing the magnitude of the high frequency DCT coeffs. the liftering is
@@ -77,7 +81,7 @@ def lifter_ceps(ceps, lift=3):
         return ceps
 
     elif lift > 0:
-        lift_vec = np.array([1] + [i**lift for i in range(1, ceps.shape[1])])
+        lift_vec = np.array([1] + [i ** lift for i in range(1, ceps.shape[1])])
         lift_mat = np.diag(lift_vec)
         return np.dot(ceps, lift_mat)
 
@@ -89,7 +93,7 @@ def lifter_ceps(ceps, lift=3):
         return ceps * lift_vec
 
 
-def deltas(x, w=9):
+def deltas(x: np.ndarray, w: int = 9) -> np.ndarray:
     """
     Calculate the deltas (derivatives) of an input sequence with a W-points
     window (W odd, default 9) using a simple linear slope. This mirrors the delta
@@ -113,5 +117,5 @@ def deltas(x, w=9):
         axis=1,
     )
 
-    deltas = lfilter(win, 1, xx, axis=1)[:, int(2 * hlen) : int(2 * hlen + cols)]
+    deltas = lfilter(win, 1, xx, axis=1)[:, int(2 * hlen): int(2 * hlen + cols)]
     return deltas

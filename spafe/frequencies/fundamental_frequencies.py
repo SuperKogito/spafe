@@ -7,12 +7,15 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import List, Tuple
+
 import scipy
 import numpy as np
 from scipy import signal
 
 
-def compute_difference(x, tau_max):
+def compute_difference(x: np.ndarray, tau_max: int) -> np.ndarray:
+    # TODO: check the output type
     """
     Compute difference function of data x according to [Guyot]_ [DeCheveigné]_ and [Box]_ .
     This essentially corresponds to equations (6) and (7) in [DeCheveigné]_
@@ -67,18 +70,19 @@ def compute_difference(x, tau_max):
     # compute dt(tau) according to (6) and (7) in [DeCheveigné]
     rt_tau_0 = x_cum_sum[w] - x_cum_sum[:w]
     rt_0 = x_cum_sum[w:0:-1]
-    rt = conv[w - 1 :]
+    rt = conv[w - 1:]
     tmp = rt_0 + rt_tau_0 - 2 * rt
     return tmp[:tau_max]
 
 
-def compute_cmnd(d_t, tau):
+def compute_cmnd(d_t: np.ndarray, tau: int) -> np.ndarray:
+    # TODO: check the d_t type and output type
     """
     Apply Cumulative Mean Normalized Difference Function (CMNDF) as in [Guyot]_ [DeCheveigné]_.
     This corresponds to equation (8) in [DeCheveigné]_.
 
     Args:
-        df  (list) : Difference function.
+        d_t  (list) : Difference function.
         tau (int)  : length of data.
 
     Returns:
@@ -96,7 +100,10 @@ def compute_cmnd(d_t, tau):
     return np.insert(d_prime_t, 0, 1)
 
 
-def get_pitch(cmdf, tau_min, tau_max, harmonic_threshold=0.1):
+def get_pitch(cmdf: np.ndarray,
+              tau_min: int,
+              tau_max: int,
+              harmonic_threshold: float = 0.1) -> float:
     """
     Return fundamental period of a frame based on CMND function as implemented in
     [Guyot]_ [DeCheveigné]_.
@@ -124,14 +131,15 @@ def get_pitch(cmdf, tau_min, tau_max, harmonic_threshold=0.1):
 
 
 def compute_yin(
-    sig,
-    fs,
-    win_len=0.03,
-    win_hop=0.015,
-    low_freq=50,
-    high_freq=3000,
-    harmonic_threshold=0.1,
-):
+        sig: np.ndarray,
+        fs: int,
+        win_len: float = 0.03,
+        win_hop: float = 0.015,
+        low_freq: int = 50,
+        high_freq: int = 3000,
+        harmonic_threshold: float = 0.1,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    # TODO: check that high/low freq are integers?
     """
     Compute the fundamental frequency and harmonic rate according to the the Yin
     Algorithm [Guyot]_ [DeCheveigné]_.
@@ -139,15 +147,15 @@ def compute_yin(
     Args:
         sig        (numpy.array) : audio signal (list of float)
         fs                 (int) : sampling rate (= average number of samples pro 1 second)
-        win_len            (int) : size of the analysis window (in seconds)
+        win_len            (float) : size of the analysis window (in seconds)
                                    (Default is 0.03).
-        win_hop            (int) : size of the lag between two consecutives windows (in seconds)
+        win_hop            (float) : size of the lag between two consecutives windows (in seconds)
                                    (Default is 0.015).
         low_freq           (int) : Minimum fundamental frequency that can be detected (in Hertz)
                                    (Default is 50).
         high_freq          (int) : Maximum fundamental frequency that can be detected (in Hertz)
                                    (Default is 3000).
-        harmonic_threshold (int) : Threshold of detection. The yalgorithmù return the
+        harmonic_threshold (float) : Threshold of detection. The yalgorithmù return the
                                    first minimum of the CMND fubction below this threshold.
                                    (Default is 0.1).
 
@@ -235,12 +243,12 @@ def compute_yin(
 
     # time values for each analysis window
     time_scale = range(0, len(sig) - w_len, w_step)
-    times = [t / float(fs) for t in time_scale]
-    frames = [sig[t : t + w_len] for t in time_scale]
+    times = np.ndarray([t / float(fs) for t in time_scale])
+    frames = [sig[t: t + w_len] for t in time_scale]
 
-    pitches = [0.0] * len(time_scale)
-    harmonic_rates = [0.0] * len(time_scale)
-    argmins = [0.0] * len(time_scale)
+    pitches = np.zeros(time_scale)
+    harmonic_rates = np.zeros(time_scale)
+    argmins = np.zeros(time_scale)
 
     for i, frame in enumerate(frames):
         # Compute YIN

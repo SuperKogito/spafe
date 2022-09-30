@@ -30,26 +30,26 @@ def intensity_power_law(w):
             E(\\omega) = \\frac{(\\omega^{2}+56.8 \\times 10^{6}) \\omega^{4}}{(\\omega^{2}+6.3 \\times 10^{6})^{2} \\times (\\omega^{2}+0.38 \\times 10^{9})}
     """
 
-    f = lambda w, c, p: w**2 + c * 10**p
-    E = (f(w, 56.8, 6) * w**4) / (f(w, 6.3, 6) * f(w, 0.38, 9) * f(w**3, 9.58, 26))
+    f = lambda w, c, p: w ** 2 + c * 10 ** p
+    E = (f(w, 56.8, 6) * w ** 4) / (f(w, 6.3, 6) * f(w, 0.38, 9) * f(w ** 3, 9.58, 26))
     return E ** (1 / 3)
 
 
 def bark_spectrogram(
-    sig,
-    fs=16000,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    fbanks=None,
-    conversion_approach="Wang",
+        sig,
+        fs: int = 16000,
+        pre_emph: float = 0,
+        pre_emph_coeff: float = 0.97,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type="hamming",
+        nfilts=24,
+        nfft=512,
+        low_freq=0,
+        high_freq=None,
+        scale="constant",
+        fbanks=None,
+        conversion_approach="Wang",
 ):
     """
     Compute the bark scale spectrogram.
@@ -173,25 +173,25 @@ def bark_spectrogram(
 
 
 def bfcc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=26,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Wang",
+        sig,
+        fs=16000,
+        num_ceps=13,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        win_len=0.025,
+        win_hop=0.01,
+        win_type="hamming",
+        nfilts=26,
+        nfft=512,
+        low_freq=0,
+        high_freq=None,
+        scale="constant",
+        dct_type=2,
+        use_energy=False,
+        lifter=None,
+        normalize=None,
+        fbanks=None,
+        conversion_approach="Wang",
 ):
     """
     Compute the Bark Frequency Cepstral Coefﬁcients (BFCCs) from an audio

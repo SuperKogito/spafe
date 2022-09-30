@@ -7,6 +7,8 @@
 
 """
 import numpy as np
+from typing_extensions import Literal
+
 from ..utils.exceptions import ParameterError, ErrorMsgs
 
 # init vars
@@ -18,7 +20,7 @@ LOGSTEP = np.exp(np.log(6.4) / 27.0)
 A = (1000 * np.log(10)) / (24.7 * 4.37)
 
 
-def hz2erb(f, approach="Glasberg"):
+def hz2erb(f: float, approach: str = "Glasberg") -> float:
     """
     Convert Hz frequencies to Erb as referenced in [Glasberg]_.
 
@@ -68,12 +70,12 @@ def hz2erb(f, approach="Glasberg"):
         return A * np.log10(1 + f * 0.00437)
 
 
-def erb2hz(fe, approach="Glasberg"):
+def erb2hz(fe: float, approach: str = "Glasberg") -> float:
     """
     Convert Erb frequencies to Hz as referenced in [Glasberg]_.
 
     Args:
-        fb      (float) : input frequency [Erb].
+        fe      (float) : input frequency [Erb].
         approach  (str) : conversion approach.
                           (Default is "Glasberg").
 
@@ -112,7 +114,11 @@ def erb2hz(fe, approach="Glasberg"):
         return (10 ** (fe / A) - 1) / 0.00437
 
 
-def hz2bark(f, approach="Wang"):
+BarkConversionApproach = Literal["Wang", "Tjomov", "Schroeder",
+                                 "Terhardt", "Zwicker", "Traunmueller"]
+
+
+def hz2bark(f: float, approach: BarkConversionApproach = "Wang") -> float:
     """
     Convert Hz frequencies to Bark as mentioned in [Carter]_ and [Traunmueller]_.
 
@@ -184,7 +190,7 @@ def hz2bark(f, approach="Wang"):
         return 6 * np.arcsinh(f / 600)
 
 
-def bark2hz(fb, approach="Wang"):
+def bark2hz(fb: float, approach: BarkConversionApproach = "Wang") -> float:
     """
     Convert Bark frequencies to Hz as mentioned in [Carter]_ and [Traunmueller]_.
 
@@ -259,13 +265,13 @@ def bark2hz(fb, approach="Wang"):
         return 10 ** (((fb - 8.7) / 14.2) + 3)
     elif approach == "Traunmueller":
         return 1960 * (
-            (__traunmueller_helper(fb) + 0.53) / (26.28 - __traunmueller_helper(fb))
+                (__traunmueller_helper(fb) + 0.53) / (26.28 - __traunmueller_helper(fb))
         )
     else:
         return 600 * np.sinh(fb / 6)
 
 
-def __traunmueller_helper(fi):
+def __traunmueller_helper(fi: float) -> float:
     """
     Helper funtion for the Traunmueller approach.
     """
@@ -277,12 +283,15 @@ def __traunmueller_helper(fi):
         return fi
 
 
-def hz2mel(f, approach="Oshaghnessy"):
+MelConversionApproach = Literal["Oshaghnessy", "Lindsay"]
+
+
+def hz2mel(f: float, approach: MelConversionApproach = "Oshaghnessy") -> float:
     """
     Convert a value in Hertz to Mels [Oshaghnessy]_, [Beranek]_ and [Lindsay]_.
 
     Args:
-        fb     (float) : input frequency [Hz].
+        f      (float) : input frequency [Hz].
         approach (str) : conversion approach.
                          (Default is "Oshaghnessy").
     Returns:
@@ -338,12 +347,12 @@ def hz2mel(f, approach="Oshaghnessy"):
     }[approach]
 
 
-def mel2hz(fm, approach="Oshaghnessy"):
+def mel2hz(fm: float, approach: MelConversionApproach = "Oshaghnessy") -> float:
     """
     Convert a value in Mels to Hertz
 
     Args:
-        fb     (float) : input frequency [Mel].
+        fm     (float) : input frequency [Mel].
         approach (str) : conversion approach.
                          (Default is "Wang").
     Returns:
