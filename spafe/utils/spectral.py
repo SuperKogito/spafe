@@ -16,17 +16,17 @@ from ..utils.preprocessing import windowing
 
 
 def compute_constant_qtransform(
-        frames: List[np.ndarray],
-        fs: int = 16000,
-        low_freq: int = 0,  # TODO : unused parameter
-        high_freq: int = None,
-        nfft: int = 512,
-        number_of_octaves: int = 7,
-        number_of_bins_per_octave: int = 12,
-        win_type: WindowType = "hamming",
-        spectral_threshold: float = 0.0054,
-        f0: int = 120,
-        q_rate: float = 1.0,
+    frames: List[np.ndarray],
+    fs: int = 16000,
+    low_freq: int = 0,  # TODO : unused parameter
+    high_freq: int = None,
+    nfft: int = 512,
+    number_of_octaves: int = 7,
+    number_of_bins_per_octave: int = 12,
+    win_type: WindowType = "hamming",
+    spectral_threshold: float = 0.0054,
+    f0: int = 120,
+    q_rate: float = 1.0,
 ):
     # TODO: mismatch between the default falue for f0 in docstring and actual default
     # TODO: review type for int/float arguments
@@ -90,7 +90,7 @@ def compute_constant_qtransform(
     win_lens = win_lens[win_lens <= nfft]
 
     # filter center freqs and count number of pitches & frames
-    cqt_freqs = cqt_freqs[-1 * len(win_lens):]
+    cqt_freqs = cqt_freqs[-1 * len(win_lens) :]
     n_pitch = len(cqt_freqs)
     n_frames = len(frames)
 
@@ -121,7 +121,7 @@ def compute_constant_qtransform(
         x = (
             np.r_[frame, np.zeros(nfft - len(frame))]
             if len(frame) < nfft
-            else frame[0: len(frame)]
+            else frame[0 : len(frame)]
         )
         spec[k] = np.fft.fft(x, nfft) * kernel_sparse.T
     return spec.T

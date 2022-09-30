@@ -6,10 +6,9 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-from typing_extensions import Literal
-
 import numpy as np
 from scipy import signal
+from typing_extensions import Literal
 
 ScaleType = Literal["ascendant", "descendant", "constant"]
 
@@ -30,7 +29,7 @@ def rasta_filter(x: np.ndarray) -> np.ndarray:
         - cols of x = critical bands
     """
     numer = np.arange(-2, 3)
-    numer = (-1 * numer) / np.sum(numer ** 2)
+    numer = (-1 * numer) / np.sum(numer**2)
     denom = np.array([1, -0.94])
 
     z = signal.lfilter_zi(numer, 1)
@@ -42,7 +41,7 @@ def rasta_filter(x: np.ndarray) -> np.ndarray:
         y1 = y1 * 0
 
         # IIR
-        y2, _ = signal.lfilter(numer, denom, x[i, 4: x.shape[1]], axis=0, zi=z)
+        y2, _ = signal.lfilter(numer, denom, x[i, 4 : x.shape[1]], axis=0, zi=z)
         y[i, :] = np.append(y1, y2)
     return y
 

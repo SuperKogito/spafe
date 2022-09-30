@@ -6,33 +6,43 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
-from ..utils.cepstral import normalize_ceps, lifter_ceps
-from ..utils.exceptions import ParameterError, ErrorMsgs
+
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    WindowType,
+)
 
 
 def ngcc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
     low_freq=None,
     high_freq=None,
-    scale="constant",
+    scale: ScaleType = "constant",
     dct_type=2,
     use_energy=False,
-    lifter : Optional[int]=None,
-    normalize : Optional[NormalizationType]=None,
-    fbanks: Optional[np.ndarray]=None,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
     conversion_approach="Glasberg",
 ):
     """
@@ -45,8 +55,8 @@ def ngcc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -111,7 +121,7 @@ def ngcc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming",
+                          win_type: WindowType="hamming",
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,

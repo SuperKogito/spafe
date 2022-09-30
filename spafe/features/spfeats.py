@@ -7,7 +7,6 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-from typing import Dict
 
 import numpy as np
 from scipy import stats
@@ -29,10 +28,7 @@ class SpectralFeats(TypedDict):
     spectral_variance: float
 
 
-def spectral_centroid(sig,
-                      fs: int,
-                      spectrum: np.ndarray,
-                      i: int = 1) -> float:
+def spectral_centroid(sig, fs: int, spectrum: np.ndarray, i: int = 1) -> float:
     # TODO: unused sig argument?
     """
     Compute the spectral centroid (which is the barycenter of the spectrum) as
@@ -61,7 +57,7 @@ def spectral_centroid(sig,
     freqs = np.abs(np.fft.fftfreq(len(spectrum), 1.0 / fs))
 
     # return weighted mean
-    sc = np.sum(magnitude_spectrum * freqs ** i) / np.sum(magnitude_spectrum)
+    sc = np.sum(magnitude_spectrum * freqs**i) / np.sum(magnitude_spectrum)
     return sc
 
 
@@ -93,7 +89,7 @@ def spectral_skewness(sig: np.ndarray, fs: int, spectrum: np.ndarray):
 
     # return weighted mean
     sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 3) / (
-            np.sum(magnitude_spectrum) * mu2 ** 3
+        np.sum(magnitude_spectrum) * mu2**3
     )
     return sk
 
@@ -126,7 +122,7 @@ def spectral_kurtosis(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
 
     # return weighted mean
     sk = np.sum(magnitude_spectrum * (freqs - mu1) ** 4) / (
-            np.sum(magnitude_spectrum) * mu2 ** 4
+        np.sum(magnitude_spectrum) * mu2**4
     )
     return sk
 
@@ -157,9 +153,9 @@ def spectral_entropy(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
     # compute magnitude spectrum, and centroids
     magnitude_spectrum = np.abs(spectrum)
     en = (
-            -1
-            * np.sum(magnitude_spectrum * np.log(magnitude_spectrum))
-            / np.log(len(magnitude_spectrum))
+        -1
+        * np.sum(magnitude_spectrum * np.log(magnitude_spectrum))
+        / np.log(len(magnitude_spectrum))
     )
     return en
 
@@ -347,7 +343,7 @@ def extract_feats(sig: np.ndarray, fs: int, nfft: int = 512) -> SpectralFeats:
     feats["spectral_rolloff"] = spectral_rolloff(sig, fs, spectrum)
     feats["spectral_flux"] = spectral_flux(sig, fs, spectrum)
     feats["spectral_mean"] = np.mean(spectrum)
-    feats["spectral_rms"] = np.sqrt(np.mean(spectrum ** 2))
+    feats["spectral_rms"] = np.sqrt(np.mean(spectrum**2))
     feats["spectral_std"] = np.std(spectrum)
     feats["spectral_variance"] = np.var(spectrum)
     return feats

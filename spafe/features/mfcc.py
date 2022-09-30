@@ -6,30 +6,44 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
-from ..utils.cepstral import normalize_ceps, lifter_ceps
-from ..utils.exceptions import ParameterError, ErrorMsgs
+
 from ..fbanks.mel_fbanks import inverse_mel_filter_banks, mel_filter_banks
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import MelConversionApproach
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    WindowType,
+)
 
 
+# TODO: the mel conversion approaches are only ["Oshaghnessy", "Lindsay"]
+#  however the conversion functions has 3 : ["Oshaghnessy", "Beranek", "Lindsay"]
+#  is this on purpose?
 def mel_spectrogram(
     sig,
-    fs=16000,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    fbanks=None,
-    conversion_approach="Oshaghnessy",
-):
+    fs: int = 16000,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
+) -> np.ndarray:
     """
     Compute the mel scale spectrogram.
 
@@ -37,8 +51,8 @@ def mel_spectrogram(
         sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -95,7 +109,7 @@ def mel_spectrogram(
                                             pre_emph_coeff=0.97,
                                             win_len=0.030,
                                             win_hop=0.015,
-                                            win_type="hamming",
+                                            win_type: WindowType="hamming",
                                             nfilts=128,
                                             nfft=2048,
                                             low_freq=0,
@@ -130,6 +144,7 @@ def mel_spectrogram(
         fbanks = mel_fbanks_mat
 
     # pre-emphasis
+    # TODO: pre_emph_coeff is unused?
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
@@ -153,25 +168,25 @@ def mel_spectrogram(
 
 
 def mfcc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
+    sig: np.ndarray,
+    fs: int = 16000,
+    num_ceps: int = 13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    dct_type: int = 2,
     use_energy=False,
-    lifter : Optional[int]=None,
-    normalize : Optional[NormalizationType]=None,
-    fbanks: Optional[np.ndarray]=None,
-    conversion_approach="Oshaghnessy",
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
@@ -190,8 +205,8 @@ def mfcc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -217,7 +232,7 @@ def mfcc(
         lifter              (int) : apply liftering if not None.
                                     (Default is None).
         normalize           (str) : apply normalization if approach specified.
-                                    (Default is 0).
+                                    (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
         conversion_approach (str) : approach to use for conversion to the erb scale.
@@ -256,7 +271,7 @@ def mfcc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming",
+                          win_type: WindowType="hamming",
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,
@@ -321,24 +336,24 @@ def mfcc(
 
 def imfcc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
     dct_type=2,
     use_energy=False,
     lifter=0,
     normalize=None,
-    fbanks=None,
-    conversion_approach="Oshaghnessy",
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: MelConversionApproach ="Oshaghnessy",
 ):
     """
     Compute Inverse MFCC features from an audio signal.
@@ -349,8 +364,8 @@ def imfcc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -415,7 +430,7 @@ def imfcc(
                             pre_emph_coeff=0.97,
                             win_len=0.030,
                             win_hop=0.015,
-                            win_type="hamming",
+                            win_type: WindowType="hamming",
                             nfilts=128,
                             nfft=2048,
                             low_freq=0,

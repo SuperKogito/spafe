@@ -8,9 +8,8 @@
 """
 from typing import Tuple
 
-from typing_extensions import Literal
-
 import numpy as np
+from typing_extensions import Literal
 
 from .exceptions import ParameterError, ErrorMsgs
 
@@ -75,10 +74,9 @@ def stride_trick(a: np.ndarray, stride_length: int, stride_step: int) -> np.ndar
     )
 
 
-def framing(sig: np.ndarray,
-            fs: int = 16000,
-            win_len: float = 0.025,
-            win_hop: float = 0.01) -> Tuple[np.ndarray, int]:
+def framing(
+    sig: np.ndarray, fs: int = 16000, win_len: float = 0.025, win_hop: float = 0.01
+) -> Tuple[np.ndarray, int]:
     """
     transform a signal into a series of overlapping frames (= Frame blocking)
     as described in [Malek-framing-blog]_.
@@ -123,9 +121,9 @@ def framing(sig: np.ndarray,
     return frames, frame_length
 
 
-def windowing(frames: np.ndarray,
-              frame_len: int,
-              win_type: WindowType = "hamming") -> np.ndarray:
+def windowing(
+    frames: np.ndarray, frame_len: int, win_type: WindowType = "hamming"
+) -> np.ndarray:
     """
     generate and apply a window function to avoid spectral leakage [Malek-windowing-blog]_.
 

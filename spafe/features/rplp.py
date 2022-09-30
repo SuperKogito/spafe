@@ -10,39 +10,35 @@ from typing import Optional
 
 import numpy as np
 
-from ..utils.converters import BarkConversionApproach
-from ..utils.filters import rasta_filter, ScaleType
-from ..features.lpc import __lpc_helper, lpc2lpcc
 from ..fbanks.bark_fbanks import bark_filter_banks
+from ..features.lpc import __lpc_helper, lpc2lpcc
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling, WindowType
+from ..utils.filters import rasta_filter, ScaleType
+from ..utils.preprocessing import pre_emphasis, framing, windowing, WindowType
 
-
-# TODO: "pre_emph" argument could use the same logic as lifter and normalize:
-#  set default value to None and apply if not none.
-#  This would spare the use of a boolean and make the arguments more homogeneous
 
 # TODO : should all freqs be floats instead of ints?
 def __rastaplp(
-        sig: np.ndarray,
-        fs: int = 16000,
-        order: int = 13,
-        pre_emph: bool = False,
-        pre_emph_coeff: float = 0.97,
-        win_len: float = 0.025,
-        win_hop: float = 0.01,
-        win_type: WindowType = "hamming",
-        do_rasta: bool = False,
-        nfilts: int = 24,
-        nfft: int = 512,
-        low_freq: float = 0,
-        high_freq: Optional[float] = None,
-        scale: ScaleType = "constant",
-        lifter: Optional[int] = None,
-        normalize: Optional[NormalizationType] = None,
-        fbanks: Optional[np.ndarray] = None,
-        conversion_approach: BarkConversionApproach = "Wang",
+    sig: np.ndarray,
+    fs: int = 16000,
+    order: int = 13,
+    pre_emph: bool = False,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    do_rasta: bool = False,
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: BarkConversionApproach = "Wang",
 ) -> np.ndarray:
     """
     Compute Perceptual Linear Prediction coefficients with or without rasta filtering.
@@ -147,10 +143,10 @@ def __rastaplp(
         auditory_spectrum = np.exp(ras_nl_aspectrum)
 
     # equal loudness pre_emphasis
-    E = lambda w: ((w ** 2 + 56.8 * 10 ** 6) * w ** 4) / (
-            (w ** 2 + 6.3 * 10 ** 6)
-            * (w ** 2 + 0.38 * 10 ** 9)
-            * (w ** 6 + 9.58 * 10 ** 26)
+    E = lambda w: ((w**2 + 56.8 * 10**6) * w**4) / (
+        (w**2 + 6.3 * 10**6)
+        * (w**2 + 0.38 * 10**9)
+        * (w**6 + 9.58 * 10**26)
     )
     Y = [E(w) for w in auditory_spectrum]
 
@@ -181,23 +177,23 @@ def __rastaplp(
 
 
 def plp(
-        sig: np.ndarray,
-        fs: int = 16000,
-        order: int = 13,
-        pre_emph: bool = False,
-        pre_emph_coeff: float = 0.97,
-        win_len: float = 0.025,
-        win_hop: float = 0.01,
-        win_type: WindowType = "hamming",
-        nfilts: int = 24,
-        nfft: int = 512,
-        low_freq: float = 0,
-        high_freq: Optional[float] = None,
-        scale="constant",
-        lifter: Optional[int] = None,
-        normalize: Optional[NormalizationType] = None,
-        fbanks: Optional[np.ndarray] = None,
-        conversion_approach="Wang",
+    sig: np.ndarray,
+    fs: int = 16000,
+    order: int = 13,
+    pre_emph: bool = False,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: BarkConversionApproach = "Wang",
 ) -> np.ndarray:
     # TODO: unused arguments : scale and conversion_approach
     """
@@ -270,7 +266,7 @@ def plp(
                        pre_emph_coeff=0.97,
                        win_len=0.030,
                        win_hop=0.015,
-                       win_type="hamming",
+                       win_type: WindowType="hamming",
                        nfilts=128,
                        nfft=1024,
                        low_freq=0,
@@ -304,23 +300,23 @@ def plp(
 
 
 def rplp(
-        sig: np.ndarray,
-        fs: int = 16000,
-        order: int = 13,
-        pre_emph: bool = False,
-        pre_emph_coeff: float = 0.97,
-        win_len: float = 0.025,
-        win_hop: float = 0.01,
-        win_type: WindowType = "hamming",
-        nfilts: int = 24,
-        nfft: int = 512,
-        low_freq: float = 0,
-        high_freq: Optional[float] = None,
-        scale="constant",
-        lifter: Optional[int] = None,
-        normalize: Optional[NormalizationType] = None,
-        fbanks: Optional[np.ndarray] = None,
-        conversion_approach="Wang",
+    sig: np.ndarray,
+    fs: int = 16000,
+    order: int = 13,
+    pre_emph: bool = False,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: BarkConversionApproach = "Wang",
 ) -> np.ndarray:
     # TODO: unused arguments : scale and conversion_approach
     """
@@ -333,8 +329,8 @@ def rplp(
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -393,7 +389,7 @@ def rplp(
                          pre_emph_coeff=0.97,
                          win_len=0.030,
                          win_hop=0.015,
-                         win_type="hamming",
+                         win_type: WindowType="hamming",
                          nfilts=128,
                          nfft=1024,
                          low_freq=0,

@@ -13,8 +13,9 @@ from typing_extensions import Literal
 NormalizationType = Literal["mvn", "ms", "vn", "mn"]
 
 
-def normalize_ceps(x: np.ndarray,
-                   normalization_type: NormalizationType = "mvn") -> np.ndarray:
+def normalize_ceps(
+    x: np.ndarray, normalization_type: NormalizationType = "mvn"
+) -> np.ndarray:
     """
     Apply normalization to array.
 
@@ -81,7 +82,7 @@ def lifter_ceps(ceps: np.ndarray, lift: int = 3) -> np.ndarray:
         return ceps
 
     elif lift > 0:
-        lift_vec = np.array([1] + [i ** lift for i in range(1, ceps.shape[1])])
+        lift_vec = np.array([1] + [i**lift for i in range(1, ceps.shape[1])])
         lift_mat = np.diag(lift_vec)
         return np.dot(ceps, lift_mat)
 
@@ -117,5 +118,5 @@ def deltas(x: np.ndarray, w: int = 9) -> np.ndarray:
         axis=1,
     )
 
-    deltas = lfilter(win, 1, xx, axis=1)[:, int(2 * hlen): int(2 * hlen + cols)]
+    deltas = lfilter(win, 1, xx, axis=1)[:, int(2 * hlen) : int(2 * hlen + cols)]
     return deltas

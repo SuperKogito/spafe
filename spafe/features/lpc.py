@@ -6,13 +6,21 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import scipy
 import numpy as np
+import scipy
+
 from ..utils.cepstral import normalize_ceps, lifter_ceps
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    WindowType,
+)
 
 
 def __lpc_helper(frame, order):
+    # TODO: the documentation doesn't match the signature
     """
     Computes for each given sequence the LPC ( Linear predictive components ) as
     described in . Further references are [Draconi]_ and [Cournapeau] and [Menares]_.
@@ -88,10 +96,10 @@ def __lpc_helper(frame, order):
 
 def lpc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     order=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
     win_type="hann",
@@ -144,7 +152,7 @@ def lpc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming")
+                          win_type: WindowType="hamming")
 
             # visualize features
             show_features(lpcs, "Linear prediction coefficents", "LPCs Index", "Frame Index")
@@ -172,6 +180,7 @@ def lpc(
 
 
 def lpc2lpcc(a, e, nceps):
+    # TODO: the documentation doesn't match the signature
     """
     Convert linear prediction coefficents (LPC) to linear prediction cepstral coefﬁcients (LPCC)
     as described in [Rao]_ and [Makhoul]_.
@@ -218,13 +227,13 @@ def lpc2lpcc(a, e, nceps):
 
 def lpcc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     order=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
+    win_type: WindowType = "hamming",
     lifter=None,
     normalize=None,
 ):
@@ -284,7 +293,7 @@ def lpcc(
                          pre_emph_coeff=0.97,
                          win_len=0.030,
                          win_hop=0.015,
-                         win_type="hamming")
+                         win_type: WindowType="hamming")
 
             # visualize features
             show_features(lpccs, "Linear Prediction Cepstral Coefﬁcients", "LPCCs Index","Frame Index")

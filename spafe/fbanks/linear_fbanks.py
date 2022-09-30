@@ -6,18 +6,20 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
+
 from .mel_fbanks import mel_filter_banks_helper
-from ..utils.exceptions import ParameterError, ErrorMsgs
 
 
 def linear_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
 ):
     """
     Compute linear-filter banks. The filters are stored in the rows, the columns

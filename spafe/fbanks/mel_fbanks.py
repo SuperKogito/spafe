@@ -6,21 +6,24 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
-from ..utils.filters import scale_fbank
-from ..utils.converters import hz2mel, mel2hz
+
+from ..utils.converters import hz2mel, mel2hz, MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import scale_fbank, ScaleType
 
 
 def mel_filter_banks_helper(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
     fb_type="mel",
-    conversion_approach="Oshaghnessy",
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute Mel-filter banks.The filters are stored in the rows, the columns
@@ -102,7 +105,6 @@ def mel_filter_banks_helper(
     for j, (center, lower, upper) in enumerate(
         zip(center_freqs_hz, lower_edges_hz, upper_edges_hz)
     ):
-
         left_slope = (freqs >= lower) == (freqs <= center)
         fbank[j, left_slope] = (freqs[left_slope] - lower) / (center - lower)
 
@@ -117,13 +119,13 @@ def mel_filter_banks_helper(
 
 
 def mel_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    conversion_approach="Oshaghnessy",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute Mel-filter banks.The filters are stored in the rows, the columns
@@ -211,13 +213,13 @@ def mel_filter_banks(
 
 
 def inverse_mel_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    conversion_approach="Oshaghnessy",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute inverse Mel-filter banks. The filters are stored in the rows, the columns

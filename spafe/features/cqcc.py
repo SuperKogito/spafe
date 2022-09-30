@@ -6,26 +6,35 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
 from scipy.signal import resample
-from ..utils.spectral import compute_constant_qtransform
+
 from ..utils.cepstral import normalize_ceps, lifter_ceps
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    WindowType,
+)
+from ..utils.spectral import compute_constant_qtransform
 
 
 def cqt_spectrogram(
     sig,
-    fs=16000,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    fs: int = 16000,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
+    win_type: WindowType = "hamming",
     nfft=512,
-    low_freq=0,
-    high_freq=None,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
     number_of_octaves=7,
     number_of_bins_per_octave=24,
     spectral_threshold=0.005,
@@ -92,7 +101,7 @@ def cqt_spectrogram(
                                     pre_emph_coeff=0.97,
                                     win_len=0.030,
                                     win_hop=0.015,
-                                    win_type="hamming",
+                                    win_type: WindowType="hamming",
                                     nfft=2048,
                                     low_freq=0,
                                     high_freq=fs/2)
@@ -145,16 +154,16 @@ def cqt_spectrogram(
 
 def cqcc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     num_ceps=13,
     pre_emph=1,
     pre_emph_coeff=0.97,
     win_len=0.02,
     win_hop=0.01,
-    win_type="hamming",
+    win_type: WindowType = "hamming",
     nfft=512,
-    low_freq=0,
-    high_freq=None,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
     dct_type=2,
     lifter=None,
     normalize=None,
@@ -246,7 +255,7 @@ def cqcc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming",
+                          win_type: WindowType="hamming",
                           nfft=2048,
                           low_freq=0,
                           high_freq=fs/2,

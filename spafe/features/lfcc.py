@@ -6,28 +6,38 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
+
 from ..fbanks.linear_fbanks import linear_filter_banks
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    WindowType,
+)
 
 
 def linear_spectrogram(
     sig,
-    fs=16000,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    fs: int = 16000,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    fbanks=None,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    fbanks: Optional[np.ndarray] = None,
 ):
     """
     Compute the mel scale spectrogram.
@@ -89,7 +99,7 @@ def linear_spectrogram(
                                                pre_emph_coeff=0.97,
                                                win_len=0.030,
                                                win_hop=0.015,
-                                               win_type="hamming",
+                                               win_type: WindowType="hamming",
                                                nfilts=128,
                                                nfft=2048,
                                                low_freq=0,
@@ -146,23 +156,23 @@ def linear_spectrogram(
 
 def lfcc(
     sig,
-    fs=16000,
+    fs: int = 16000,
     num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     win_len=0.025,
     win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
     dct_type=2,
     use_energy=False,
-    lifter : Optional[int]=None,
-    normalize : Optional[NormalizationType]=None,
-    fbanks: Optional[np.ndarray]=None,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
 ):
     """
     Compute the linear-frequency cepstral coefﬁcients (GFCC features) from an
@@ -236,7 +246,7 @@ def lfcc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming",
+                          win_type: WindowType="hamming",
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,

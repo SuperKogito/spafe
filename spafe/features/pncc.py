@@ -10,12 +10,13 @@ from typing import Optional
 
 import numpy as np
 from scipy.fftpack import dct
+
+from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.converters import ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.filters import ScaleType
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling, WindowType
+from ..utils.preprocessing import pre_emphasis, framing, windowing, WindowType
 
 
 def medium_time_power_calculation(P: np.ndarray, M: int = 2) -> np.ndarray:
@@ -40,7 +41,7 @@ def medium_time_power_calculation(P: np.ndarray, M: int = 2) -> np.ndarray:
         [
             [
                 (1 / (2 * M + 1))
-                * sum(P[max(0, m - M): min(P.shape[0], m + M + 1), l])
+                * sum(P[max(0, m - M) : min(P.shape[0], m + M + 1), l])
                 for l in range(P.shape[1])
             ]
             for m in range(P.shape[0])
@@ -50,8 +51,8 @@ def medium_time_power_calculation(P: np.ndarray, M: int = 2) -> np.ndarray:
 
 
 def asymmetric_lowpass_filtering(
-        Q_tilde_in: np.ndarray,
-        lm_a: float = 0.999, lm_b: float = 0.5) -> np.ndarray:
+    Q_tilde_in: np.ndarray, lm_a: float = 0.999, lm_b: float = 0.5
+) -> np.ndarray:
     """
     Apply asymmetric lowpass filter according to [Kim]_ .
 
@@ -75,10 +76,10 @@ def asymmetric_lowpass_filtering(
     """
     Q_tilde_out = np.zeros_like(Q_tilde_in)
     Q_tilde_out[0,] = (
-            0.9
-            * Q_tilde_in[
-                0,
-            ]
+        0.9
+        * Q_tilde_in[
+            0,
+        ]
     )
 
     # compute asymmetric nonlinear filter
@@ -97,8 +98,9 @@ def asymmetric_lowpass_filtering(
     return Q_tilde_out
 
 
-def temporal_masking(Q_tilde_0: np.ndarray,
-                     lam_t: float = 0.85, myu_t: float = 0.2) -> np.ndarray:
+def temporal_masking(
+    Q_tilde_0: np.ndarray, lam_t: float = 0.85, myu_t: float = 0.2
+) -> np.ndarray:
     """
 
     Args:
@@ -138,10 +140,9 @@ def temporal_masking(Q_tilde_0: np.ndarray,
     return Q_tilde_tm
 
 
-def weight_smoothing(R_tilde: np.ndarray,
-                     Q_tilde: np.ndarray,
-                     nfilts: int = 128,
-                     N: int = 4) -> np.ndarray:
+def weight_smoothing(
+    R_tilde: np.ndarray, Q_tilde: np.ndarray, nfilts: int = 128, N: int = 4
+) -> np.ndarray:
     # TODO: missing argument in docstring : N
     """
     Apply spectral weight smoothing according to [Kim]_.
@@ -176,10 +177,9 @@ def weight_smoothing(R_tilde: np.ndarray,
     return S_tilde
 
 
-def mean_power_normalization(T: np.ndarray,
-                             lam_myu: float = 0.999,
-                             nfilts: int = 80,
-                             k: int = 1) -> np.ndarray:
+def mean_power_normalization(
+    T: np.ndarray, lam_myu: float = 0.999, nfilts: int = 80, k: int = 1
+) -> np.ndarray:
     """
     Apply mean power normalization according to [Kim]_.
 
@@ -217,7 +217,8 @@ def mean_power_normalization(T: np.ndarray,
 
 
 def asymmetric_noise_suppression_with_temporal_masking(
-        Q_tilde: np.ndarray, threshold: float = 0) -> np.ndarray:
+    Q_tilde: np.ndarray, threshold: float = 0
+) -> np.ndarray:
     """
     Apply asymmetric noise suppression with temporal masking according to [Kim]_.
 
@@ -274,27 +275,26 @@ def asymmetric_noise_suppression_with_temporal_masking(
     return R_tilde
 
 
-# TODO: same argument for pre_emph
 def pncc(
-        sig: np.ndarray,
-        fs: int = 16000,
-        num_ceps: int = 13,
-        pre_emph=0,
-        pre_emph_coeff=0.97,
-        power=2,
-        win_len: float = 0.025,
-        win_hop: float = 0.01,
-        win_type: WindowType = "hamming",
-        nfilts: int = 24,
-        nfft: int = 512,
-        low_freq: Optional[float] = None,
-        high_freq: Optional[float] = None,
-        scale: ScaleType = "constant",
-        dct_type: int = 2,
-        lifter: Optional[int] = None,
-        normalize: Optional[NormalizationType] = None,
-        fbanks: Optional[np.ndarray] = None,
-        conversion_approach: ErbConversionApproach = "Glasberg",
+    sig: np.ndarray,
+    fs: int = 16000,
+    num_ceps: int = 13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    power=2,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: Optional[float] = None,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    dct_type: int = 2,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: ErbConversionApproach = "Glasberg",
 ):
     # TODO: unused arg: power
     """
@@ -307,8 +307,8 @@ def pncc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
         power               (int) : power value to use .
@@ -380,7 +380,7 @@ def pncc(
                           pre_emph_coeff=0.97,
                           win_len=0.030,
                           win_hop=0.015,
-                          win_type="hamming",
+                          win_type: WindowType="hamming",
                           nfilts=128,
                           nfft=1024,
                           low_freq=0,

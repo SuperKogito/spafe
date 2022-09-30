@@ -9,9 +9,10 @@
 from typing import Optional
 
 import numpy as np
-from ..utils.filters import scale_fbank, ScaleType
+
 from ..utils.converters import hz2bark, bark2hz, BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import scale_fbank, ScaleType
 
 
 def Fm(fb: float, fc: float) -> float:
@@ -41,13 +42,13 @@ def Fm(fb: float, fc: float) -> float:
 
 
 def bark_filter_banks(
-        nfilts: int = 24,
-        nfft: int = 512,
-        fs: int = 16000,
-        low_freq: float = 0,
-        high_freq: Optional[float] = None,
-        scale: ScaleType = "constant",
-        conversion_approach: BarkConversionApproach = "Wang",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    conversion_approach: BarkConversionApproach = "Wang",
 ):
     # TODO: shouldn't high/low_freq be floats?
     """

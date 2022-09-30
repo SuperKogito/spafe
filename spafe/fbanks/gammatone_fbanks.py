@@ -6,11 +6,13 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import numpy as np
-from ..utils.converters import hz2erb
-from ..utils.filters import scale_fbank
-from ..utils.exceptions import ParameterError, ErrorMsgs
+from typing import Optional
 
+import numpy as np
+
+from ..utils.converters import hz2erb
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import scale_fbank, ScaleType
 
 # Slaney's ERB Filter constants
 EarQ = 9.26449
@@ -79,12 +81,12 @@ def compute_gain(fcs, B, wT, T):
 
 
 def gammatone_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
     order=4,
     conversion_approach="Glasberg",
 ):

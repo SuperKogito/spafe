@@ -9,8 +9,6 @@
 import numpy as np
 from typing_extensions import Literal
 
-from ..utils.exceptions import ParameterError, ErrorMsgs
-
 # init vars
 F0 = 0
 FSP = 200 / 3
@@ -116,8 +114,9 @@ def erb2hz(fe: float, approach: ErbConversionApproach = "Glasberg") -> float:
         return (10 ** (fe / A) - 1) / 0.00437
 
 
-BarkConversionApproach = Literal["Wang", "Tjomov", "Schroeder",
-                                 "Terhardt", "Zwicker", "Traunmueller"]
+BarkConversionApproach = Literal[
+    "Wang", "Tjomov", "Schroeder", "Terhardt", "Zwicker", "Traunmueller"
+]
 
 
 def hz2bark(f: float, approach: BarkConversionApproach = "Wang") -> float:
@@ -267,7 +266,7 @@ def bark2hz(fb: float, approach: BarkConversionApproach = "Wang") -> float:
         return 10 ** (((fb - 8.7) / 14.2) + 3)
     elif approach == "Traunmueller":
         return 1960 * (
-                (__traunmueller_helper(fb) + 0.53) / (26.28 - __traunmueller_helper(fb))
+            (__traunmueller_helper(fb) + 0.53) / (26.28 - __traunmueller_helper(fb))
         )
     else:
         return 600 * np.sinh(fb / 6)

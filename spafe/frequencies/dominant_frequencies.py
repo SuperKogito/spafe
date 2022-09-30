@@ -7,22 +7,23 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import scipy
 import numpy as np
+import scipy
+
 from ..utils.preprocessing import framing, windowing, WindowType
 
 
 def get_dominant_frequencies(
-        sig: np.ndarray,
-        fs: int,
-        butter_filter: bool = False,
-        lower_cutoff: float = 50,
-        upper_cutoff: float = 3000,
-        nfft: int = 512,
-        win_len: float = 0.025,
-        win_hop: float = 0.01,
-        win_type: WindowType = "hamming",
-        only_positive: bool = True,
+    sig: np.ndarray,
+    fs: int,
+    butter_filter: bool = False,
+    lower_cutoff: float = 50,
+    upper_cutoff: float = 3000,
+    nfft: int = 512,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    only_positive: bool = True,
 ) -> np.ndarray:
     # TODO: is "sig" really a filename?
     # TODO: are lower/upper cutoff frequencies integers?
@@ -84,7 +85,7 @@ def get_dominant_frequencies(
                                                             nfft=nfft,
                                                             win_len=win_len,
                                                             win_hop=win_hop,
-                                                            win_type="hamming")
+                                                            win_type: WindowType="hamming")
 
             # compute FFT, Magnitude, Power spectra
             fourrier_transform = np.absolute(np.fft.fft(sig, nfft))
@@ -142,7 +143,7 @@ def get_dominant_frequencies(
 
         # compute magnitude spectrum
         magnitude_spectrum = (1 / nfft) * np.abs(fourrier_transform)
-        power_spectrum = (1 / nfft) * magnitude_spectrum ** 2
+        power_spectrum = (1 / nfft) * magnitude_spectrum**2
 
         # get all frequncies and  only keep positive frequencies
         frequencies = np.fft.fftfreq(len(power_spectrum), 1 / fs)

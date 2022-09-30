@@ -7,10 +7,10 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-from typing import List, Tuple
+from typing import Tuple
 
-import scipy
 import numpy as np
+import scipy
 from scipy import signal
 
 
@@ -70,7 +70,7 @@ def compute_difference(x: np.ndarray, tau_max: int) -> np.ndarray:
     # compute dt(tau) according to (6) and (7) in [DeCheveigné]
     rt_tau_0 = x_cum_sum[w] - x_cum_sum[:w]
     rt_0 = x_cum_sum[w:0:-1]
-    rt = conv[w - 1:]
+    rt = conv[w - 1 :]
     tmp = rt_0 + rt_tau_0 - 2 * rt
     return tmp[:tau_max]
 
@@ -100,10 +100,9 @@ def compute_cmnd(d_t: np.ndarray, tau: int) -> np.ndarray:
     return np.insert(d_prime_t, 0, 1)
 
 
-def get_pitch(cmdf: np.ndarray,
-              tau_min: int,
-              tau_max: int,
-              harmonic_threshold: float = 0.1) -> float:
+def get_pitch(
+    cmdf: np.ndarray, tau_min: int, tau_max: int, harmonic_threshold: float = 0.1
+) -> float:
     """
     Return fundamental period of a frame based on CMND function as implemented in
     [Guyot]_ [DeCheveigné]_.
@@ -131,13 +130,13 @@ def get_pitch(cmdf: np.ndarray,
 
 
 def compute_yin(
-        sig: np.ndarray,
-        fs: int,
-        win_len: float = 0.03,
-        win_hop: float = 0.015,
-        low_freq: int = 50,
-        high_freq: int = 3000,
-        harmonic_threshold: float = 0.1,
+    sig: np.ndarray,
+    fs: int,
+    win_len: float = 0.03,
+    win_hop: float = 0.015,
+    low_freq: int = 50,
+    high_freq: int = 3000,
+    harmonic_threshold: float = 0.1,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     # TODO: check that high/low freq are integers?
     """
@@ -244,7 +243,7 @@ def compute_yin(
     # time values for each analysis window
     time_scale = range(0, len(sig) - w_len, w_step)
     times = np.ndarray([t / float(fs) for t in time_scale])
-    frames = [sig[t: t + w_len] for t in time_scale]
+    frames = [sig[t : t + w_len] for t in time_scale]
 
     pitches = np.zeros(time_scale)
     harmonic_rates = np.zeros(time_scale)

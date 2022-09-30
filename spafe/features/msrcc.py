@@ -10,34 +10,36 @@ from typing import Optional
 
 import numpy as np
 from scipy.fftpack import dct
+
 from ..features.mfcc import mel_spectrogram
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.converters import MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import zero_handling, WindowType
 
-# TODO : same argument for pre_emph
+
 def msrcc(
-        sig,
-        fs=16000,
-        num_ceps=13,
-        pre_emph=0,
-        pre_emph_coeff=0.97,
-        win_len=0.025,
-        win_hop=0.01,
-        win_type="hamming",
-        nfilts=24,
-        nfft=512,
-        low_freq=0,
-        high_freq=None,
-        scale="constant",
-        gamma=-1 / 7,
-        dct_type=2,
-        use_energy=False,
-        lifter: Optional[int] = None,
-        normalize: Optional[NormalizationType] = None,
-        fbanks: Optional[np.ndarray] = None,
-        conversion_approach: MelConversionApproach = "Oshaghnessy",
+    sig,
+    fs: int = 16000,
+    num_ceps=13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    win_len=0.025,
+    win_hop=0.01,
+    win_type: WindowType = "hamming",
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    gamma: float = -1 / 7,
+    dct_type: int = 2,
+    use_energy: bool = False,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute the Magnitude-based Spectral Root Cepstral Coefﬁcients (MSRCC) from
@@ -49,8 +51,8 @@ def msrcc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -117,7 +119,7 @@ def msrcc(
                             pre_emph_coeff=0.97,
                             win_len=0.030,
                             win_hop=0.015,
-                            win_type="hamming",
+                            win_type: WindowType="hamming",
                             nfilts=128,
                             nfft=2048,
                             low_freq=0,
@@ -157,7 +159,7 @@ def msrcc(
     )
 
     # -> (.)^(gamma)
-    features = features ** gamma
+    features = features**gamma
 
     # -> DCT(.)
     msrccs = dct(x=features, type=dct_type, axis=1, norm="ortho")[:, :num_ceps]
