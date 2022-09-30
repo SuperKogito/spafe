@@ -46,7 +46,7 @@ def psrcc(
     normalize: Optional[int] = None,
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: MelConversionApproach = "Oshaghnessy",
-):
+) -> np.ndarray:
     """
     Compute the Phase-based Spectral Root Cepstral Coefﬁcients (PSRCC) from an
     audio signal according to [Tapkir]_.

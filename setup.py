@@ -7,11 +7,11 @@ from spafe import version
 here = Path(__file__).parent
 
 # get readme text
-with open(here / "README.md") as filey:
-    LONG_DESCRIPTION = filey.read()
+with open(here / "README.md") as readme_file:
+    LONG_DESCRIPTION = readme_file.read()
 
-with open(here / "requirements.txt") as reqfile:
-    requirements = reqfile.read().split()
+with open(here / "requirements.txt") as req_file:
+    requirements = req_file.read().split()
 
 setup(
     name="spafe",

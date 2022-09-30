@@ -25,7 +25,7 @@ from ..utils.preprocessing import (
 
 
 def linear_spectrogram(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
@@ -38,7 +38,7 @@ def linear_spectrogram(
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
     fbanks: Optional[np.ndarray] = None,
-):
+) -> np.ndarray:
     """
     Compute the mel scale spectrogram.
 

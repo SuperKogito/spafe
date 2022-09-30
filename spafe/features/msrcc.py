@@ -20,7 +20,7 @@ from ..utils.preprocessing import zero_handling, WindowType
 
 
 def msrcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     num_ceps=13,
     pre_emph: bool = True,
@@ -40,7 +40,7 @@ def msrcc(
     normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: MelConversionApproach = "Oshaghnessy",
-):
+) -> np.ndarray:
     """
     Compute the Magnitude-based Spectral Root Cepstral Coefﬁcients (MSRCC) from
     an audio signal according to [Tapkir]_.

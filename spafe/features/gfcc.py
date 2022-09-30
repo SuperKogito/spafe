@@ -6,13 +6,14 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 from scipy.fftpack import dct
 
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import ScaleType
 from ..utils.preprocessing import (
@@ -25,7 +26,7 @@ from ..utils.preprocessing import (
 
 
 def erb_spectrogram(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
@@ -38,8 +39,8 @@ def erb_spectrogram(
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
     fbanks: Optional[np.ndarray] = None,
-    conversion_approach="Glasberg",
-):
+    conversion_approach: ErbConversionApproach = "Glasberg",
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Compute the Gammatone/ erb scale spectrogram also known as Cochleagram.
 
@@ -162,26 +163,26 @@ def erb_spectrogram(
 
 
 def gfcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
-    num_ceps=13,
+    num_ceps: int = 13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
     win_type: WindowType = "hamming",
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
-    dct_type=2,
-    use_energy=False,
+    dct_type: int = 2,
+    use_energy: bool = False,
     lifter: Optional[int] = None,
     normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
-    conversion_approach="Glasberg",
-):
+    conversion_approach: ErbConversionApproach = "Glasberg",
+) -> np.ndarray:
     """
     Compute the Gammatone-Frequency Cepstral Coefﬁcients (GFCC features) from an
     audio signal as described in [Jeevan]_ and [Xu]_.

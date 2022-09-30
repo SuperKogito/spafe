@@ -13,6 +13,7 @@ from scipy.fftpack import dct
 
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import ScaleType
 from ..utils.preprocessing import (
@@ -25,7 +26,7 @@ from ..utils.preprocessing import (
 
 
 def ngcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     num_ceps=13,
     pre_emph: bool = True,
@@ -35,16 +36,16 @@ def ngcc(
     win_type: WindowType = "hamming",
     nfilts: int = 24,
     nfft: int = 512,
-    low_freq=None,
-    high_freq=None,
+    low_freq: Optional[float] = None,
+    high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
-    dct_type=2,
-    use_energy=False,
+    dct_type: int = 2,
+    use_energy: bool = False,
     lifter: Optional[int] = None,
     normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
-    conversion_approach="Glasberg",
-):
+    conversion_approach: ErbConversionApproach = "Glasberg",
+) -> np.ndarray:
     """
     Compute the normalized gammachirp cepstral coefﬁcients (NGCC features) from
     an audio signal according to [Zouhir]_.
@@ -155,6 +156,7 @@ def ngcc(
         fbanks = gamma_fbanks_mat
 
     # pre-emphasis
+    # TODO: pre_emph_coeff is not used
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 

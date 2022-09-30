@@ -6,11 +6,11 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 
-from ..utils.converters import hz2erb
+from ..utils.converters import hz2erb, ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import scale_fbank, ScaleType
 
@@ -18,14 +18,16 @@ from ..utils.filters import scale_fbank, ScaleType
 EarQ = 9.26449
 minBW = 24.7
 
-
-def generate_center_frequencies(min_freq, max_freq, nfilts):
+# TODO : shouldn't frequencies be floats?
+def generate_center_frequencies(
+    min_freq: float, max_freq: float, nfilts: int
+) -> np.ndarray:
     """
     Compute center frequencies in the ERB scale.
 
     Args:
-        min_freq (int) : minimum frequency of the center frequencies domain.
-        max_freq (int) : maximum frequency of the center frequencies domain.
+        min_freq (int) : minimum frequency of the center frequencies' domain.
+        max_freq (int) : maximum frequency of the center frequencies' domain.
         nfilts   (int) : number of filters <=> number of center frequencies to compute.
 
     Returns:
@@ -42,7 +44,9 @@ def generate_center_frequencies(min_freq, max_freq, nfilts):
     return center_freqs[::-1]
 
 
-def compute_gain(fcs, B, wT, T):
+def compute_gain(
+    fcs: np.ndarray, B: np.ndarray, wT: np.ndarray, T: float
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Compute Gain and matrixify computation for speed purposes [Ellis-spectrogram]_.
 
@@ -87,8 +91,8 @@ def gammatone_filter_banks(
     low_freq: float = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
-    order=4,
-    conversion_approach="Glasberg",
+    order: int = 4,
+    conversion_approach: ErbConversionApproach = "Glasberg",
 ):
     """
     Compute Gammatone-filter banks. The filters are stored in the rows, the columns

@@ -25,11 +25,13 @@ def compute_constant_qtransform(
     number_of_bins_per_octave: int = 12,
     win_type: WindowType = "hamming",
     spectral_threshold: float = 0.0054,
-    f0: int = 120,
+    f0: float = 120,
     q_rate: float = 1.0,
 ):
     # TODO: mismatch between the default falue for f0 in docstring and actual default
     # TODO: review type for int/float arguments
+    # TODO: shoudln't f0 be a float?
+    # TODO: clarify the type for frames please
     """
     Compute the constant Q-transform as described in [Browm1991]_, [Brown1992]_
     and [Schörkhuber]_.

@@ -12,7 +12,7 @@ import numpy as np
 from scipy.fftpack import dct
 from scipy.signal import resample
 
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import (
     pre_emphasis,
@@ -25,22 +25,23 @@ from ..utils.spectral import compute_constant_qtransform
 
 
 def cqt_spectrogram(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
     win_type: WindowType = "hamming",
-    nfft=512,
+    nfft: int = 512,
     low_freq: float = 0,
     high_freq: Optional[float] = None,
-    number_of_octaves=7,
-    number_of_bins_per_octave=24,
-    spectral_threshold=0.005,
-    f0=120,
-    q_rate=1.0,
+    number_of_octaves: int = 7,
+    number_of_bins_per_octave: int = 24,
+    spectral_threshold: float = 0.005,
+    f0: float = 120,
+    q_rate: float = 1.0,
 ):
+    # TODO: shouldn't f0 be a float?
     """
     Compute the Constant-Q Cepstral spectrogram from an audio signal as in [Todisco]_.
 
@@ -125,6 +126,7 @@ def cqt_spectrogram(
         raise ParameterError(ErrorMsgs["high_freq"])
 
     # pre-emphasis
+    # TODO: pre_emph is unused?
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
@@ -155,24 +157,24 @@ def cqt_spectrogram(
 def cqcc(
     sig,
     fs: int = 16000,
-    num_ceps=13,
-    pre_emph=1,
-    pre_emph_coeff=0.97,
-    win_len=0.02,
-    win_hop=0.01,
+    num_ceps: int = 13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    win_len: float = 0.02,
+    win_hop: float = 0.01,
     win_type: WindowType = "hamming",
-    nfft=512,
+    nfft: int = 512,
     low_freq: float = 0,
     high_freq: Optional[float] = None,
-    dct_type=2,
-    lifter=None,
-    normalize=None,
-    number_of_octaves=7,
-    number_of_bins_per_octave=24,
-    resampling_ratio=0.95,
-    spectral_threshold=0.005,
-    f0=120,
-    q_rate=1.0,
+    dct_type: int = 2,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    number_of_octaves: int = 7,
+    number_of_bins_per_octave: int = 24,
+    resampling_ratio: float = 0.95,
+    spectral_threshold: float = 0.005,
+    f0: float = 120,
+    q_rate: float = 1.0,
 ):
     """
     Compute the Constant-Q Cepstral Coeﬃcients (CQCC features) from an audio signal

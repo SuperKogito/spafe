@@ -187,7 +187,7 @@ def mfcc(
     normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: MelConversionApproach = "Oshaghnessy",
-):
+) -> np.ndarray:
     """
     Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
     signal. This function offers multiple approaches to features extraction
@@ -335,7 +335,7 @@ def mfcc(
 
 
 def imfcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     num_ceps=13,
     pre_emph: bool = True,
@@ -353,8 +353,8 @@ def imfcc(
     lifter=0,
     normalize=None,
     fbanks: Optional[np.ndarray] = None,
-    conversion_approach: MelConversionApproach ="Oshaghnessy",
-):
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
+) -> np.ndarray:
     """
     Compute Inverse MFCC features from an audio signal.
 

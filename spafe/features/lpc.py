@@ -6,10 +6,12 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 import scipy
 
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.preprocessing import (
     pre_emphasis,
     framing,
@@ -226,17 +228,17 @@ def lpc2lpcc(a, e, nceps):
 
 
 def lpcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     order=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
     win_type: WindowType = "hamming",
-    lifter=None,
-    normalize=None,
-):
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+) -> np.ndarray:
     """
     Computes the linear predictive cepstral components / coefficents from an
     audio signal.

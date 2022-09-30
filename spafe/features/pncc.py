@@ -295,7 +295,7 @@ def pncc(
     normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: ErbConversionApproach = "Glasberg",
-):
+) -> np.ndarray:
     # TODO: unused arg: power
     """
     Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,

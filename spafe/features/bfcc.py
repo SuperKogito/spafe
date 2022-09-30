@@ -12,7 +12,7 @@ import numpy as np
 from scipy.fftpack import dct
 
 from ..fbanks.bark_fbanks import bark_filter_banks
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.converters import BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import ScaleType
@@ -25,7 +25,7 @@ from ..utils.preprocessing import (
 )
 
 
-def intensity_power_law(w):
+def intensity_power_law(w: np.ndarray) -> np.ndarray:
     """
     Apply the intensity power law based on [Hermansky]_ .
 
@@ -47,7 +47,7 @@ def intensity_power_law(w):
 
 
 def bark_spectrogram(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     pre_emph: float = 0,
     pre_emph_coeff: float = 0.97,
@@ -184,7 +184,7 @@ def bark_spectrogram(
 
 
 def bfcc(
-    sig,
+    sig: np.ndarray,
     fs: int = 16000,
     num_ceps: int = 13,
     pre_emph: bool = True,
@@ -197,13 +197,13 @@ def bfcc(
     low_freq: float = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
+    dct_type: int = 2,
+    use_energy: bool = False,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: BarkConversionApproach = "Wang",
-):
+) -> np.ndarray:
     """
     Compute the Bark Frequency Cepstral Coefﬁcients (BFCCs) from an audio
     signal as described in [Kaminska]_.
