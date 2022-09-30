@@ -6,13 +6,16 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
-from ..utils.filters import scale_fbank
-from ..utils.converters import hz2bark, bark2hz
+from ..utils.filters import scale_fbank, ScaleType
+from ..utils.converters import hz2bark, bark2hz, BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 
 
-def Fm(fb, fc):
+def Fm(fb: float, fc: float) -> float:
+    # TODO: shouldn't fb/fc be floats?
     """
     Compute a Bark filter around a certain center frequency in bark [Hermansky]_.
 
@@ -38,14 +41,15 @@ def Fm(fb, fc):
 
 
 def bark_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    conversion_approach="Wang",
+        nfilts: int = 24,
+        nfft: int = 512,
+        fs: int = 16000,
+        low_freq: float = 0,
+        high_freq: Optional[float] = None,
+        scale: ScaleType = "constant",
+        conversion_approach: BarkConversionApproach = "Wang",
 ):
+    # TODO: shouldn't high/low_freq be floats?
     """
     Compute Bark filter banks. The filters are stored in the rows, the columns
     correspond to fft bins.

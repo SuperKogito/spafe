@@ -168,9 +168,9 @@ def mfcc(
     scale="constant",
     dct_type=2,
     use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
+    lifter : Optional[int]=None,
+    normalize : Optional[NormalizationType]=None,
+    fbanks: Optional[np.ndarray]=None,
     conversion_approach="Oshaghnessy",
 ):
     """
@@ -216,7 +216,7 @@ def mfcc(
                                     (Default is 0).
         lifter              (int) : apply liftering if not None.
                                     (Default is None).
-        normalize           (int) : apply normalization if approach specified.
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is 0).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -375,7 +375,7 @@ def imfcc(
                                     (Default is 0).
         lifter              (int) : apply liftering if not None.
                                     (Default is None).
-        normalize           (int) : apply normalization approach specified.
+        normalize           (str) : apply normalization approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).

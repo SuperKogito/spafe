@@ -6,15 +6,19 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling, WindowType
 
 
-def medium_time_power_calculation(P, M=2):
+def medium_time_power_calculation(P: np.ndarray, M: int = 2) -> np.ndarray:
     """
     Compute the medium time power calulations according to [Kim]_ .
 
@@ -36,7 +40,7 @@ def medium_time_power_calculation(P, M=2):
         [
             [
                 (1 / (2 * M + 1))
-                * sum(P[max(0, m - M) : min(P.shape[0], m + M + 1), l])
+                * sum(P[max(0, m - M): min(P.shape[0], m + M + 1), l])
                 for l in range(P.shape[1])
             ]
             for m in range(P.shape[0])
@@ -45,7 +49,9 @@ def medium_time_power_calculation(P, M=2):
     return Q_tilde
 
 
-def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
+def asymmetric_lowpass_filtering(
+        Q_tilde_in: np.ndarray,
+        lm_a: float = 0.999, lm_b: float = 0.5) -> np.ndarray:
     """
     Apply asymmetric lowpass filter according to [Kim]_ .
 
@@ -69,10 +75,10 @@ def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
     """
     Q_tilde_out = np.zeros_like(Q_tilde_in)
     Q_tilde_out[0,] = (
-        0.9
-        * Q_tilde_in[
-            0,
-        ]
+            0.9
+            * Q_tilde_in[
+                0,
+            ]
     )
 
     # compute asymmetric nonlinear filter
@@ -91,7 +97,8 @@ def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
     return Q_tilde_out
 
 
-def temporal_masking(Q_tilde_0, lam_t=0.85, myu_t=0.2):
+def temporal_masking(Q_tilde_0: np.ndarray,
+                     lam_t: float = 0.85, myu_t: float = 0.2) -> np.ndarray:
     """
 
     Args:
@@ -131,7 +138,11 @@ def temporal_masking(Q_tilde_0, lam_t=0.85, myu_t=0.2):
     return Q_tilde_tm
 
 
-def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
+def weight_smoothing(R_tilde: np.ndarray,
+                     Q_tilde: np.ndarray,
+                     nfilts: int = 128,
+                     N: int = 4) -> np.ndarray:
+    # TODO: missing argument in docstring : N
     """
     Apply spectral weight smoothing according to [Kim]_.
 
@@ -165,7 +176,10 @@ def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
     return S_tilde
 
 
-def mean_power_normalization(T, lam_myu=0.999, nfilts=80, k=1):
+def mean_power_normalization(T: np.ndarray,
+                             lam_myu: float = 0.999,
+                             nfilts: int = 80,
+                             k: int = 1) -> np.ndarray:
     """
     Apply mean power normalization according to [Kim]_.
 
@@ -202,13 +216,14 @@ def mean_power_normalization(T, lam_myu=0.999, nfilts=80, k=1):
     return U
 
 
-def asymmetric_noise_suppression_with_temporal_masking(Q_tilde, threshold=0):
+def asymmetric_noise_suppression_with_temporal_masking(
+        Q_tilde: np.ndarray, threshold: float = 0) -> np.ndarray:
     """
     Apply asymmetric noise suppression with temporal masking according to [Kim]_.
 
     Args:
         Q_tilde (numpy.ndarray) : array representing the "medium-time power".
-        threshold         (int) : threshold for the half wave rectifier.
+        threshold         (float) : threshold for the half wave rectifier.
 
     Returns:
         (numpy.ndarray) array after asymmetric noise sup and temporal masking.
@@ -259,27 +274,29 @@ def asymmetric_noise_suppression_with_temporal_masking(Q_tilde, threshold=0):
     return R_tilde
 
 
+# TODO: same argument for pre_emph
 def pncc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    power=2,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=None,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Glasberg",
+        sig: np.ndarray,
+        fs: int = 16000,
+        num_ceps: int = 13,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        power=2,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        nfilts: int = 24,
+        nfft: int = 512,
+        low_freq: Optional[float] = None,
+        high_freq: Optional[float] = None,
+        scale: ScaleType = "constant",
+        dct_type: int = 2,
+        lifter: Optional[int] = None,
+        normalize: Optional[NormalizationType] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach: ErbConversionApproach = "Glasberg",
 ):
+    # TODO: unused arg: power
     """
     Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,
     based on [Kim]_ [Nakamura]_ .
@@ -314,9 +331,9 @@ def pncc(
                                     (Default is "constant").
         dct_type            (int) : type of DCT used.
                                     (Default is 2).
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -429,7 +446,7 @@ def pncc(
     # -> mean power normalization
     U = mean_power_normalization(T, nfilts=nfilts)
 
-    # -> power law non linearity
+    # -> power law non-linearity
     V = U ** (1 / 15)
 
     # DCT(.)

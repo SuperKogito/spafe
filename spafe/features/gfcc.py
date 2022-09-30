@@ -167,9 +167,9 @@ def gfcc(
     scale="constant",
     dct_type=2,
     use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
+    lifter : Optional[int]=None,
+    normalize : Optional[NormalizationType]=None,
+    fbanks: Optional[np.ndarray]=None,
     conversion_approach="Glasberg",
 ):
     """
@@ -208,7 +208,7 @@ def gfcc(
                                     (Default is 0).
         lifter              (int) : apply liftering if value given.
                                     (Default is None).
-        normalize           (int) : apply normalization if type specified.
+        normalize           (str) : apply normalization if type specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).

@@ -6,35 +6,44 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
-from ..utils.filters import rasta_filter
+
+from ..utils.converters import BarkConversionApproach
+from ..utils.filters import rasta_filter, ScaleType
 from ..features.lpc import __lpc_helper, lpc2lpcc
 from ..fbanks.bark_fbanks import bark_filter_banks
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling, WindowType
 
 
+# TODO: "pre_emph" argument could use the same logic as lifter and normalize:
+#  set default value to None and apply if not none.
+#  This would spare the use of a boolean and make the arguments more homogeneous
+
+# TODO : should all freqs be floats instead of ints?
 def __rastaplp(
-    sig,
-    fs=16000,
-    order=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    do_rasta=False,
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Wang",
-):
+        sig: np.ndarray,
+        fs: int = 16000,
+        order: int = 13,
+        pre_emph: bool = False,
+        pre_emph_coeff: float = 0.97,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        do_rasta: bool = False,
+        nfilts: int = 24,
+        nfft: int = 512,
+        low_freq: float = 0,
+        high_freq: Optional[float] = None,
+        scale: ScaleType = "constant",
+        lifter: Optional[int] = None,
+        normalize: Optional[NormalizationType] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach: BarkConversionApproach = "Wang",
+) -> np.ndarray:
     """
     Compute Perceptual Linear Prediction coefficients with or without rasta filtering.
 
@@ -44,8 +53,8 @@ def __rastaplp(
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if True.
+                                    (Default is False).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
         win_len           (float) : window length in sec.
@@ -66,9 +75,9 @@ def __rastaplp(
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -138,10 +147,10 @@ def __rastaplp(
         auditory_spectrum = np.exp(ras_nl_aspectrum)
 
     # equal loudness pre_emphasis
-    E = lambda w: ((w**2 + 56.8 * 10**6) * w**4) / (
-        (w**2 + 6.3 * 10**6)
-        * (w**2 + 0.38 * 10**9)
-        * (w**6 + 9.58 * 10**26)
+    E = lambda w: ((w ** 2 + 56.8 * 10 ** 6) * w ** 4) / (
+            (w ** 2 + 6.3 * 10 ** 6)
+            * (w ** 2 + 0.38 * 10 ** 9)
+            * (w ** 6 + 9.58 * 10 ** 26)
     )
     Y = [E(w) for w in auditory_spectrum]
 
@@ -155,14 +164,13 @@ def __rastaplp(
     lpcs = np.zeros((L.shape[0], order))
     lpccs = np.zeros((L.shape[0], order))
     for i in range(L.shape[0]):
-
         a, e = __lpc_helper(inverse_fourrier_transform[i, :], order - 1)
         lpcs[i, :] = a
         lpcc_coeffs = lpc2lpcc(a, e, order)
         lpccs[i, :] = np.array(lpcc_coeffs)
 
     # liftering
-    if lifter:
+    if lifter is not None:
         lpccs = lifter_ceps(lpccs, lifter)
 
     # normalize
@@ -173,24 +181,25 @@ def __rastaplp(
 
 
 def plp(
-    sig,
-    fs=16000,
-    order=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Wang",
-):
+        sig: np.ndarray,
+        fs: int = 16000,
+        order: int = 13,
+        pre_emph: bool = False,
+        pre_emph_coeff: float = 0.97,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        nfilts: int = 24,
+        nfft: int = 512,
+        low_freq: float = 0,
+        high_freq: Optional[float] = None,
+        scale="constant",
+        lifter: Optional[int] = None,
+        normalize: Optional[NormalizationType] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach="Wang",
+) -> np.ndarray:
+    # TODO: unused arguments : scale and conversion_approach
     """
     Compute Perceptual linear prediction coefficents according to [Hermansky]_
     and [Ajibola]_.
@@ -201,7 +210,7 @@ def plp(
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
+        pre_emph            (bool) : apply pre-emphasis if 1.
                                     (Default is 1).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
@@ -221,9 +230,9 @@ def plp(
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -295,24 +304,25 @@ def plp(
 
 
 def rplp(
-    sig,
-    fs=16000,
-    order=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Wang",
-):
+        sig: np.ndarray,
+        fs: int = 16000,
+        order: int = 13,
+        pre_emph: bool = False,
+        pre_emph_coeff: float = 0.97,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        nfilts: int = 24,
+        nfft: int = 512,
+        low_freq: float = 0,
+        high_freq: Optional[float] = None,
+        scale="constant",
+        lifter: Optional[int] = None,
+        normalize: Optional[NormalizationType] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach="Wang",
+) -> np.ndarray:
+    # TODO: unused arguments : scale and conversion_approach
     """
     Compute rasta Perceptual linear prediction coefficents according to [Hermansky]_
     and [Ajibola]_.
@@ -343,9 +353,9 @@ def rplp(
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).

@@ -227,9 +227,9 @@ def bfcc(
                                     (Default is 2).
         use_energy          (int) : overwrite C0 with true log energy.
                                     (Default is 0).
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).

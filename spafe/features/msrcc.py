@@ -6,35 +6,38 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
 from ..features.mfcc import mel_spectrogram
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
 
-
+# TODO : same argument for pre_emph
 def msrcc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    gamma=-1 / 7,
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Oshaghnessy",
+        sig,
+        fs=16000,
+        num_ceps=13,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        win_len=0.025,
+        win_hop=0.01,
+        win_type="hamming",
+        nfilts=24,
+        nfft=512,
+        low_freq=0,
+        high_freq=None,
+        scale="constant",
+        gamma=-1 / 7,
+        dct_type=2,
+        use_energy=False,
+        lifter: Optional[int] = None,
+        normalize: Optional[NormalizationType] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute the Magnitude-based Spectral Root Cepstral Coefﬁcients (MSRCC) from
@@ -74,11 +77,11 @@ def msrcc(
                                     (Default is 0).
         lifter              (int) : apply liftering if specified.
                                     (Default is None).
-        normalize           (int) : apply normalization if specified.
+        normalize           (str) : apply normalization if specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
-        conversion_approach (str) : approach to use for conversion to the erb scale.
+        conversion_approach (str) : approach to use for conversion to the mel scale.
                                     (Default is "Oshaghnessy").
 
     Returns:
@@ -154,7 +157,7 @@ def msrcc(
     )
 
     # -> (.)^(gamma)
-    features = features**gamma
+    features = features ** gamma
 
     # -> DCT(.)
     msrccs = dct(x=features, type=dct_type, axis=1, norm="ortho")[:, :num_ceps]

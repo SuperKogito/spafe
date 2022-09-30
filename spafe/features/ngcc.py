@@ -30,9 +30,9 @@ def ngcc(
     scale="constant",
     dct_type=2,
     use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
+    lifter : Optional[int]=None,
+    normalize : Optional[NormalizationType]=None,
+    fbanks: Optional[np.ndarray]=None,
     conversion_approach="Glasberg",
 ):
     """
@@ -69,9 +69,9 @@ def ngcc(
                                     (Default is 2).
         use_energy          (int) : overwrite C0 with true log energy
                                     (Default is 0).
-        lifter              (int) : apply liftering if specifid.
+        lifter              (int) : apply liftering if specified.
                                     (Default is None).
-        normalize           (int) : apply normalization if specifid.
+        normalize           (str) : apply normalization if specified.
                                     (Default is 0).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).

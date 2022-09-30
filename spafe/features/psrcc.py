@@ -6,35 +6,43 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
 from ..fbanks.mel_fbanks import mel_filter_banks
 from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.converters import BarkConversionApproach, MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling, WindowType
 
+
+# TODO: "pre_emph" argument could use the same logic as lifter and normalize:
+#  set default value to None and apply if not none.
+#  This would spare the use of a boolean and make the arguments more homogeneous
 
 def psrcc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=26,
-    nfft=512,
-    low_freq=None,
-    high_freq=None,
-    scale="constant",
-    gamma=-1 / 7,
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Oshaghnessy",
+        sig: np.ndarray,
+        fs: int = 16000,
+        num_ceps: int = 13,
+        pre_emph=0,
+        pre_emph_coeff=0.97,
+        win_len: float = 0.025,
+        win_hop: float = 0.01,
+        win_type: WindowType = "hamming",
+        nfilts: int = 26,
+        nfft: int = 512,
+        low_freq: Optional[float] = None,
+        high_freq: Optional[float] = None,
+        scale: ScaleType = "constant",
+        gamma: float = -1 / 7,
+        dct_type: int = 2,
+        use_energy: bool = False,
+        lifter: Optional[int] = None,
+        normalize: Optional[int] = None,
+        fbanks: Optional[np.ndarray] = None,
+        conversion_approach: MelConversionApproach = "Oshaghnessy",
 ):
     """
     Compute the Phase-based Spectral Root Cepstral Coefﬁcients (PSRCC) from an
@@ -72,10 +80,10 @@ def psrcc(
                                     (Default is 2).
         use_energy          (int) : overwrite C0 with true log energy.
                                     (Default is 0).
-        lifter              (int) : apply liftering if specifid.
+        lifter              (int) : apply liftering if specified.
                                     (Default is None).
-        normalize           (int) : apply normalization if specifid.
-                                    (Default is 0).
+        normalize           (str) : apply normalization if specified.
+                                    (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
         conversion_approach (str) : mel scale conversion scale.
@@ -143,6 +151,7 @@ def psrcc(
         fbanks = mel_fbanks_mat
 
     # pre-emphasis
+    # TODO: this is not using the pre_emph_coeff argument
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
@@ -161,7 +170,7 @@ def psrcc(
     features = np.dot(fft_phases, fbanks.T)
 
     # -> (.)^(gamma)
-    features = features**gamma
+    features = features ** gamma
 
     # assign 0 to values to be computed based on negative phases (otherwise results in nan)
     features[np.isnan(features)] = 0

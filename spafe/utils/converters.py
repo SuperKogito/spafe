@@ -19,8 +19,10 @@ BARK_PT = (BARK_FREQ - F0) / FSP
 LOGSTEP = np.exp(np.log(6.4) / 27.0)
 A = (1000 * np.log(10)) / (24.7 * 4.37)
 
+ErbConversionApproach = Literal["Glasberg"]
 
-def hz2erb(f: float, approach: str = "Glasberg") -> float:
+
+def hz2erb(f: float, approach: ErbConversionApproach = "Glasberg") -> float:
     """
     Convert Hz frequencies to Erb as referenced in [Glasberg]_.
 
@@ -70,7 +72,7 @@ def hz2erb(f: float, approach: str = "Glasberg") -> float:
         return A * np.log10(1 + f * 0.00437)
 
 
-def erb2hz(fe: float, approach: str = "Glasberg") -> float:
+def erb2hz(fe: float, approach: ErbConversionApproach = "Glasberg") -> float:
     """
     Convert Erb frequencies to Hz as referenced in [Glasberg]_.
 

@@ -160,9 +160,9 @@ def lfcc(
     scale="constant",
     dct_type=2,
     use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
+    lifter : Optional[int]=None,
+    normalize : Optional[NormalizationType]=None,
+    fbanks: Optional[np.ndarray]=None,
 ):
     """
     Compute the linear-frequency cepstral coefﬁcients (GFCC features) from an

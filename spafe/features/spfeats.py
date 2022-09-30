@@ -223,7 +223,7 @@ def spectral_flatness(sig, spectrum: np.ndarray) -> float:
     return sf
 
 
-def spectral_rolloff(sig, fs, spectrum: np.ndarray, k=0.85) -> float:
+def spectral_rolloff(sig, fs, spectrum: np.ndarray, k: float = 0.85) -> float:
     """
     Compute the spectral roll-off point which measures the bandwidth of the audio
     signal by determining the frequency bin under which a specified k percentage
