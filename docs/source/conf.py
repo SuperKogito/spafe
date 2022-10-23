@@ -39,7 +39,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.todo",
     "sphinx.ext.intersphinx",
-    "sphinxcontrib.napoleon",
+    "sphinx.ext.napoleon",
     "nbsphinx",
     "matplotlib.sphinxext.plot_directive",  # docstring examples
     "sphinx.ext.mathjax",

@@ -6,9 +6,8 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import matplotlib
 import numpy as np
-import matplotlib.pyplot as plt
+
 from spafe.utils.converters import hz2mel, hz2bark, hz2erb
 
 
@@ -64,6 +63,8 @@ def show_fbanks(
         show_center_freqs  (bool) : if true show center frequencies.
                                     (Default is True).
     """
+    import matplotlib.pyplot as plt
+
     # init plot
     fig = plt.figure(figsize=figsize)
     ax1 = fig.add_subplot(111)
@@ -136,6 +137,8 @@ def show_spectrogram(
         colorbar       (bool) : if true add colorbar.
                                 (Default is True).
     """
+    import matplotlib.pyplot as plt
+
     # init vars
     amin = 1e-10
     magnitude = np.abs(spectrogram)
@@ -180,6 +183,8 @@ def show_features(feats, title, ylabel, xlabel, figsize=(14, 4), cmap="jet"):
         cmap            (str) : matplotlib colormap to use.
                                 (Default is "jet").
     """
+    import matplotlib.pyplot as plt
+
     plt.figure(figsize=figsize)
     plt.imshow(
         feats.T, origin="lower", aspect="auto", cmap=cmap, interpolation="nearest"
