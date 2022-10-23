@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>spafe.frequencies.fundamental_frequencies &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/social_media_sharing.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="spafe.utils" href="../utils/_utils.html" />
+    <link rel="prev" title="spafe.frequencies.dominant_frequencies" href="dominant_frequencies.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">🧠 SuperKogito/Spafe</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/index.html">Home<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/projects.html">Projects<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/blog.html">Blog<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/about.html">About Me<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../api_documentation.html">
+  📄 API documentation
+ </a>
+</li>
+
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables frequencies/fundamental_frequencies and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "frequencies/fundamental_frequencies.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "frequencies/fundamental_frequencies.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2.0") {
+                node.classList.add("active");
+                let btn = document.getElementById("version_switcher_button");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/superkogito/" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../_static/logo.png" /></div>
+
+<div class="bio-info">
+  <div class="name">
+  </div>
+  <div class="focusareas">
+    🔉 Spafe: Simplified Python Audio Features Extraction 〰️
+  </div>
+</div>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API documentation:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fbanks/_fbanks.html">
+   spafe.fbanks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/bark_fbanks.html">
+     spafe.fbanks.bark_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/gammatone_fbanks.html">
+     spafe.fbanks.gammatone_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/linear_fbanks.html">
+     spafe.fbanks.linear_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/mel_fbanks.html">
+     spafe.fbanks.mel_fbanks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../features/_features.html">
+   spafe.features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/bfcc.html">
+     spafe.features.bfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/cqcc.html">
+     spafe.features.cqcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/gfcc.html">
+     spafe.features.gfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/lfcc.html">
+     spafe.features.lfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/lpc.html">
+     spafe.features.lpc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/mfcc.html">
+     spafe.features.mfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/msrcc.html">
+     spafe.features.msrcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/ngcc.html">
+     spafe.features.ngcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/pncc.html">
+     spafe.features.pncc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/psrcc.html">
+     spafe.features.psrcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/rplp.html">
+     spafe.features.rplp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../features/spfeats.html">
+     spafe.features.spfeats
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="_frequencies.html">
+   spafe.frequencies
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="dominant_frequencies.html">
+     spafe.frequencies.dominant_frequencies
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     spafe.frequencies.fundamental_frequencies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../utils/_utils.html">
+   spafe.utils
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/cepstral.html">
+     spafe.utils.cepstral
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/converters.html">
+     spafe.utils.converters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/filters.html">
+     spafe.utils.filters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/preprocessing.html">
+     spafe.utils.preprocessing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/spectral.html">
+     spafe.utils.spectral
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/vis.html">
+     spafe.utils.vis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+
+
+<!--  Bootstrap HTML  -->
+<div id="lawmsg" class="alert alert-info alert-dismissible h5 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    We use cookies on this website to distinguish you from other users.
+    We use this data to improve our content experience and for targeted advertising.
+    By continuing to use this website you consent to our use of cookies.
+    For more information, please see our
+    <a href="https://superkogito.github.io/policy/cookies_policy.html" target="_blank">Cookie Policy</a>.
+</div>
+
+
+
+              <div>
+                
+  <section id="module-spafe.frequencies.fundamental_frequencies">
+<span id="spafe-frequencies-fundamental-frequencies"></span><h1>spafe.frequencies.fundamental_frequencies<a class="headerlink" href="#module-spafe.frequencies.fundamental_frequencies" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Description : Implementation Fundamental Frequency Extraction Using the YIN-Algorithm.</p></li>
+<li><p>Copyright (c) 2019-2022 Ayoub Malek.
+This source code is licensed under the terms of the BSD 3-Clause License.
+For a copy, see &lt;<a class="reference external" href="https://github.com/SuperKogito/spafe/blob/master/LICENSE">https://github.com/SuperKogito/spafe/blob/master/LICENSE</a>&gt;.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.frequencies.fundamental_frequencies.compute_difference">
+<span class="sig-prename descclassname"><span class="pre">spafe.frequencies.fundamental_frequencies.</span></span><span class="sig-name descname"><span class="pre">compute_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/frequencies/fundamental_frequencies.html#compute_difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.frequencies.fundamental_frequencies.compute_difference" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute difference function of data x according to <a class="reference internal" href="#guyot" id="id1"><span>[Guyot]</span></a> <a class="reference internal" href="#decheveigne" id="id2"><span>[DeCheveigné]</span></a> and <a class="reference internal" href="#box" id="id3"><span>[Box]</span></a> .
+This essentially corresponds to equations (6) and (7) in <a class="reference internal" href="#decheveigne" id="id4"><span>[DeCheveigné]</span></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – audio data.</p></li>
+<li><p><strong>tau_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – integration window size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>difference function array</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}d_{t}(\tau) = \sum_{j=1}^{W}(x_{j} - x_{j+\tau})^{2}\\d_{t}(\tau) = r_{t}(0) + r_{t+\tau}(0) - 2 r_{t}(\tau)\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{t}(\tau)\)</span> is the difference function, <span class="math notranslate nohighlight">\(r_{t}(\tau)\)</span> is the autocorrelation.</p>
+<ul>
+<li><p>This function use an accellerated convolution function fftconvolve from
+the Scipy package to compute the autocorrelation for faster processing.</p></li>
+<li><p>While the brute force algorithm time complexity is O(n**2), the Wiener–Khinchin
+theorem allows computing the autocorrelation with two Fast Fourier transforms (FFT), with time complexity O(n log(n)).</p></li>
+<li><dl>
+<dt>The steps for computing the autocorrelation according the Wiener–Khinchin theorem are as follows:</dt><dd><div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}F_{R}(f) = FFT[X(t)]\\S(f) = F_{R}(f) + F^{*}_{R}(f)\\R(\tau) = IFFT[S(f)]\end{aligned}\end{align} \]</div>
+<p>where IFFT is the inverse fast Fourier transform and the asterisk denotes complex conjugate.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="box"><span class="brackets"><a class="fn-backref" href="#id3">Box</a></span></dt>
+<dd><p>: Box, G. E. P., Jenkins, G. M., Reinsel, G. C. (1994).
+Time Series Analysis: Forecasting and Control (3rd ed.).
+Upper Saddle River, NJ: Prentice–Hall. ISBN 978-0130607744.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.frequencies.fundamental_frequencies.compute_cmnd">
+<span class="sig-prename descclassname"><span class="pre">spafe.frequencies.fundamental_frequencies.</span></span><span class="sig-name descname"><span class="pre">compute_cmnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/frequencies/fundamental_frequencies.html#compute_cmnd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.frequencies.fundamental_frequencies.compute_cmnd" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply Cumulative Mean Normalized Difference Function (CMNDF) as in <a class="reference internal" href="#guyot" id="id5"><span>[Guyot]</span></a> <a class="reference internal" href="#decheveigne" id="id6"><span>[DeCheveigné]</span></a>.
+This corresponds to equation (8) in <a class="reference internal" href="#decheveigne" id="id7"><span>[DeCheveigné]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Difference function.</p></li>
+<li><p><strong>tau</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – length of data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>cumulative mean normalized difference</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d^{\prime}_{t}(\tau)=\left\{\begin{array}{l}
+1, &amp; \text{if } \tau = 0 \\
+\frac{d_{t}(\tau)}{\frac{1}{\tau} \sum_{j=1}^{\tau} d_{t}(j)}, &amp; \text{otherwise } \end{array}\right.\end{split}\]</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.frequencies.fundamental_frequencies.get_pitch">
+<span class="sig-prename descclassname"><span class="pre">spafe.frequencies.fundamental_frequencies.</span></span><span class="sig-name descname"><span class="pre">get_pitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonic_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/frequencies/fundamental_frequencies.html#get_pitch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.frequencies.fundamental_frequencies.get_pitch" title="Permalink to this definition">#</a></dt>
+<dd><p>Return fundamental period of a frame based on CMND function as implemented in
+<a class="reference internal" href="#guyot" id="id8"><span>[Guyot]</span></a> <a class="reference internal" href="#decheveigne" id="id9"><span>[DeCheveigné]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmdf</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – cumulative mean normalized difference</p></li>
+<li><p><strong>tau_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – minimum period for speech.</p></li>
+<li><p><strong>tau_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – maximum period for speech.</p></li>
+<li><p><strong>harmonic_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – harmonicity threshold to determine if it is
+necessary to compute pitch frequency.
+(Default is 0.1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>fundamental period if there is values under threshold, 0 otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.frequencies.fundamental_frequencies.compute_yin">
+<span class="sig-prename descclassname"><span class="pre">spafe.frequencies.fundamental_frequencies.</span></span><span class="sig-name descname"><span class="pre">compute_yin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.03</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_hop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.015</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonic_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/frequencies/fundamental_frequencies.html#compute_yin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.frequencies.fundamental_frequencies.compute_yin" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the fundamental frequency and harmonic rate according to the the Yin
+Algorithm <a class="reference internal" href="#guyot" id="id10"><span>[Guyot]</span></a> <a class="reference internal" href="#decheveigne" id="id11"><span>[DeCheveigné]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>numpy.array</em>) – audio signal (list of float)</p></li>
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – sampling rate (= average number of samples pro 1 second)</p></li>
+<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – size of the analysis window (in seconds)
+(Default is 0.03).</p></li>
+<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – size of the lag between two consecutives windows (in seconds)
+(Default is 0.015).</p></li>
+<li><p><strong>low_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Minimum fundamental frequency that can be detected (in Hertz)
+(Default is 50).</p></li>
+<li><p><strong>high_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Maximum fundamental frequency that can be detected (in Hertz)
+(Default is 3000).</p></li>
+<li><p><strong>harmonic_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Threshold of detection. The yalgorithmù return the
+first minimum of the CMND fubction below this threshold.
+(Default is 0.1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple include the following</dt><dd><ul class="simple">
+<li><p>pitches        (numpy.array) : list of fundamental frequencies.</p></li>
+<li><dl class="simple">
+<dt>harmonic_rates (numpy.array)<span class="classifier">list of harmonic rate values for each fundamental</span></dt><dd><p>frequency value (= confidence value).</p>
+</dd>
+</dl>
+</li>
+<li><p>argmins        (numpy.array) : minimums of the Cumulative Mean Normalized DifferenceFunction.</p></li>
+<li><p>times          (numpy.array) : list of time of each estimation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a>)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="decheveigne"><span class="brackets">DeCheveigné</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id4">2</a>,<a href="#id6">3</a>,<a href="#id7">4</a>,<a href="#id9">5</a>,<a href="#id11">6</a>)</span></dt>
+<dd><p>: De Cheveigné, A., &amp; Kawahara, H. (2002). YIN,
+a fundamental frequency estimator for speech and music.
+The Journal of the Acoustical Society of America, 111(4), 1917-1930.</p>
+</dd>
+<dt class="label" id="guyot"><span class="brackets">Guyot</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id5">2</a>,<a href="#id8">3</a>,<a href="#id10">4</a>)</span></dt>
+<dd><p>: Guyot, P. (2018, April 19). Fast Python implementation of
+the Yin algorithm (Version v1.1.1). Zenodo. <a class="reference external" href="http://doi.org/10.5281/zenodo.1220947">http://doi.org/10.5281/zenodo.1220947</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="kn">import</span> <span class="n">read</span>
+<span class="kn">from</span> <span class="nn">spafe.frequencies.fundamental_frequencies</span> <span class="kn">import</span> <span class="n">compute_yin</span>
+
+
+<span class="c1"># read audio</span>
+<span class="n">fpath</span> <span class="o">=</span> <span class="s2">&quot;../../../test.wav&quot;</span>
+<span class="n">fs</span><span class="p">,</span> <span class="n">sig</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span>
+<span class="n">harmonic_threshold</span> <span class="o">=</span> <span class="mf">0.85</span>
+
+<span class="n">pitches</span><span class="p">,</span> <span class="n">harmonic_rates</span><span class="p">,</span> <span class="n">argmins</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">compute_yin</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span>
+                                                      <span class="n">fs</span><span class="p">,</span>
+                                                      <span class="n">win_len</span><span class="o">=</span><span class="mf">0.050</span><span class="p">,</span>
+                                                      <span class="n">win_hop</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+                                                      <span class="n">low_freq</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                                      <span class="n">high_freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                                      <span class="n">harmonic_threshold</span><span class="o">=</span><span class="n">harmonic_threshold</span><span class="p">)</span>
+
+<span class="c1"># xaxis helper function</span>
+<span class="n">gen_xaxis_times</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">,</span> <span class="n">dt</span> <span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.125</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.125</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="c1"># plot audio data</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gen_xaxis_times</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">duration</span><span class="p">),</span> <span class="n">sig</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Audio data&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (seconds)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># plot F0</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gen_xaxis_times</span><span class="p">(</span><span class="n">pitches</span><span class="p">,</span> <span class="n">duration</span><span class="p">),</span> <span class="n">pitches</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Fundamental frequencies: F0&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (seconds)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># plot Harmonic rate</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gen_xaxis_times</span><span class="p">(</span><span class="n">harmonic_rates</span><span class="p">,</span> <span class="n">duration</span><span class="p">),</span> <span class="n">harmonic_rates</span><span class="p">,</span> <span class="s2">&quot;:o&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gen_xaxis_times</span><span class="p">(</span><span class="n">harmonic_rates</span><span class="p">,</span> <span class="n">duration</span><span class="p">),</span> <span class="p">[</span><span class="n">harmonic_threshold</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">harmonic_rates</span><span class="p">),</span> <span class="s2">&quot;r:&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Harmonic rate&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Rate&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (seconds)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># plot Index of minimums of CMND</span>
+<span class="n">ax4</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gen_xaxis_times</span><span class="p">(</span><span class="n">argmins</span><span class="p">,</span> <span class="n">duration</span><span class="p">),</span> <span class="n">argmins</span><span class="p">,</span> <span class="s2">&quot;:x&quot;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Index of minimums of CMND&quot;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (seconds)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+<!-- Add a comment box underneath the page's content -->
+
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="dominant_frequencies.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">spafe.frequencies.dominant_frequencies</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../utils/_utils.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">spafe.utils</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+      <!-- Site footer -->
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6">
+            <ul class="footer-links">
+              <li>
+                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                  This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/privacy_policy.html">Privacy Policy</a></li>
+              <li><a href="https://superkogito.github.io/policy/cookies_policy.html">Cookies policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/terms_and_conditions.html">Terms and conditions</a></li>
+              <li><a href="https://superkogito.github.io/policy/disclaimer.html">Disclaimer</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/contribute.html">Contribute</a></li>
+              <li><a href="https://superkogito.github.io/sitemap.xml">Sitemap</a></li>
+            </ul>
+          </div>
+
+    </div>
+  </footer>
+  </body>
+</html>

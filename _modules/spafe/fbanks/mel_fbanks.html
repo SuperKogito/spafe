@@ -1,0 +1,655 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spafe.fbanks.mel_fbanks &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/social_media_sharing.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../../index.html">
+<p class="title">🧠 SuperKogito/Spafe</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/index.html">Home<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/projects.html">Projects<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/blog.html">Blog<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/about.html">About Me<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api_documentation.html">
+  📄 API documentation
+ </a>
+</li>
+
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables _modules/spafe/fbanks/mel_fbanks and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "_modules/spafe/fbanks/mel_fbanks.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "_modules/spafe/fbanks/mel_fbanks.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2.0") {
+                node.classList.add("active");
+                let btn = document.getElementById("version_switcher_button");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/superkogito/" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../../../_static/logo.png" /></div>
+
+<div class="bio-info">
+  <div class="name">
+  </div>
+  <div class="focusareas">
+    🔉 Spafe: Simplified Python Audio Features Extraction 〰️
+  </div>
+</div>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+
+
+<!--  Bootstrap HTML  -->
+<div id="lawmsg" class="alert alert-info alert-dismissible h5 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    We use cookies on this website to distinguish you from other users.
+    We use this data to improve our content experience and for targeted advertising.
+    By continuing to use this website you consent to our use of cookies.
+    For more information, please see our
+    <a href="https://superkogito.github.io/policy/cookies_policy.html" target="_blank">Cookie Policy</a>.
+</div>
+
+
+
+              <div>
+                
+  <h1>Source code for spafe.fbanks.mel_fbanks</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">- Description : Mel filter banks implementation.</span>
+<span class="sd">- Copyright (c) 2019-2022 Ayoub Malek.</span>
+<span class="sd">  This source code is licensed under the terms of the BSD 3-Clause License.</span>
+<span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">scale_fbank</span>
+<span class="kn">from</span> <span class="nn">..utils.converters</span> <span class="kn">import</span> <span class="n">hz2mel</span><span class="p">,</span> <span class="n">mel2hz</span>
+<span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+
+
+<div class="viewcode-block" id="mel_filter_banks_helper"><a class="viewcode-back" href="../../../fbanks/mel_fbanks.html#spafe.fbanks.mel_fbanks.mel_filter_banks_helper">[docs]</a><span class="k">def</span> <span class="nf">mel_filter_banks_helper</span><span class="p">(</span>
+    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">fb_type</span><span class="o">=</span><span class="s2">&quot;mel&quot;</span><span class="p">,</span>
+    <span class="n">conversion_approach</span><span class="o">=</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Mel-filter banks.The filters are stored in the rows, the columns</span>
+<span class="sd">    correspond to fft bins.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nfilts              (int) : the number of filters in the filter bank.</span>
+<span class="sd">                                    (Default 20).</span>
+<span class="sd">        nfft                (int) : the FFT size.</span>
+<span class="sd">                                    (Default is 512).</span>
+<span class="sd">        fs                  (int) : sample rate/ sampling frequency of the signal.</span>
+<span class="sd">                                    (Default 16000 Hz).</span>
+<span class="sd">        low_freq            (int) : lowest band edge of mel filters.</span>
+<span class="sd">                                    (Default 0 Hz).</span>
+<span class="sd">        high_freq           (int) : highest band edge of mel filters.</span>
+<span class="sd">                                    (Default samplerate/2).</span>
+<span class="sd">        scale               (str) : monotonicity behavior of the filter banks.</span>
+<span class="sd">                                    (Default is &quot;constant&quot;).</span>
+<span class="sd">        fb_type             (str) : the filter banks type.</span>
+<span class="sd">                                    (Default is &quot;mel&quot;)</span>
+<span class="sd">        conversion_approach (str) : mel scale conversion approach.</span>
+<span class="sd">                                    (Default is &quot;Oshaghnessy&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple) :</span>
+<span class="sd">            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.</span>
+<span class="sd">            - (numpy.ndarray) : array of center frequencies</span>
+
+
+<span class="sd">    Tip:</span>
+<span class="sd">        - :code:`scale` : can take the following options [&quot;constant&quot;, &quot;ascendant&quot;, &quot;descendant&quot;].</span>
+<span class="sd">        - :code:`fb_type` : can take the following options [&quot;mel&quot;, &quot;lin&quot;].</span>
+<span class="sd">        - :code:`conversion_approach` : can take the following options [&quot;Oshaghnessy&quot;, &quot;Beranek&quot;, &quot;Lindsay&quot;].</span>
+<span class="sd">          Note that the use of different options than the default can lead to unexpected behavior/issues.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># init freqs</span>
+    <span class="n">high_freq</span> <span class="o">=</span> <span class="n">high_freq</span> <span class="ow">or</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="c1"># run checks</span>
+    <span class="k">if</span> <span class="n">low_freq</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">ErrorMsgs</span><span class="p">[</span><span class="s2">&quot;low_freq&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">high_freq</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">ErrorMsgs</span><span class="p">[</span><span class="s2">&quot;high_freq&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">fb_type</span> <span class="o">==</span> <span class="s2">&quot;mel&quot;</span><span class="p">:</span>
+        <span class="c1"># convert bounding freqs</span>
+        <span class="n">low_mel</span> <span class="o">=</span> <span class="n">hz2mel</span><span class="p">(</span><span class="n">low_freq</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+        <span class="n">high_mel</span> <span class="o">=</span> <span class="n">hz2mel</span><span class="p">(</span><span class="n">high_freq</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+
+        <span class="c1"># compute points evenly spaced in mels (ponts are in Hz)</span>
+        <span class="n">delta_mel</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">high_mel</span> <span class="o">-</span> <span class="n">low_mel</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">nfilts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">scale_freqs</span> <span class="o">=</span> <span class="n">low_mel</span> <span class="o">+</span> <span class="n">delta_mel</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nfilts</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># assign freqs</span>
+        <span class="n">lower_edges_mel</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">upper_edges_mel</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">center_freqs_mel</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># assign freqs in</span>
+        <span class="n">center_freqs_hz</span> <span class="o">=</span> <span class="n">mel2hz</span><span class="p">(</span><span class="n">center_freqs_mel</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+        <span class="n">lower_edges_hz</span> <span class="o">=</span> <span class="n">mel2hz</span><span class="p">(</span><span class="n">lower_edges_mel</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+        <span class="n">upper_edges_hz</span> <span class="o">=</span> <span class="n">mel2hz</span><span class="p">(</span><span class="n">upper_edges_mel</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+        <span class="n">center_freqs</span> <span class="o">=</span> <span class="n">center_freqs_mel</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># compute points evenly spaced in frequency (points are in Hz)</span>
+        <span class="n">delta_hz</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">high_freq</span> <span class="o">-</span> <span class="n">low_freq</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">nfilts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">scale_freqs</span> <span class="o">=</span> <span class="n">low_freq</span> <span class="o">+</span> <span class="n">delta_hz</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nfilts</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># assign freqs</span>
+        <span class="n">lower_edges_hz</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">upper_edges_hz</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">center_freqs_hz</span> <span class="o">=</span> <span class="n">scale_freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">center_freqs</span> <span class="o">=</span> <span class="n">center_freqs_hz</span>
+
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">low_freq</span><span class="p">,</span> <span class="n">high_freq</span><span class="p">,</span> <span class="n">nfft</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">fbank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfilts</span><span class="p">,</span> <span class="n">nfft</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+        <span class="nb">zip</span><span class="p">(</span><span class="n">center_freqs_hz</span><span class="p">,</span> <span class="n">lower_edges_hz</span><span class="p">,</span> <span class="n">upper_edges_hz</span><span class="p">)</span>
+    <span class="p">):</span>
+
+        <span class="n">left_slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&gt;=</span> <span class="n">lower</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&lt;=</span> <span class="n">center</span><span class="p">)</span>
+        <span class="n">fbank</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">left_slope</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">left_slope</span><span class="p">]</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">center</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span>
+
+        <span class="n">right_slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&gt;=</span> <span class="n">center</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="n">fbank</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">right_slope</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">freqs</span><span class="p">[</span><span class="n">right_slope</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span>
+
+    <span class="c1"># compute scaling</span>
+    <span class="n">scaling</span> <span class="o">=</span> <span class="n">scale_fbank</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">nfilts</span><span class="o">=</span><span class="n">nfilts</span><span class="p">)</span>
+    <span class="n">fbank</span> <span class="o">=</span> <span class="n">fbank</span> <span class="o">*</span> <span class="n">scaling</span>
+
+    <span class="k">return</span> <span class="n">fbank</span><span class="p">,</span> <span class="n">center_freqs</span></div>
+
+
+<div class="viewcode-block" id="mel_filter_banks"><a class="viewcode-back" href="../../../fbanks/mel_fbanks.html#spafe.fbanks.mel_fbanks.mel_filter_banks">[docs]</a><span class="k">def</span> <span class="nf">mel_filter_banks</span><span class="p">(</span>
+    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">conversion_approach</span><span class="o">=</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Mel-filter banks.The filters are stored in the rows, the columns</span>
+<span class="sd">    correspond to fft bins.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nfilts              (int) : the number of filters in the filter bank.</span>
+<span class="sd">                                    (Default 20).</span>
+<span class="sd">        nfft                (int) : the FFT size.</span>
+<span class="sd">                                    (Default is 512).</span>
+<span class="sd">        fs                  (int) : sample rate/ sampling frequency of the signal.</span>
+<span class="sd">                                    (Default 16000 Hz).</span>
+<span class="sd">        low_freq            (int) : lowest band edge of mel filters.</span>
+<span class="sd">                                    (Default 0 Hz).</span>
+<span class="sd">        high_freq           (int) : highest band edge of mel filters.</span>
+<span class="sd">                                    (Default samplerate/2).</span>
+<span class="sd">        scale               (str) : monotonicity behavior of the filter banks.</span>
+<span class="sd">                                    (Default is &quot;constant&quot;).</span>
+<span class="sd">        conversion_approach (str) : mel scale conversion approach.</span>
+<span class="sd">                                    (Default is &quot;Oshaghnessy&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple) :</span>
+<span class="sd">            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.</span>
+<span class="sd">            - (numpy.ndarray) : array of center frequencies</span>
+
+<span class="sd">    Tip:</span>
+<span class="sd">        - :code:`scale` : can take the following options [&quot;constant&quot;, &quot;ascendant&quot;, &quot;descendant&quot;].</span>
+<span class="sd">        - :code:`conversion_approach` : can take the following options [&quot;Oshaghnessy&quot;, &quot;Beranek&quot;, &quot;Lindsay&quot;].</span>
+<span class="sd">          Note that the use of different options than the default can lead to unexpected behavior/issues.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import numpy as np</span>
+<span class="sd">            from spafe.utils.converters import mel2hz</span>
+<span class="sd">            from spafe.utils.vis import show_fbanks</span>
+<span class="sd">            from spafe.fbanks.mel_fbanks import mel_filter_banks</span>
+
+<span class="sd">            # init var</span>
+<span class="sd">            fs = 8000</span>
+<span class="sd">            nfilt = 7</span>
+<span class="sd">            nfft = 1024</span>
+<span class="sd">            low_freq = 0</span>
+<span class="sd">            high_freq = fs / 2</span>
+
+<span class="sd">            # compute freqs for xaxis</span>
+<span class="sd">            mhz_freqs = np.linspace(low_freq, high_freq, nfft //2+1)</span>
+
+<span class="sd">            for scale, label in [(&quot;constant&quot;, &quot;&quot;), (&quot;ascendant&quot;, &quot;Ascendant &quot;), (&quot;descendant&quot;, &quot;Descendant &quot;)]:</span>
+<span class="sd">                # compute fbank</span>
+<span class="sd">                mel_fbanks_mat, mel_freqs = mel_filter_banks(nfilts=nfilt,</span>
+<span class="sd">                                                             nfft=nfft,</span>
+<span class="sd">                                                             fs=fs,</span>
+<span class="sd">                                                             low_freq=low_freq,</span>
+<span class="sd">                                                             high_freq=high_freq,</span>
+<span class="sd">                                                            scale=scale)</span>
+
+<span class="sd">                # visualize fbank</span>
+<span class="sd">                show_fbanks(</span>
+<span class="sd">                    mel_fbanks_mat,</span>
+<span class="sd">                    [mel2hz(freq) for freq in mel_freqs],</span>
+<span class="sd">                    mhz_freqs,</span>
+<span class="sd">                    label + &quot;Mel Filter Bank&quot;,</span>
+<span class="sd">                    ylabel=&quot;Weight&quot;,</span>
+<span class="sd">                    x1label=&quot;Frequency / Hz&quot;,</span>
+<span class="sd">                    x2label=&quot;Frequency / Mel&quot;,</span>
+<span class="sd">                    figsize=(14, 5),</span>
+<span class="sd">                    fb_type=&quot;mel&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># generate mel fbanks by inversing regular mel fbanks</span>
+    <span class="n">mel_fbanks</span><span class="p">,</span> <span class="n">mel_freqs</span> <span class="o">=</span> <span class="n">mel_filter_banks_helper</span><span class="p">(</span>
+        <span class="n">nfilts</span><span class="o">=</span><span class="n">nfilts</span><span class="p">,</span>
+        <span class="n">nfft</span><span class="o">=</span><span class="n">nfft</span><span class="p">,</span>
+        <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+        <span class="n">low_freq</span><span class="o">=</span><span class="n">low_freq</span><span class="p">,</span>
+        <span class="n">high_freq</span><span class="o">=</span><span class="n">high_freq</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+        <span class="n">fb_type</span><span class="o">=</span><span class="s2">&quot;mel&quot;</span><span class="p">,</span>
+        <span class="n">conversion_approach</span><span class="o">=</span><span class="n">conversion_approach</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mel_fbanks</span><span class="p">,</span> <span class="n">mel_freqs</span></div>
+
+
+<div class="viewcode-block" id="inverse_mel_filter_banks"><a class="viewcode-back" href="../../../fbanks/mel_fbanks.html#spafe.fbanks.mel_fbanks.inverse_mel_filter_banks">[docs]</a><span class="k">def</span> <span class="nf">inverse_mel_filter_banks</span><span class="p">(</span>
+    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">conversion_approach</span><span class="o">=</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute inverse Mel-filter banks. The filters are stored in the rows, the columns</span>
+<span class="sd">    correspond to fft bins.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nfilt               (int) : the number of filters in the filter bank.</span>
+<span class="sd">                                    (Default 20).</span>
+<span class="sd">        nfft                (int) : the FFT size.</span>
+<span class="sd">                                    (Default is 512).</span>
+<span class="sd">        fs                  (int) : sample rate/ sampling frequency of the signal.</span>
+<span class="sd">                                    (Default 16000 Hz).</span>
+<span class="sd">        low_freq            (int) : lowest band edge of mel filters.</span>
+<span class="sd">                                    (Default 0 Hz).</span>
+<span class="sd">        high_freq           (int) : highest band edge of mel filters.</span>
+<span class="sd">                                    (Default samplerate/2).</span>
+<span class="sd">        scale               (str) : monotonicity behavior of the filter banks.</span>
+<span class="sd">                                    (Default is &quot;constant&quot;).</span>
+<span class="sd">        conversion_approach (str) : mel scale conversion approach.</span>
+<span class="sd">                                    (Default is &quot;Oshaghnessy&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple) :</span>
+<span class="sd">            - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.</span>
+<span class="sd">            - (numpy.ndarray) : array of center frequencies</span>
+
+<span class="sd">    Tip:</span>
+<span class="sd">        - :code:`scale` : can take the following options [&quot;constant&quot;, &quot;ascendant&quot;, &quot;descendant&quot;].</span>
+<span class="sd">        - :code:`conversion_approach` : can take the following options [&quot;Oshaghnessy&quot;, &quot;Beranek&quot;, &quot;Lindsay&quot;].</span>
+<span class="sd">          Note that the use of different options than the default can lead to unexpected behavior/issues.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import numpy as np</span>
+<span class="sd">            from spafe.utils.converters import mel2hz</span>
+<span class="sd">            from spafe.utils.vis import show_fbanks</span>
+<span class="sd">            from spafe.fbanks.mel_fbanks import inverse_mel_filter_banks</span>
+
+<span class="sd">            # init var</span>
+<span class="sd">            fs = 8000</span>
+<span class="sd">            nfilt = 7</span>
+<span class="sd">            nfft = 1024</span>
+<span class="sd">            low_freq = 0</span>
+<span class="sd">            high_freq = fs / 2</span>
+
+<span class="sd">            # compute freqs for xaxis</span>
+<span class="sd">            mhz_freqs = np.linspace(low_freq, high_freq, nfft //2+1)</span>
+
+<span class="sd">            for scale, label in [(&quot;constant&quot;, &quot;&quot;), (&quot;ascendant&quot;, &quot;Ascendant &quot;), (&quot;descendant&quot;, &quot;Descendant &quot;)]:</span>
+<span class="sd">                # compute fbank</span>
+<span class="sd">                imel_fbanks_mat, imel_freqs = inverse_mel_filter_banks(nfilts=nfilt,</span>
+<span class="sd">                                                                       nfft=nfft,</span>
+<span class="sd">                                                                       fs=fs,</span>
+<span class="sd">                                                                       low_freq=low_freq,</span>
+<span class="sd">                                                                       high_freq=high_freq,</span>
+<span class="sd">                                                                       scale=scale)</span>
+
+<span class="sd">                # visualize fbank</span>
+<span class="sd">                show_fbanks(</span>
+<span class="sd">                    imel_fbanks_mat,</span>
+<span class="sd">                    [mel2hz(freq) for freq in imel_freqs],</span>
+<span class="sd">                    mhz_freqs,</span>
+<span class="sd">                    label + &quot;Inverse Mel Filter Bank&quot;,</span>
+<span class="sd">                    ylabel=&quot;Weight&quot;,</span>
+<span class="sd">                    x1label=&quot;Frequency / Hz&quot;,</span>
+<span class="sd">                    x2label=&quot;Frequency / Mel&quot;,</span>
+<span class="sd">                    figsize=(14, 5),</span>
+<span class="sd">                    fb_type=&quot;mel&quot;)</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        - :py:func:`spafe.fbanks.gammatone_fbanks.gammatone_filter_banks`</span>
+<span class="sd">        - :py:func:`spafe.fbanks.linear_fbanks.linear_filter_banks`</span>
+<span class="sd">        - :py:func:`spafe.fbanks.bark_fbanks.bark_filter_banks`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># inverse scaler value</span>
+    <span class="n">scales</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ascendant&quot;</span><span class="p">:</span> <span class="s2">&quot;descendant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;descendant&quot;</span><span class="p">:</span> <span class="s2">&quot;ascendant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;constant&quot;</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># generate inverse mel fbanks by inversing regular mel fbanks</span>
+    <span class="n">imel_fbanks</span><span class="p">,</span> <span class="n">mel_freqs</span> <span class="o">=</span> <span class="n">mel_filter_banks_helper</span><span class="p">(</span>
+        <span class="n">nfilts</span><span class="o">=</span><span class="n">nfilts</span><span class="p">,</span>
+        <span class="n">nfft</span><span class="o">=</span><span class="n">nfft</span><span class="p">,</span>
+        <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+        <span class="n">low_freq</span><span class="o">=</span><span class="n">low_freq</span><span class="p">,</span>
+        <span class="n">high_freq</span><span class="o">=</span><span class="n">high_freq</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">scales</span><span class="p">[</span><span class="n">scale</span><span class="p">],</span>
+        <span class="n">fb_type</span><span class="o">=</span><span class="s2">&quot;mel&quot;</span><span class="p">,</span>
+        <span class="n">conversion_approach</span><span class="o">=</span><span class="n">conversion_approach</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># inverse regular filter banks</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">imel_fbanks</span><span class="p">):</span>
+        <span class="n">imel_fbanks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># get inverse freqs</span>
+    <span class="n">imel_center_freqs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">hz2mel</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="p">(</span><span class="n">high_freq</span> <span class="o">-</span> <span class="n">mel2hz</span><span class="p">(</span><span class="n">mel_freqs</span><span class="p">,</span> <span class="n">conversion_approach</span><span class="p">))</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">imel_fbanks</span><span class="p">),</span> <span class="n">imel_center_freqs</span></div>
+</pre></div>
+
+              </div>
+              
+<!-- Add a comment box underneath the page's content -->
+
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+      <!-- Site footer -->
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6">
+            <ul class="footer-links">
+              <li>
+                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                  This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/privacy_policy.html">Privacy Policy</a></li>
+              <li><a href="https://superkogito.github.io/policy/cookies_policy.html">Cookies policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/terms_and_conditions.html">Terms and conditions</a></li>
+              <li><a href="https://superkogito.github.io/policy/disclaimer.html">Disclaimer</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/contribute.html">Contribute</a></li>
+              <li><a href="https://superkogito.github.io/sitemap.xml">Sitemap</a></li>
+            </ul>
+          </div>
+
+    </div>
+  </footer>
+  </body>
+</html>

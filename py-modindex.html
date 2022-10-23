@@ -4,9 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Welcome to Spafe’s documentation! &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python Module Index &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -37,7 +36,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="📄 API documentation" href="api_documentation.html" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -54,6 +53,8 @@
                         ga('send', 'pageview');
                     </script>
 
+
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
@@ -65,7 +66,7 @@
   <div id="navbar-start">
     
     
-<a class="navbar-brand" href="#">
+<a class="navbar-brand" href="index.html">
 <p class="title">🧠 SuperKogito/Spafe</p>
 </a>
 
@@ -132,14 +133,14 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables index and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+     variables py-modindex and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
 -->
 
 <script type="text/javascript">
 // Check if corresponding page path exists in other version of docs
 // and, if so, go there instead of the homepage of the other docs version
 function checkPageExistsAndRedirect(event) {
-    const currentFilePath = "index.html",
+    const currentFilePath = "py-modindex.html",
           tryUrl = event.target.getAttribute("href");
     let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
     $.ajax({
@@ -160,7 +161,7 @@ function checkPageExistsAndRedirect(event) {
 // Populate the version switcher from the JSON config file
 (function () {
     $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
-        const currentFilePath = "index.html";
+        const currentFilePath = "py-modindex.html";
         // create links to the corresponding page in the other docs versions
         $.each(data, function(index, entry) {
             // if no custom name specified (e.g., "latest"), use version string
@@ -244,57 +245,6 @@ function checkPageExistsAndRedirect(event) {
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
             
-              
-              <div class="toc-item">
-                
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dependencies">
-   Dependencies
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#installation">
-   Installation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#install-from-pypi">
-     Install from PyPI
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#install-from-anaconda">
-     Install from Anaconda
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#documentation">
-   Documentation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#citation">
-   Citation
-  </a>
- </li>
-</ul>
-
-</nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
           </div>
           
 
@@ -322,62 +272,144 @@ function checkPageExistsAndRedirect(event) {
 
               <div>
                 
-  <section id="welcome-to-spafe-s-documentation">
-<h1>Welcome to <strong>Spafe</strong>’s  documentation!<a class="headerlink" href="#welcome-to-spafe-s-documentation" title="Permalink to this headline">#</a></h1>
-<a class="reference internal image-reference" href="_images/logo2.png"><img alt="_images/logo2.png" class="align-center" src="_images/logo2.png" style="width: 254.60000000000002px; height: 166.70000000000002px;" /></a>
-<p><strong>spafe</strong> (Simplified Python Audio Features Extraction) is a light weight library that aims to unite audio feature extraction algorithms in one simple code.</p>
-<section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h2>
-<p>spafe is built using <a class="reference external" href="https://www.python.org/download/releases/3.0/">Python3</a>  and it requires the following Python packages:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> (&gt;= 1.22.0)</p></li>
-<li><p><a class="reference external" href="https://scipy.org/">SciPy</a> (&gt;= 1.8.0)</p></li>
-</ul>
-<p>if you want to use the visualization module/ functions of spafe, you
-will need to install:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://matplotlib.org/">Matplotlib</a> (&gt;= 3.5.2)</p></li>
-</ul>
-</section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<section id="install-from-pypi">
-<h3>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>You can simply install spafe using pip: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
-<li><p>To update an existing spafe version use: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">spafe</span></code></p></li>
-</ul>
-</section>
-<section id="install-from-anaconda">
-<h3>Install from Anaconda<a class="headerlink" href="#install-from-anaconda" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Spafe is also available on anaconda: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
-</ul>
-</section>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h2>
-<p>For the documentation of the modules please refer to:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api_documentation.html">📄 API documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fbanks/_fbanks.html">spafe.fbanks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="features/_features.html">spafe.features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="frequencies/_frequencies.html">spafe.frequencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils/_utils.html">spafe.utils</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="citation">
-<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>If you want to cite spafe as a software used in your work, please
-cite the version used as indexed at <a class="reference external" href="https://zenodo.org/">Zenodo</a>: <a class="reference external" href="https://doi.org/10.5281/zenodo.6824667"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg" /></a></p></li>
-</ul>
-</section>
-</section>
+
+   <h1>Python Module Index</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-s"><strong>s</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-s"><td></td><td>
+       <strong>s</strong></td><td></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
+       <td>
+       <code class="xref">spafe</code></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="fbanks/bark_fbanks.html#module-spafe.fbanks.bark_fbanks"><code class="xref">spafe.fbanks.bark_fbanks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="fbanks/gammatone_fbanks.html#module-spafe.fbanks.gammatone_fbanks"><code class="xref">spafe.fbanks.gammatone_fbanks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="fbanks/linear_fbanks.html#module-spafe.fbanks.linear_fbanks"><code class="xref">spafe.fbanks.linear_fbanks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="fbanks/mel_fbanks.html#module-spafe.fbanks.mel_fbanks"><code class="xref">spafe.fbanks.mel_fbanks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/bfcc.html#module-spafe.features.bfcc"><code class="xref">spafe.features.bfcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/cqcc.html#module-spafe.features.cqcc"><code class="xref">spafe.features.cqcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/gfcc.html#module-spafe.features.gfcc"><code class="xref">spafe.features.gfcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/lfcc.html#module-spafe.features.lfcc"><code class="xref">spafe.features.lfcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/lpc.html#module-spafe.features.lpc"><code class="xref">spafe.features.lpc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/mfcc.html#module-spafe.features.mfcc"><code class="xref">spafe.features.mfcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/msrcc.html#module-spafe.features.msrcc"><code class="xref">spafe.features.msrcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/ngcc.html#module-spafe.features.ngcc"><code class="xref">spafe.features.ngcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/pncc.html#module-spafe.features.pncc"><code class="xref">spafe.features.pncc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/psrcc.html#module-spafe.features.psrcc"><code class="xref">spafe.features.psrcc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/rplp.html#module-spafe.features.rplp"><code class="xref">spafe.features.rplp</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="features/spfeats.html#module-spafe.features.spfeats"><code class="xref">spafe.features.spfeats</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="frequencies/dominant_frequencies.html#module-spafe.frequencies.dominant_frequencies"><code class="xref">spafe.frequencies.dominant_frequencies</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="frequencies/fundamental_frequencies.html#module-spafe.frequencies.fundamental_frequencies"><code class="xref">spafe.frequencies.fundamental_frequencies</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/cepstral.html#module-spafe.utils.cepstral"><code class="xref">spafe.utils.cepstral</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/converters.html#module-spafe.utils.converters"><code class="xref">spafe.utils.converters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/filters.html#module-spafe.utils.filters"><code class="xref">spafe.utils.filters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/preprocessing.html#module-spafe.utils.preprocessing"><code class="xref">spafe.utils.preprocessing</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/spectral.html#module-spafe.utils.spectral"><code class="xref">spafe.utils.spectral</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="utils/vis.html#module-spafe.utils.vis"><code class="xref">spafe.utils.vis</code></a></td><td>
+       <em></em></td></tr>
+   </table>
 
 
               </div>
@@ -387,13 +419,6 @@ cite the version used as indexed at <a class="reference external" href="https://
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="api_documentation.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">📄 API documentation</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
               
           </main>

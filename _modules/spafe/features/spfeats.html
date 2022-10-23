@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spafe.features.spfeats &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/social_media_sharing.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../../index.html">
+<p class="title">🧠 SuperKogito/Spafe</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/index.html">Home<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/projects.html">Projects<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/blog.html">Blog<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/about.html">About Me<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api_documentation.html">
+  📄 API documentation
+ </a>
+</li>
+
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables _modules/spafe/features/spfeats and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "_modules/spafe/features/spfeats.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "_modules/spafe/features/spfeats.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2.0") {
+                node.classList.add("active");
+                let btn = document.getElementById("version_switcher_button");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/superkogito/" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../../../_static/logo.png" /></div>
+
+<div class="bio-info">
+  <div class="name">
+  </div>
+  <div class="focusareas">
+    🔉 Spafe: Simplified Python Audio Features Extraction 〰️
+  </div>
+</div>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+
+
+<!--  Bootstrap HTML  -->
+<div id="lawmsg" class="alert alert-info alert-dismissible h5 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    We use cookies on this website to distinguish you from other users.
+    We use this data to improve our content experience and for targeted advertising.
+    By continuing to use this website you consent to our use of cookies.
+    For more information, please see our
+    <a href="https://superkogito.github.io/policy/cookies_policy.html" target="_blank">Cookie Policy</a>.
+</div>
+
+
+
+              <div>
+                
+  <h1>Source code for spafe.features.spfeats</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">- Description : Spectral and frequency stats and features extraction algorithms implementation.</span>
+<span class="sd">- Copyright (c) 2019-2022 Ayoub Malek.</span>
+<span class="sd">  This source code is licensed under the terms of the BSD 3-Clause License.</span>
+<span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+
+<div class="viewcode-block" id="spectral_centroid"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_centroid">[docs]</a><span class="k">def</span> <span class="nf">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral centroid (which is the barycenter of the spectrum) as</span>
+<span class="sd">    described in [Peeters]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+<span class="sd">        i                  (int) : centroid order.</span>
+<span class="sd">                                   (Default is 1).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral centroid.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \mu_{i} &amp;= \\frac{\sum_{n=0}^{N}f_{k}^{i}*a_{k}}{\sum_{n=0}^{N}a_{k}}\\\\</span>
+<span class="sd">            S_{centroid} &amp;= \mu_{1}\\\\</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+    <span class="c1"># compute positive frequencies</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
+
+    <span class="c1"># return weighted mean</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span> <span class="o">*</span> <span class="n">freqs</span><span class="o">**</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sc</span></div>
+
+
+<div class="viewcode-block" id="spectral_skewness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_skewness">[docs]</a><span class="k">def</span> <span class="nf">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral skewness (which is a measure of the asymmetry of a</span>
+<span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral skewness.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            S_{skewness} = \mu_{3} &amp;= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{3} . a_k}{\\mu_{2}^{3} . \sum_{n=0}^{N}a_{k}}\\\\</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum, and centroids</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># compute positive frequencies</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
+
+    <span class="c1"># return weighted mean</span>
+    <span class="n">sk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span> <span class="o">*</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">mu1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span> <span class="o">*</span> <span class="n">mu2</span><span class="o">**</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sk</span></div>
+
+
+<div class="viewcode-block" id="spectral_kurtosis"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_kurtosis">[docs]</a><span class="k">def</span> <span class="nf">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral kurtosis (which is a measure of the flatness of a</span>
+<span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral kurtosis.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            S_{kurtosis} = \mu_{4} &amp;= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{4} . a_k}{\\mu_{2}^{4} . \sum_{n=0}^{N}a_{k}}\\\\</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum, and centroids</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># compute positive frequencies</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
+
+    <span class="c1"># return weighted mean</span>
+    <span class="n">sk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span> <span class="o">*</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">mu1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span> <span class="o">*</span> <span class="n">mu2</span><span class="o">**</span><span class="mi">4</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sk</span></div>
+
+
+<div class="viewcode-block" id="spectral_entropy"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_entropy">[docs]</a><span class="k">def</span> <span class="nf">spectral_entropy</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral entropy as described in [Misra]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral skewness.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            S_{entropy} &amp;= \\frac{\sum_{n=0}^{N}(f_{k} - \\mu_{1})^{3} . a_k}{\\mu_{2}^{3} . \sum_{n=0}^{N}a_{k}}\\\\</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        .. [Misra] : Misra, H., S. Ikbal, H. Bourlard, and H. Hermansky.</span>
+<span class="sd">                    &quot;Spectral Entropy Based Feature for Robust ASR.&quot; 2004 IEEE</span>
+<span class="sd">                    International Conference on Acoustics, Speech, and Signal Processing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum, and centroids</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">en</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="mi">1</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">))</span>
+        <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">en</span></div>
+
+
+<div class="viewcode-block" id="spectral_spread"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_spread">[docs]</a><span class="k">def</span> <span class="nf">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)</span>
+<span class="sd">    as described in [Peeters]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (numpy.array) : spectral spread.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            S_{spread} = \\sqrt{\\sum{0}{N}\\frac{(f_k - \\mu_{1}) . s_k}{\\sum{0}{N}a_k}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+    <span class="c1"># compute positive frequencies</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
+
+    <span class="c1"># get centroid</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+
+    <span class="c1"># compute spread</span>
+    <span class="n">spread</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+        <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">mu1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">magnitude_spectrum</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">spread</span></div>
+
+
+<div class="viewcode-block" id="spectral_flatness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flatness">[docs]</a><span class="k">def</span> <span class="nf">spectral_flatness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute spectral flatness.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : audio signal array.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral flatness value.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute magnitude spectrum</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+    <span class="c1"># compute spectral flatness</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">mstats</span><span class="o">.</span><span class="n">gmean</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sf</span></div>
+
+
+<div class="viewcode-block" id="spectral_rolloff"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_rolloff">[docs]</a><span class="k">def</span> <span class="nf">spectral_rolloff</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.85</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral roll-off point which measures the bandwidth of the audio</span>
+<span class="sd">    signal by determining the frequency bin under which a specified k percentage</span>
+<span class="sd">    of the total spectral energy is contained below. see [Scheirer]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal array.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+<span class="sd">        k                (float) : constant.</span>
+<span class="sd">                                   (Default is 0.85).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral rolloff point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># convert to frequency domain</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+
+    <span class="c1"># compute the spectral rolloff point</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span></div>
+
+
+<div class="viewcode-block" id="spectral_flux"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flux">[docs]</a><span class="k">def</span> <span class="nf">spectral_flux</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the spectral flux, which measures how quickly the power spectrum</span>
+<span class="sd">    of a signal is changing. This implementation computes the spectral flux</span>
+<span class="sd">    using the L2-norm per default i.e. the square root of the sum of absolute</span>
+<span class="sd">    differences squared [Scheirer]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs                 (int) : input signal sampling rate.</span>
+<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+<span class="sd">        p                  (int) : norm type.</span>
+<span class="sd">                                   (Default is 2).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : spectral flux.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            S_{flux} = (\sum_{k}(|a_{k}(t) - a_{k}(t-1))^2}{\sqrt{\sum_{k}a_{k}(t-1)|^p)^{\\frac{1}{p}}</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        .. [Scheirer] : Scheirer, E., and M. Slaney. “Construction and Evaluation</span>
+<span class="sd">                        of a Robust Multifeature Speech/Music Discriminator.” 1997</span>
+<span class="sd">                        IEEE International Conference on Acoustics, Speech, and Signal</span>
+<span class="sd">                        Processing, 1997.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># convert to frequency domain</span>
+    <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">magnitude_spectrum</span><span class="p">))</span> <span class="o">**</span> <span class="n">p</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sf</span></div>
+
+
+<div class="viewcode-block" id="extract_feats"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.extract_feats">[docs]</a><span class="k">def</span> <span class="nf">extract_feats</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute various spectral features [Peeters]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig (numpy.ndarray) : input mono signal.</span>
+<span class="sd">        fs            (int) : input signal sampling rate.</span>
+<span class="sd">        nfft          (int) : number of FFT points.</span>
+<span class="sd">                              (Default is 512).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (dict) : a dictionary including various frequency and spectral features (see Notes).</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The resulting dictionary includes the following elements:</span>
+
+<span class="sd">        - spectral features</span>
+<span class="sd">            - :code:`spectral_centroid`  : spectral centroid.</span>
+<span class="sd">            - :code:`spectral_skewness`  : frequencies skewness.</span>
+<span class="sd">            - :code:`spectral_kurtosis`  : frequencies kurtosis.</span>
+<span class="sd">            - :code:`spectral_entropy`   : spectral entropy.</span>
+<span class="sd">            - :code:`spectral_spread`    : spectral spread.</span>
+<span class="sd">            - :code:`spectral_flatness`  : spectral flatness.</span>
+<span class="sd">            - :code:`spectral_rolloff`   : spectral rolloff.</span>
+<span class="sd">            - :code:`spectral_flux`      : spectral flux.</span>
+<span class="sd">            - :code:`spectral_mean`      : spectral mean.</span>
+<span class="sd">            - :code:`spectral_rms`       : spectral root mean square.</span>
+<span class="sd">            - :code:`spectral_std`       : spectral standard deviation.</span>
+<span class="sd">            - :code:`spectral_variance`  : spectral variance.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            from spafe.features.spfeats import extract_feats</span>
+<span class="sd">            from scipy.io.wavfile import read</span>
+<span class="sd">            from pprint import pprint</span>
+
+<span class="sd">            # read audio</span>
+<span class="sd">            fpath = &quot;../../../test.wav&quot;</span>
+<span class="sd">            fs, sig = read(fpath)</span>
+
+<span class="sd">            # compute erb spectrogram</span>
+<span class="sd">            spectral_feats = extract_feats(sig, fs)</span>
+<span class="sd">            pprint(spectral_feats)</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        .. [Peeters] : Peeters, G. &quot;A Large Set of Audio Features for Sound Description</span>
+<span class="sd">                       (Similarity and Classification) in the CUIDADO Project.&quot;</span>
+<span class="sd">                       Technical Report; IRCAM: Paris, France, 2004.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># init features dictionary</span>
+    <span class="n">feats</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># compute the fft</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">)</span>
+
+    <span class="c1"># spectral features</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_centroid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_skewness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_kurtosis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_entropy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_entropy</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_spread&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flatness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flatness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_rolloff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_rolloff</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flux</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_rms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spectrum</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_variance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">feats</span></div>
+</pre></div>
+
+              </div>
+              
+<!-- Add a comment box underneath the page's content -->
+
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+      <!-- Site footer -->
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6">
+            <ul class="footer-links">
+              <li>
+                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                  This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/privacy_policy.html">Privacy Policy</a></li>
+              <li><a href="https://superkogito.github.io/policy/cookies_policy.html">Cookies policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/terms_and_conditions.html">Terms and conditions</a></li>
+              <li><a href="https://superkogito.github.io/policy/disclaimer.html">Disclaimer</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/contribute.html">Contribute</a></li>
+              <li><a href="https://superkogito.github.io/sitemap.xml">Sitemap</a></li>
+            </ul>
+          </div>
+
+    </div>
+  </footer>
+  </body>
+</html>

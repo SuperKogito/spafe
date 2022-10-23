@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>spafe.features.pncc &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/social_media_sharing.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="spafe.features.psrcc" href="psrcc.html" />
+    <link rel="prev" title="spafe.features.ngcc" href="ngcc.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">🧠 SuperKogito/Spafe</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/index.html">Home<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/projects.html">Projects<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/blog.html">Blog<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/about.html">About Me<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../api_documentation.html">
+  📄 API documentation
+ </a>
+</li>
+
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables features/pncc and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "features/pncc.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "features/pncc.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2.0") {
+                node.classList.add("active");
+                let btn = document.getElementById("version_switcher_button");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/superkogito/" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../_static/logo.png" /></div>
+
+<div class="bio-info">
+  <div class="name">
+  </div>
+  <div class="focusareas">
+    🔉 Spafe: Simplified Python Audio Features Extraction 〰️
+  </div>
+</div>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API documentation:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fbanks/_fbanks.html">
+   spafe.fbanks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/bark_fbanks.html">
+     spafe.fbanks.bark_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/gammatone_fbanks.html">
+     spafe.fbanks.gammatone_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/linear_fbanks.html">
+     spafe.fbanks.linear_fbanks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fbanks/mel_fbanks.html">
+     spafe.fbanks.mel_fbanks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="_features.html">
+   spafe.features
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="bfcc.html">
+     spafe.features.bfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cqcc.html">
+     spafe.features.cqcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gfcc.html">
+     spafe.features.gfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lfcc.html">
+     spafe.features.lfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lpc.html">
+     spafe.features.lpc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="mfcc.html">
+     spafe.features.mfcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="msrcc.html">
+     spafe.features.msrcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ngcc.html">
+     spafe.features.ngcc
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     spafe.features.pncc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="psrcc.html">
+     spafe.features.psrcc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="rplp.html">
+     spafe.features.rplp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="spfeats.html">
+     spafe.features.spfeats
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../frequencies/_frequencies.html">
+   spafe.frequencies
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../frequencies/dominant_frequencies.html">
+     spafe.frequencies.dominant_frequencies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../frequencies/fundamental_frequencies.html">
+     spafe.frequencies.fundamental_frequencies
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../utils/_utils.html">
+   spafe.utils
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/cepstral.html">
+     spafe.utils.cepstral
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/converters.html">
+     spafe.utils.converters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/filters.html">
+     spafe.utils.filters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/preprocessing.html">
+     spafe.utils.preprocessing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/spectral.html">
+     spafe.utils.spectral
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../utils/vis.html">
+     spafe.utils.vis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+
+
+<!--  Bootstrap HTML  -->
+<div id="lawmsg" class="alert alert-info alert-dismissible h5 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    We use cookies on this website to distinguish you from other users.
+    We use this data to improve our content experience and for targeted advertising.
+    By continuing to use this website you consent to our use of cookies.
+    For more information, please see our
+    <a href="https://superkogito.github.io/policy/cookies_policy.html" target="_blank">Cookie Policy</a>.
+</div>
+
+
+
+              <div>
+                
+  <section id="module-spafe.features.pncc">
+<span id="spafe-features-pncc"></span><h1>spafe.features.pncc<a class="headerlink" href="#module-spafe.features.pncc" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Description : Power-Normalized Cepstral Coefficients (PNCCs) extraction algorithm implementation.</p></li>
+<li><p>Copyright (c) 2019-2022 Ayoub Malek.
+This source code is licensed under the terms of the BSD 3-Clause License.
+For a copy, see &lt;<a class="reference external" href="https://github.com/SuperKogito/spafe/blob/master/LICENSE">https://github.com/SuperKogito/spafe/blob/master/LICENSE</a>&gt;.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.medium_time_power_calculation">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">medium_time_power_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#medium_time_power_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.medium_time_power_calculation" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the medium time power calulations according to <a class="reference internal" href="#kim" id="id1"><span>[Kim]</span></a> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal stft power.</p></li>
+<li><p><strong>M</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the temporal integration factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>medium time power values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[\tilde{Q}[m, l]=\frac{1}{2 M+1} \sum_{m^{\prime}=m-M}^{m+M} P[m^{\prime}]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{Q}\)</span> is the medium time power, <span class="math notranslate nohighlight">\(P\)</span> is the power, <span class="math notranslate nohighlight">\(m\)</span> is the
+frame index, <span class="math notranslate nohighlight">\(l\)</span> is te channel index and <span class="math notranslate nohighlight">\(M\)</span> is the temporal integration factor.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.asymmetric_lowpass_filtering">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">asymmetric_lowpass_filtering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_tilde_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm_a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm_b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#asymmetric_lowpass_filtering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.asymmetric_lowpass_filtering" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply asymmetric lowpass filter according to <a class="reference internal" href="#kim" id="id2"><span>[Kim]</span></a> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_tilde_in</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – rectified signal.</p></li>
+<li><p><strong>lm_a</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – filter parameter; lambda a.</p></li>
+<li><p><strong>lm_b</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – filter parameter; lambda b.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filtered signal.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\tilde{Q}_{out}[m, l]=\left\{\begin{array}{l}
+\lambda_{a}\tilde{Q}_{out}[m-1, l]+(1-\lambda_{a})\tilde{Q}_{in}[m, l], &amp; \text{if } \tilde{Q}_{in}[m, l]\geq \tilde{Q}_{out}[m-1, l] \\
+\lambda_{b}\tilde{Q}_{out}[m-1, l]+(1-\lambda_{b})\tilde{Q}_{in}[m, l], &amp; \text{if } \tilde{Q}_{in}[m, l]&lt;\tilde{Q}_{out}[m-1, l] \end{array}\right.\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{Q}_{in}\)</span> and <span class="math notranslate nohighlight">\(\tilde{Q}_{out}\)</span> are arbitrary input and output,
+<span class="math notranslate nohighlight">\(\lambda_{a}\)</span> and <span class="math notranslate nohighlight">\(\lambda_{b}\)</span> are filter related parameters, <span class="math notranslate nohighlight">\(m\)</span> is the
+frame index, <span class="math notranslate nohighlight">\(l\)</span> is the channel index.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.temporal_masking">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">temporal_masking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_tilde_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">myu_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#temporal_masking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.temporal_masking" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_tilde_0</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – rectified signal.</p></li>
+<li><p><strong>lam_t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – the forgetting factor-</p></li>
+<li><p><strong>myu_t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – the recognition accuracy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Q_tilde_tm = temporal_masking(Q_tilde_0)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The previous steps can be summarised in the following graph from <a class="reference internal" href="#kim" id="id3"><span>[Kim]</span></a>.</p>
+<figure class="align-default" id="id12">
+<img alt="../_images/pncc_temporal_masking.png" src="../_images/pncc_temporal_masking.png" />
+<figcaption>
+<p><span class="caption-text">Block diagram of the components that accomplish temporal masking <a class="reference internal" href="#kim" id="id4"><span>[Kim]</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.weight_smoothing">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">weight_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R_tilde</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_tilde</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfilts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#weight_smoothing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.weight_smoothing" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply spectral weight smoothing according to <a class="reference internal" href="#kim" id="id5"><span>[Kim]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>R_tilde</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – </p></li>
+<li><p><strong>Q_tilde</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – medium time power</p></li>
+<li><p><strong>nfilts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – total number of channels / filters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>time-averaged frequency-averaged transfer function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[\tilde{S}[m, l]=(\frac{1}{l_{2}-l_{1}+1} \sum_{l^{\prime}=l_{1}}^{l_{2}} \frac{\tilde{R}[m, l^{\prime}]}{\tilde{Q}[m, l^{\prime}]})\]</div>
+<p>where <span class="math notranslate nohighlight">\(l_{2}=\min (l+N, L)\)</span> and <span class="math notranslate nohighlight">\(l_{1}=\max (l-N, 1)\)</span>, and <span class="math notranslate nohighlight">\(L\)</span> is the total number of channels,
+and <span class="math notranslate nohighlight">\(\tilde{R}\)</span> is the output of the asymmetric noise suppression and temporal masking modules
+and <span class="math notranslate nohighlight">\(\tilde{S}\)</span> is the time-averaged, frequency-averaged transfer function.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.mean_power_normalization">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">mean_power_normalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_myu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfilts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#mean_power_normalization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.mean_power_normalization" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply mean power normalization according to <a class="reference internal" href="#kim" id="id6"><span>[Kim]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – represents the transfer function.</p></li>
+<li><p><strong>lam_myu</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – time constant.</p></li>
+<li><p><strong>nfilts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – total number of channels / filters.</p></li>
+<li><p><strong>k</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – arbitrary constant.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(numpy.ndarray) normalized mean power.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\mu[m]=\lambda_{\mu} \mu[m-1]+\frac{(1-\lambda_{\mu})}{L} \sum_{l=0}^{L-1} T[m, l]\\U[m, l]=k \frac{T[m, l]}{\mu[m]}\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_{\mu}\)</span> is the time constant.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.asymmetric_noise_suppression_with_temporal_masking">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">asymmetric_noise_suppression_with_temporal_masking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q_tilde</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#asymmetric_noise_suppression_with_temporal_masking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.asymmetric_noise_suppression_with_temporal_masking" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply asymmetric noise suppression with temporal masking according to <a class="reference internal" href="#kim" id="id7"><span>[Kim]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Q_tilde</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – array representing the “medium-time power”.</p></li>
+<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – threshold for the half wave rectifier.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(numpy.ndarray) array after asymmetric noise sup and temporal masking.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><dl>
+<dt>2.1 Apply asymmetric lowpass filtering.</dt><dd><div class="math notranslate nohighlight">
+\[\tilde{Q}_{l e}[m, l]=\mathcal{A} \mathcal{F}_{0.999,0.5}[\tilde{Q}[m, l]]\]</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>2.2 Substract from the input medium-time power.</dt><dd><div class="math notranslate nohighlight">
+\[\tilde{Q}[m, l] - \tilde{Q}_{l e}[m, l]\]</div>
+</dd>
+</dl>
+</li>
+<li><p>2.3 Pass through an ideal half wave linear rectifier.</p></li>
+<li><p>2.4 Re-apply asymmetric lowpass filtering.</p></li>
+<li><p>2.5 Apply temporal masking.</p></li>
+<li><p>2.6 Switch excitation.</p></li>
+<li><p>The previous steps can be summarised in the following graph from <a class="reference internal" href="#kim" id="id8"><span>[Kim]</span></a>.</p></li>
+</ul>
+<figure class="align-default" id="id13">
+<img alt="../_images/pncc_medium_processing.png" src="../_images/pncc_medium_processing.png" />
+<figcaption>
+<p><span class="caption-text">Functional block diagram of the modules for asymmetric noise
+suppression (ANS) and temporal masking in PNCC processing <a class="reference internal" href="#kim" id="id9"><span>[Kim]</span></a>.</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spafe.features.pncc.pncc">
+<span class="sig-prename descclassname"><span class="pre">spafe.features.pncc.</span></span><span class="sig-name descname"><span class="pre">pncc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_ceps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.97</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_hop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hamming'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfilts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dct_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fbanks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversion_approach</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Glasberg'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/pncc.html#pncc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.pncc.pncc" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,
+based on <a class="reference internal" href="#kim" id="id10"><span>[Kim]</span></a> <a class="reference internal" href="#nakamura" id="id11"><span>[Nakamura]</span></a> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – a mono audio signal (Nx1) from which to compute features.</p></li>
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
+(Default is 16000).</p></li>
+<li><p><strong>num_ceps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – number of cepstra to return.
+(Default is 13).</p></li>
+<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply pre-emphasis if 1.
+(Default is 1).</p></li>
+<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – pre-emphasis filter coefﬁcient.
+(Default is 0.97).</p></li>
+<li><p><strong>power</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – power value to use .
+(Default is 2).</p></li>
+<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – window length in sec.
+(Default is 0.025).</p></li>
+<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – step between successive windows in sec.
+(Default is 0.01).</p></li>
+<li><p><strong>win_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – window type to apply for the windowing.
+(Default is “hamming”).</p></li>
+<li><p><strong>nfilts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the number of filters in the filter bank.
+(Default is 40).</p></li>
+<li><p><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of FFT points.
+(Default is 512).</p></li>
+<li><p><strong>low_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – lowest band edge of mel filters (Hz).
+(Default is 0).</p></li>
+<li><p><strong>high_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – highest band edge of mel filters (Hz).
+(Default is samplerate/2).</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – monotonicity behavior of the filter banks.
+(Default is “constant”).</p></li>
+<li><p><strong>dct_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – type of DCT used.
+(Default is 2).</p></li>
+<li><p><strong>lifter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply liftering if specifid.
+(Default is 0).</p></li>
+<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply normalization if approach specifid.
+(Default is None).</p></li>
+<li><p><strong>fbanks</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – filter bank matrix.
+(Default is None).</p></li>
+<li><p><strong>conversion_approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – erb scale conversion approach.
+(Default is “Glasberg”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>2d array of PNCC features (num_frames x num_ceps)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a>)</p>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">scale</span></code> : can take the following options [“constant”, “ascendant”, “descendant”].</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dct</span></code> : can take the following options [1, 2, 3, 4].</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">normalize</span></code> : can take the following options [“mvn”, “ms”, “vn”, “mn”].</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">conversion_approach</span></code> : can take the following options [“Glasberg”].
+Note that the use of different options than the default can lead to unexpected behavior/issues.</p></li>
+</ul>
+</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="kim"><span class="brackets">Kim</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>,<a href="#id3">3</a>,<a href="#id4">4</a>,<a href="#id5">5</a>,<a href="#id6">6</a>,<a href="#id7">7</a>,<a href="#id8">8</a>,<a href="#id9">9</a>,<a href="#id10">10</a>)</span></dt>
+<dd><p>: Kim C. and Stern R. M., “Power-Normalized Cepstral Coefficients (PNCC) for Robust Speech Recognition,”
+in IEEE/ACM Transactions on Audio, Speech, and Language Processing,
+vol. 24, no. 7, pp. 1315-1329, July 2016, doi: 10.1109/TASLP.2016.2545928.</p>
+</dd>
+<dt class="label" id="nakamura"><span class="brackets"><a class="fn-backref" href="#id11">Nakamura</a></span></dt>
+<dd><p>: Nakamura T., An implementation of Power Normalized Cepstral Coefficients: PNCC
+&lt;<a class="reference external" href="https://github.com/supikiti/PNCC">https://github.com/supikiti/PNCC</a>&gt;</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<figure class="align-default" id="id14">
+<img alt="../_images/pnccs.png" src="../_images/pnccs.png" />
+<figcaption>
+<p><span class="caption-text">Architecture of power normalized cepstral coefﬁcients extraction algorithm.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<dl>
+<dt>Examples</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="kn">import</span> <span class="n">read</span>
+<span class="kn">from</span> <span class="nn">spafe.features.pncc</span> <span class="kn">import</span> <span class="n">pncc</span>
+<span class="kn">from</span> <span class="nn">spafe.utils.vis</span> <span class="kn">import</span> <span class="n">show_features</span>
+
+<span class="c1"># read audio</span>
+<span class="n">fpath</span> <span class="o">=</span> <span class="s2">&quot;../../../test.wav&quot;</span>
+<span class="n">fs</span><span class="p">,</span> <span class="n">sig</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
+
+<span class="c1"># compute pnccs</span>
+<span class="n">pnccs</span>  <span class="o">=</span> <span class="n">pncc</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span>
+              <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+              <span class="n">pre_emph</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+              <span class="n">pre_emph_coeff</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span>
+              <span class="n">win_len</span><span class="o">=</span><span class="mf">0.030</span><span class="p">,</span>
+              <span class="n">win_hop</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>
+              <span class="n">win_type</span><span class="o">=</span><span class="s2">&quot;hamming&quot;</span><span class="p">,</span>
+              <span class="n">nfilts</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+              <span class="n">nfft</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+              <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+              <span class="n">high_freq</span><span class="o">=</span><span class="n">fs</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+              <span class="n">lifter</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+              <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;mvn&quot;</span><span class="p">)</span>
+
+<span class="c1"># visualize features</span>
+<span class="n">show_features</span><span class="p">(</span><span class="n">pnccs</span><span class="p">,</span> <span class="s2">&quot;Power-Normalized Cepstral Coefficients&quot;</span><span class="p">,</span> <span class="s2">&quot;PNCC Index&quot;</span><span class="p">,</span> <span class="s2">&quot;Frame Index&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+<!-- Add a comment box underneath the page's content -->
+
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ngcc.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">spafe.features.ngcc</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="psrcc.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">spafe.features.psrcc</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+      <!-- Site footer -->
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6">
+            <ul class="footer-links">
+              <li>
+                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                  This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/privacy_policy.html">Privacy Policy</a></li>
+              <li><a href="https://superkogito.github.io/policy/cookies_policy.html">Cookies policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/terms_and_conditions.html">Terms and conditions</a></li>
+              <li><a href="https://superkogito.github.io/policy/disclaimer.html">Disclaimer</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/contribute.html">Contribute</a></li>
+              <li><a href="https://superkogito.github.io/sitemap.xml">Sitemap</a></li>
+            </ul>
+          </div>
+
+    </div>
+  </footer>
+  </body>
+</html>

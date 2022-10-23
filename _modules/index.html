@@ -4,40 +4,38 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Welcome to Spafe’s documentation! &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview: module code &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/tree_graph.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/social_media_sharing.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/social_media_sharing.css" />
     
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="📄 API documentation" href="api_documentation.html" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -65,7 +63,7 @@
   <div id="navbar-start">
     
     
-<a class="navbar-brand" href="#">
+<a class="navbar-brand" href="../index.html">
 <p class="title">🧠 SuperKogito/Spafe</p>
 </a>
 
@@ -100,7 +98,7 @@
     </li>
     
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api_documentation.html">
+ <a class="reference internal nav-link" href="../api_documentation.html">
   📄 API documentation
  </a>
 </li>
@@ -113,7 +111,7 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
-        <form class="bd-search d-flex align-items-center" action="search.html" method="get">
+        <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
 </form>
@@ -132,14 +130,14 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables index and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+     variables _modules/index and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
 -->
 
 <script type="text/javascript">
 // Check if corresponding page path exists in other version of docs
 // and, if so, go there instead of the homepage of the other docs version
 function checkPageExistsAndRedirect(event) {
-    const currentFilePath = "index.html",
+    const currentFilePath = "_modules/index.html",
           tryUrl = event.target.getAttribute("href");
     let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
     $.ajax({
@@ -160,7 +158,7 @@ function checkPageExistsAndRedirect(event) {
 // Populate the version switcher from the JSON config file
 (function () {
     $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
-        const currentFilePath = "index.html";
+        const currentFilePath = "_modules/index.html";
         // create links to the corresponding page in the other docs versions
         $.each(data, function(index, entry) {
             // if no custom name specified (e.g., "latest"), use version string
@@ -219,7 +217,7 @@ function checkPageExistsAndRedirect(event) {
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><div class="profile-pic"><img src="_static/logo.png" /></div>
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../_static/logo.png" /></div>
 
 <div class="bio-info">
   <div class="name">
@@ -243,57 +241,6 @@ function checkPageExistsAndRedirect(event) {
 
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dependencies">
-   Dependencies
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#installation">
-   Installation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#install-from-pypi">
-     Install from PyPI
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#install-from-anaconda">
-     Install from Anaconda
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#documentation">
-   Documentation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#citation">
-   Citation
-  </a>
- </li>
-</ul>
-
-</nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
             
           </div>
           
@@ -322,63 +269,32 @@ function checkPageExistsAndRedirect(event) {
 
               <div>
                 
-  <section id="welcome-to-spafe-s-documentation">
-<h1>Welcome to <strong>Spafe</strong>’s  documentation!<a class="headerlink" href="#welcome-to-spafe-s-documentation" title="Permalink to this headline">#</a></h1>
-<a class="reference internal image-reference" href="_images/logo2.png"><img alt="_images/logo2.png" class="align-center" src="_images/logo2.png" style="width: 254.60000000000002px; height: 166.70000000000002px;" /></a>
-<p><strong>spafe</strong> (Simplified Python Audio Features Extraction) is a light weight library that aims to unite audio feature extraction algorithms in one simple code.</p>
-<section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h2>
-<p>spafe is built using <a class="reference external" href="https://www.python.org/download/releases/3.0/">Python3</a>  and it requires the following Python packages:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> (&gt;= 1.22.0)</p></li>
-<li><p><a class="reference external" href="https://scipy.org/">SciPy</a> (&gt;= 1.8.0)</p></li>
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="spafe/fbanks/bark_fbanks.html">spafe.fbanks.bark_fbanks</a></li>
+<li><a href="spafe/fbanks/gammatone_fbanks.html">spafe.fbanks.gammatone_fbanks</a></li>
+<li><a href="spafe/fbanks/linear_fbanks.html">spafe.fbanks.linear_fbanks</a></li>
+<li><a href="spafe/fbanks/mel_fbanks.html">spafe.fbanks.mel_fbanks</a></li>
+<li><a href="spafe/features/bfcc.html">spafe.features.bfcc</a></li>
+<li><a href="spafe/features/cqcc.html">spafe.features.cqcc</a></li>
+<li><a href="spafe/features/gfcc.html">spafe.features.gfcc</a></li>
+<li><a href="spafe/features/lfcc.html">spafe.features.lfcc</a></li>
+<li><a href="spafe/features/lpc.html">spafe.features.lpc</a></li>
+<li><a href="spafe/features/mfcc.html">spafe.features.mfcc</a></li>
+<li><a href="spafe/features/msrcc.html">spafe.features.msrcc</a></li>
+<li><a href="spafe/features/ngcc.html">spafe.features.ngcc</a></li>
+<li><a href="spafe/features/pncc.html">spafe.features.pncc</a></li>
+<li><a href="spafe/features/psrcc.html">spafe.features.psrcc</a></li>
+<li><a href="spafe/features/rplp.html">spafe.features.rplp</a></li>
+<li><a href="spafe/features/spfeats.html">spafe.features.spfeats</a></li>
+<li><a href="spafe/frequencies/dominant_frequencies.html">spafe.frequencies.dominant_frequencies</a></li>
+<li><a href="spafe/frequencies/fundamental_frequencies.html">spafe.frequencies.fundamental_frequencies</a></li>
+<li><a href="spafe/utils/cepstral.html">spafe.utils.cepstral</a></li>
+<li><a href="spafe/utils/converters.html">spafe.utils.converters</a></li>
+<li><a href="spafe/utils/filters.html">spafe.utils.filters</a></li>
+<li><a href="spafe/utils/preprocessing.html">spafe.utils.preprocessing</a></li>
+<li><a href="spafe/utils/spectral.html">spafe.utils.spectral</a></li>
+<li><a href="spafe/utils/vis.html">spafe.utils.vis</a></li>
 </ul>
-<p>if you want to use the visualization module/ functions of spafe, you
-will need to install:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://matplotlib.org/">Matplotlib</a> (&gt;= 3.5.2)</p></li>
-</ul>
-</section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<section id="install-from-pypi">
-<h3>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>You can simply install spafe using pip: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
-<li><p>To update an existing spafe version use: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">spafe</span></code></p></li>
-</ul>
-</section>
-<section id="install-from-anaconda">
-<h3>Install from Anaconda<a class="headerlink" href="#install-from-anaconda" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Spafe is also available on anaconda: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">spafe</span></code></p></li>
-</ul>
-</section>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h2>
-<p>For the documentation of the modules please refer to:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api_documentation.html">📄 API documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fbanks/_fbanks.html">spafe.fbanks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="features/_features.html">spafe.features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="frequencies/_frequencies.html">spafe.frequencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils/_utils.html">spafe.utils</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="citation">
-<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>If you want to cite spafe as a software used in your work, please
-cite the version used as indexed at <a class="reference external" href="https://zenodo.org/">Zenodo</a>: <a class="reference external" href="https://doi.org/10.5281/zenodo.6824667"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg" /></a></p></li>
-</ul>
-</section>
-</section>
-
 
               </div>
               
@@ -387,13 +303,6 @@ cite the version used as indexed at <a class="reference external" href="https://
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="api_documentation.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">📄 API documentation</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
               
           </main>
@@ -403,7 +312,7 @@ cite the version used as indexed at <a class="reference external" href="https://
     </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 <footer class="footer mt-5 mt-md-0">
       <!-- Site footer -->
       <div class="container">

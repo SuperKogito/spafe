@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spafe.frequencies.dominant_frequencies &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/tree_graph.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/social_media_sharing.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../../index.html">
+<p class="title">🧠 SuperKogito/Spafe</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/index.html">Home<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/projects.html">Projects<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/blog.html">Blog<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://superkogito.github.io/about.html">About Me<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api_documentation.html">
+  📄 API documentation
+ </a>
+</li>
+
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this site..." aria-label="Search this site..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.2.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables _modules/spafe/frequencies/dominant_frequencies and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "_modules/spafe/frequencies/dominant_frequencies.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "_modules/spafe/frequencies/dominant_frequencies.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.2.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.2.0") {
+                node.classList.add("active");
+                let btn = document.getElementById("version_switcher_button");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/superkogito/" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><div class="profile-pic"><img src="../../../_static/logo.png" /></div>
+
+<div class="bio-info">
+  <div class="name">
+  </div>
+  <div class="focusareas">
+    🔉 Spafe: Simplified Python Audio Features Extraction 〰️
+  </div>
+</div>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+
+
+<!--  Bootstrap HTML  -->
+<div id="lawmsg" class="alert alert-info alert-dismissible h5 fade show fixed-bottom" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    We use cookies on this website to distinguish you from other users.
+    We use this data to improve our content experience and for targeted advertising.
+    By continuing to use this website you consent to our use of cookies.
+    For more information, please see our
+    <a href="https://superkogito.github.io/policy/cookies_policy.html" target="_blank">Cookie Policy</a>.
+</div>
+
+
+
+              <div>
+                
+  <h1>Source code for spafe.frequencies.dominant_frequencies</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">- Description : Implementation Dominant Frequency Extraction Using the YIN-Algorithm.</span>
+<span class="sd">- Copyright (c) 2019-2022 Ayoub Malek.</span>
+<span class="sd">  This source code is licensed under the terms of the BSD 3-Clause License.</span>
+<span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..utils.preprocessing</span> <span class="kn">import</span> <span class="n">framing</span><span class="p">,</span> <span class="n">windowing</span>
+
+
+<div class="viewcode-block" id="get_dominant_frequencies"><a class="viewcode-back" href="../../../frequencies/dominant_frequencies.html#spafe.frequencies.dominant_frequencies.get_dominant_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_dominant_frequencies</span><span class="p">(</span>
+    <span class="n">sig</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">,</span>
+    <span class="n">butter_filter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">lower_cutoff</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">upper_cutoff</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">win_len</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+    <span class="n">win_hop</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">win_type</span><span class="o">=</span><span class="s2">&quot;hamming&quot;</span><span class="p">,</span>
+    <span class="n">only_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of dominant audio frequencies of a given wave file based</span>
+<span class="sd">    on [Rastislav]_ and [Luca]_.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sig          (numpy.ndarray) : name of an audio file name.</span>
+<span class="sd">        fs                     (int) : sampling rate (= average number of samples pro 1 sec)</span>
+<span class="sd">        butter_filter         (bool) : choose whether to apply a Butterworth filter or not.</span>
+<span class="sd">                                       (Default is False).</span>
+<span class="sd">        lower_cutoff           (int) : filter lower cut-off frequency.</span>
+<span class="sd">                                       (Default is 50).</span>
+<span class="sd">        upper_cutoff           (int) : filter upper cot-off frequency.</span>
+<span class="sd">                                       (Default is 3000).</span>
+<span class="sd">        nfft                   (int) : number of FFT points.</span>
+<span class="sd">                                       (Default is 512).</span>
+<span class="sd">        win_len              (float) : window length in sec.</span>
+<span class="sd">                                       (Default is 0.025).</span>
+<span class="sd">        win_hop              (float) : step between successive windows in sec.</span>
+<span class="sd">                                       (Default is 0.01).</span>
+<span class="sd">        win_type             (float) : window type to apply for the windowing.</span>
+<span class="sd">                                       (Default is &quot;hamming&quot;).</span>
+<span class="sd">        only_positive         (bool) : if True then returns only positive frequncies.</span>
+<span class="sd">                                       (Default is true).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (numpy.ndarray) : array of dominant frequencies.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        .. [Rastislav] : Rastislav T. (2013). Dominant Frequency Extraction. CoRR, abs/1306.0103.</span>
+<span class="sd">        .. [Luca] : Luca, The exact definition of dominant frequency? https://dsp.stackexchange.com/a/40183/37123</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import numpy as np</span>
+<span class="sd">            import matplotlib.pyplot as plt</span>
+<span class="sd">            from scipy.io.wavfile import read</span>
+<span class="sd">            from spafe.frequencies.dominant_frequencies import get_dominant_frequencies</span>
+
+<span class="sd">            # init vars</span>
+<span class="sd">            nfft = 512</span>
+<span class="sd">            win_len = 0.020</span>
+<span class="sd">            win_hop = 0.010</span>
+
+<span class="sd">            # read audio</span>
+<span class="sd">            fpath = &quot;../../../test.wav&quot;</span>
+<span class="sd">            fs, sig = read(fpath)</span>
+
+<span class="sd">            # compute dominant frequencies</span>
+<span class="sd">            dominant_frequencies = get_dominant_frequencies(sig,</span>
+<span class="sd">                                                            fs,</span>
+<span class="sd">                                                            butter_filter=False,</span>
+<span class="sd">                                                            lower_cutoff=0,</span>
+<span class="sd">                                                            upper_cutoff=fs/2,</span>
+<span class="sd">                                                            nfft=nfft,</span>
+<span class="sd">                                                            win_len=win_len,</span>
+<span class="sd">                                                            win_hop=win_hop,</span>
+<span class="sd">                                                            win_type=&quot;hamming&quot;)</span>
+
+<span class="sd">            # compute FFT, Magnitude, Power spectra</span>
+<span class="sd">            fourrier_transform = np.absolute(np.fft.fft(sig, nfft))</span>
+<span class="sd">            magnitude_spectrum = fourrier_transform[:int(nfft / 2) + 1]</span>
+<span class="sd">            power_spectrum = (1.0 / nfft) * np.square(fourrier_transform)</span>
+<span class="sd">            power_spectrum = 20*np.log10(power_spectrum)</span>
+<span class="sd">            freqs = np.fft.rfftfreq(power_spectrum.size, 1/fs)</span>
+<span class="sd">            idx = np.argsort(freqs)</span>
+
+<span class="sd">            # plot</span>
+<span class="sd">            fmin = 500</span>
+<span class="sd">            fmax = 1500</span>
+
+<span class="sd">            y = power_spectrum</span>
+<span class="sd">            x = freqs</span>
+<span class="sd">            idx = np.argsort(freqs)</span>
+
+<span class="sd">            plt.figure(figsize=(14, 4))</span>
+<span class="sd">            plt.plot(x[idx], y[idx], &quot;g&quot;)</span>
+<span class="sd">            plt.axis((fmin-10, fmax+10, 0, max(y)*(1.1)))</span>
+
+<span class="sd">            for i, dom_freq in enumerate(np.unique(dominant_frequencies)):</span>
+<span class="sd">                if  (fmin &lt; dom_freq &lt; fmax):</span>
+<span class="sd">                    plt.vlines(x=dom_freq, ymin=0, ymax=max(y), colors=&quot;red&quot;, linestyles=&quot;:&quot;)</span>
+<span class="sd">                    plt.text(dom_freq, max(y) , &quot;({:.1f})&quot;.format(dom_freq))</span>
+
+<span class="sd">            plt.grid()</span>
+<span class="sd">            plt.title(&quot;Dominant frequencies (Hz)&quot;)</span>
+<span class="sd">            plt.xlabel(&quot;Frequency (Hz)&quot;)</span>
+<span class="sd">            plt.ylabel(&quot;Spectrum amplitude&quot;)</span>
+<span class="sd">            plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">butter_filter</span><span class="p">:</span>
+        <span class="c1"># apply Band pass Butterworth filter</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">butter</span><span class="p">(</span>
+            <span class="mi">6</span><span class="p">,</span> <span class="p">[(</span><span class="n">lower_cutoff</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="p">(</span><span class="n">upper_cutoff</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span><span class="p">],</span> <span class="s2">&quot;band&quot;</span>
+        <span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">freqs</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">lfilter</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+
+    <span class="c1"># -&gt; framing</span>
+    <span class="n">frames</span><span class="p">,</span> <span class="n">frame_length</span> <span class="o">=</span> <span class="n">framing</span><span class="p">(</span><span class="n">sig</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">win_len</span><span class="o">=</span><span class="n">win_len</span><span class="p">,</span> <span class="n">win_hop</span><span class="o">=</span><span class="n">win_hop</span><span class="p">)</span>
+
+    <span class="c1"># -&gt; windowing</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="n">windowing</span><span class="p">(</span><span class="n">frames</span><span class="o">=</span><span class="n">frames</span><span class="p">,</span> <span class="n">frame_len</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> <span class="n">win_type</span><span class="o">=</span><span class="n">win_type</span><span class="p">)</span>
+
+    <span class="c1"># init dominant frequncies list</span>
+    <span class="n">dominant_frequencies</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># get dominant frequency for each frame</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
+        <span class="c1"># compute the fft</span>
+        <span class="n">fourrier_transform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">)</span>
+
+        <span class="c1"># compute magnitude spectrum</span>
+        <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">nfft</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fourrier_transform</span><span class="p">)</span>
+        <span class="n">power_spectrum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">nfft</span><span class="p">)</span> <span class="o">*</span> <span class="n">magnitude_spectrum</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="c1"># get all frequncies and  only keep positive frequencies</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">),</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+
+        <span class="c1"># get id for max spectrum</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">)</span>
+
+        <span class="c1"># get dom freq and convert it to Hz</span>
+        <span class="n">dom_freq</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="c1"># add dominant frequency to dominant frequencies list</span>
+        <span class="n">dominant_frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dom_freq</span><span class="p">)</span>
+
+    <span class="c1"># convert to array, round  and only keep unique values</span>
+    <span class="n">dominant_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dominant_frequencies</span><span class="p">)</span>
+    <span class="n">dominant_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">dominant_frequencies</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># filter out negative frequncies</span>
+    <span class="k">if</span> <span class="n">only_positive</span><span class="p">:</span>
+        <span class="n">dominant_frequencies</span> <span class="o">=</span> <span class="n">dominant_frequencies</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dominant_frequencies</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">dominant_frequencies</span></div>
+</pre></div>
+
+              </div>
+              
+<!-- Add a comment box underneath the page's content -->
+
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+      <!-- Site footer -->
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6">
+            <ul class="footer-links">
+              <li>
+                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                  This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/privacy_policy.html">Privacy Policy</a></li>
+              <li><a href="https://superkogito.github.io/policy/cookies_policy.html">Cookies policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/terms_and_conditions.html">Terms and conditions</a></li>
+              <li><a href="https://superkogito.github.io/policy/disclaimer.html">Disclaimer</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-2">
+            <ul class="footer-links">
+              <li><a href="https://superkogito.github.io/policy/contribute.html">Contribute</a></li>
+              <li><a href="https://superkogito.github.io/sitemap.xml">Sitemap</a></li>
+            </ul>
+          </div>
+
+    </div>
+  </footer>
+  </body>
+</html>
