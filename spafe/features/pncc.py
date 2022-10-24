@@ -143,7 +143,6 @@ def temporal_masking(
 def weight_smoothing(
     R_tilde: np.ndarray, Q_tilde: np.ndarray, nfilts: int = 128, N: int = 4
 ) -> np.ndarray:
-    # TODO: missing argument in docstring : N
     """
     Apply spectral weight smoothing according to [Kim]_.
 
@@ -151,6 +150,7 @@ def weight_smoothing(
         R_tilde (numpy.ndarray) :
         Q_tilde (numpy.ndarray) : medium time power
         nfilts            (int) : total number of channels / filters
+        N                 (int) :
 
     Returns:
         (numpy.ndarray) : time-averaged frequency-averaged transfer function.
@@ -224,7 +224,7 @@ def asymmetric_noise_suppression_with_temporal_masking(
 
     Args:
         Q_tilde (numpy.ndarray) : array representing the "medium-time power".
-        threshold         (float) : threshold for the half wave rectifier.
+        threshold       (float) : threshold for the half wave rectifier.
 
     Returns:
         (numpy.ndarray) array after asymmetric noise sup and temporal masking.
@@ -296,7 +296,6 @@ def pncc(
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: ErbConversionApproach = "Glasberg",
 ) -> np.ndarray:
-    # TODO: unused arg: power
     """
     Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,
     based on [Kim]_ [Nakamura]_ .
@@ -305,9 +304,9 @@ def pncc(
         sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
-        num_ceps          (float) : number of cepstra to return.
+        num_ceps            (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (bool) : apply pre-emphasis if 1.
+        pre_emph           (bool) : apply pre-emphasis if 1.
                                     (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
@@ -317,15 +316,15 @@ def pncc(
                                     (Default is 0.025).
         win_hop           (float) : step between successive windows in sec.
                                     (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
+        win_type            (str) : window type to apply for the windowing.
                                     (Default is "hamming").
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -425,7 +424,7 @@ def pncc(
     fourrier_transform = fourrier_transform[:, : int(nfft / 2) + 1]
 
     ##  -> |.|^2 (Power Spectrum)
-    abs_fft_values = (1.0 / nfft) * np.square(fourrier_transform)
+    abs_fft_values = (1.0 / nfft) * (fourrier_transform**power)
 
     # -> x filter bank
     P = np.dot(a=abs_fft_values, b=fbanks.T)

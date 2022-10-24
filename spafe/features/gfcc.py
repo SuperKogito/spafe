@@ -45,33 +45,33 @@ def erb_spectrogram(
     Compute the Gammatone/ erb scale spectrogram also known as Cochleagram.
 
     Args:
-        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
-        fs                  (int) : the sampling frequency of the signal we are working with.
-                                    (Default is 16000).
-        pre_emph            (bool) : apply pre-emphasis if 1.
-                                    (Default is True).
-        pre_emph_coeff    (float) : pre-emphasis filter coefficient.
-                                    (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming".
-        nfilts              (int) : the number of filters in the filter bank.
-                                    (Default is 40).
-        nfft                (int) : number of FFT points.
-                                    (Default is 512.
-        low_freq            (int) : lowest band edge of mel filters (Hz).
-                                    (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
-                                    (Default is samplerate / 2).
-        scale              (str)  : monotonicity behavior of the filter banks.
-                                    (Default is "constant").
-        fbanks    (numpy.ndarray) : filter bank matrix.
-                                    (Default is None).
-        conversion_approach (str) : approach to use for conversion to the erb scale.
-                                    (Default is "Glasberg").
+        sig         (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs                    (int) : the sampling frequency of the signal we are working with.
+                                      (Default is 16000).
+        pre_emph             (bool) : apply pre-emphasis if 1.
+                                      (Default is True).
+        pre_emph_coeff      (float) : pre-emphasis filter coefficient.
+                                      (Default is 0.97).
+        win_len             (float) : window length in sec.
+                                      (Default is 0.025).
+        win_hop             (float) : step between successive windows in sec.
+                                      (Default is 0.01).
+        win_type              (str) : window type to apply for the windowing.
+                                      (Default is "hamming".
+        nfilts                (int) : the number of filters in the filter bank.
+                                      (Default is 40).
+        nfft                  (int) : number of FFT points.
+                                      (Default is 512.
+        low_freq            (float) : lowest band edge of mel filters (Hz).
+                                      (Default is 0).
+        high_freq           (float) : highest band edge of mel filters (Hz).
+                                      (Default is samplerate / 2).
+        scale                (str)  : monotonicity behavior of the filter banks.
+                                      (Default is "constant").
+        fbanks      (numpy.ndarray) : filter bank matrix.
+                                      (Default is None).
+        conversion_approach   (str) : approach to use for conversion to the erb scale.
+                                      (Default is "Glasberg").
 
     Returns:
         (tuple) :
@@ -188,43 +188,43 @@ def gfcc(
     audio signal as described in [Jeevan]_ and [Xu]_.
 
     Args:
-        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
-        fs                  (int) : the sampling frequency of the signal we are working with.
-                                    (Default is 16000).
-        num_ceps          (float) : number of cepstra to return).
-                                    (Default is 13).
-        pre_emph            (bool) : apply pre-emphasis if 1.
-                                    (Default is True).
-        pre_emph_coeff    (float) : pre-emphasis filter coefficient.
-                                    (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming".
-        nfilts              (int) : the number of filters in the filter bank.
-                                    (Default is 40).
-        nfft                (int) : number of FFT points.
-                                    (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
-                                    (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
-                                    (Default is samplerate / 2).
-        scale              (str)  : monotonicity behavior of the filter banks.
-                                    (Default is "constant").
-        dct_type            (int) : type of DCT used.
-                                    (Default is 2).
-        use_energy          (int) : overwrite C0 with true log energy.
-                                    (Default is 0).
-        lifter              (int) : apply liftering if value given.
-                                    (Default is None).
-        normalize           (str) : apply normalization if type specified.
-                                    (Default is None).
-        fbanks    (numpy.ndarray) : filter bank matrix.
-                                    (Default is None).
-        conversion_approach (str) : erb scale conversion approach.
-                                    (Default is "Glasberg").
+        sig         (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs                    (int) : the sampling frequency of the signal we are working with.
+                                      (Default is 16000).
+        num_ceps              (int) : number of cepstra to return).
+                                      (Default is 13).
+        pre_emph             (bool) : apply pre-emphasis if 1.
+                                      (Default is True).
+        pre_emph_coeff      (float) : pre-emphasis filter coefficient.
+                                      (Default is 0.97).
+        win_len             (float) : window length in sec.
+                                      (Default is 0.025).
+        win_hop             (float) : step between successive windows in sec.
+                                      (Default is 0.01).
+        win_type              (str) : window type to apply for the windowing.
+                                      (Default is "hamming".
+        nfilts                (int) : the number of filters in the filter bank.
+                                      (Default is 40).
+        nfft                  (int) : number of FFT points.
+                                      (Default is 512).
+        low_freq            (float) : lowest band edge of mel filters (Hz).
+                                      (Default is 0).
+        high_freq           (float) : highest band edge of mel filters (Hz).
+                                      (Default is samplerate / 2).
+        scale                (str)  : monotonicity behavior of the filter banks.
+                                      (Default is "constant").
+        dct_type              (int) : type of DCT used.
+                                      (Default is 2).
+        use_energy            (int) : overwrite C0 with true log energy.
+                                      (Default is 0).
+        lifter                (int) : apply liftering if value given.
+                                      (Default is None).
+        normalize             (str) : apply normalization if type specified.
+                                      (Default is None).
+        fbanks      (numpy.ndarray) : filter bank matrix.
+                                      (Default is None).
+        conversion_approach   (str) : erb scale conversion approach.
+                                      (Default is "Glasberg").
 
     Returns:
         (numpy.ndarray) : 2d array of GFCC features (num_frames x num_ceps)

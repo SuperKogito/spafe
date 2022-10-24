@@ -85,9 +85,9 @@ def bark_spectrogram(
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -228,9 +228,9 @@ def bfcc(
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").

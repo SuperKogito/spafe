@@ -46,7 +46,7 @@ def linear_spectrogram(
         sig    (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs               (int) : the sampling frequency of the signal we are working with.
                                  (Default is 16000).
-        pre_emph         (int) : apply pre-emphasis if 1.
+        pre_emph        (bool) : apply pre-emphasis if 1.
                                  (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
                                  (Default is 0.97).
@@ -54,15 +54,15 @@ def linear_spectrogram(
                                  (Default is 0.025).
         win_hop        (float) : step between successive windows in sec.
                                  (Default is 0.01).
-        win_type       (float) : window type to apply for the windowing.
+        win_type         (str) : window type to apply for the windowing.
                                  (Default is "hamming").
         nfilts           (int) : the number of filters in the filter bank.
                                  (Default is 40).
         nfft             (int) : number of FFT points.
                                  (Default is 512).
-        low_freq         (int) : lowest band edge of mel filters (Hz).
+        low_freq       (float) : lowest band edge of mel filters (Hz).
                                  (Default is 0).
-        high_freq        (int) : highest band edge of mel filters (Hz).
+        high_freq      (float) : highest band edge of mel filters (Hz).
                                  (Default is samplerate / 2).
         scale           (str)  : monotonicity behavior of the filter banks.
                                  (Default is "constant").
@@ -180,40 +180,40 @@ def lfcc(
 
     Args:
         sig      (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
-        fs               (int) : the sampling frequency of the signal we are working with.
-                                 (Default is 16000).
-        num_ceps       (float) : number of cepstra to return.
-                                 (Default is 13).
-        pre_emph         (int) : apply pre-emphasis if 1.
-                                 (Default is 1).
-        pre_emph_coeff (float) : pre-emphasis filter coefficient.
-                                 (Default is 0.97).
-        win_len        (float) : window length in sec.
-                                 (Default is 0.025).
-        win_hop        (float) : step between successive windows in sec.
-                                 (Default is 0.01).
-        win_type       (float) : window type to apply for the windowing.
-                                 (Default is "hamming").
-        nfilts           (int) : the number of filters in the filter bank.
-                                 (Default is 40).
-        nfft             (int) : number of FFT points.
-                                 (Default is 512).
-        low_freq         (int) : lowest band edge of mel filters (Hz).
-                                 (Default is 0).
-        high_freq        (int) : highest band edge of mel filters (Hz).
-                                 (Default is samplerate / 2).
-        scale           (str)  : monotonicity behavior of the filter banks.
-                                 (Default is "constant").
-        dct_type         (int) : type of DCT used.
-                                 (Default is 2).
-        use_energy       (int) : overwrite C0 with true log energy.
-                                 (Default is 0).
-        lifter           (int) : apply liftering if specified.
-                                 (Default is None).
-        normalize        (str) : apply normalization if approach provided.
-                                 (Default is None).
-        fbanks (numpy.ndarray) : filter bank matrix.
-                                 (Default is None).
+        fs                 (int) : the sampling frequency of the signal we are working with.
+                                   (Default is 16000).
+        num_ceps           (int) : number of cepstra to return.
+                                   (Default is 13).
+        pre_emph          (bool) : apply pre-emphasis if 1.
+                                   (Default is 1).
+        pre_emph_coeff   (float) : pre-emphasis filter coefficient.
+                                   (Default is 0.97).
+        win_len          (float) : window length in sec.
+                                   (Default is 0.025).
+        win_hop          (float) : step between successive windows in sec.
+                                   (Default is 0.01).
+        win_type           (str) : window type to apply for the windowing.
+                                   (Default is "hamming").
+        nfilts             (int) : the number of filters in the filter bank.
+                                   (Default is 40).
+        nfft               (int) : number of FFT points.
+                                   (Default is 512).
+        low_freq         (float) : lowest band edge of mel filters (Hz).
+                                   (Default is 0).
+        high_freq        (float) : highest band edge of mel filters (Hz).
+                                   (Default is samplerate / 2).
+        scale             (str)  : monotonicity behavior of the filter banks.
+                                   (Default is "constant").
+        dct_type           (int) : type of DCT used.
+                                   (Default is 2).
+        use_energy        (bool) : overwrite C0 with true log energy.
+                                   (Default is 0).
+        lifter             (int) : apply liftering if specified.
+                                   (Default is None).
+        normalize          (str) : apply normalization if approach provided.
+                                   (Default is None).
+        fbanks   (numpy.ndarray) : filter bank matrix.
+                                   (Default is None).
 
     Returns:
         (numpy.ndarray) : 2d array of LFCC features (num_frames x num_ceps).

@@ -11,6 +11,7 @@ from typing import Optional
 import numpy as np
 
 from .mel_fbanks import mel_filter_banks_helper
+from ..utils.filters import ScaleType
 
 
 def linear_filter_banks(
@@ -26,18 +27,18 @@ def linear_filter_banks(
     correspond to fft bins.
 
     Args:
-        nfilts    (int) : the number of filters in the filter bank.
-                          (Default 20).
-        nfft      (int) : the FFT size.
-                          (Default is 512).
-        fs        (int) : sample rate/ sampling frequency of the signal.
-                          (Default 16000 Hz).
-        low_freq  (int) : lowest band edge of linear filters.
-                          (Default 0 Hz).
-        high_freq (int) : highest band edge of linear filters.
-                          (Default samplerate/2).
-        scale     (str) : monotonicity behavior of the filter banks.
-                          (Default is "constant").
+        nfilts      (int) : the number of filters in the filter bank.
+                            (Default 20).
+        nfft        (int) : the FFT size.
+                            (Default is 512).
+        fs          (int) : sample rate/ sampling frequency of the signal.
+                            (Default 16000 Hz).
+        low_freq  (float) : lowest band edge of linear filters.
+                            (Default 0 Hz).
+        high_freq (float) : highest band edge of linear filters.
+                            (Default samplerate/2).
+        scale       (str) : monotonicity behavior of the filter banks.
+                            (Default is "constant").
 
     Returns:
         (tuple) :

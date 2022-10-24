@@ -41,7 +41,6 @@ def cqt_spectrogram(
     f0: float = 120,
     q_rate: float = 1.0,
 ):
-    # TODO: shouldn't f0 be a float?
     """
     Compute the Constant-Q Cepstral spectrogram from an audio signal as in [Todisco]_.
 
@@ -61,19 +60,19 @@ def cqt_spectrogram(
                                           (Default is "hamming").
         nfft                      (int) : number of FFT points.
                                           (Default is 512).
-        low_freq                  (int) : lowest band edge of mel filters (Hz).
+        low_freq                (float) : lowest band edge of mel filters (Hz).
                                           (Default is 0).
-        high_freq                 (int) : highest band edge of mel filters (Hz).
+        high_freq               (float) : highest band edge of mel filters (Hz).
                                           (Default is samplerate/2).
         number_of_octaves         (int) : number of occtaves.
                                           (Default is 7).
         number_of_bins_per_octave (int) : numbers of bins oer occtave.
                                           (Default is 24).
-        spectral_threshold        (int) : spectral threshold.
+        spectral_threshold      (float) : spectral threshold.
                                           (Default is 0.005).
-        f0                        (int) : fundamental frequency.
+        f0                      (float) : fundamental frequency.
                                           (Default is 28).
-        q_rate                    (int) : number of FFT points.
+        q_rate                  (float) : number of FFT points.
                                           (Default is 1.0).
 
     Returns:
@@ -126,9 +125,8 @@ def cqt_spectrogram(
         raise ParameterError(ErrorMsgs["high_freq"])
 
     # pre-emphasis
-    # TODO: pre_emph is unused?
     if pre_emph:
-        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
     # -> framing
     frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
@@ -181,45 +179,45 @@ def cqcc(
     as described in [Todisco]_.
 
     Args:
-        sig             (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
-        fs                        (int) : the sampling frequency of the signal we are working with.
-                                          (Default is 16000).
-        num_ceps                (float) : number of cepstra to return.
-                                          (Default is 13).
-        pre_emph                  (int) : apply pre-emphasis if 1.
-                                          (Default is 1).
-        pre_emph_coeff          (float) : pre-emphasis filter coefficient.
-                                          (Default is 0.97).
-        win_len                 (float) : window length in sec.
-                                          (Default is 0.025).
-        win_hop                 (float) : step between successive windows in sec.
-                                          (Default is 0.01).
-        win_type                (float) : window type to apply for the windowing.
-                                          (Default is "hamming").
-        nfft                      (int) : number of FFT points.
-                                          (Default is 512).
-        low_freq                  (int) : lowest band edge of mel filters (Hz).
-                                          (Default is 0).
-        high_freq                 (int) : highest band edge of mel filters (Hz).
-                                          (Default is samplerate/2).
-        dct_type                  (int) : type of DCT used.
-                                          (Default is 2).
-        lifter                    (int) : apply liftering if value given.
-                                          (Default is None).
-        normalize                 (int) : normalization approach.
-                                          (Default is None).
-        number_of_octaves         (int) : number of occtaves.
-                                          (Default is 7).
-        number_of_bins_per_octave (int) : numbers of bins oer occtave.
-                                          (Default is 24).
-        resampling_ratio          (int) : ratio to use for the uniform resampling.
-                                          (Default is 0.95).
-        spectral_threshold        (int) : spectral threshold.
-                                          (Default is 0.005).
-        f0                        (int) : fundamental frequency.
-                                          (Default is 28).
-        q_rate                    (int) : number of FFT points.
-                                          (Default is 1.0).
+        sig               (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        fs                          (int) : the sampling frequency of the signal we are working with.
+                                            (Default is 16000).
+        num_ceps                    (int) : number of cepstra to return.
+                                            (Default is 13).
+        pre_emph                   (bool) : apply pre-emphasis if 1.
+                                            (Default is 1).
+        pre_emph_coeff            (float) : pre-emphasis filter coefficient.
+                                            (Default is 0.97).
+        win_len                   (float) : window length in sec.
+                                            (Default is 0.025).
+        win_hop                   (float) : step between successive windows in sec.
+                                            (Default is 0.01).
+        win_type                  (float) : window type to apply for the windowing.
+                                            (Default is "hamming").
+        nfft                        (int) : number of FFT points.
+                                            (Default is 512).
+        low_freq                  (float) : lowest band edge of mel filters (Hz).
+                                            (Default is 0).
+        high_freq                 (float) : highest band edge of mel filters (Hz).
+                                            (Default is samplerate/2).
+        dct_type                    (int) : type of DCT used.
+                                            (Default is 2).
+        lifter                      (int) : apply liftering if value given.
+                                            (Default is None).
+        normalize                   (str) : normalization approach.
+                                            (Default is None).
+        number_of_octaves           (int) : number of occtaves.
+                                            (Default is 7).
+        number_of_bins_per_octave   (int) : numbers of bins oer occtave.
+                                            (Default is 24).
+        resampling_ratio          (float) : ratio to use for the uniform resampling.
+                                            (Default is 0.95).
+        spectral_threshold        (float) : spectral threshold.
+                                            (Default is 0.005).
+        f0                        (float) : fundamental frequency.
+                                            (Default is 28).
+        q_rate                    (float) : number of FFT points.
+                                            (Default is 1.0).
 
     Returns:
         (numpy.ndarray) : 2d array of BFCC features (num_frames x num_ceps).

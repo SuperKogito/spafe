@@ -36,9 +36,9 @@ def mel_filter_banks_helper(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default samplerate/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -138,9 +138,9 @@ def mel_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default samplerate/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -232,9 +232,9 @@ def inverse_mel_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default samplerate/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").

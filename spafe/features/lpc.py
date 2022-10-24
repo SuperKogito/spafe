@@ -9,7 +9,7 @@
 from typing import Optional
 
 import numpy as np
-import scipy
+from scipy import linalg
 
 from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.preprocessing import (
@@ -22,15 +22,12 @@ from ..utils.preprocessing import (
 
 
 def __lpc_helper(frame, order):
-    # TODO: the documentation doesn't match the signature
     """
     Computes for each given sequence the LPC ( Linear predictive components ) as
     described in . Further references are [Draconi]_ and [Cournapeau] and [Menares]_.
 
     Args:
-        sig      (numpy.ndarray) : input mono audio signal (Nx1).
-        fs               (int) : the signal sampling frequency.
-                                 (Default is 16000).
+        sig    (numpy.ndarray) : input mono audio signal (Nx1).
         order            (int) : Size of the cepstral components/ model order. If None is given,
                                  we use len(seq) as default, otherwise order+1.
                                  (Default is 13).
@@ -90,7 +87,7 @@ def __lpc_helper(frame, order):
     auto_corr = np.correlate(frame, frame, "full")
     r[:nx] = auto_corr[frame.size - 1 : frame.size + order]
 
-    phi = np.dot(scipy.linalg.inv(scipy.linalg.toeplitz(r[:-1])), -r[1:])
+    phi = np.dot(linalg.inv(linalg.toeplitz(r[:-1])), -r[1:])
     a = np.concatenate(([1.0], phi))
     e = auto_corr[0] + sum(ac_k * a_k for ac_k, a_k in zip(auto_corr[1:], a))
     return a, np.sqrt(e**2)
@@ -115,7 +112,7 @@ def lpc(
                                  (Default is 16000).
         order            (int) : order of the LP model and number of cepstral components.
                                  (Default is 13).
-        pre_emph         (int) : apply pre-emphasis if 1.
+        pre_emph        (bool) : apply pre-emphasis if 1.
                                  (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
                                  (Default is 0.97).
@@ -123,7 +120,7 @@ def lpc(
                                  (Default is 0.025).
         win_hop        (float) : step between successive windows in sec.
                                  (Default is 0.01).
-        win_type       (float) : window type to apply for the windowing.
+        win_type         (str) : window type to apply for the windowing.
                                  (Default is hamming).
 
     Returns:
@@ -182,7 +179,6 @@ def lpc(
 
 
 def lpc2lpcc(a, e, nceps):
-    # TODO: the documentation doesn't match the signature
     """
     Convert linear prediction coefficents (LPC) to linear prediction cepstral coefﬁcients (LPCC)
     as described in [Rao]_ and [Makhoul]_.
@@ -190,6 +186,7 @@ def lpc2lpcc(a, e, nceps):
     Args:
         a (numpy.ndarray) : linear prediction coefficents.
         order       (int) : linear prediction model order.
+        nceps       (int) : number of cepstral coefficients.
 
     Returns:
         (numpy.ndarray) : linear prediction cepstrum coefficents (LPCC).
@@ -249,7 +246,7 @@ def lpcc(
                                  (Default is 16000).
         order            (int) : order of the LP model and number of cepstral components.
                                  (Default is 13).
-        pre_emph         (int) : apply pre-emphasis if 1.
+        pre_emph        (bool) : apply pre-emphasis if 1.
                                  (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
                                  (Default is 0.97).
@@ -257,11 +254,11 @@ def lpcc(
                                  (Default is 0.025).
         win_hop        (float) : step between successive windows in sec.
                                  (Default is 0.01).
-        win_type       (float) : window type to apply for the windowing.
+        win_type         (str) : window type to apply for the windowing.
                                  (Default is hamming).
         lifter           (int) : apply liftering if specified.
                                  (Default is None).
-        normalize        (int) : apply normalization if provided.
+        normalize        (str) : apply normalization if provided.
                                  (Default is None).
 
     Returns:

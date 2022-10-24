@@ -10,22 +10,20 @@
 from typing import Tuple
 
 import numpy as np
-import scipy
 from scipy import signal
 
 
 def compute_difference(x: np.ndarray, tau_max: int) -> np.ndarray:
-    # TODO: check the output type
     """
     Compute difference function of data x according to [Guyot]_ [DeCheveigné]_ and [Box]_ .
     This essentially corresponds to equations (6) and (7) in [DeCheveigné]_
 
     Args:
-        x       (numpy.ndarray) : audio data.
-        tau_max (int)   : integration window size.
+        x  (numpy.ndarray) : audio array data.
+        tau_max    (int)   : integration window size.
 
     Returns:
-        (list) : difference function array
+        (numpy.ndarray) : difference function resulting array.
 
     Note:
         .. math::
@@ -65,7 +63,7 @@ def compute_difference(x: np.ndarray, tau_max: int) -> np.ndarray:
 
     # compute cummulative sum and autocorrelation using fft
     x_cum_sum = np.concatenate((np.array([0]), (x * x).cumsum()))
-    conv = scipy.signal.fftconvolve(x, x[::-1])
+    conv = signal.fftconvolve(x, x[::-1])
 
     # compute dt(tau) according to (6) and (7) in [DeCheveigné]
     rt_tau_0 = x_cum_sum[w] - x_cum_sum[:w]
@@ -76,17 +74,16 @@ def compute_difference(x: np.ndarray, tau_max: int) -> np.ndarray:
 
 
 def compute_cmnd(d_t: np.ndarray, tau: int) -> np.ndarray:
-    # TODO: check the d_t type and output type
     """
     Apply Cumulative Mean Normalized Difference Function (CMNDF) as in [Guyot]_ [DeCheveigné]_.
     This corresponds to equation (8) in [DeCheveigné]_.
 
     Args:
-        d_t  (list) : Difference function.
-        tau (int)  : length of data.
+        d_t  (numpy.ndarray) : Difference function array.
+        tau           (int)  : length of data.
 
     Returns:
-        (list) : cumulative mean normalized difference
+        (numpy.ndarray) : cumulative mean normalized difference
 
     Note:
 
@@ -108,7 +105,7 @@ def get_pitch(
     [Guyot]_ [DeCheveigné]_.
 
     Args:
-        cmdf                (list) : cumulative mean normalized difference
+        cmdf       (numpy.ndarray) : cumulative mean normalized difference
         tau_min              (int) : minimum period for speech.
         tau_max              (int) : maximum period for speech.
         harmonic_threshold (float) : harmonicity threshold to determine if it is
@@ -134,29 +131,28 @@ def compute_yin(
     fs: int,
     win_len: float = 0.03,
     win_hop: float = 0.015,
-    low_freq: int = 50,
-    high_freq: int = 3000,
+    low_freq: float = 50,
+    high_freq: float = 3000,
     harmonic_threshold: float = 0.1,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    # TODO: check that high/low freq are integers?
     """
     Compute the fundamental frequency and harmonic rate according to the the Yin
     Algorithm [Guyot]_ [DeCheveigné]_.
 
     Args:
-        sig        (numpy.array) : audio signal (list of float)
-        fs                 (int) : sampling rate (= average number of samples pro 1 second)
+        sig        (numpy.ndarray) : audio signal (list of float)
+        fs                   (int) : sampling rate (= average number of samples pro 1 second)
         win_len            (float) : size of the analysis window (in seconds)
-                                   (Default is 0.03).
+                                     (Default is 0.03).
         win_hop            (float) : size of the lag between two consecutives windows (in seconds)
-                                   (Default is 0.015).
-        low_freq           (int) : Minimum fundamental frequency that can be detected (in Hertz)
-                                   (Default is 50).
-        high_freq          (int) : Maximum fundamental frequency that can be detected (in Hertz)
-                                   (Default is 3000).
+                                     (Default is 0.015).
+        low_freq           (float) : Minimum fundamental frequency that can be detected (in Hertz)
+                                     (Default is 50).
+        high_freq          (float) : Maximum fundamental frequency that can be detected (in Hertz)
+                                     (Default is 3000).
         harmonic_threshold (float) : Threshold of detection. The yalgorithmù return the
-                                   first minimum of the CMND fubction below this threshold.
-                                   (Default is 0.1).
+                                     first minimum of the CMND fubction below this threshold.
+                                     (Default is 0.1).
 
     Returns:
         (tuple) : tuple include the following
@@ -242,12 +238,13 @@ def compute_yin(
 
     # time values for each analysis window
     time_scale = range(0, len(sig) - w_len, w_step)
-    times = np.ndarray([t / float(fs) for t in time_scale])
+    len_time_scale = len(time_scale)
+    times = np.array([t / fs for t in time_scale])
     frames = [sig[t : t + w_len] for t in time_scale]
 
-    pitches = np.zeros(time_scale)
-    harmonic_rates = np.zeros(time_scale)
-    argmins = np.zeros(time_scale)
+    pitches = np.zeros(len_time_scale)
+    harmonic_rates = np.zeros(len_time_scale)
+    argmins = np.zeros(len_time_scale)
 
     for i, frame in enumerate(frames):
         # Compute YIN

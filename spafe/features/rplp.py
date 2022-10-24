@@ -19,7 +19,6 @@ from ..utils.filters import rasta_filter, ScaleType
 from ..utils.preprocessing import pre_emphasis, framing, windowing, WindowType
 
 
-# TODO : should all freqs be floats instead of ints?
 def __rastaplp(
     sig: np.ndarray,
     fs: int = 16000,
@@ -44,12 +43,12 @@ def __rastaplp(
     Compute Perceptual Linear Prediction coefficients with or without rasta filtering.
 
     Args:
-        sig               (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (bool) : apply pre-emphasis if True.
+        pre_emph           (bool) : apply pre-emphasis if True.
                                     (Default is False).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
@@ -57,7 +56,7 @@ def __rastaplp(
                                     (Default is 0.025).
         win_hop           (float) : step between successive windows in sec.
                                     (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
+        win_type            (str) : window type to apply for the windowing.
                                     (Default is "hamming").
         do_rasta           (bool) : apply Rasta filtering if True.
                                     (Default is False).
@@ -65,9 +64,9 @@ def __rastaplp(
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -195,18 +194,17 @@ def plp(
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: BarkConversionApproach = "Wang",
 ) -> np.ndarray:
-    # TODO: unused arguments : scale and conversion_approach
     """
     Compute Perceptual linear prediction coefficents according to [Hermansky]_
     and [Ajibola]_.
 
     Args:
-        sig               (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (bool) : apply pre-emphasis if 1.
+        pre_emph           (bool) : apply pre-emphasis if 1.
                                     (Default is 1).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
@@ -214,15 +212,15 @@ def plp(
                                     (Default is 0.025).
         win_hop           (float) : step between successive windows in sec.
                                     (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
+        win_type            (str) : window type to apply for the windowing.
                                     (Default is "hamming").
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -291,11 +289,11 @@ def plp(
         nfft=nfft,
         low_freq=low_freq,
         high_freq=high_freq,
-        scale="constant",
+        scale=scale,
         lifter=lifter,
         normalize=normalize,
         fbanks=fbanks,
-        conversion_approach="Wang",
+        conversion_approach=conversion_approach,
     )
 
 
@@ -318,18 +316,17 @@ def rplp(
     fbanks: Optional[np.ndarray] = None,
     conversion_approach: BarkConversionApproach = "Wang",
 ) -> np.ndarray:
-    # TODO: unused arguments : scale and conversion_approach
     """
     Compute rasta Perceptual linear prediction coefficents according to [Hermansky]_
     and [Ajibola]_.
 
     Args:
-        sig               (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
+        sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
         order               (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (bool) : apply pre-emphasis if 1.
+        pre_emph           (bool) : apply pre-emphasis if 1.
                                     (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
@@ -337,15 +334,15 @@ def rplp(
                                     (Default is 0.025).
         win_hop           (float) : step between successive windows in sec.
                                     (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
+        win_type            (str) : window type to apply for the windowing.
                                     (Default is "hamming").
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -421,9 +418,9 @@ def rplp(
         nfft=nfft,
         low_freq=low_freq,
         high_freq=high_freq,
-        scale="constant",
+        scale=scale,
         lifter=lifter,
         normalize=normalize,
         fbanks=fbanks,
-        conversion_approach="Wang",
+        conversion_approach=conversion_approach,
     )

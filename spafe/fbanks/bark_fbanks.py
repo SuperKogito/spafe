@@ -16,13 +16,12 @@ from ..utils.filters import scale_fbank, ScaleType
 
 
 def Fm(fb: float, fc: float) -> float:
-    # TODO: shouldn't fb/fc be floats?
     """
     Compute a Bark filter around a certain center frequency in bark [Hermansky]_.
 
     Args:
-        fb (int): frequency in Bark.
-        fc (int): center frequency in Bark.
+        fb (float): frequency in Bark.
+        fc (float): center frequency in Bark.
 
     Returns:
         (float) : associated Bark filter value/amplitude.
@@ -50,7 +49,6 @@ def bark_filter_banks(
     scale: ScaleType = "constant",
     conversion_approach: BarkConversionApproach = "Wang",
 ):
-    # TODO: shouldn't high/low_freq be floats?
     """
     Compute Bark filter banks. The filters are stored in the rows, the columns
     correspond to fft bins.
@@ -62,9 +60,9 @@ def bark_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default is fs/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").

@@ -18,7 +18,7 @@ from ..utils.filters import scale_fbank, ScaleType
 EarQ = 9.26449
 minBW = 24.7
 
-# TODO : shouldn't frequencies be floats?
+
 def generate_center_frequencies(
     min_freq: float, max_freq: float, nfilts: int
 ) -> np.ndarray:
@@ -26,9 +26,9 @@ def generate_center_frequencies(
     Compute center frequencies in the ERB scale.
 
     Args:
-        min_freq (int) : minimum frequency of the center frequencies' domain.
-        max_freq (int) : maximum frequency of the center frequencies' domain.
-        nfilts   (int) : number of filters <=> number of center frequencies to compute.
+        min_freq (float) : minimum frequency of the center frequencies' domain.
+        max_freq (float) : maximum frequency of the center frequencies' domain.
+        nfilts     (int) : number of filters <=> number of center frequencies to compute.
 
     Returns:
         (numpy.ndarray) : array of center frequencies.
@@ -105,9 +105,9 @@ def gammatone_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default is 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default is 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default samplerate/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").
