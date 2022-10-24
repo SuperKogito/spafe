@@ -4,7 +4,7 @@ Contributing guidelines
 How to contribute
 -----------------
 
-The preferred way to contribute to spafe is to fork the[main repository](https://github.com/SuperKogito/spafe) on GitHub:
+The preferred way to contribute to spafe is to fork the [main repository](https://github.com/SuperKogito/spafe) on GitHub:
 
 1.	Fork the [project repository](https://github.com/SuperKogito/spafe): click on the 'Fork' button near the top of the page. This creates a copy of the code under your account on the GitHub server.
 
