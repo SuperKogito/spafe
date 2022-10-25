@@ -17,7 +17,7 @@ from ..utils.preprocessing import (
     framing,
     windowing,
     zero_handling,
-    WindowType,
+    SlidingWindow,
 )
 
 
@@ -99,9 +99,7 @@ def lpc(
     order=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hann",
+    window : Optional[SlidingWindow] = None,
 ):
     """
     Compute the Linear prediction coefficents (LPC) from an audio signal.
@@ -116,12 +114,8 @@ def lpc(
                                  (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
                                  (Default is 0.97).
-        win_len        (float) : window length in sec.
-                                 (Default is 0.025).
-        win_hop        (float) : step between successive windows in sec.
-                                 (Default is 0.01).
-        win_type         (str) : window type to apply for the windowing.
-                                 (Default is hamming).
+        window (SlidingWindow) : sliding window object.
+                                 (Default is None).
 
     Returns:
         (tuple) :
@@ -138,10 +132,11 @@ def lpc(
 
             from scipy.io.wavfile import read
             from spafe.features.lpc import lpc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute lpcs
@@ -149,9 +144,7 @@ def lpc(
                           fs=fs,
                           pre_emph=0,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type: WindowType="hamming")
+                          window=SlidingWindow(0.030, 0.015, "hamming"))
 
             # visualize features
             show_features(lpcs, "Linear prediction coefficents", "LPCs Index", "Frame Index")
@@ -161,11 +154,15 @@ def lpc(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     a_mat = np.zeros((len(windows), order + 1))
     e_vec = np.zeros((len(windows), 1))
@@ -230,9 +227,7 @@ def lpcc(
     order=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.025,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     lifter: Optional[int] = None,
     normalize: Optional[NormalizationType] = None,
 ) -> np.ndarray:
@@ -250,12 +245,8 @@ def lpcc(
                                  (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
                                  (Default is 0.97).
-        win_len        (float) : window length in sec.
-                                 (Default is 0.025).
-        win_hop        (float) : step between successive windows in sec.
-                                 (Default is 0.01).
-        win_type         (str) : window type to apply for the windowing.
-                                 (Default is hamming).
+        window (SlidingWindow) : sliding window object.
+                                 (Default is None).
         lifter           (int) : apply liftering if specified.
                                  (Default is None).
         normalize        (str) : apply normalization if provided.
@@ -279,10 +270,11 @@ def lpcc(
 
             from scipy.io.wavfile import read
             from spafe.features.lpc import lpcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute lpccs
@@ -290,9 +282,7 @@ def lpcc(
                          fs=fs,
                          pre_emph=0,
                          pre_emph_coeff=0.97,
-                         win_len=0.030,
-                         win_hop=0.015,
-                         win_type: WindowType="hamming")
+                         window=SlidingWindow(0.03, 0.015, "hamming"))
 
             # visualize features
             show_features(lpccs, "Linear Prediction Cepstral Coefﬁcients", "LPCCs Index","Frame Index")
@@ -302,11 +292,15 @@ def lpcc(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # compute lpccs
     lpccs = np.zeros((len(windows), order + 1))

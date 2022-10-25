@@ -9,12 +9,31 @@
 from typing import Tuple
 
 import numpy as np
+from dataclasses import dataclass
 from typing_extensions import Literal
 
 from .exceptions import ParameterError, ErrorMsgs
 
 WindowType = Literal["hanning", "bartlet", "kaiser", "blackman", "hamming"]
 
+
+@dataclass
+class SlidingWindow:
+    """
+    Sliding widow class. 
+
+    Args:
+        win_len (float) : window length in sec.
+                          (Default is 0.025).
+        win_hop (float) : step between successive windows in sec.
+                          (Default is 0.01).
+        win_type (float) : window type to apply for the windowing.
+                          (Default is "hamming").
+    """
+    win_len: float = 0.025
+    win_hop: float = 0.010
+    win_type: WindowType = "hamming"
+    
 
 def zero_handling(x: np.ndarray) -> np.ndarray:
     """
@@ -141,12 +160,9 @@ def windowing(
                                    https://superkogito.github.io/blog/2020/03/13/spectral_leakage_and_windowing.html
 
     """
-    # WARNING : I would argue that defaulting to hamming is good,
-    # but defaulting _silently_ is bad (any spelling mistake made would result
-    # in a silent usage of hamming)
     return {
         "hanning": np.hanning(frame_len) * frames,
         "bartlet": np.bartlett(frame_len) * frames,
         "kaiser": np.kaiser(frame_len, beta=14) * frames,
         "blackman": np.blackman(frame_len) * frames,
-    }.get(win_type, np.hamming(frame_len) * frames)
+        "hamming": np.hamming(frame_len) * frames}[win_type]

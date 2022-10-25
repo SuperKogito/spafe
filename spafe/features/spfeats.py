@@ -302,7 +302,7 @@ def extract_feats(sig: np.ndarray, fs: int, nfft: int = 512) -> SpectralFeats:
             from pprint import pprint
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute erb spectrogram

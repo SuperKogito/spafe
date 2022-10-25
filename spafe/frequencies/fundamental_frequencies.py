@@ -177,7 +177,7 @@ def compute_yin(
 
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
             duration = len(sig) / fs
             harmonic_threshold = 0.85

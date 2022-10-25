@@ -71,7 +71,7 @@ def get_dominant_frequencies(
             win_hop = 0.010
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute dominant frequencies

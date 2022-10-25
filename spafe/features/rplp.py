@@ -16,7 +16,12 @@ from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.converters import BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import rasta_filter, ScaleType
-from ..utils.preprocessing import pre_emphasis, framing, windowing, WindowType
+from ..utils.preprocessing import (
+    pre_emphasis, 
+    framing, 
+    windowing, 
+    SlidingWindow,
+)
 
 
 def __rastaplp(
@@ -25,9 +30,7 @@ def __rastaplp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.025,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     do_rasta: bool = False,
     nfilts: int = 24,
     nfft: int = 512,
@@ -52,12 +55,8 @@ def __rastaplp(
                                     (Default is False).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type            (str) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         do_rasta           (bool) : apply Rasta filtering if True.
                                     (Default is False).
         nfilts              (int) : the number of filters in the filter bank.
@@ -113,11 +112,15 @@ def __rastaplp(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> FFT -> |.|
     ## Magnitude of the FFT
@@ -181,9 +184,7 @@ def plp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.025,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -208,12 +209,8 @@ def plp(
                                     (Default is 1).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type            (str) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
@@ -251,10 +248,11 @@ def plp(
 
             from scipy.io.wavfile import read
             from spafe.features.rplp import plp
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute plps
@@ -262,9 +260,7 @@ def plp(
                        fs=fs,
                        pre_emph=0,
                        pre_emph_coeff=0.97,
-                       win_len=0.030,
-                       win_hop=0.015,
-                       win_type: WindowType="hamming",
+                       window=SlidingWindow(0.03, 0.015, "hamming"),
                        nfilts=128,
                        nfft=1024,
                        low_freq=0,
@@ -281,9 +277,7 @@ def plp(
         order=order,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         do_rasta=False,
         nfilts=nfilts,
         nfft=nfft,
@@ -303,9 +297,7 @@ def rplp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.025,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -330,12 +322,8 @@ def rplp(
                                     (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type            (str) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
@@ -373,10 +361,11 @@ def rplp(
 
             from scipy.io.wavfile import read
             from spafe.features.rplp import rplp
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute rplps
@@ -384,9 +373,7 @@ def rplp(
                          fs=fs,
                          pre_emph=0,
                          pre_emph_coeff=0.97,
-                         win_len=0.030,
-                         win_hop=0.015,
-                         win_type: WindowType="hamming",
+                         window=SlidingWindow(0.03, 0.015, "hamming"),
                          nfilts=128,
                          nfft=1024,
                          low_freq=0,
@@ -410,9 +397,7 @@ def rplp(
         order=order,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         do_rasta=True,
         nfilts=nfilts,
         nfft=nfft,

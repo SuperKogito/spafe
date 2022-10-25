@@ -21,7 +21,7 @@ from ..utils.preprocessing import (
     framing,
     windowing,
     zero_handling,
-    WindowType,
+    SlidingWindow,
 )
 
 
@@ -31,9 +31,7 @@ def ngcc(
     num_ceps=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: Optional[float] = None,
@@ -60,12 +58,8 @@ def ngcc(
                                     (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                     (Default is 0.01).
-        win_type            (str) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40.
         nfft                (int) : number of FFT points.
@@ -109,10 +103,11 @@ def ngcc(
 
             from scipy.io.wavfile import read
             from spafe.features.ngcc import ngcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute ngccs
@@ -120,9 +115,7 @@ def ngcc(
                           fs=fs,
                           pre_emph=1,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type: WindowType="hamming",
+                          window=SlidingWindow(0.03, 0.015, "hamming"),
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,
@@ -159,11 +152,15 @@ def ngcc(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> FFT -> |.|**2
     fourrier_transform = np.absolute(np.fft.rfft(windows, nfft))

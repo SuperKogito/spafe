@@ -19,7 +19,7 @@ from ..utils.preprocessing import (
     framing,
     windowing,
     zero_handling,
-    WindowType,
+    SlidingWindow,
 )
 from ..utils.spectral import compute_constant_qtransform
 
@@ -29,9 +29,7 @@ def cqt_spectrogram(
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.025,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfft: int = 512,
     low_freq: float = 0,
     high_freq: Optional[float] = None,
@@ -52,12 +50,8 @@ def cqt_spectrogram(
                                           (Default is 1).
         pre_emph_coeff          (float) : pre-emphasis filter coefficient.
                                           (Default is 0.97).
-        win_len                 (float) : window length in sec.
-                                          (Default is 0.025).
-        win_hop                 (float) : step between successive windows in sec.
-                                          (Default is 0.01).
-        win_type                (float) : window type to apply for the windowing.
-                                          (Default is "hamming").
+        window          (SlidingWindow) : sliding window object.
+                                          (Default is None).
         nfft                      (int) : number of FFT points.
                                           (Default is 512).
         low_freq                (float) : lowest band edge of mel filters (Hz).
@@ -88,10 +82,11 @@ def cqt_spectrogram(
 
             from spafe.features.cqcc import cqt_spectrogram
             from spafe.utils.vis import show_spectrogram
+            from spafe.utils.preprocessing import SlidingWindow
             from scipy.io.wavfile import read
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute spectrogram
@@ -99,9 +94,7 @@ def cqt_spectrogram(
                                     fs=fs,
                                     pre_emph=0,
                                     pre_emph_coeff=0.97,
-                                    win_len=0.030,
-                                    win_hop=0.015,
-                                    win_type: WindowType="hamming",
+                                    window=SlidingWindow(0.03, 0.015, "hamming"),
                                     nfft=2048,
                                     low_freq=0,
                                     high_freq=fs/2)
@@ -128,11 +121,15 @@ def cqt_spectrogram(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> compute constant Q-transform
     constant_qtransform = compute_constant_qtransform(
@@ -143,7 +140,7 @@ def cqt_spectrogram(
         nfft=nfft,
         number_of_octaves=number_of_octaves,
         number_of_bins_per_octave=number_of_bins_per_octave,
-        win_type=win_type,
+        win_type=window.win_type,
         spectral_threshold=spectral_threshold,
         f0=f0,
         q_rate=q_rate,
@@ -158,9 +155,7 @@ def cqcc(
     num_ceps: int = 13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len: float = 0.02,
-    win_hop: float = 0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfft: int = 512,
     low_freq: float = 0,
     high_freq: Optional[float] = None,
@@ -242,10 +237,11 @@ def cqcc(
 
             from scipy.io.wavfile import read
             from spafe.features.cqcc import cqcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute cqccs
@@ -253,9 +249,7 @@ def cqcc(
                           fs=fs,
                           pre_emph=1,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type: WindowType="hamming",
+                          window=SlidingWindow(0.03, 0.015, "hamming"),
                           nfft=2048,
                           low_freq=0,
                           high_freq=fs/2,
@@ -270,9 +264,7 @@ def cqcc(
         fs=fs,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         nfft=nfft,
         low_freq=low_freq,
         high_freq=high_freq,

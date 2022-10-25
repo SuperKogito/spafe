@@ -16,7 +16,7 @@ from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
 from ..utils.converters import MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import ScaleType
-from ..utils.preprocessing import zero_handling, WindowType
+from ..utils.preprocessing import zero_handling, SlidingWindow
 
 
 def msrcc(
@@ -25,9 +25,7 @@ def msrcc(
     num_ceps=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type: WindowType = "hamming",
+    window : Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -55,12 +53,8 @@ def msrcc(
                                     (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type            (str) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
@@ -106,10 +100,11 @@ def msrcc(
 
             from scipy.io.wavfile import read
             from spafe.features.msrcc import msrcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute msrccs
@@ -117,9 +112,7 @@ def msrcc(
                             fs=fs,
                             pre_emph=1,
                             pre_emph_coeff=0.97,
-                            win_len=0.030,
-                            win_hop=0.015,
-                            win_type: WindowType="hamming",
+                            window=SlidingWindow(0.03, 0.015, "hamming"),
                             nfilts=128,
                             nfft=2048,
                             low_freq=0,
@@ -146,9 +139,7 @@ def msrcc(
         fs=fs,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         nfilts=nfilts,
         nfft=nfft,
         low_freq=low_freq,
