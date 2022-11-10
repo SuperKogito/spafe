@@ -478,43 +478,43 @@ an audio signal according to <a class="reference internal" href="#tapkir" id="id
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – a mono audio signal (Nx1) from which to compute features.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
 (Default is 16000).</p></li>
-<li><p><strong>num_ceps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – number of cepstra to return.
+<li><p><strong>num_ceps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – number of cepstra to return.
 (Default is 13).</p></li>
-<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply pre-emphasis if 1.
+<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – apply pre-emphasis if 1.
 (Default is 1).</p></li>
-<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – pre-emphasis filter coefficient.
+<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pre-emphasis filter coefficient.
 (Default is 0.97).</p></li>
-<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – window length in sec.
+<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – window length in sec.
 (Default is 0.025).</p></li>
-<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – step between successive windows in sec.
+<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – step between successive windows in sec.
 (Default is 0.01).</p></li>
-<li><p><strong>win_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – window type to apply for the windowing.
+<li><p><strong>win_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – window type to apply for the windowing.
 (Default is “hamming”).</p></li>
-<li><p><strong>nfilts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the number of filters in the filter bank.
+<li><p><strong>nfilts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the number of filters in the filter bank.
 (Default is 40).</p></li>
-<li><p><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of FFT points.
+<li><p><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of FFT points.
 (Default is 512).</p></li>
-<li><p><strong>low_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – lowest band edge of mel filters (Hz).
+<li><p><strong>low_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – lowest band edge of mel filters (Hz).
 (Default is 0).</p></li>
-<li><p><strong>high_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – highest band edge of mel filters (Hz).
+<li><p><strong>high_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – highest band edge of mel filters (Hz).
 (Default is samplerate / 2).</p></li>
-<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – monotonicity behavior of the filter banks.
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – monotonicity behavior of the filter banks.
 (Default is “constant”).</p></li>
-<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – power coefficient for resulting energies
+<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – power coefficient for resulting energies
 (Default -1/7).</p></li>
-<li><p><strong>dct_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – type of DCT used.
+<li><p><strong>dct_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – type of DCT used.
 (Default is 2).</p></li>
-<li><p><strong>use_energy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – overwrite C0 with true log energy.
+<li><p><strong>use_energy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – overwrite C0 with true log energy.
 (Default is 0).</p></li>
-<li><p><strong>lifter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply liftering if specified.
+<li><p><strong>lifter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – apply liftering if specified.
 (Default is None).</p></li>
-<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – apply normalization if specified.
+<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – apply normalization if specified.
 (Default is None).</p></li>
 <li><p><strong>fbanks</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – filter bank matrix.
 (Default is None).</p></li>
-<li><p><strong>conversion_approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – approach to use for conversion to the erb scale.
+<li><p><strong>conversion_approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – approach to use for conversion to the erb scale.
 (Default is “Oshaghnessy”).</p></li>
 </ul>
 </dd>

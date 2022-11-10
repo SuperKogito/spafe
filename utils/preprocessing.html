@@ -480,11 +480,11 @@ as described in <a class="reference internal" href="#malek-framing-blog" id="id1
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – a mono audio signal (Nx1) from which to compute features.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
 (Default is 16000).</p></li>
-<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – window length in sec.
+<li><p><strong>win_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – window length in sec.
 (Default is 0.025).</p></li>
-<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – step between successive windows in sec.
+<li><p><strong>win_hop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – step between successive windows in sec.
 (Default is 0.01).</p></li>
 </ul>
 </dd>
@@ -496,7 +496,7 @@ as described in <a class="reference internal" href="#malek-framing-blog" id="id1
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -520,7 +520,7 @@ as described in <a class="reference internal" href="#malek-framing-blog" id="id1
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input signal.</p></li>
-<li><p><strong>coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – preemphasis coefficient. 0 is no filter.
+<li><p><strong>coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – preemphasis coefficient. 0 is no filter.
 (Default is 0.97).</p></li>
 </ul>
 </dd>
@@ -546,8 +546,8 @@ as described in <a class="reference internal" href="#malek-framing-blog" id="id1
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal array.</p></li>
-<li><p><strong>stride_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – length of the stride.</p></li>
-<li><p><strong>stride_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – stride step.</p></li>
+<li><p><strong>stride_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – length of the stride.</p></li>
+<li><p><strong>stride_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – stride step.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -572,8 +572,8 @@ as described in <a class="reference internal" href="#malek-framing-blog" id="id1
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>frames</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – array including the overlapping frames.</p></li>
-<li><p><strong>frame_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – frame length.</p></li>
-<li><p><strong>win_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – type of window to use.
+<li><p><strong>frame_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – frame length.</p></li>
+<li><p><strong>win_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – type of window to use.
 (Default is “hamming”).</p></li>
 </ul>
 </dd>
