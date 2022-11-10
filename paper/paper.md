@@ -26,7 +26,7 @@ In speech processing, features extraction is essentially the estimation of a par
 This is a key step in any audio based modeling and recognition process (e.g. speech recognition, sound classification, speaker authentication etc.).
 There are several speech features to extract, such as the Linear Frequency Cepstral Coefficients (LFCC), Mel Frequency Cepstral Coefficients (MFCC), Linear Predictive Coding (LPC), and Constant-Q Cepstral Coefficients (CQCC) etc.
 Each type of features has its own advantages and drawbacks (e.g. noise robustness, complexity, inter-components correlation etc.) that can directly affect the researched topic.
-Unfortunately, existing libraries for extracting these features (e.g. python_speech_features [@python_speech_features:2020], SpeechPy [@speechpy:2018] and Bob [@bob:2017]) are limited and mostly focus on one extraction technique (e.g. MFCC), thus it is hard to find reliable implementations of other features extraction algorithms.
+Unfortunately, existing libraries for extracting these features (e.g. librosa [@librosa:2015], python_speech_features [@python_speech_features:2020], SpeechPy [@speechpy:2018] and Bob [@bob:2017]) are limited and mostly focus on one extraction technique (e.g. MFCC), thus it is hard to find reliable implementations of other features extraction algorithms.
 Consequently, this slows down the research and hinders the possibility of exploring and comparing these different approaches.
 Hence, the need for **spafe**, a straightforward solution that unites all these different techniques in one python package.
 
