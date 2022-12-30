@@ -17,9 +17,9 @@ from ..utils.converters import BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import rasta_filter, ScaleType
 from ..utils.preprocessing import (
-    pre_emphasis, 
-    framing, 
-    windowing, 
+    pre_emphasis,
+    framing,
+    windowing,
     SlidingWindow,
 )
 
@@ -30,7 +30,7 @@ def __rastaplp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     do_rasta: bool = False,
     nfilts: int = 24,
     nfft: int = 512,
@@ -114,10 +114,12 @@ def __rastaplp(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
@@ -184,7 +186,7 @@ def plp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -297,7 +299,7 @@ def rplp(
     order: int = 13,
     pre_emph: bool = False,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,

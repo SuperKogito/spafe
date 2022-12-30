@@ -115,10 +115,16 @@ cd spafe
 python setup.py install
 ```
 
-## Why use Spafe? 
+## Why use Spafe?
 
-Unlike most existing audio feature extraction libraries ([python_speech_features](https://github.com/jameslyons/python_speech_features), [SpeechPy](https://github.com/astorfi/speechpy), [surfboard](https://github.com/novoic/surfboard) and [Bob](https://gitlab.idiap.ch/bob)), Spafe provides more options for spectral features, notably, Bark Frequency Cepstral Coefﬁcients (BFCCs), Constant Q-transform Cepstral Coeﬃcients (CQCCs), Gammatone Frequency Cepstral Coefﬁcients (GFCCs), Power-Normalized Cepstral Coefficients (PNCCs), Phase based Spectral Root Cepstral Coefficients (PSRCCs) extraction algorithms. 
-Most existing libraries and to their credits provide great implementations for features extraction but are unfortunately limited to the Mel Frequency Features (e.g. MFCC) and at best have Bark frequency and linear predictive coefficients additionally. [Librosa](https://github.com/librosa/librosa) for example includes great implementation of various algorithms (only MFCC and LPC are included), based on the Short Time Fourrier Transform (STFT), which is theoretically more accurate but slower than the Discret Fourrier Transform used in Spafe's implementation.
+Unlike most existing audio feature extraction libraries ([python_speech_features](https://github.com/jameslyons/python_speech_features), [SpeechPy](https://github.com/astorfi/speechpy), [surfboard](https://github.com/novoic/surfboard) and [Bob](https://gitlab.idiap.ch/bob)), Spafe provides more options for spectral features extraction algorithms, notably:
+- Bark Frequency Cepstral Coefﬁcients (BFCCs)
+- Constant Q-transform Cepstral Coeﬃcients (CQCCs)
+- Gammatone Frequency Cepstral Coefﬁcients (GFCCs)
+- Power-Normalized Cepstral Coefficients (PNCCs)
+- Phase based Spectral Root Cepstral Coefficients (PSRCCs) 
+
+Most existing libraries and to their credits provide great implementations for features extraction but are unfortunately limited to the Mel Frequency Features (MFCC) and at best have Bark frequency and linear predictive coefficients additionally. [Librosa](https://github.com/librosa/librosa) for example includes great implementation of various algorithms (only MFCC and LPC are included), based on the **Short Time Fourrier Transform (STFT)**, which is theoretically more accurate but slower than the **Discret Fourrier Transform used in Spafe**'s implementation.
 
 
 ## How to use

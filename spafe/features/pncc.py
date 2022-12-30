@@ -17,9 +17,9 @@ from ..utils.converters import ErbConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
 from ..utils.filters import ScaleType
 from ..utils.preprocessing import (
-    pre_emphasis, 
-    framing, 
-    windowing, 
+    pre_emphasis,
+    framing,
+    windowing,
     SlidingWindow,
 )
 
@@ -287,7 +287,7 @@ def pncc(
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
     power=2,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: Optional[float] = None,
@@ -412,10 +412,12 @@ def pncc(
 
     # init window
     if window is None:
-         window = SlidingWindow()
-         
+        window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)

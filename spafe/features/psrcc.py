@@ -31,7 +31,7 @@ def psrcc(
     num_ceps: int = 13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 26,
     nfft: int = 512,
     low_freq: Optional[float] = None,
@@ -152,10 +152,12 @@ def psrcc(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)

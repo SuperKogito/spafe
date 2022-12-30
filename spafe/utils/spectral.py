@@ -78,7 +78,9 @@ def compute_constant_qtransform(
             for n in range(number_of_bins_per_octave)
         ]
     )
-    cqt_freqs = tmp_cqt_freqs[(low_freq <= tmp_cqt_freqs) & (tmp_cqt_freqs <= high_freq)]
+    cqt_freqs = tmp_cqt_freqs[
+        (low_freq <= tmp_cqt_freqs) & (tmp_cqt_freqs <= high_freq)
+    ]
 
     # calculate Q
     Q = q_rate / (2 ** (1.0 / number_of_bins_per_octave) - 1.0)

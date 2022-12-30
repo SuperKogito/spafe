@@ -99,7 +99,7 @@ def lpc(
     order=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
 ):
     """
     Compute the Linear prediction coefficents (LPC) from an audio signal.
@@ -156,10 +156,12 @@ def lpc(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
@@ -227,7 +229,7 @@ def lpcc(
     order=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     lifter: Optional[int] = None,
     normalize: Optional[NormalizationType] = None,
 ) -> np.ndarray:
@@ -294,10 +296,12 @@ def lpcc(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)

@@ -190,18 +190,18 @@ def spectral_spread(sig: np.ndarray, fs: int, spectrum: np.ndarray) -> float:
 
 def spectral_flatness(spectrum: np.ndarray) -> float:
     """
-    Compute spectral flatness.
+        Compute spectral flatness.
 
-    Args:
-#        spectrum (numpy.ndarray) : signal spectrum.
+        Args:
+    #        spectrum (numpy.ndarray) : signal spectrum.
 
-    Returns:
-        (float) : spectral flatness value.
+        Returns:
+            (float) : spectral flatness value.
 
-    Note:
-        .. math::
+        Note:
+            .. math::
 
-            S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}
+                S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}
     """
     # compute magnitude spectrum
     magnitude_spectrum = np.abs(spectrum)

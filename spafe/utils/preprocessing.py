@@ -20,7 +20,7 @@ WindowType = Literal["hanning", "bartlet", "kaiser", "blackman", "hamming"]
 @dataclass
 class SlidingWindow:
     """
-    Sliding widow class. 
+    Sliding widow class.
 
     Args:
         win_len (float) : window length in sec.
@@ -30,10 +30,11 @@ class SlidingWindow:
         win_type (float) : window type to apply for the windowing.
                           (Default is "hamming").
     """
+
     win_len: float = 0.025
     win_hop: float = 0.010
     win_type: WindowType = "hamming"
-    
+
 
 def zero_handling(x: np.ndarray) -> np.ndarray:
     """
@@ -165,4 +166,5 @@ def windowing(
         "bartlet": np.bartlett(frame_len) * frames,
         "kaiser": np.kaiser(frame_len, beta=14) * frames,
         "blackman": np.blackman(frame_len) * frames,
-        "hamming": np.hamming(frame_len) * frames}[win_type]
+        "hamming": np.hamming(frame_len) * frames,
+    }[win_type]

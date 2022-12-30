@@ -29,7 +29,7 @@ def linear_spectrogram(
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -130,10 +130,12 @@ def linear_spectrogram(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
@@ -157,7 +159,7 @@ def lfcc(
     num_ceps=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
