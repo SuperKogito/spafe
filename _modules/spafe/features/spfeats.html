@@ -279,18 +279,33 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
 
-<div class="viewcode-block" id="spectral_centroid"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_centroid">[docs]</a><span class="k">def</span> <span class="nf">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SpectralFeats"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.SpectralFeats">[docs]</a><span class="k">class</span> <span class="nc">SpectralFeats</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">spectral_skewness</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_kurtosis</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_entropy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_spread</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_flatness</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_rolloff</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_flux</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_mean</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_rms</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_std</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">spectral_variance</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+<div class="viewcode-block" id="spectral_centroid"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_centroid">[docs]</a><span class="k">def</span> <span class="nf">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral centroid (which is the barycenter of the spectrum) as</span>
 <span class="sd">    described in [Peeters]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
 <span class="sd">        fs                 (int) : input signal sampling rate.</span>
 <span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
 <span class="sd">        i                  (int) : centroid order.</span>
@@ -303,7 +318,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        .. math::</span>
 
 <span class="sd">            \mu_{i} &amp;= \\frac{\sum_{n=0}^{N}f_{k}^{i}*a_{k}}{\sum_{n=0}^{N}a_{k}}\\\\</span>
-<span class="sd">            S_{centroid} &amp;= \mu_{1}\\\\</span>
+<span class="sd">            S_{centroid} &amp;= \mu_{i}\\\\</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># compute magnitude spectrum</span>
     <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
@@ -316,7 +331,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">sc</span></div>
 
 
-<div class="viewcode-block" id="spectral_skewness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_skewness">[docs]</a><span class="k">def</span> <span class="nf">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_skewness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_skewness">[docs]</a><span class="k">def</span> <span class="nf">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral skewness (which is a measure of the asymmetry of a</span>
 <span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
@@ -336,8 +351,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># compute magnitude spectrum, and centroids</span>
     <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># compute positive frequencies</span>
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
@@ -349,7 +364,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">sk</span></div>
 
 
-<div class="viewcode-block" id="spectral_kurtosis"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_kurtosis">[docs]</a><span class="k">def</span> <span class="nf">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_kurtosis"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_kurtosis">[docs]</a><span class="k">def</span> <span class="nf">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral kurtosis (which is a measure of the flatness of a</span>
 <span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
@@ -369,8 +384,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># compute magnitude spectrum, and centroids</span>
     <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu2</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># compute positive frequencies</span>
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
@@ -382,17 +397,15 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">sk</span></div>
 
 
-<div class="viewcode-block" id="spectral_entropy"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_entropy">[docs]</a><span class="k">def</span> <span class="nf">spectral_entropy</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_entropy"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_entropy">[docs]</a><span class="k">def</span> <span class="nf">spectral_entropy</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral entropy as described in [Misra]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
-<span class="sd">        fs                 (int) : input signal sampling rate.</span>
 <span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        (float) : spectral skewness.</span>
+<span class="sd">        (float) : spectral entropy.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        .. math::</span>
@@ -414,7 +427,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">en</span></div>
 
 
-<div class="viewcode-block" id="spectral_spread"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_spread">[docs]</a><span class="k">def</span> <span class="nf">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_spread"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_spread">[docs]</a><span class="k">def</span> <span class="nf">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)</span>
 <span class="sd">    as described in [Peeters]_.</span>
@@ -425,7 +438,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        (numpy.array) : spectral spread.</span>
+<span class="sd">        (float) : spectral spread.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        .. math::</span>
@@ -438,7 +451,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">))</span>
 
     <span class="c1"># get centroid</span>
-    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 
     <span class="c1"># compute spread</span>
     <span class="n">spread</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
@@ -447,13 +460,12 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">spread</span></div>
 
 
-<div class="viewcode-block" id="spectral_flatness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flatness">[docs]</a><span class="k">def</span> <span class="nf">spectral_flatness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_flatness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flatness">[docs]</a><span class="k">def</span> <span class="nf">spectral_flatness</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute spectral flatness.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sig      (numpy.ndarray) : audio signal array.</span>
-<span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
+<span class="sd">#        spectrum (numpy.ndarray) : signal spectrum.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (float) : spectral flatness value.</span>
@@ -471,15 +483,13 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">sf</span></div>
 
 
-<div class="viewcode-block" id="spectral_rolloff"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_rolloff">[docs]</a><span class="k">def</span> <span class="nf">spectral_rolloff</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.85</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_rolloff"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_rolloff">[docs]</a><span class="k">def</span> <span class="nf">spectral_rolloff</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral roll-off point which measures the bandwidth of the audio</span>
 <span class="sd">    signal by determining the frequency bin under which a specified k percentage</span>
 <span class="sd">    of the total spectral energy is contained below. see [Scheirer]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sig      (numpy.ndarray) : input mono signal array.</span>
-<span class="sd">        fs                 (int) : input signal sampling rate.</span>
 <span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
 <span class="sd">        k                (float) : constant.</span>
 <span class="sd">                                   (Default is 0.85).</span>
@@ -495,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">i</span></div>
 
 
-<div class="viewcode-block" id="spectral_flux"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flux">[docs]</a><span class="k">def</span> <span class="nf">spectral_flux</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="viewcode-block" id="spectral_flux"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flux">[docs]</a><span class="k">def</span> <span class="nf">spectral_flux</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral flux, which measures how quickly the power spectrum</span>
 <span class="sd">    of a signal is changing. This implementation computes the spectral flux</span>
@@ -503,8 +513,6 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    differences squared [Scheirer]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sig      (numpy.ndarray) : input mono signal.</span>
-<span class="sd">        fs                 (int) : input signal sampling rate.</span>
 <span class="sd">        spectrum (numpy.ndarray) : signal spectrum.</span>
 <span class="sd">        p                  (int) : norm type.</span>
 <span class="sd">                                   (Default is 2).</span>
@@ -528,7 +536,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">sf</span></div>
 
 
-<div class="viewcode-block" id="extract_feats"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.extract_feats">[docs]</a><span class="k">def</span> <span class="nf">extract_feats</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_feats"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.extract_feats">[docs]</a><span class="k">def</span> <span class="nf">extract_feats</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpectralFeats</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute various spectral features [Peeters]_.</span>
 
@@ -566,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            from pprint import pprint</span>
 
 <span class="sd">            # read audio</span>
-<span class="sd">            fpath = &quot;../../../test.wav&quot;</span>
+<span class="sd">            fpath = &quot;../../../data/test.wav&quot;</span>
 <span class="sd">            fs, sig = read(fpath)</span>
 
 <span class="sd">            # compute erb spectrogram</span>
@@ -585,14 +593,14 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">)</span>
 
     <span class="c1"># spectral features</span>
-    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_centroid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_centroid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_skewness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_kurtosis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_entropy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_entropy</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_entropy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_entropy</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_spread&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flatness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flatness</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_rolloff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_rolloff</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
-    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flux</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flatness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flatness</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_rolloff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_rolloff</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_flux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_flux</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_rms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spectrum</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">&quot;spectral_std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>

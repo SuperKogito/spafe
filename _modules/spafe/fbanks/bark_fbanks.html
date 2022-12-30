@@ -278,19 +278,22 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">scale_fbank</span>
-<span class="kn">from</span> <span class="nn">..utils.converters</span> <span class="kn">import</span> <span class="n">hz2bark</span><span class="p">,</span> <span class="n">bark2hz</span>
+
+<span class="kn">from</span> <span class="nn">..utils.converters</span> <span class="kn">import</span> <span class="n">hz2bark</span><span class="p">,</span> <span class="n">bark2hz</span><span class="p">,</span> <span class="n">BarkConversionApproach</span>
 <span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">scale_fbank</span><span class="p">,</span> <span class="n">ScaleType</span>
 
 
-<div class="viewcode-block" id="Fm"><a class="viewcode-back" href="../../../fbanks/bark_fbanks.html#spafe.fbanks.bark_fbanks.Fm">[docs]</a><span class="k">def</span> <span class="nf">Fm</span><span class="p">(</span><span class="n">fb</span><span class="p">,</span> <span class="n">fc</span><span class="p">):</span>
+<div class="viewcode-block" id="Fm"><a class="viewcode-back" href="../../../fbanks/bark_fbanks.html#spafe.fbanks.bark_fbanks.Fm">[docs]</a><span class="k">def</span> <span class="nf">Fm</span><span class="p">(</span><span class="n">fb</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fc</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute a Bark filter around a certain center frequency in bark [Hermansky]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        fb (int): frequency in Bark.</span>
-<span class="sd">        fc (int): center frequency in Bark.</span>
+<span class="sd">        fb (float): frequency in Bark.</span>
+<span class="sd">        fc (float): center frequency in Bark.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (float) : associated Bark filter value/amplitude.</span>
@@ -310,13 +313,13 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="bark_filter_banks"><a class="viewcode-back" href="../../../fbanks/bark_fbanks.html#spafe.fbanks.bark_fbanks.bark_filter_banks">[docs]</a><span class="k">def</span> <span class="nf">bark_filter_banks</span><span class="p">(</span>
-    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
-    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-    <span class="n">conversion_approach</span><span class="o">=</span><span class="s2">&quot;Wang&quot;</span><span class="p">,</span>
+    <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">ScaleType</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">conversion_approach</span><span class="p">:</span> <span class="n">BarkConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Wang&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute Bark filter banks. The filters are stored in the rows, the columns</span>
@@ -329,9 +332,9 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                                    (Default is 512).</span>
 <span class="sd">        fs                  (int) : sample rate/ sampling frequency of the signal.</span>
 <span class="sd">                                    (Default 16000 Hz).</span>
-<span class="sd">        low_freq            (int) : lowest band edge of mel filters.</span>
+<span class="sd">        low_freq          (float) : lowest band edge of mel filters.</span>
 <span class="sd">                                    (Default 0 Hz).</span>
-<span class="sd">        high_freq           (int) : highest band edge of mel filters.</span>
+<span class="sd">        high_freq         (float) : highest band edge of mel filters.</span>
 <span class="sd">                                    (Default is fs/2).</span>
 <span class="sd">        scale               (str) : monotonicity behavior of the filter banks.</span>
 <span class="sd">                                    (Default is &quot;constant&quot;).</span>

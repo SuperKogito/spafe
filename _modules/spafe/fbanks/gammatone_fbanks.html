@@ -278,25 +278,29 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..utils.converters</span> <span class="kn">import</span> <span class="n">hz2erb</span>
-<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">scale_fbank</span>
-<span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..utils.converters</span> <span class="kn">import</span> <span class="n">hz2erb</span><span class="p">,</span> <span class="n">ErbConversionApproach</span>
+<span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">scale_fbank</span><span class="p">,</span> <span class="n">ScaleType</span>
 
 <span class="c1"># Slaney&#39;s ERB Filter constants</span>
 <span class="n">EarQ</span> <span class="o">=</span> <span class="mf">9.26449</span>
 <span class="n">minBW</span> <span class="o">=</span> <span class="mf">24.7</span>
 
 
-<div class="viewcode-block" id="generate_center_frequencies"><a class="viewcode-back" href="../../../fbanks/gammatone_fbanks.html#spafe.fbanks.gammatone_fbanks.generate_center_frequencies">[docs]</a><span class="k">def</span> <span class="nf">generate_center_frequencies</span><span class="p">(</span><span class="n">min_freq</span><span class="p">,</span> <span class="n">max_freq</span><span class="p">,</span> <span class="n">nfilts</span><span class="p">):</span>
+<div class="viewcode-block" id="generate_center_frequencies"><a class="viewcode-back" href="../../../fbanks/gammatone_fbanks.html#spafe.fbanks.gammatone_fbanks.generate_center_frequencies">[docs]</a><span class="k">def</span> <span class="nf">generate_center_frequencies</span><span class="p">(</span>
+    <span class="n">min_freq</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_freq</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute center frequencies in the ERB scale.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        min_freq (int) : minimum frequency of the center frequencies domain.</span>
-<span class="sd">        max_freq (int) : maximum frequency of the center frequencies domain.</span>
-<span class="sd">        nfilts   (int) : number of filters &lt;=&gt; number of center frequencies to compute.</span>
+<span class="sd">        min_freq (float) : minimum frequency of the center frequencies&#39; domain.</span>
+<span class="sd">        max_freq (float) : maximum frequency of the center frequencies&#39; domain.</span>
+<span class="sd">        nfilts     (int) : number of filters &lt;=&gt; number of center frequencies to compute.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (numpy.ndarray) : array of center frequencies.</span>
@@ -312,7 +316,9 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">return</span> <span class="n">center_freqs</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="compute_gain"><a class="viewcode-back" href="../../../fbanks/gammatone_fbanks.html#spafe.fbanks.gammatone_fbanks.compute_gain">[docs]</a><span class="k">def</span> <span class="nf">compute_gain</span><span class="p">(</span><span class="n">fcs</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">wT</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_gain"><a class="viewcode-back" href="../../../fbanks/gammatone_fbanks.html#spafe.fbanks.gammatone_fbanks.compute_gain">[docs]</a><span class="k">def</span> <span class="nf">compute_gain</span><span class="p">(</span>
+    <span class="n">fcs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">wT</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute Gain and matrixify computation for speed purposes [Ellis-spectrogram]_.</span>
 
@@ -351,14 +357,14 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="gammatone_filter_banks"><a class="viewcode-back" href="../../../fbanks/gammatone_fbanks.html#spafe.fbanks.gammatone_fbanks.gammatone_filter_banks">[docs]</a><span class="k">def</span> <span class="nf">gammatone_filter_banks</span><span class="p">(</span>
-    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
-    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
-    <span class="n">order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">conversion_approach</span><span class="o">=</span><span class="s2">&quot;Glasberg&quot;</span><span class="p">,</span>
+    <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">ScaleType</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">conversion_approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute Gammatone-filter banks. The filters are stored in the rows, the columns</span>
@@ -371,9 +377,9 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                                    (Default is 512).</span>
 <span class="sd">        fs                  (int) : sample rate/ sampling frequency of the signal.</span>
 <span class="sd">                                    (Default is 16000 Hz).</span>
-<span class="sd">        low_freq            (int) : lowest band edge of mel filters.</span>
+<span class="sd">        low_freq          (float) : lowest band edge of mel filters.</span>
 <span class="sd">                                    (Default is 0 Hz).</span>
-<span class="sd">        high_freq           (int) : highest band edge of mel filters.</span>
+<span class="sd">        high_freq         (float) : highest band edge of mel filters.</span>
 <span class="sd">                                    (Default samplerate/2).</span>
 <span class="sd">        scale               (str) : monotonicity behavior of the filter banks.</span>
 <span class="sd">                                    (Default is &quot;constant&quot;).</span>

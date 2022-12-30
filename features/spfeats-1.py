@@ -3,7 +3,7 @@ from scipy.io.wavfile import read
 from pprint import pprint
 
 # read audio
-fpath = "../../../test.wav"
+fpath = "../../../data/test.wav"
 fs, sig = read(fpath)
 
 # compute erb spectrogram

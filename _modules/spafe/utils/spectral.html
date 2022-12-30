@@ -278,35 +278,39 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+
+<span class="kn">from</span> <span class="nn">.preprocessing</span> <span class="kn">import</span> <span class="n">WindowType</span>
 <span class="kn">from</span> <span class="nn">..utils.preprocessing</span> <span class="kn">import</span> <span class="n">windowing</span>
 
 
 <div class="viewcode-block" id="compute_constant_qtransform"><a class="viewcode-back" href="../../../utils/spectral.html#spafe.utils.spectral.compute_constant_qtransform">[docs]</a><span class="k">def</span> <span class="nf">compute_constant_qtransform</span><span class="p">(</span>
-    <span class="n">frames</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
-    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">number_of_octaves</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-    <span class="n">number_of_bins_per_octave</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-    <span class="n">win_type</span><span class="o">=</span><span class="s2">&quot;hamming&quot;</span><span class="p">,</span>
-    <span class="n">spectral_threshold</span><span class="o">=</span><span class="mf">0.0054</span><span class="p">,</span>
-    <span class="n">f0</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
-    <span class="n">q_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">frames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">number_of_octaves</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="n">number_of_bins_per_octave</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">win_type</span><span class="p">:</span> <span class="n">WindowType</span> <span class="o">=</span> <span class="s2">&quot;hamming&quot;</span><span class="p">,</span>
+    <span class="n">spectral_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0054</span><span class="p">,</span>
+    <span class="n">f0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="n">q_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the constant Q-transform as described in [Browm1991]_, [Brown1992]_</span>
 <span class="sd">    and [Schörkhuber]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        frames                   (list) : list of audio frames (list of lists).</span>
+<span class="sd">        frames                   (list) : list of audio frames (list of numpy.ndarray).</span>
 <span class="sd">        fs                        (int) : the sampling frequency of the signal we are working with.</span>
 <span class="sd">                                          (Default is 16000).</span>
-<span class="sd">        low_freq                  (int) : lowest band edge of mel filters (Hz).</span>
+<span class="sd">        low_freq                (float) : lowest band edge of mel filters (Hz).</span>
 <span class="sd">                                          (Default is 0).</span>
-<span class="sd">        high_freq                 (int) : highest band edge of mel filters (Hz).</span>
+<span class="sd">        high_freq               (float) : highest band edge of mel filters (Hz).</span>
 <span class="sd">                                          (Default is samplerate / 2).</span>
 <span class="sd">        nfft                      (int) : number of FFT points.</span>
 <span class="sd">                                          (Default is 512).</span>
@@ -314,13 +318,13 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                                          (Default is 7).</span>
 <span class="sd">        number_of_bins_per_octave (int) : numbers of bins oer occtave.</span>
 <span class="sd">                                          (Default is 24).</span>
-<span class="sd">        win_type                (float) : window type to apply for the windowing.</span>
+<span class="sd">        win_type                  (str) : window type to apply for the windowing.</span>
 <span class="sd">                                          (Default is &quot;hamming&quot;).</span>
-<span class="sd">        spectral_threshold        (int) : spectral threshold.</span>
+<span class="sd">        spectral_threshold      (float) : spectral threshold.</span>
 <span class="sd">                                          (Default is 0.005).</span>
-<span class="sd">        f0                        (int) : fundamental frequency.</span>
+<span class="sd">        f0                      (float) : fundamental frequency.</span>
 <span class="sd">                                          (Default is 28).</span>
-<span class="sd">        q_rate                    (int) : number of FFT points.</span>
+<span class="sd">        q_rate                  (float) : number of FFT points.</span>
 <span class="sd">                                          (Default is 1.0).</span>
 
 <span class="sd">    Returns:</span>
@@ -346,7 +350,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_bins_per_octave</span><span class="p">)</span>
         <span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">cqt_freqs</span> <span class="o">=</span> <span class="n">tmp_cqt_freqs</span><span class="p">[</span><span class="n">tmp_cqt_freqs</span> <span class="o">&lt;=</span> <span class="n">high_freq</span><span class="p">]</span>
+    <span class="n">cqt_freqs</span> <span class="o">=</span> <span class="n">tmp_cqt_freqs</span><span class="p">[(</span><span class="n">low_freq</span> <span class="o">&lt;=</span> <span class="n">tmp_cqt_freqs</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tmp_cqt_freqs</span> <span class="o">&lt;=</span> <span class="n">high_freq</span><span class="p">)]</span>
 
     <span class="c1"># calculate Q</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">q_rate</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">number_of_bins_per_octave</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>

@@ -278,36 +278,39 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">.mel_fbanks</span> <span class="kn">import</span> <span class="n">mel_filter_banks_helper</span>
-<span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+<span class="kn">from</span> <span class="nn">..utils.filters</span> <span class="kn">import</span> <span class="n">ScaleType</span>
 
 
 <div class="viewcode-block" id="linear_filter_banks"><a class="viewcode-back" href="../../../fbanks/linear_fbanks.html#spafe.fbanks.linear_fbanks.linear_filter_banks">[docs]</a><span class="k">def</span> <span class="nf">linear_filter_banks</span><span class="p">(</span>
-    <span class="n">nfilts</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-    <span class="n">nfft</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">fs</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>
-    <span class="n">low_freq</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">high_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+    <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16000</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">high_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">ScaleType</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute linear-filter banks. The filters are stored in the rows, the columns</span>
 <span class="sd">    correspond to fft bins.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        nfilts    (int) : the number of filters in the filter bank.</span>
-<span class="sd">                          (Default 20).</span>
-<span class="sd">        nfft      (int) : the FFT size.</span>
-<span class="sd">                          (Default is 512).</span>
-<span class="sd">        fs        (int) : sample rate/ sampling frequency of the signal.</span>
-<span class="sd">                          (Default 16000 Hz).</span>
-<span class="sd">        low_freq  (int) : lowest band edge of linear filters.</span>
-<span class="sd">                          (Default 0 Hz).</span>
-<span class="sd">        high_freq (int) : highest band edge of linear filters.</span>
-<span class="sd">                          (Default samplerate/2).</span>
-<span class="sd">        scale     (str) : monotonicity behavior of the filter banks.</span>
-<span class="sd">                          (Default is &quot;constant&quot;).</span>
+<span class="sd">        nfilts      (int) : the number of filters in the filter bank.</span>
+<span class="sd">                            (Default 20).</span>
+<span class="sd">        nfft        (int) : the FFT size.</span>
+<span class="sd">                            (Default is 512).</span>
+<span class="sd">        fs          (int) : sample rate/ sampling frequency of the signal.</span>
+<span class="sd">                            (Default 16000 Hz).</span>
+<span class="sd">        low_freq  (float) : lowest band edge of linear filters.</span>
+<span class="sd">                            (Default 0 Hz).</span>
+<span class="sd">        high_freq (float) : highest band edge of linear filters.</span>
+<span class="sd">                            (Default samplerate/2).</span>
+<span class="sd">        scale       (str) : monotonicity behavior of the filter banks.</span>
+<span class="sd">                            (Default is &quot;constant&quot;).</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (tuple) :</span>

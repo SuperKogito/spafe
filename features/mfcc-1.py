@@ -1,18 +1,17 @@
 from spafe.features.mfcc import mel_spectrogram
 from spafe.utils.vis import show_spectrogram
+from spafe.utils.preprocessing import SlidingWindow
 from scipy.io.wavfile import read
 
 # read audio
-fpath = "../../../test.wav"
+fpath = "../../../data/test.wav"
 fs, sig = read(fpath)
 
 mSpec, _ = mel_spectrogram(sig,
                                 fs=fs,
                                 pre_emph=0,
                                 pre_emph_coeff=0.97,
-                                win_len=0.030,
-                                win_hop=0.015,
-                                win_type="hamming",
+                                window=SlidingWindow(0.03, 0.015, "hamming"),
                                 nfilts=128,
                                 nfft=2048,
                                 low_freq=0,

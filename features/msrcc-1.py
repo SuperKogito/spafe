@@ -1,9 +1,10 @@
 from scipy.io.wavfile import read
 from spafe.features.msrcc import msrcc
+from spafe.utils.preprocessing import SlidingWindow
 from spafe.utils.vis import show_features
 
 # read audio
-fpath = "../../../test.wav"
+fpath = "../../../data/test.wav"
 fs, sig = read(fpath)
 
 # compute msrccs
@@ -11,9 +12,7 @@ msrccs  = msrcc(sig,
                 fs=fs,
                 pre_emph=1,
                 pre_emph_coeff=0.97,
-                win_len=0.030,
-                win_hop=0.015,
-                win_type="hamming",
+                window=SlidingWindow(0.03, 0.015, "hamming"),
                 nfilts=128,
                 nfft=2048,
                 low_freq=0,

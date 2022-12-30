@@ -471,17 +471,77 @@ function checkPageExistsAndRedirect(event) {
 This source code is licensed under the terms of the BSD 3-Clause License.
 For a copy, see &lt;<a class="reference external" href="https://github.com/SuperKogito/spafe/blob/master/LICENSE">https://github.com/SuperKogito/spafe/blob/master/LICENSE</a>&gt;.</p></li>
 </ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">SpectralFeats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_typename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#SpectralFeats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_skewness">
+<span class="sig-name descname"><span class="pre">spectral_skewness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_skewness" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_kurtosis">
+<span class="sig-name descname"><span class="pre">spectral_kurtosis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_kurtosis" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_entropy">
+<span class="sig-name descname"><span class="pre">spectral_entropy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_entropy" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_spread">
+<span class="sig-name descname"><span class="pre">spectral_spread</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_spread" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_flatness">
+<span class="sig-name descname"><span class="pre">spectral_flatness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_flatness" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_rolloff">
+<span class="sig-name descname"><span class="pre">spectral_rolloff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_rolloff" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_flux">
+<span class="sig-name descname"><span class="pre">spectral_flux</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_flux" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_mean">
+<span class="sig-name descname"><span class="pre">spectral_mean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_mean" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_rms">
+<span class="sig-name descname"><span class="pre">spectral_rms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_rms" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_std">
+<span class="sig-name descname"><span class="pre">spectral_std</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_std" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spafe.features.spfeats.SpectralFeats.spectral_variance">
+<span class="sig-name descname"><span class="pre">spectral_variance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#spafe.features.spfeats.SpectralFeats.spectral_variance" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_centroid">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_centroid" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_centroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_centroid" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral centroid (which is the barycenter of the spectrum) as
 described in <a class="reference internal" href="#peeters" id="id1"><span>[Peeters]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
 <li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 <li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – centroid order.
 (Default is 1).</p></li>
 </ul>
@@ -497,21 +557,21 @@ described in <a class="reference internal" href="#peeters" id="id1"><span>[Peete
 <p class="admonition-title">Note</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mu_{i} &amp;= \frac{\sum_{n=0}^{N}f_{k}^{i}*a_{k}}{\sum_{n=0}^{N}a_{k}}\\
-S_{centroid} &amp;= \mu_{1}\\\end{split}\]</div>
+S_{centroid} &amp;= \mu_{i}\\\end{split}\]</div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_skewness">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_skewness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_skewness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_skewness" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_skewness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_skewness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_skewness" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral skewness (which is a measure of the asymmetry of a
 distribution around its mean) as described in <a class="reference internal" href="#peeters" id="id2"><span>[Peeters]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
 <li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -530,15 +590,15 @@ distribution around its mean) as described in <a class="reference internal" href
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_kurtosis">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_kurtosis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_kurtosis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_kurtosis" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_kurtosis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_kurtosis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_kurtosis" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral kurtosis (which is a measure of the flatness of a
 distribution around its mean) as described in <a class="reference internal" href="#peeters" id="id3"><span>[Peeters]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
 <li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -557,18 +617,14 @@ distribution around its mean) as described in <a class="reference internal" href
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_entropy">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_entropy" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_entropy" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral entropy as described in <a class="reference internal" href="#misra" id="id4"><span>[Misra]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>spectral skewness.</p>
+<dd class="field-even"><p>spectral entropy.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
@@ -591,22 +647,22 @@ International Conference on Acoustics, Speech, and Signal Processing.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_spread">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_spread" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_spread" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)
 as described in <a class="reference internal" href="#peeters" id="id5"><span>[Peeters]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
 <li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>spectral spread.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(numpy.array)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -618,41 +674,33 @@ as described in <a class="reference internal" href="#peeters" id="id5"><span>[Pe
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_flatness">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_flatness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flatness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flatness" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute spectral flatness.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – audio signal array.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
-</ul>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_flatness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flatness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flatness" title="Permalink to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Compute spectral flatness.</p>
+<p>Args:</p>
+</div></blockquote>
+<p>#        spectrum (numpy.ndarray) : signal spectrum.</p>
+<blockquote>
+<div><dl>
+<dt>Returns:</dt><dd><p>(float) : spectral flatness value.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>spectral flatness value.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dt>Note:</dt><dd><div class="math notranslate nohighlight">
+\[S_{flatness} = \frac{exp(\frac{1}{N}\sum_{k}log(a_{k}))}{\frac{1}{N}\sum_{k}a_{k}}\]</div>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<div class="math notranslate nohighlight">
-\[S_{flatness} = \frac{exp(\frac{1}{N}\sum_{k}log(a_{k}))}{\frac{1}{N}\sum_{k}a_{k}}\]</div>
-</div>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_rolloff">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_rolloff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_rolloff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_rolloff" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_rolloff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.85</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_rolloff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_rolloff" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral roll-off point which measures the bandwidth of the audio
 signal by determining the frequency bin under which a specified k percentage
 of the total spectral energy is contained below. see <a class="reference internal" href="#scheirer" id="id6"><span>[Scheirer]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal array.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 <li><p><strong>k</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – constant.
 (Default is 0.85).</p></li>
 </ul>
@@ -668,7 +716,7 @@ of the total spectral energy is contained below. see <a class="reference interna
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.spectral_flux">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flux" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">spectral_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#spectral_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.spectral_flux" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the spectral flux, which measures how quickly the power spectrum
 of a signal is changing. This implementation computes the spectral flux
 using the L2-norm per default i.e. the square root of the sum of absolute
@@ -676,9 +724,7 @@ differences squared <a class="reference internal" href="#scheirer" id="id7"><spa
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
-<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – signal spectrum.</p></li>
 <li><p><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – norm type.
 (Default is 2).</p></li>
 </ul>
@@ -708,12 +754,12 @@ Processing, 1997.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.spfeats.extract_feats">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">extract_feats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#extract_feats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.extract_feats" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.spfeats.</span></span><span class="sig-name descname"><span class="pre">extract_feats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spafe.features.spfeats.SpectralFeats" title="spafe.features.spfeats.SpectralFeats"><span class="pre">spafe.features.spfeats.SpectralFeats</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/spfeats.html#extract_feats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.spfeats.extract_feats" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute various spectral features <a class="reference internal" href="#peeters" id="id8"><span>[Peeters]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – input mono signal.</p></li>
 <li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – input signal sampling rate.</p></li>
 <li><p><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of FFT points.
 (Default is 512).</p></li>
@@ -756,7 +802,7 @@ Processing, 1997.</p>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="c1"># read audio</span>
-<span class="n">fpath</span> <span class="o">=</span> <span class="s2">&quot;../../../test.wav&quot;</span>
+<span class="n">fpath</span> <span class="o">=</span> <span class="s2">&quot;../../../data/test.wav&quot;</span>
 <span class="n">fs</span><span class="p">,</span> <span class="n">sig</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
 
 <span class="c1"># compute erb spectrogram</span>

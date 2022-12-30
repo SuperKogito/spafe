@@ -279,7 +279,7 @@ function checkPageExistsAndRedirect(event) {
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..utils.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span><span class="p">,</span> <span class="n">ErrorMsgs</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="c1"># init vars</span>
 <span class="n">F0</span> <span class="o">=</span> <span class="mi">0</span>
@@ -289,8 +289,10 @@ function checkPageExistsAndRedirect(event) {
 <span class="n">LOGSTEP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">6.4</span><span class="p">)</span> <span class="o">/</span> <span class="mf">27.0</span><span class="p">)</span>
 <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">24.7</span> <span class="o">*</span> <span class="mf">4.37</span><span class="p">)</span>
 
+<span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;Glasberg&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="hz2erb"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2erb">[docs]</a><span class="k">def</span> <span class="nf">hz2erb</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Glasberg&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="hz2erb"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2erb">[docs]</a><span class="k">def</span> <span class="nf">hz2erb</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert Hz frequencies to Erb as referenced in [Glasberg]_.</span>
 
@@ -340,12 +342,12 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="mf">0.00437</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="erb2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.erb2hz">[docs]</a><span class="k">def</span> <span class="nf">erb2hz</span><span class="p">(</span><span class="n">fe</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Glasberg&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="erb2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.erb2hz">[docs]</a><span class="k">def</span> <span class="nf">erb2hz</span><span class="p">(</span><span class="n">fe</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert Erb frequencies to Hz as referenced in [Glasberg]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        fb      (float) : input frequency [Erb].</span>
+<span class="sd">        fe      (float) : input frequency [Erb].</span>
 <span class="sd">        approach  (str) : conversion approach.</span>
 <span class="sd">                          (Default is &quot;Glasberg&quot;).</span>
 
@@ -384,7 +386,12 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">return</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">fe</span> <span class="o">/</span> <span class="n">A</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.00437</span></div>
 
 
-<div class="viewcode-block" id="hz2bark"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2bark">[docs]</a><span class="k">def</span> <span class="nf">hz2bark</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Wang&quot;</span><span class="p">):</span>
+<span class="n">BarkConversionApproach</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">&quot;Wang&quot;</span><span class="p">,</span> <span class="s2">&quot;Tjomov&quot;</span><span class="p">,</span> <span class="s2">&quot;Schroeder&quot;</span><span class="p">,</span> <span class="s2">&quot;Terhardt&quot;</span><span class="p">,</span> <span class="s2">&quot;Zwicker&quot;</span><span class="p">,</span> <span class="s2">&quot;Traunmueller&quot;</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="hz2bark"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2bark">[docs]</a><span class="k">def</span> <span class="nf">hz2bark</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">BarkConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Wang&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert Hz frequencies to Bark as mentioned in [Carter]_ and [Traunmueller]_.</span>
 
@@ -456,7 +463,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">return</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsinh</span><span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="mi">600</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="bark2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.bark2hz">[docs]</a><span class="k">def</span> <span class="nf">bark2hz</span><span class="p">(</span><span class="n">fb</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Wang&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="bark2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.bark2hz">[docs]</a><span class="k">def</span> <span class="nf">bark2hz</span><span class="p">(</span><span class="n">fb</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">BarkConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Wang&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert Bark frequencies to Hz as mentioned in [Carter]_ and [Traunmueller]_.</span>
 
@@ -537,7 +544,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">return</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">fb</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">__traunmueller_helper</span><span class="p">(</span><span class="n">fi</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__traunmueller_helper</span><span class="p">(</span><span class="n">fi</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper funtion for the Traunmueller approach.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -549,12 +556,15 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">return</span> <span class="n">fi</span>
 
 
-<div class="viewcode-block" id="hz2mel"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2mel">[docs]</a><span class="k">def</span> <span class="nf">hz2mel</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">):</span>
+<span class="n">MelConversionApproach</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">,</span> <span class="s2">&quot;Lindsay&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="hz2mel"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.hz2mel">[docs]</a><span class="k">def</span> <span class="nf">hz2mel</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">MelConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a value in Hertz to Mels [Oshaghnessy]_, [Beranek]_ and [Lindsay]_.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        fb     (float) : input frequency [Hz].</span>
+<span class="sd">        f      (float) : input frequency [Hz].</span>
 <span class="sd">        approach (str) : conversion approach.</span>
 <span class="sd">                         (Default is &quot;Oshaghnessy&quot;).</span>
 <span class="sd">    Returns:</span>
@@ -610,12 +620,12 @@ function checkPageExistsAndRedirect(event) {
     <span class="p">}[</span><span class="n">approach</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="mel2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.mel2hz">[docs]</a><span class="k">def</span> <span class="nf">mel2hz</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">approach</span><span class="o">=</span><span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="mel2hz"><a class="viewcode-back" href="../../../utils/converters.html#spafe.utils.converters.mel2hz">[docs]</a><span class="k">def</span> <span class="nf">mel2hz</span><span class="p">(</span><span class="n">fm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">approach</span><span class="p">:</span> <span class="n">MelConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Oshaghnessy&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a value in Mels to Hertz</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        fb     (float) : input frequency [Mel].</span>
+<span class="sd">        fm     (float) : input frequency [Mel].</span>
 <span class="sd">        approach (str) : conversion approach.</span>
 <span class="sd">                         (Default is &quot;Wang&quot;).</span>
 <span class="sd">    Returns:</span>
