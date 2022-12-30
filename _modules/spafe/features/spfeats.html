@@ -462,18 +462,18 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="spectral_flatness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flatness">[docs]</a><span class="k">def</span> <span class="nf">spectral_flatness</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute spectral flatness.</span>
+<span class="sd">        Compute spectral flatness.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">#        spectrum (numpy.ndarray) : signal spectrum.</span>
+<span class="sd">        Args:</span>
+<span class="sd">    #        spectrum (numpy.ndarray) : signal spectrum.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        (float) : spectral flatness value.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (float) : spectral flatness value.</span>
 
-<span class="sd">    Note:</span>
-<span class="sd">        .. math::</span>
+<span class="sd">        Note:</span>
+<span class="sd">            .. math::</span>
 
-<span class="sd">            S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}</span>
+<span class="sd">                S_{flatness} = \\frac{exp(\\frac{1}{N}\sum_{k}log(a_{k}))}{\\frac{1}{N}\sum_{k}a_{k}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># compute magnitude spectrum</span>
     <span class="n">magnitude_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>

@@ -350,7 +350,9 @@ function checkPageExistsAndRedirect(event) {
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_bins_per_octave</span><span class="p">)</span>
         <span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">cqt_freqs</span> <span class="o">=</span> <span class="n">tmp_cqt_freqs</span><span class="p">[(</span><span class="n">low_freq</span> <span class="o">&lt;=</span> <span class="n">tmp_cqt_freqs</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tmp_cqt_freqs</span> <span class="o">&lt;=</span> <span class="n">high_freq</span><span class="p">)]</span>
+    <span class="n">cqt_freqs</span> <span class="o">=</span> <span class="n">tmp_cqt_freqs</span><span class="p">[</span>
+        <span class="p">(</span><span class="n">low_freq</span> <span class="o">&lt;=</span> <span class="n">tmp_cqt_freqs</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tmp_cqt_freqs</span> <span class="o">&lt;=</span> <span class="n">high_freq</span><span class="p">)</span>
+    <span class="p">]</span>
 
     <span class="c1"># calculate Q</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">q_rate</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">number_of_bins_per_octave</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
