@@ -6,19 +6,22 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
-from ..utils.filters import scale_fbank
-from ..utils.converters import hz2bark, bark2hz
+
+from ..utils.converters import hz2bark, bark2hz, BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import scale_fbank, ScaleType
 
 
-def Fm(fb, fc):
+def Fm(fb: float, fc: float) -> float:
     """
     Compute a Bark filter around a certain center frequency in bark [Hermansky]_.
 
     Args:
-        fb (int): frequency in Bark.
-        fc (int): center frequency in Bark.
+        fb (float): frequency in Bark.
+        fc (float): center frequency in Bark.
 
     Returns:
         (float) : associated Bark filter value/amplitude.
@@ -38,13 +41,13 @@ def Fm(fb, fc):
 
 
 def bark_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    conversion_approach="Wang",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    conversion_approach: BarkConversionApproach = "Wang",
 ):
     """
     Compute Bark filter banks. The filters are stored in the rows, the columns
@@ -57,9 +60,9 @@ def bark_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default is fs/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").

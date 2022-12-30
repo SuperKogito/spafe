@@ -6,12 +6,36 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Tuple
+
 import numpy as np
-import scipy.ndimage
+from dataclasses import dataclass
+from typing_extensions import Literal
+
 from .exceptions import ParameterError, ErrorMsgs
 
+WindowType = Literal["hanning", "bartlet", "kaiser", "blackman", "hamming"]
 
-def zero_handling(x):
+
+@dataclass
+class SlidingWindow:
+    """
+    Sliding widow class. 
+
+    Args:
+        win_len (float) : window length in sec.
+                          (Default is 0.025).
+        win_hop (float) : step between successive windows in sec.
+                          (Default is 0.01).
+        win_type (float) : window type to apply for the windowing.
+                          (Default is "hamming").
+    """
+    win_len: float = 0.025
+    win_hop: float = 0.010
+    win_type: WindowType = "hamming"
+    
+
+def zero_handling(x: np.ndarray) -> np.ndarray:
     """
     handle the issue with zero values if they are exposed to become an argument
     for any log function.
@@ -25,7 +49,7 @@ def zero_handling(x):
     return np.where(x == 0, np.finfo(float).eps, x)
 
 
-def pre_emphasis(sig, pre_emph_coeff=0.97):
+def pre_emphasis(sig: np.ndarray, pre_emph_coeff: float = 0.97) -> np.ndarray:
     """
     perform preemphasis on the input signal.
 
@@ -45,7 +69,7 @@ def pre_emphasis(sig, pre_emph_coeff=0.97):
     return np.append(sig[0], sig[1:] - pre_emph_coeff * sig[:-1])
 
 
-def stride_trick(a, stride_length, stride_step):
+def stride_trick(a: np.ndarray, stride_length: int, stride_step: int) -> np.ndarray:
     """
     apply framing using the stride trick from numpy.
 
@@ -69,7 +93,9 @@ def stride_trick(a, stride_length, stride_step):
     )
 
 
-def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
+def framing(
+    sig: np.ndarray, fs: int = 16000, win_len: float = 0.025, win_hop: float = 0.01
+) -> Tuple[np.ndarray, int]:
     """
     transform a signal into a series of overlapping frames (= Frame blocking)
     as described in [Malek-framing-blog]_.
@@ -114,7 +140,9 @@ def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
     return frames, frame_length
 
 
-def windowing(frames, frame_len, win_type="hamming"):
+def windowing(
+    frames: np.ndarray, frame_len: int, win_type: WindowType = "hamming"
+) -> np.ndarray:
     """
     generate and apply a window function to avoid spectral leakage [Malek-windowing-blog]_.
 
@@ -137,4 +165,4 @@ def windowing(frames, frame_len, win_type="hamming"):
         "bartlet": np.bartlett(frame_len) * frames,
         "kaiser": np.kaiser(frame_len, beta=14) * frames,
         "blackman": np.blackman(frame_len) * frames,
-    }.get(win_type, np.hamming(frame_len) * frames)
+        "hamming": np.hamming(frame_len) * frames}[win_type]

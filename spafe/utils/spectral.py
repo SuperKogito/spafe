@@ -6,35 +6,39 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import List
+
 import numpy as np
 from scipy.sparse import csr_matrix
+
+from .preprocessing import WindowType
 from ..utils.preprocessing import windowing
 
 
 def compute_constant_qtransform(
-    frames,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    nfft=512,
-    number_of_octaves=7,
-    number_of_bins_per_octave=12,
-    win_type="hamming",
-    spectral_threshold=0.0054,
-    f0=120,
-    q_rate=1.0,
+    frames: List[np.ndarray],
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: float = None,
+    nfft: int = 512,
+    number_of_octaves: int = 7,
+    number_of_bins_per_octave: int = 12,
+    win_type: WindowType = "hamming",
+    spectral_threshold: float = 0.0054,
+    f0: float = 120,
+    q_rate: float = 1.0,
 ):
     """
     Compute the constant Q-transform as described in [Browm1991]_, [Brown1992]_
     and [Schörkhuber]_.
 
     Args:
-        frames                   (list) : list of audio frames (list of lists).
+        frames                   (list) : list of audio frames (list of numpy.ndarray).
         fs                        (int) : the sampling frequency of the signal we are working with.
                                           (Default is 16000).
-        low_freq                  (int) : lowest band edge of mel filters (Hz).
+        low_freq                (float) : lowest band edge of mel filters (Hz).
                                           (Default is 0).
-        high_freq                 (int) : highest band edge of mel filters (Hz).
+        high_freq               (float) : highest band edge of mel filters (Hz).
                                           (Default is samplerate / 2).
         nfft                      (int) : number of FFT points.
                                           (Default is 512).
@@ -42,13 +46,13 @@ def compute_constant_qtransform(
                                           (Default is 7).
         number_of_bins_per_octave (int) : numbers of bins oer occtave.
                                           (Default is 24).
-        win_type                (float) : window type to apply for the windowing.
+        win_type                  (str) : window type to apply for the windowing.
                                           (Default is "hamming").
-        spectral_threshold        (int) : spectral threshold.
+        spectral_threshold      (float) : spectral threshold.
                                           (Default is 0.005).
-        f0                        (int) : fundamental frequency.
+        f0                      (float) : fundamental frequency.
                                           (Default is 28).
-        q_rate                    (int) : number of FFT points.
+        q_rate                  (float) : number of FFT points.
                                           (Default is 1.0).
 
     Returns:
@@ -74,7 +78,7 @@ def compute_constant_qtransform(
             for n in range(number_of_bins_per_octave)
         ]
     )
-    cqt_freqs = tmp_cqt_freqs[tmp_cqt_freqs <= high_freq]
+    cqt_freqs = tmp_cqt_freqs[(low_freq <= tmp_cqt_freqs) & (tmp_cqt_freqs <= high_freq)]
 
     # calculate Q
     Q = q_rate / (2 ** (1.0 / number_of_bins_per_octave) - 1.0)

@@ -6,36 +6,39 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
+
 from ..features.mfcc import mel_spectrogram
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import MelConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import zero_handling, SlidingWindow
 
 
 def msrcc(
-    sig,
-    fs=16000,
+    sig: np.ndarray,
+    fs: int = 16000,
     num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    gamma=-1 / 7,
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Oshaghnessy",
-):
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    window : Optional[SlidingWindow] = None,
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    gamma: float = -1 / 7,
+    dct_type: int = 2,
+    use_energy: bool = False,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: MelConversionApproach = "Oshaghnessy",
+) -> np.ndarray:
     """
     Compute the Magnitude-based Spectral Root Cepstral Coefﬁcients (MSRCC) from
     an audio signal according to [Tapkir]_.
@@ -44,25 +47,21 @@ def msrcc(
         sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
-        num_ceps          (float) : number of cepstra to return.
+        num_ceps            (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph           (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate / 2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -70,15 +69,15 @@ def msrcc(
                                     (Default -1/7).
         dct_type            (int) : type of DCT used.
                                     (Default is 2).
-        use_energy          (int) : overwrite C0 with true log energy.
+        use_energy         (bool) : overwrite C0 with true log energy.
                                     (Default is 0).
         lifter              (int) : apply liftering if specified.
                                     (Default is None).
-        normalize           (int) : apply normalization if specified.
+        normalize           (str) : apply normalization if specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
-        conversion_approach (str) : approach to use for conversion to the erb scale.
+        conversion_approach (str) : approach to use for conversion to the mel scale.
                                     (Default is "Oshaghnessy").
 
     Returns:
@@ -101,10 +100,11 @@ def msrcc(
 
             from scipy.io.wavfile import read
             from spafe.features.msrcc import msrcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute msrccs
@@ -112,9 +112,7 @@ def msrcc(
                             fs=fs,
                             pre_emph=1,
                             pre_emph_coeff=0.97,
-                            win_len=0.030,
-                            win_hop=0.015,
-                            win_type="hamming",
+                            window=SlidingWindow(0.03, 0.015, "hamming"),
                             nfilts=128,
                             nfft=2048,
                             low_freq=0,
@@ -141,9 +139,7 @@ def msrcc(
         fs=fs,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         nfilts=nfilts,
         nfft=nfft,
         low_freq=low_freq,

@@ -8,9 +8,12 @@
 """
 import numpy as np
 from scipy import signal
+from typing_extensions import Literal
+
+ScaleType = Literal["ascendant", "descendant", "constant"]
 
 
-def rasta_filter(x):
+def rasta_filter(x: np.ndarray) -> np.ndarray:
     """
     Implementing the RASTA filter as in [Ellis-plp]_.
 
@@ -43,7 +46,7 @@ def rasta_filter(x):
     return y
 
 
-def scale_fbank(scale, nfilts):
+def scale_fbank(scale: ScaleType, nfilts: int) -> np.ndarray:
     """
     Generate scaling vector.
 

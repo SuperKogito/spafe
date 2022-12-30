@@ -6,36 +6,39 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
+
 from .mel_fbanks import mel_filter_banks_helper
-from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import ScaleType
 
 
 def linear_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
 ):
     """
     Compute linear-filter banks. The filters are stored in the rows, the columns
     correspond to fft bins.
 
     Args:
-        nfilts    (int) : the number of filters in the filter bank.
-                          (Default 20).
-        nfft      (int) : the FFT size.
-                          (Default is 512).
-        fs        (int) : sample rate/ sampling frequency of the signal.
-                          (Default 16000 Hz).
-        low_freq  (int) : lowest band edge of linear filters.
-                          (Default 0 Hz).
-        high_freq (int) : highest band edge of linear filters.
-                          (Default samplerate/2).
-        scale     (str) : monotonicity behavior of the filter banks.
-                          (Default is "constant").
+        nfilts      (int) : the number of filters in the filter bank.
+                            (Default 20).
+        nfft        (int) : the FFT size.
+                            (Default is 512).
+        fs          (int) : sample rate/ sampling frequency of the signal.
+                            (Default 16000 Hz).
+        low_freq  (float) : lowest band edge of linear filters.
+                            (Default 0 Hz).
+        high_freq (float) : highest band edge of linear filters.
+                            (Default samplerate/2).
+        scale       (str) : monotonicity behavior of the filter banks.
+                            (Default is "constant").
 
     Returns:
         (tuple) :

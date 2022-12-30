@@ -6,25 +6,29 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import numpy as np
-from ..utils.converters import hz2erb
-from ..utils.filters import scale_fbank
-from ..utils.exceptions import ParameterError, ErrorMsgs
+from typing import Optional, Tuple
 
+import numpy as np
+
+from ..utils.converters import hz2erb, ErbConversionApproach
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import scale_fbank, ScaleType
 
 # Slaney's ERB Filter constants
 EarQ = 9.26449
 minBW = 24.7
 
 
-def generate_center_frequencies(min_freq, max_freq, nfilts):
+def generate_center_frequencies(
+    min_freq: float, max_freq: float, nfilts: int
+) -> np.ndarray:
     """
     Compute center frequencies in the ERB scale.
 
     Args:
-        min_freq (int) : minimum frequency of the center frequencies domain.
-        max_freq (int) : maximum frequency of the center frequencies domain.
-        nfilts   (int) : number of filters <=> number of center frequencies to compute.
+        min_freq (float) : minimum frequency of the center frequencies' domain.
+        max_freq (float) : maximum frequency of the center frequencies' domain.
+        nfilts     (int) : number of filters <=> number of center frequencies to compute.
 
     Returns:
         (numpy.ndarray) : array of center frequencies.
@@ -40,7 +44,9 @@ def generate_center_frequencies(min_freq, max_freq, nfilts):
     return center_freqs[::-1]
 
 
-def compute_gain(fcs, B, wT, T):
+def compute_gain(
+    fcs: np.ndarray, B: np.ndarray, wT: np.ndarray, T: float
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Compute Gain and matrixify computation for speed purposes [Ellis-spectrogram]_.
 
@@ -79,14 +85,14 @@ def compute_gain(fcs, B, wT, T):
 
 
 def gammatone_filter_banks(
-    nfilts=24,
-    nfft=512,
-    fs=16000,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    order=4,
-    conversion_approach="Glasberg",
+    nfilts: int = 24,
+    nfft: int = 512,
+    fs: int = 16000,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    order: int = 4,
+    conversion_approach: ErbConversionApproach = "Glasberg",
 ):
     """
     Compute Gammatone-filter banks. The filters are stored in the rows, the columns
@@ -99,9 +105,9 @@ def gammatone_filter_banks(
                                     (Default is 512).
         fs                  (int) : sample rate/ sampling frequency of the signal.
                                     (Default is 16000 Hz).
-        low_freq            (int) : lowest band edge of mel filters.
+        low_freq          (float) : lowest band edge of mel filters.
                                     (Default is 0 Hz).
-        high_freq           (int) : highest band edge of mel filters.
+        high_freq         (float) : highest band edge of mel filters.
                                     (Default samplerate/2).
         scale               (str) : monotonicity behavior of the filter banks.
                                     (Default is "constant").

@@ -6,15 +6,26 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
+
 from ..fbanks.bark_fbanks import bark_filter_banks
-from ..utils.cepstral import normalize_ceps, lifter_ceps
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import BarkConversionApproach
 from ..utils.exceptions import ParameterError, ErrorMsgs
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    SlidingWindow,
+)
 
 
-def intensity_power_law(w):
+def intensity_power_law(w: np.ndarray) -> np.ndarray:
     """
     Apply the intensity power law based on [Hermansky]_ .
 
@@ -36,20 +47,18 @@ def intensity_power_law(w):
 
 
 def bark_spectrogram(
-    sig,
-    fs=16000,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    fbanks=None,
-    conversion_approach="Wang",
+    sig: np.ndarray,
+    fs: int = 16000,
+    pre_emph: float = 0,
+    pre_emph_coeff: float = 0.97,
+    window : Optional[SlidingWindow] = None,
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: BarkConversionApproach = "Wang",
 ):
     """
     Compute the bark scale spectrogram.
@@ -60,23 +69,19 @@ def bark_spectrogram(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient).
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -105,10 +110,11 @@ def bark_spectrogram(
 
             from spafe.features.bfcc import bark_spectrogram
             from spafe.utils.vis import show_spectrogram
+            from spafe.utils.preprocessing import SlidingWindow
             from scipy.io.wavfile import read
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute bark spectrogram
@@ -116,9 +122,7 @@ def bark_spectrogram(
                                             fs=fs,
                                             pre_emph=0,
                                             pre_emph_coeff=0.97,
-                                            win_len=0.030,
-                                            win_hop=0.015,
-                                            win_type="hamming",
+                                            window=SlidingWindow(0.03, 0.015, "hamming"),
                                             nfilts=128,
                                             nfft=2048,
                                             low_freq=0,
@@ -154,11 +158,15 @@ def bark_spectrogram(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> FFT -> |.|
     ## Magnitude of the FFT
@@ -173,26 +181,24 @@ def bark_spectrogram(
 
 
 def bfcc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=26,
-    nfft=512,
-    low_freq=0,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Wang",
-):
+    sig: np.ndarray,
+    fs: int = 16000,
+    num_ceps: int = 13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    window : Optional[SlidingWindow] = None,
+    nfilts: int = 26,
+    nfft: int = 512,
+    low_freq: float = 0,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    dct_type: int = 2,
+    use_energy: bool = False,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: BarkConversionApproach = "Wang",
+) -> np.ndarray:
     """
     Compute the Bark Frequency Cepstral Coefﬁcients (BFCCs) from an audio
     signal as described in [Kaminska]_.
@@ -203,23 +209,19 @@ def bfcc(
                                     (Default is 16000).
         num_ceps          (float) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph            (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
@@ -227,9 +229,9 @@ def bfcc(
                                     (Default is 2).
         use_energy          (int) : overwrite C0 with true log energy.
                                     (Default is 0).
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -264,10 +266,11 @@ def bfcc(
 
             from scipy.io.wavfile import read
             from spafe.features.bfcc import bfcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute bfccs
@@ -275,9 +278,7 @@ def bfcc(
                           fs=fs,
                           pre_emph=1,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type="hamming",
+                          window=SlidingWindow(0.03, 0.015, "hamming"),
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,
@@ -291,15 +292,14 @@ def bfcc(
     if nfilts < num_ceps:
         raise ParameterError(ErrorMsgs["nfilts"])
 
+
     # compute features
     features, fourrier_transform = bark_spectrogram(
         sig=sig,
         fs=fs,
         pre_emph=pre_emph,
         pre_emph_coeff=pre_emph_coeff,
-        win_len=win_len,
-        win_hop=win_hop,
-        win_type=win_type,
+        window=window,
         nfilts=nfilts,
         nfft=nfft,
         low_freq=low_freq,

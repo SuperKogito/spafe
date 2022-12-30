@@ -6,73 +6,78 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
-from ..utils.cepstral import normalize_ceps, lifter_ceps
-from ..utils.exceptions import ParameterError, ErrorMsgs
+
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import ErbConversionApproach
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis,
+    framing,
+    windowing,
+    zero_handling,
+    SlidingWindow,
+)
 
 
 def ngcc(
-    sig,
-    fs=16000,
+    sig: np.ndarray,
+    fs: int = 16000,
     num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=None,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
-    use_energy=False,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Glasberg",
-):
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
+    window : Optional[SlidingWindow] = None,
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: Optional[float] = None,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    dct_type: int = 2,
+    use_energy: bool = False,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: ErbConversionApproach = "Glasberg",
+) -> np.ndarray:
     """
     Compute the normalized gammachirp cepstral coefﬁcients (NGCC features) from
     an audio signal according to [Zouhir]_.
 
     Args:
-        sig         (numpy.ndarray) : input mono audio signal (Nx1).
+        sig       (numpy.ndarray) : input mono audio signal (Nx1).
         fs                  (int) : signal sampling frequency.
                                     (Default is 16000).
-        num_ceps          (float) : number of cepstra to return.
+        num_ceps            (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph           (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefficient.
                                     (Default is 0.97).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                     (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40.
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate / 2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
         dct_type            (int) : type of DCT used.
                                     (Default is 2).
-        use_energy          (int) : overwrite C0 with true log energy
-                                    (Default is 0).
-        lifter              (int) : apply liftering if specifid.
+        use_energy         (bool) : overwrite C0 with true log energy
+                                    (Default is False).
+        lifter              (int) : apply liftering if specified.
                                     (Default is None).
-        normalize           (int) : apply normalization if specifid.
-                                    (Default is 0).
+        normalize           (str) : apply normalization if specified.
+                                    (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
         conversion_approach (str) : erb scale conversion approach.
@@ -98,10 +103,11 @@ def ngcc(
 
             from scipy.io.wavfile import read
             from spafe.features.ngcc import ngcc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute ngccs
@@ -109,9 +115,7 @@ def ngcc(
                           fs=fs,
                           pre_emph=1,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type="hamming",
+                          window=SlidingWindow(0.03, 0.015, "hamming"),
                           nfilts=128,
                           nfft=2048,
                           low_freq=0,
@@ -146,13 +150,17 @@ def ngcc(
 
     # pre-emphasis
     if pre_emph:
-        sig = pre_emphasis(sig=sig, pre_emph_coeff=0.97)
+        sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
+
+    # init window
+    if window is None:
+         window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> FFT -> |.|**2
     fourrier_transform = np.absolute(np.fft.rfft(windows, nfft))

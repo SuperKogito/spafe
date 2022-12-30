@@ -7,35 +7,36 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
-import scipy
 import numpy as np
-from ..utils.preprocessing import framing, windowing
+from scipy import signal
+
+from ..utils.preprocessing import framing, windowing, WindowType
 
 
 def get_dominant_frequencies(
-    sig,
-    fs,
-    butter_filter=False,
-    lower_cutoff=50,
-    upper_cutoff=3000,
-    nfft=512,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    only_positive=True,
-):
+    sig: np.ndarray,
+    fs: int,
+    butter_filter: bool = False,
+    lower_cutoff: float = 50,
+    upper_cutoff: float = 3000,
+    nfft: int = 512,
+    win_len: float = 0.025,
+    win_hop: float = 0.01,
+    win_type: WindowType = "hamming",
+    only_positive: bool = True,
+) -> np.ndarray:
     """
     Returns a list of dominant audio frequencies of a given wave file based
     on [Rastislav]_ and [Luca]_.
 
     Args:
-        sig          (numpy.ndarray) : name of an audio file name.
+        sig          (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                     (int) : sampling rate (= average number of samples pro 1 sec)
         butter_filter         (bool) : choose whether to apply a Butterworth filter or not.
                                        (Default is False).
-        lower_cutoff           (int) : filter lower cut-off frequency.
+        lower_cutoff         (float) : filter lower cut-off frequency.
                                        (Default is 50).
-        upper_cutoff           (int) : filter upper cot-off frequency.
+        upper_cutoff         (float) : filter upper cot-off frequency.
                                        (Default is 3000).
         nfft                   (int) : number of FFT points.
                                        (Default is 512).
@@ -43,10 +44,10 @@ def get_dominant_frequencies(
                                        (Default is 0.025).
         win_hop              (float) : step between successive windows in sec.
                                        (Default is 0.01).
-        win_type             (float) : window type to apply for the windowing.
+        win_type               (str) : window type to apply for the windowing.
                                        (Default is "hamming").
         only_positive         (bool) : if True then returns only positive frequncies.
-                                       (Default is true).
+                                       (Default is True).
 
     Returns:
         (numpy.ndarray) : array of dominant frequencies.
@@ -70,7 +71,7 @@ def get_dominant_frequencies(
             win_hop = 0.010
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute dominant frequencies
@@ -82,7 +83,7 @@ def get_dominant_frequencies(
                                                             nfft=nfft,
                                                             win_len=win_len,
                                                             win_hop=win_hop,
-                                                            win_type="hamming")
+                                                            win_type: WindowType="hamming")
 
             # compute FFT, Magnitude, Power spectra
             fourrier_transform = np.absolute(np.fft.fft(sig, nfft))
@@ -117,11 +118,10 @@ def get_dominant_frequencies(
     """
     if butter_filter:
         # apply Band pass Butterworth filter
-        b, a = scipy.signal.butter(
+        b, a = signal.butter(
             6, [(lower_cutoff * 2) / fs, (upper_cutoff * 2) / fs], "band"
         )
-        w, h = scipy.signal.freqs(b, a, len(sig))
-        sig = scipy.signal.lfilter(b, a, sig)
+        sig = signal.lfilter(b, a, sig)
 
     # -> framing
     frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
@@ -129,7 +129,7 @@ def get_dominant_frequencies(
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
 
-    # init dominant frequncies list
+    # init dominant frequencies list
     dominant_frequencies = []
 
     # get dominant frequency for each frame

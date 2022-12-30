@@ -1,10 +1,9 @@
-import scipy
 import pytest
 from mock import patch
-import scipy.io.wavfile
+
 from spafe.features.spfeats import extract_feats
-from spafe.frequencies.fundamental_frequencies import compute_yin
 from spafe.frequencies.dominant_frequencies import get_dominant_frequencies
+from spafe.frequencies.fundamental_frequencies import compute_yin
 
 
 @pytest.mark.test_id(301)

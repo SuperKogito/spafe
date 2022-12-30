@@ -6,15 +6,25 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+from typing import Optional
+
 import numpy as np
 from scipy.fftpack import dct
-from ..utils.cepstral import normalize_ceps, lifter_ceps
-from ..utils.exceptions import ParameterError, ErrorMsgs
+
 from ..fbanks.gammatone_fbanks import gammatone_filter_banks
-from ..utils.preprocessing import pre_emphasis, framing, windowing, zero_handling
+from ..utils.cepstral import normalize_ceps, lifter_ceps, NormalizationType
+from ..utils.converters import ErbConversionApproach
+from ..utils.exceptions import ParameterError, ErrorMsgs
+from ..utils.filters import ScaleType
+from ..utils.preprocessing import (
+    pre_emphasis, 
+    framing, 
+    windowing, 
+    SlidingWindow,
+)
 
 
-def medium_time_power_calculation(P, M=2):
+def medium_time_power_calculation(P: np.ndarray, M: int = 2) -> np.ndarray:
     """
     Compute the medium time power calulations according to [Kim]_ .
 
@@ -45,7 +55,9 @@ def medium_time_power_calculation(P, M=2):
     return Q_tilde
 
 
-def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
+def asymmetric_lowpass_filtering(
+    Q_tilde_in: np.ndarray, lm_a: float = 0.999, lm_b: float = 0.5
+) -> np.ndarray:
     """
     Apply asymmetric lowpass filter according to [Kim]_ .
 
@@ -91,7 +103,9 @@ def asymmetric_lowpass_filtering(Q_tilde_in, lm_a=0.999, lm_b=0.5):
     return Q_tilde_out
 
 
-def temporal_masking(Q_tilde_0, lam_t=0.85, myu_t=0.2):
+def temporal_masking(
+    Q_tilde_0: np.ndarray, lam_t: float = 0.85, myu_t: float = 0.2
+) -> np.ndarray:
     """
 
     Args:
@@ -131,7 +145,9 @@ def temporal_masking(Q_tilde_0, lam_t=0.85, myu_t=0.2):
     return Q_tilde_tm
 
 
-def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
+def weight_smoothing(
+    R_tilde: np.ndarray, Q_tilde: np.ndarray, nfilts: int = 128, N: int = 4
+) -> np.ndarray:
     """
     Apply spectral weight smoothing according to [Kim]_.
 
@@ -139,6 +155,7 @@ def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
         R_tilde (numpy.ndarray) :
         Q_tilde (numpy.ndarray) : medium time power
         nfilts            (int) : total number of channels / filters
+        N                 (int) :
 
     Returns:
         (numpy.ndarray) : time-averaged frequency-averaged transfer function.
@@ -165,7 +182,9 @@ def weight_smoothing(R_tilde, Q_tilde, nfilts=128, N=4):
     return S_tilde
 
 
-def mean_power_normalization(T, lam_myu=0.999, nfilts=80, k=1):
+def mean_power_normalization(
+    T: np.ndarray, lam_myu: float = 0.999, nfilts: int = 80, k: int = 1
+) -> np.ndarray:
     """
     Apply mean power normalization according to [Kim]_.
 
@@ -202,13 +221,15 @@ def mean_power_normalization(T, lam_myu=0.999, nfilts=80, k=1):
     return U
 
 
-def asymmetric_noise_suppression_with_temporal_masking(Q_tilde, threshold=0):
+def asymmetric_noise_suppression_with_temporal_masking(
+    Q_tilde: np.ndarray, threshold: float = 0
+) -> np.ndarray:
     """
     Apply asymmetric noise suppression with temporal masking according to [Kim]_.
 
     Args:
         Q_tilde (numpy.ndarray) : array representing the "medium-time power".
-        threshold         (int) : threshold for the half wave rectifier.
+        threshold       (float) : threshold for the half wave rectifier.
 
     Returns:
         (numpy.ndarray) array after asymmetric noise sup and temporal masking.
@@ -260,26 +281,24 @@ def asymmetric_noise_suppression_with_temporal_masking(Q_tilde, threshold=0):
 
 
 def pncc(
-    sig,
-    fs=16000,
-    num_ceps=13,
-    pre_emph=0,
-    pre_emph_coeff=0.97,
+    sig: np.ndarray,
+    fs: int = 16000,
+    num_ceps: int = 13,
+    pre_emph: bool = True,
+    pre_emph_coeff: float = 0.97,
     power=2,
-    win_len=0.025,
-    win_hop=0.01,
-    win_type="hamming",
-    nfilts=24,
-    nfft=512,
-    low_freq=None,
-    high_freq=None,
-    scale="constant",
-    dct_type=2,
-    lifter=None,
-    normalize=None,
-    fbanks=None,
-    conversion_approach="Glasberg",
-):
+    window : Optional[SlidingWindow] = None,
+    nfilts: int = 24,
+    nfft: int = 512,
+    low_freq: Optional[float] = None,
+    high_freq: Optional[float] = None,
+    scale: ScaleType = "constant",
+    dct_type: int = 2,
+    lifter: Optional[int] = None,
+    normalize: Optional[NormalizationType] = None,
+    fbanks: Optional[np.ndarray] = None,
+    conversion_approach: ErbConversionApproach = "Glasberg",
+) -> np.ndarray:
     """
     Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,
     based on [Kim]_ [Nakamura]_ .
@@ -288,35 +307,31 @@ def pncc(
         sig       (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs                  (int) : the sampling frequency of the signal we are working with.
                                     (Default is 16000).
-        num_ceps          (float) : number of cepstra to return.
+        num_ceps            (int) : number of cepstra to return.
                                     (Default is 13).
-        pre_emph            (int) : apply pre-emphasis if 1.
-                                    (Default is 1).
+        pre_emph           (bool) : apply pre-emphasis if 1.
+                                    (Default is True).
         pre_emph_coeff    (float) : pre-emphasis filter coefﬁcient.
                                     (Default is 0.97).
         power               (int) : power value to use .
                                     (Default is 2).
-        win_len           (float) : window length in sec.
-                                    (Default is 0.025).
-        win_hop           (float) : step between successive windows in sec.
-                                    (Default is 0.01).
-        win_type          (float) : window type to apply for the windowing.
-                                    (Default is "hamming").
+        window    (SlidingWindow) : sliding window object.
+                                    (Default is None).
         nfilts              (int) : the number of filters in the filter bank.
                                     (Default is 40).
         nfft                (int) : number of FFT points.
                                     (Default is 512).
-        low_freq            (int) : lowest band edge of mel filters (Hz).
+        low_freq          (float) : lowest band edge of mel filters (Hz).
                                     (Default is 0).
-        high_freq           (int) : highest band edge of mel filters (Hz).
+        high_freq         (float) : highest band edge of mel filters (Hz).
                                     (Default is samplerate/2).
         scale              (str)  : monotonicity behavior of the filter banks.
                                     (Default is "constant").
         dct_type            (int) : type of DCT used.
                                     (Default is 2).
-        lifter              (int) : apply liftering if specifid.
-                                    (Default is 0).
-        normalize           (int) : apply normalization if approach specifid.
+        lifter              (int) : apply liftering if specified.
+                                    (Default is None).
+        normalize           (str) : apply normalization if approach specified.
                                     (Default is None).
         fbanks    (numpy.ndarray) : filter bank matrix.
                                     (Default is None).
@@ -350,10 +365,11 @@ def pncc(
 
             from scipy.io.wavfile import read
             from spafe.features.pncc import pncc
+            from spafe.utils.preprocessing import SlidingWindow
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../test.wav"
+            fpath = "../../../data/test.wav"
             fs, sig = read(fpath)
 
             # compute pnccs
@@ -361,9 +377,7 @@ def pncc(
                           fs=fs,
                           pre_emph=0,
                           pre_emph_coeff=0.97,
-                          win_len=0.030,
-                          win_hop=0.015,
-                          win_type="hamming",
+                          window=SlidingWindow(0.03, 0.015, "hamming"),
                           nfilts=128,
                           nfft=1024,
                           low_freq=0,
@@ -396,11 +410,15 @@ def pncc(
     if pre_emph:
         sig = pre_emphasis(sig=sig, pre_emph_coeff=pre_emph_coeff)
 
+    # init window
+    if window is None:
+         window = SlidingWindow()
+         
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=win_len, win_hop=win_hop)
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
 
     # -> windowing
-    windows = windowing(frames=frames, frame_len=frame_length, win_type=win_type)
+    windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
 
     # -> FFT -> |.|
     ## Magnitude of the FFT
@@ -408,7 +426,7 @@ def pncc(
     fourrier_transform = fourrier_transform[:, : int(nfft / 2) + 1]
 
     ##  -> |.|^2 (Power Spectrum)
-    abs_fft_values = (1.0 / nfft) * np.square(fourrier_transform)
+    abs_fft_values = (1.0 / nfft) * (fourrier_transform**power)
 
     # -> x filter bank
     P = np.dot(a=abs_fft_values, b=fbanks.T)
@@ -429,7 +447,7 @@ def pncc(
     # -> mean power normalization
     U = mean_power_normalization(T, nfilts=nfilts)
 
-    # -> power law non linearity
+    # -> power law non-linearity
     V = U ** (1 / 15)
 
     # DCT(.)
