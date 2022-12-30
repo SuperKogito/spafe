@@ -119,7 +119,7 @@ def gammatone_filter_banks(
     Returns:
         (tuple) :
             - (numpy.ndarray) : array of size nfilts * (nfft/2 + 1) containing filter bank. Each row holds 1 filter.
-            - (numpy.ndarray) : array of center frequencies
+            - (numpy.ndarray) : array of center frequencies in Erb.
 
     Tip:
         - :code:`scale` : can take the following options ["constant", "ascendant", "descendant"].

@@ -25,7 +25,7 @@ def msrcc(
     num_ceps=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,

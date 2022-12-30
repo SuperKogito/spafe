@@ -30,7 +30,7 @@ def mel_spectrogram(
     fs: int = 16000,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -139,10 +139,12 @@ def mel_spectrogram(
 
     # init window
     if window is None:
-         window = SlidingWindow()
+        window = SlidingWindow()
 
     # -> framing
-    frames, frame_length = framing(sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop)
+    frames, frame_length = framing(
+        sig=sig, fs=fs, win_len=window.win_len, win_hop=window.win_hop
+    )
 
     # -> windowing
     windows = windowing(frames=frames, frame_len=frame_length, win_type=window.win_type)
@@ -166,7 +168,7 @@ def mfcc(
     num_ceps: int = 13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
@@ -182,9 +184,11 @@ def mfcc(
     """
     Compute MFCC features (Mel-frequency cepstral coefficients) from an audio
     signal. This function offers multiple approaches to features extraction
-    depending on the input parameters. Implemenation is using FFT and based on
-    http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.8029&rep=rep1&type=pdf
+    depending on the input parameters. This MFCC implemenation is using FFT and
+    can summarized in the following:
 
+          - pre-empahsis
+          - framing + Windowing
           - take the absolute value of the FFT
           - warp to a Mel frequency scale
           - take the DCT of the log-Mel-spectrum
@@ -324,7 +328,7 @@ def imfcc(
     num_ceps=13,
     pre_emph: bool = True,
     pre_emph_coeff: float = 0.97,
-    window : Optional[SlidingWindow] = None,
+    window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
     low_freq: float = 0,
