@@ -84,7 +84,7 @@ def linear_spectrogram(
             from scipy.io.wavfile import read
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute spectrogram
@@ -230,7 +230,7 @@ def lfcc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute lfccs

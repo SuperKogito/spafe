@@ -136,7 +136,7 @@ def lpc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute lpcs
@@ -276,7 +276,7 @@ def lpcc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute lpccs

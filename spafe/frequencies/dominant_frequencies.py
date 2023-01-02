@@ -71,7 +71,7 @@ def get_dominant_frequencies(
             win_hop = 0.010
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute dominant frequencies
@@ -83,7 +83,7 @@ def get_dominant_frequencies(
                                                             nfft=nfft,
                                                             win_len=win_len,
                                                             win_hop=win_hop,
-                                                            win_type: WindowType="hamming")
+                                                            win_type="hamming")
 
             # compute FFT, Magnitude, Power spectra
             fourrier_transform = np.absolute(np.fft.fft(sig, nfft))
