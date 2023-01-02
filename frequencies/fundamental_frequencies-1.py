@@ -3,7 +3,7 @@ from spafe.frequencies.fundamental_frequencies import compute_yin
 
 
 # read audio
-fpath = "../../../data/test.wav"
+fpath = "../../../tests/data/test.wav"
 fs, sig = read(fpath)
 duration = len(sig) / fs
 harmonic_threshold = 0.85

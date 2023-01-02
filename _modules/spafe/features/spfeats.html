@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.features.spfeats &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    <title>spafe.features.spfeats &#8212; 🧠 SuperKogito/Spafe 0.3.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -120,7 +120,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.2.0  <!-- this text may get changed later by javascript -->
+        0.3.0  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -130,7 +130,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/features/spfeats and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+     variables _modules/spafe/features/spfeats and {'json_url': '_static/switcher.json', 'version_match': '0.3.0'}.
 -->
 
 <script type="text/javascript">
@@ -181,10 +181,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.2.0 variable.
+            // this version, rather than using sphinx's 0.3.0 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.2.0") {
+            if (entry.version == "0.3.0") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -301,7 +301,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_centroid"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_centroid">[docs]</a><span class="k">def</span> <span class="nf">spectral_centroid</span><span class="p">(</span><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral centroid (which is the barycenter of the spectrum) as</span>
 <span class="sd">    described in [Peeters]_.</span>
 
@@ -332,7 +332,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_skewness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_skewness">[docs]</a><span class="k">def</span> <span class="nf">spectral_skewness</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral skewness (which is a measure of the asymmetry of a</span>
 <span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
 
@@ -365,7 +365,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_kurtosis"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_kurtosis">[docs]</a><span class="k">def</span> <span class="nf">spectral_kurtosis</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral kurtosis (which is a measure of the flatness of a</span>
 <span class="sd">    distribution around its mean) as described in [Peeters]_.</span>
 
@@ -398,7 +398,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_entropy"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_entropy">[docs]</a><span class="k">def</span> <span class="nf">spectral_entropy</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral entropy as described in [Misra]_.</span>
 
 <span class="sd">    Args:</span>
@@ -428,7 +428,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_spread"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_spread">[docs]</a><span class="k">def</span> <span class="nf">spectral_spread</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral spread (basically a variance of the spectrum around the spectral centroid)</span>
 <span class="sd">    as described in [Peeters]_.</span>
 
@@ -461,7 +461,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_flatness"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flatness">[docs]</a><span class="k">def</span> <span class="nf">spectral_flatness</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute spectral flatness.</span>
 
 <span class="sd">        Args:</span>
@@ -484,7 +484,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_rolloff"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_rolloff">[docs]</a><span class="k">def</span> <span class="nf">spectral_rolloff</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral roll-off point which measures the bandwidth of the audio</span>
 <span class="sd">    signal by determining the frequency bin under which a specified k percentage</span>
 <span class="sd">    of the total spectral energy is contained below. see [Scheirer]_.</span>
@@ -506,7 +506,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="spectral_flux"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.spectral_flux">[docs]</a><span class="k">def</span> <span class="nf">spectral_flux</span><span class="p">(</span><span class="n">spectrum</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the spectral flux, which measures how quickly the power spectrum</span>
 <span class="sd">    of a signal is changing. This implementation computes the spectral flux</span>
 <span class="sd">    using the L2-norm per default i.e. the square root of the sum of absolute</span>
@@ -537,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="extract_feats"><a class="viewcode-back" href="../../../features/spfeats.html#spafe.features.spfeats.extract_feats">[docs]</a><span class="k">def</span> <span class="nf">extract_feats</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SpectralFeats</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute various spectral features [Peeters]_.</span>
 
 <span class="sd">    Args:</span>
@@ -574,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            from pprint import pprint</span>
 
 <span class="sd">            # read audio</span>
-<span class="sd">            fpath = &quot;../../../data/test.wav&quot;</span>
+<span class="sd">            fpath = &quot;../../../tests/data/test.wav&quot;</span>
 <span class="sd">            fs, sig = read(fpath)</span>
 
 <span class="sd">            # compute erb spectrogram</span>
@@ -632,7 +632,7 @@ function checkPageExistsAndRedirect(event) {
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>

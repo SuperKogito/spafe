@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.utils.filters &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    <title>spafe.utils.filters &#8212; 🧠 SuperKogito/Spafe 0.3.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -120,7 +120,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.2.0  <!-- this text may get changed later by javascript -->
+        0.3.0  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -130,7 +130,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/utils/filters and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+     variables _modules/spafe/utils/filters and {'json_url': '_static/switcher.json', 'version_match': '0.3.0'}.
 -->
 
 <script type="text/javascript">
@@ -181,10 +181,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.2.0 variable.
+            // this version, rather than using sphinx's 0.3.0 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.2.0") {
+            if (entry.version == "0.3.0") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -286,7 +286,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="rasta_filter"><a class="viewcode-back" href="../../../utils/filters.html#spafe.utils.filters.rasta_filter">[docs]</a><span class="k">def</span> <span class="nf">rasta_filter</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implementing the RASTA filter as in [Ellis-plp]_.</span>
 
 <span class="sd">    Args:</span>
@@ -319,7 +319,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="scale_fbank"><a class="viewcode-back" href="../../../utils/filters.html#spafe.utils.filters.scale_fbank">[docs]</a><span class="k">def</span> <span class="nf">scale_fbank</span><span class="p">(</span><span class="n">scale</span><span class="p">:</span> <span class="n">ScaleType</span><span class="p">,</span> <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate scaling vector.</span>
 
 <span class="sd">    Args:</span>
@@ -370,7 +370,7 @@ function checkPageExistsAndRedirect(event) {
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>
