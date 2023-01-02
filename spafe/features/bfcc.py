@@ -114,7 +114,7 @@ def bark_spectrogram(
             from scipy.io.wavfile import read
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute bark spectrogram
@@ -272,7 +272,7 @@ def bfcc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute bfccs

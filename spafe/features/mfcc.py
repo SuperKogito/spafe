@@ -92,7 +92,7 @@ def mel_spectrogram(
             from scipy.io.wavfile import read
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             mSpec, _ = mel_spectrogram(sig,
@@ -253,7 +253,7 @@ def mfcc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute mfccs and mfes
@@ -403,7 +403,7 @@ def imfcc(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute mfccs and mfes

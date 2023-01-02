@@ -254,7 +254,7 @@ def plp(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute plps
@@ -367,7 +367,7 @@ def rplp(
             from spafe.utils.vis import show_features
 
             # read audio
-            fpath = "../../../data/test.wav"
+            fpath = "../../../tests/data/test.wav"
             fs, sig = read(fpath)
 
             # compute rplps

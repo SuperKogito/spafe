@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0
+- improve code based on Joss reviewers recommendations.
+- add type hinting.
+- fix documentation typos.
+
 ## v0.2.0
 - add spectrogram implementations.
 - add predefined filter banks input to the spafe features functions for faster batch processing.
