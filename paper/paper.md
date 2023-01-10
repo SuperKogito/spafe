@@ -125,12 +125,11 @@ A dominant frequency is per definition the frequency carrying the maximum energy
 
 ## Utils (`spafe/utils`)
 The utils scripts, handle most of the input signal pre-processing steps including pre-emphasis, framing and windowing.
-They also include all the conversion computations needed to convert Hertz frequencies to other frequencies scales.
-On top of that, all features post-processing routines are in this group. This includes normalization, liftering, deltas computation and visualization.
+They also include all the conversion computations needed to convert Hertz frequencies to other frequency scales.
+On top of that, all feature post-processing routines are in this group. This includes normalization, liftering, deltas computation and visualization.
 
 # Conclusion
 This paper introduced spafe, a python package for audio feature extractions.
-Spafe provides a unified solution for audio features extraction, that can help simplify and accelerate the research of various audio based recognition experiments.
-
+Spafe provides a unified solution for audio features extraction, that can help simplify and accelerate the research of various audio-based recognition experiments.
 
 # References
