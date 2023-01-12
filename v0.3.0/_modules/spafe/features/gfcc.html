@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.features.gfcc &#8212; 🧠 SuperKogito/Spafe 0.2.0 documentation</title>
+    <title>spafe.features.gfcc &#8212; 🧠 SuperKogito/Spafe 0.3.0 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -120,7 +120,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.2.0  <!-- this text may get changed later by javascript -->
+        0.3.0  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -130,7 +130,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/features/gfcc and {'json_url': '_static/switcher.json', 'version_match': '0.2.0'}.
+     variables _modules/spafe/features/gfcc and {'json_url': '_static/switcher.json', 'version_match': '0.3.0'}.
 -->
 
 <script type="text/javascript">
@@ -181,10 +181,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.2.0 variable.
+            // this version, rather than using sphinx's 0.3.0 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.2.0") {
+            if (entry.version == "0.3.0") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -311,7 +311,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">fbanks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">conversion_approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Gammatone/ erb scale spectrogram also known as Cochleagram.</span>
 
 <span class="sd">    Args:</span>
@@ -363,7 +363,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            from scipy.io.wavfile import read</span>
 
 <span class="sd">            # read audio</span>
-<span class="sd">            fpath = &quot;../../../data/test.wav&quot;</span>
+<span class="sd">            fpath = &quot;../../../tests/data/test.wav&quot;</span>
 <span class="sd">            fs, sig = read(fpath)</span>
 
 <span class="sd">            # compute erb spectrogram</span>
@@ -452,7 +452,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">fbanks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">conversion_approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Gammatone-Frequency Cepstral Coefﬁcients (GFCC features) from an</span>
 <span class="sd">    audio signal as described in [Jeevan]_ and [Xu]_.</span>
 
@@ -530,7 +530,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            from spafe.utils.vis import show_features</span>
 
 <span class="sd">            # read audio</span>
-<span class="sd">            fpath = &quot;../../../data/test.wav&quot;</span>
+<span class="sd">            fpath = &quot;../../../tests/data/test.wav&quot;</span>
 <span class="sd">            fs, sig = read(fpath)</span>
 
 <span class="sd">            # compute mfccs and mfes</span>
@@ -621,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2022, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>

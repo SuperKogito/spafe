@@ -4,7 +4,7 @@ from spafe.utils.preprocessing import SlidingWindow
 from scipy.io.wavfile import read
 
 # read audio
-fpath = "../../../data/test.wav"
+fpath = "../../../tests/data/test.wav"
 fs, sig = read(fpath)
 
 # compute erb spectrogram
