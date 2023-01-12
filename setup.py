@@ -46,7 +46,7 @@ setup(
     platforms='any',
     extras_require={
         "tests": [
-            "pytest >= 6.2.4",
+            "pytest>=6.2.4",
             "pytest-cov",
             "codecov",
             "coveralls",

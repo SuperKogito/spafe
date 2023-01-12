@@ -1,0 +1,25 @@
+package:
+  name: "spafe"
+  version: "0.3.1"
+
+source:
+  git_rev: v0.3.1
+  git_url: https://github.com/SuperKogito/spafe
+
+requirements:
+  host:
+    - python
+    - setuptools
+  build:
+    - python
+  run:
+    - numpy>=1.21
+    - scipy>=1.7.3
+    - typing_extensions
+
+about:
+  home: https://github.com/SuperKogito/spafe
+  license: BSD
+  license_familY: BSD
+  license_file: LICENSE
+  summary: "Simplified Python Audio-Features Extraction."

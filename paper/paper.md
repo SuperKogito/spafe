@@ -17,7 +17,7 @@ bibliography: paper.bib
 ---
 
 # Summary
-This paper describes version 0.3.0 of spafe: a python package for audio features extraction based on the Numpy [@numpy:2020] and Scipy [@scipy:2019] libraries.
+This paper describes version 0.3.1 of spafe: a python package for audio features extraction based on the Numpy [@numpy:2020] and Scipy [@scipy:2019] libraries.
 Spafe implements various features extraction techniques that can be used to solve a wide variety of recognition and classification tasks (speaker verification, spoken emotion recognition, spoken language identification etc.).
 The paper provides a brief overview of the library’s structure, theory and functionalities.
 
