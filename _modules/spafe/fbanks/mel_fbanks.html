@@ -40,15 +40,17 @@
     <meta name="docsearch:language" content="en">
     
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-GPWJJB9TRK');
-    </script>
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-133660046-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -336,6 +338,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="c1"># run checks</span>
     <span class="k">if</span> <span class="n">low_freq</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">ErrorMsgs</span><span class="p">[</span><span class="s2">&quot;low_freq&quot;</span><span class="p">])</span>
+
     <span class="k">if</span> <span class="n">high_freq</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">ErrorMsgs</span><span class="p">[</span><span class="s2">&quot;high_freq&quot;</span><span class="p">])</span>
 
