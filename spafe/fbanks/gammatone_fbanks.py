@@ -181,6 +181,7 @@ def gammatone_filter_banks(
     # run checks
     if low_freq < 0:
         raise ParameterError(ErrorMsgs["low_freq"])
+        
     if high_freq > (fs / 2):
         raise ParameterError(ErrorMsgs["high_freq"])
 

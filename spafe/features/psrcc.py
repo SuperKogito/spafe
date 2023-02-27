@@ -34,7 +34,7 @@ def psrcc(
     window: Optional[SlidingWindow] = None,
     nfilts: int = 26,
     nfft: int = 512,
-    low_freq: Optional[float] = None,
+    low_freq: Optional[float] = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
     gamma: float = -1 / 7,

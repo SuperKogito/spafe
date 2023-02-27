@@ -290,7 +290,7 @@ def pncc(
     window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
-    low_freq: Optional[float] = None,
+    low_freq: Optional[float] = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
     dct_type: int = 2,
