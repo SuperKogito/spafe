@@ -80,12 +80,7 @@ def asymmetric_lowpass_filtering(
         frame index, :math:`l` is the channel index.
     """
     Q_tilde_out = np.zeros_like(Q_tilde_in)
-    Q_tilde_out[0,] = (
-        0.9
-        * Q_tilde_in[
-            0,
-        ]
-    )
+    Q_tilde_out[0,] = 0.9 * Q_tilde_in[0,]
 
     # compute asymmetric nonlinear filter
     for m in range(Q_tilde_out.shape[0]):
@@ -93,10 +88,7 @@ def asymmetric_lowpass_filtering(
         Q2 = lm_b * Q_tilde_out[m - 1, :] + (1 - lm_b) * Q_tilde_in[m, :]
 
         Q_tilde_out[m, :] = np.where(
-            Q_tilde_in[
-                m,
-            ]
-            >= Q_tilde_out[m - 1, :],
+            Q_tilde_in[m,] >= Q_tilde_out[m - 1, :],
             Q1,
             Q2,
         )
@@ -127,9 +119,7 @@ def temporal_masking(
     Q_tilde_tm = np.zeros_like(Q_tilde_0)
     online_peak_power = np.zeros_like(Q_tilde_0)
 
-    Q_tilde_tm[0, :] = Q_tilde_0[
-        0,
-    ]
+    Q_tilde_tm[0, :] = Q_tilde_0[0,]
     online_peak_power[0, :] = Q_tilde_0[0, :]
 
     for m in range(1, Q_tilde_0.shape[0]):
@@ -290,7 +280,7 @@ def pncc(
     window: Optional[SlidingWindow] = None,
     nfilts: int = 24,
     nfft: int = 512,
-    low_freq: Optional[float] = None,
+    low_freq: Optional[float] = 0,
     high_freq: Optional[float] = None,
     scale: ScaleType = "constant",
     dct_type: int = 2,

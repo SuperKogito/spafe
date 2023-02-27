@@ -14,7 +14,7 @@ Simplified Python Audio Features Extraction
 [![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe)
 [![Downloads](https://pepy.tech/badge/spafe)](https://pepy.tech/project/spafe)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
-
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.04739/status.svg)](https://doi.org/10.21105/joss.04739)
 
 #  Table of Contents
 
@@ -122,7 +122,7 @@ Unlike most existing audio feature extraction libraries ([python_speech_features
 - Constant Q-transform Cepstral Coeﬃcients (CQCCs)
 - Gammatone Frequency Cepstral Coefﬁcients (GFCCs)
 - Power-Normalized Cepstral Coefficients (PNCCs)
-- Phase based Spectral Root Cepstral Coefficients (PSRCCs) 
+- Phase based Spectral Root Cepstral Coefficients (PSRCCs)
 
 Most existing libraries and to their credits provide great implementations for features extraction but are unfortunately limited to the Mel Frequency Features (MFCC) and at best have Bark frequency and linear predictive coefficients additionally. [Librosa](https://github.com/librosa/librosa) for example includes great implementation of various algorithms (only MFCC and LPC are included), based on the **Short Time Fourrier Transform (STFT)**, which is theoretically more accurate but slower than the **Discret Fourrier Transform used in Spafe**'s implementation.
 
@@ -139,6 +139,14 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
 ## Citing
 
--  If you want to cite spafe as a software used in your work, please
-   cite the version used as indexed at [Zenodo](https://zenodo.org/):
+-  **If you want to cite spafe as a software, please cite the version used as indexed in** [Zenodo](https://zenodo.org/):
+
+   *Ayoub Malek. (2023). SuperKogito/spafe: Spafe: Simplified python audio features extraction (v0.3.1). Zenodo.* https://doi.org/10.5281/zenodo.7533946
+
    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+
+- **You can also site spafe's paper as follows:**
+
+  *Malek, A., (2023). Spafe: Simplified python audio features extraction. Journal of Open Source Software, 8(81), 4739,* https://doi.org/10.21105/joss.04739
+
+  [![DOI](https://joss.theoj.org/papers/10.21105/joss.04739/status.svg)](https://doi.org/10.21105/joss.04739)
