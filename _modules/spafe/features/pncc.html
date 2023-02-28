@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.features.pncc &#8212; 🧠 SuperKogito/Spafe 0.3.1 documentation</title>
+    <title>spafe.features.pncc &#8212; 🧠 SuperKogito/Spafe 0.3.2 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -31,6 +31,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
@@ -38,6 +39,9 @@
     <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
+    <link
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+    rel="stylesheet"  type='text/css'>
     
 
     <!-- Google tag (gtag.js) -->
@@ -50,6 +54,11 @@
     gtag('config', 'G-GPWJJB9TRK');
     </script>
 
+    <!-- Google Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
+
+    <!-- Google Analytics -->
+    <!--  -->
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
@@ -118,7 +127,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.3.1  <!-- this text may get changed later by javascript -->
+        0.3.2  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -128,7 +137,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/features/pncc and {'json_url': '_static/switcher.json', 'version_match': '0.3.1'}.
+     variables _modules/spafe/features/pncc and {'json_url': '_static/switcher.json', 'version_match': '0.3.2'}.
 -->
 
 <script type="text/javascript">
@@ -179,10 +188,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.1 variable.
+            // this version, rather than using sphinx's 0.3.2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.3.1") {
+            if (entry.version == "0.3.2") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -295,7 +304,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="medium_time_power_calculation"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.medium_time_power_calculation">[docs]</a><span class="k">def</span> <span class="nf">medium_time_power_calculation</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the medium time power calulations according to [Kim]_ .</span>
 
 <span class="sd">    Args:</span>
@@ -328,7 +337,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="asymmetric_lowpass_filtering"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.asymmetric_lowpass_filtering">[docs]</a><span class="k">def</span> <span class="nf">asymmetric_lowpass_filtering</span><span class="p">(</span>
     <span class="n">Q_tilde_in</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">lm_a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.999</span><span class="p">,</span> <span class="n">lm_b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply asymmetric lowpass filter according to [Kim]_ .</span>
 
 <span class="sd">    Args:</span>
@@ -350,12 +359,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        frame index, :math:`l` is the channel index.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Q_tilde_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Q_tilde_in</span><span class="p">)</span>
-    <span class="n">Q_tilde_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="mf">0.9</span>
-        <span class="o">*</span> <span class="n">Q_tilde_in</span><span class="p">[</span>
-            <span class="mi">0</span><span class="p">,</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
+    <span class="n">Q_tilde_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">Q_tilde_in</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span>
 
     <span class="c1"># compute asymmetric nonlinear filter</span>
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Q_tilde_out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -363,10 +367,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">Q2</span> <span class="o">=</span> <span class="n">lm_b</span> <span class="o">*</span> <span class="n">Q_tilde_out</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">lm_b</span><span class="p">)</span> <span class="o">*</span> <span class="n">Q_tilde_in</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="n">Q_tilde_out</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-            <span class="n">Q_tilde_in</span><span class="p">[</span>
-                <span class="n">m</span><span class="p">,</span>
-            <span class="p">]</span>
-            <span class="o">&gt;=</span> <span class="n">Q_tilde_out</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span>
+            <span class="n">Q_tilde_in</span><span class="p">[</span><span class="n">m</span><span class="p">,]</span> <span class="o">&gt;=</span> <span class="n">Q_tilde_out</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span>
             <span class="n">Q1</span><span class="p">,</span>
             <span class="n">Q2</span><span class="p">,</span>
         <span class="p">)</span>
@@ -376,7 +377,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="temporal_masking"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.temporal_masking">[docs]</a><span class="k">def</span> <span class="nf">temporal_masking</span><span class="p">(</span>
     <span class="n">Q_tilde_0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">lam_t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">myu_t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Q_tilde_0 (numpy.ndarray) : rectified signal.</span>
@@ -397,9 +398,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">Q_tilde_tm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Q_tilde_0</span><span class="p">)</span>
     <span class="n">online_peak_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Q_tilde_0</span><span class="p">)</span>
 
-    <span class="n">Q_tilde_tm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">Q_tilde_0</span><span class="p">[</span>
-        <span class="mi">0</span><span class="p">,</span>
-    <span class="p">]</span>
+    <span class="n">Q_tilde_tm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">Q_tilde_0</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span>
     <span class="n">online_peak_power</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">Q_tilde_0</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
 
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Q_tilde_0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -418,7 +417,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="weight_smoothing"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.weight_smoothing">[docs]</a><span class="k">def</span> <span class="nf">weight_smoothing</span><span class="p">(</span>
     <span class="n">R_tilde</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Q_tilde</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply spectral weight smoothing according to [Kim]_.</span>
 
 <span class="sd">    Args:</span>
@@ -455,7 +454,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="mean_power_normalization"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.mean_power_normalization">[docs]</a><span class="k">def</span> <span class="nf">mean_power_normalization</span><span class="p">(</span>
     <span class="n">T</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">lam_myu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.999</span><span class="p">,</span> <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply mean power normalization according to [Kim]_.</span>
 
 <span class="sd">    Args:</span>
@@ -494,7 +493,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="asymmetric_noise_suppression_with_temporal_masking"><a class="viewcode-back" href="../../../features/pncc.html#spafe.features.pncc.asymmetric_noise_suppression_with_temporal_masking">[docs]</a><span class="k">def</span> <span class="nf">asymmetric_noise_suppression_with_temporal_masking</span><span class="p">(</span>
     <span class="n">Q_tilde</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply asymmetric noise suppression with temporal masking according to [Kim]_.</span>
 
 <span class="sd">    Args:</span>
@@ -560,7 +559,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">window</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SlidingWindow</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nfilts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
     <span class="n">nfft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-    <span class="n">low_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">low_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">high_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">scale</span><span class="p">:</span> <span class="n">ScaleType</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
     <span class="n">dct_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -569,7 +568,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">fbanks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">conversion_approach</span><span class="p">:</span> <span class="n">ErbConversionApproach</span> <span class="o">=</span> <span class="s2">&quot;Glasberg&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Power-Normalized Cepstral Coefficients (PNCCs) from an audio signal,</span>
 <span class="sd">    based on [Kim]_ [Nakamura]_ .</span>
 
