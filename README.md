@@ -13,7 +13,7 @@ Simplified Python Audio Features Extraction
 [![PyPI version](https://badge.fury.io/py/spafe.svg)](https://badge.fury.io/py/spafe)
 [![anaconda](https://anaconda.org/superkogito/spafe/badges/version.svg)](https://anaconda.org/SuperKogito/spafe)
 [![Downloads](https://pepy.tech/badge/spafe)](https://pepy.tech/project/spafe)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7686438.svg)](https://doi.org/10.5281/zenodo.7686438)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.04739/status.svg)](https://doi.org/10.21105/joss.04739)
 
 #  Table of Contents
@@ -141,9 +141,10 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
 -  **If you want to cite spafe as a software, please cite the version used as indexed in** [Zenodo](https://zenodo.org/):
 
-   *Ayoub Malek. (2023). SuperKogito/spafe: Spafe: Simplified python audio features extraction (v0.3.1). Zenodo.* https://doi.org/10.5281/zenodo.7533946
+   *Ayoub Malek, Hadrien Titeux, Stefano Borzì, Christian Heider Nielsen, Fabian-Robert Stöter, Hervé BREDIN, & Kevin Mattheus Moerman. (2023). SuperKogito/spafe: v0.3.2 (v0.3.2). Zenodo.* https://doi.org/10.5281/zenodo.7686438
 
-   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg)](https://doi.org/10.5281/zenodo.6824667)
+   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7686438.svg)](https://doi.org/10.5281/zenodo.7686438)
+
 
 - **You can also site spafe's paper as follows:**
 
