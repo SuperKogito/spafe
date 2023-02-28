@@ -50,10 +50,20 @@ For the documentation of the modules please refer to:
 Citation
 --------
 
--  If you want to cite spafe as a software used in your work, please
+-  If you want to cite spafe as a software, please
    cite the version used as indexed at `Zenodo <https://zenodo.org/>`__: |DOI|
+
+   * *Ayoub Malek. (2023). SuperKogito/spafe: Spafe: Simplified python audio features extraction (v0.3.2). Zenodo.* https://doi.org/10.5281/zenodo.7533946
+|
+- You can also site spafe's paper on `JOSS <https://https://joss.theoj.org/>`__: |DOI2|
+
+  * *Malek, A., (2023). Spafe: Simplified python audio features extraction. Journal of Open Source Software, 8(81), 4739,* https://doi.org/10.21105/joss.04739
+
 
 
 
 .. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6824667.svg
    :target: https://doi.org/10.5281/zenodo.6824667
+
+.. |DOI2| image:: https://joss.theoj.org/papers/10.21105/joss.04739/status.svg
+  :target: https://doi.org/10.21105/joss.04739

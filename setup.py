@@ -1,7 +1,6 @@
-from pathlib import Path
-
+import setuptools
 from setuptools import setup, find_packages
-
+from pathlib import Path
 from spafe import version
 
 here = Path(__file__).parent
@@ -37,13 +36,13 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        'Topic :: Multimedia :: Sound/Audio :: Analysis',
-        'Topic :: Multimedia :: Sound/Audio :: Editors',
-        'Topic :: Multimedia :: Sound/Audio :: Speech',
-        'Topic :: Scientific/Engineering :: Information Analysis',
+        "Topic :: Multimedia :: Sound/Audio :: Analysis",
+        "Topic :: Multimedia :: Sound/Audio :: Editors",
+        "Topic :: Multimedia :: Sound/Audio :: Speech",
+        "Topic :: Scientific/Engineering :: Information Analysis",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    platforms='any',
+    platforms="any",
     extras_require={
         "tests": [
             "pytest>=6.2.4",
@@ -53,16 +52,14 @@ setup(
             "pytest-xdist",
             "codacy-coverage",
             "matplotlib",
-            "mock==4.0.3"
+            "mock==4.0.3",
         ],
         "docs": [
             "sphinxcontrib-napoleon==0.7",
             "nbsphinx==0.8.9",
             "pydata-sphinx-theme==0.8.1",
-            "matplotlib"
+            "matplotlib",
         ],
-        "plotting": {
-            "maplotlib"
-        }
-    }
+        "plotting": {"maplotlib"},
+    },
 )
