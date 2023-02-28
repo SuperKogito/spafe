@@ -25,9 +25,9 @@ author = "Ayoub Malek"
 html_favicon = "_static/favicon_io/favicon.ico"
 
 # The short X.Y version
-version = "0.3.1"
+version = "0.3.2"
 # The full version, including alpha/beta/rc tags
-release = "0.3.1"
+release = "0.3.2"
 
 # -- General configuration ---------------------------------------------------
 
@@ -84,7 +84,6 @@ html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "github_url": "https://github.com/superkogito/",
     "search_bar_text": "Search this site...",
-    "google_analytics_id": "UA-133660046-1",
     "navbar_start": ["navbar-logo"],
     "navbar_center": ["navbar-nav"],
     "navbar_end": ["search-field.html", "version-switcher", "navbar-icon-links"],

@@ -1,4 +1,35 @@
 {%- extends "pydata_sphinx_theme/layout.html" %}
+{%- block extrahead %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="{{ language }}">
+    <link
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+    rel="stylesheet"  type='text/css'>
+    {% for favicon in theme_favicons %}
+      {% if favicon.href[:4] == 'http'%}
+      <link rel="{{ favicon.rel }}" sizes="{{ favicon.sizes }}" href="{{ favicon.href }}">
+      {% else %}
+      <link rel="{{ favicon.rel }}" sizes="{{ favicon.sizes }}" href="{{ pathto('_static/' + favicon.href, 1) }}">
+      {% endif %}
+    {% endfor %}
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GPWJJB9TRK');
+    </script>
+
+    <!-- Google Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
+
+    <!-- Google Analytics -->
+    <!-- {{ generate_google_analytics_script(id=theme_google_analytics_id) }} -->
+{%- endblock %}
+
 {% block docs_body %}
 
 
