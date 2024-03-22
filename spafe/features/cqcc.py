@@ -166,7 +166,7 @@ def cqcc(
     normalize: Optional[NormalizationType] = None,
     number_of_octaves: int = 7,
     number_of_bins_per_octave: int = 24,
-    resampling_ratio: float = 0.95,
+    resampling_ratio: float = 1.0,
     spectral_threshold: float = 0.005,
     f0: float = 120,
     q_rate: float = 1.0,
@@ -283,7 +283,7 @@ def cqcc(
     # -> log(.)
     # handle zeros: if feat is zero, we get problems with log
     features_no_zero = zero_handling(x=power_spectrum)
-    log_features = np.log(features_no_zero)
+    log_features = np.log(features_no_zero.T)
 
     # uniform resampling
     resampled_features = resample(
