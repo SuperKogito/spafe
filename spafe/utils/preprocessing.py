@@ -6,9 +6,11 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 from typing import Tuple
 
 import numpy as np
+from scipy.signal import lfilter
 from dataclasses import dataclass
 from typing_extensions import Literal
 
@@ -67,7 +69,7 @@ def pre_emphasis(sig: np.ndarray, pre_emph_coeff: float = 0.97) -> np.ndarray:
 
             y[t] = x[t] - \\alpha \\times x[t-1]
     """
-    return np.append(sig[0], sig[1:] - pre_emph_coeff * sig[:-1])
+    return lfilter([1, -pre_emph_coeff], [1], sig)
 
 
 def stride_trick(a: np.ndarray, stride_length: int, stride_step: int) -> np.ndarray:
