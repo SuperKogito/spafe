@@ -145,9 +145,33 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 
    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7686438.svg)](https://doi.org/10.5281/zenodo.7686438)
 
+   ```bibtex
+   @misc{malek2022superkogito,
+    title={Superkogito/spafe: v0.3.2},
+    author={Malek, A and Borz{\`\i}, S and Nielsen, CH},
+    year={2023},
+    publisher={February}
+   }
+   ```
 
 - **You can also site spafe's paper as follows:**
 
   *Malek, A., (2023). Spafe: Simplified python audio features extraction. Journal of Open Source Software, 8(81), 4739,* https://doi.org/10.21105/joss.04739
 
   [![DOI](https://joss.theoj.org/papers/10.21105/joss.04739/status.svg)](https://doi.org/10.21105/joss.04739)
+
+  ```bibtex
+  @article{
+    Malek2023,
+    doi = {10.21105/joss.04739},
+    url = {https://doi.org/10.21105/joss.04739},
+    year = {2023},
+    publisher = {The Open Journal},
+    volume = {8},
+    number = {81},
+    pages = {4739},
+    author = {Ayoub Malek},
+    title = {Spafe: Simplified python audio features extraction}, 
+    journal = {Journal of Open Source Software}
+  }
+  ```
