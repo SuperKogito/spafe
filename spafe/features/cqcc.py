@@ -6,6 +6,7 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 from typing import Optional
 
 import numpy as np
@@ -166,7 +167,7 @@ def cqcc(
     normalize: Optional[NormalizationType] = None,
     number_of_octaves: int = 7,
     number_of_bins_per_octave: int = 24,
-    resampling_ratio: float = 0.95,
+    resampling_ratio: float = 1.0,
     spectral_threshold: float = 0.005,
     f0: float = 120,
     q_rate: float = 1.0,
@@ -208,7 +209,7 @@ def cqcc(
         number_of_bins_per_octave   (int) : numbers of bins oer occtave.
                                             (Default is 24).
         resampling_ratio          (float) : ratio to use for the uniform resampling.
-                                            (Default is 0.95).
+                                            (Default is 1.00).
         spectral_threshold        (float) : spectral threshold.
                                             (Default is 0.005).
         f0                        (float) : fundamental frequency.
@@ -217,7 +218,7 @@ def cqcc(
                                             (Default is 1.0).
 
     Returns:
-        (numpy.ndarray) : 2d array of BFCC features (num_frames x num_ceps).
+        (numpy.ndarray) : 2d array of BFCC features (num_frames*resampling_ratio x num_ceps).
 
     Tip:
         - :code:`dct` : can take the following options [1, 2, 3, 4].
@@ -283,7 +284,7 @@ def cqcc(
     # -> log(.)
     # handle zeros: if feat is zero, we get problems with log
     features_no_zero = zero_handling(x=power_spectrum)
-    log_features = np.log(features_no_zero)
+    log_features = np.log(features_no_zero.T)
 
     # uniform resampling
     resampled_features = resample(
@@ -300,4 +301,5 @@ def cqcc(
     # normalization
     if normalize:
         cqccs = normalize_ceps(cqccs, normalize)
+
     return cqccs

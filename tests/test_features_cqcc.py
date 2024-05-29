@@ -3,6 +3,7 @@ import numpy as np
 import scipy.io.wavfile
 from spafe.utils import vis
 from spafe.features.cqcc import cqcc
+from spafe.utils.preprocessing import framing
 from spafe.utils.exceptions import ParameterError
 from spafe.utils.cepstral import normalize_ceps, lifter_ceps
 
@@ -18,6 +19,7 @@ from spafe.utils.cepstral import normalize_ceps, lifter_ceps
 @pytest.mark.parametrize("dct_type", [1, 2, 4])
 @pytest.mark.parametrize("lifter", [None, 0.7, -7])
 @pytest.mark.parametrize("normalize", [None, "mvn", "ms"])
+@pytest.mark.parametrize("resampling_ratio", [1.0, 0.9, 0.3])
 def test_cqcc(
     sig,
     fs,
@@ -29,6 +31,7 @@ def test_cqcc(
     dct_type,
     lifter,
     normalize,
+    resampling_ratio,
 ):
     """
     test cqcc features module for the following:
@@ -40,6 +43,9 @@ def test_cqcc(
         - check normalization.
         - check liftering.
     """
+    # get number of frames
+    frames, frame_length = framing(sig=sig, fs=fs, win_len=0.025, win_hop=0.01)
+    num_frames = len(frames)
 
     # check error for number of filters is smaller than number of cepstrums
     with pytest.raises(ParameterError):
@@ -50,6 +56,7 @@ def test_cqcc(
             nfft=nfft,
             low_freq=low_freq,
             high_freq=fs,
+            resampling_ratio=resampling_ratio,
         )
 
     # compute features
@@ -64,10 +71,15 @@ def test_cqcc(
         dct_type=dct_type,
         lifter=lifter,
         normalize=normalize,
+        resampling_ratio=resampling_ratio,
     )
 
     # assert number of returned cepstrum coefficients
     if not cqccs.shape[1] == num_ceps:
+        raise AssertionError
+
+    # assert number of returned cepstrum coefficients
+    if not cqccs.shape[0] == int(num_frames * resampling_ratio):
         raise AssertionError
 
     # check normalize
@@ -86,6 +98,7 @@ def test_cqcc(
                     dct_type=dct_type,
                     lifter=lifter,
                     normalize=None,
+                    resampling_ratio=resampling_ratio,
                 ),
                 normalize,
             ),
@@ -108,6 +121,7 @@ def test_cqcc(
                         dct_type=dct_type,
                         lifter=None,
                         normalize=normalize,
+                        resampling_ratio=resampling_ratio,
                     ),
                     lifter,
                 ),

@@ -6,4 +6,5 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 __version__ = "0.3.2"

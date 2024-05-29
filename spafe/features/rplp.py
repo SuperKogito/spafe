@@ -6,6 +6,7 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 from typing import Optional
 
 import numpy as np
@@ -148,9 +149,7 @@ def __rastaplp(
 
     # equal loudness pre_emphasis
     E = lambda w: ((w**2 + 56.8 * 10**6) * w**4) / (
-        (w**2 + 6.3 * 10**6)
-        * (w**2 + 0.38 * 10**9)
-        * (w**6 + 9.58 * 10**26)
+        (w**2 + 6.3 * 10**6) * (w**2 + 0.38 * 10**9) * (w**6 + 9.58 * 10**26)
     )
     Y = [E(w) for w in auditory_spectrum]
 
