@@ -6,6 +6,7 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 from typing import Optional
 
 import numpy as np
@@ -208,7 +209,7 @@ def cqcc(
         number_of_bins_per_octave   (int) : numbers of bins oer occtave.
                                             (Default is 24).
         resampling_ratio          (float) : ratio to use for the uniform resampling.
-                                            (Default is 0.95).
+                                            (Default is 1.00).
         spectral_threshold        (float) : spectral threshold.
                                             (Default is 0.005).
         f0                        (float) : fundamental frequency.
@@ -217,7 +218,7 @@ def cqcc(
                                             (Default is 1.0).
 
     Returns:
-        (numpy.ndarray) : 2d array of BFCC features (num_frames x num_ceps).
+        (numpy.ndarray) : 2d array of BFCC features (num_frames*resampling_ratio x num_ceps).
 
     Tip:
         - :code:`dct` : can take the following options [1, 2, 3, 4].
@@ -300,4 +301,5 @@ def cqcc(
     # normalization
     if normalize:
         cqccs = normalize_ceps(cqccs, normalize)
+
     return cqccs

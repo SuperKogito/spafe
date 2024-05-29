@@ -6,6 +6,7 @@
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
 """
+
 import numpy as np
 
 from spafe.utils.converters import hz2mel, hz2bark, hz2erb
