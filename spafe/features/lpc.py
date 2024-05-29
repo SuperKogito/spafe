@@ -36,49 +36,6 @@ def __lpc_helper(frame, order):
     Returns:
         - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).
         - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).
-
-    Note:
-        The premis of linear predictive analysis is that the nth sample can be estimated by a
-        linear combination of the previous p samples:
-
-        .. math::
-            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] ... - a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
-
-        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor
-        coefficents and p is called the model order and n is the sample index.
-        Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:
-
-        .. math::
-            e[n] = x[n] - xp[n] \\implies  x[n] = e[n] - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
-
-        The unknown here are the LP coefficients a, hence we need to minimize e to find those.
-        We can further rewrite the previous equations for all samples [Collomb]_:
-
-        .. math::
-            E = \\sum_{i=1}^{N} (x[i] - (-\\sum_{k=1}^{p+1} a_{k} . x[i-k])) \\text{for x\\in[1,p]}
-
-
-        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0
-                           _          _
-            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]
-             :      :      :          :         :
-             :      :      :          _      *  :
-            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]
-
-        To solve this, one can use the Levinson-Durbin, which is a well-known
-        algorithm to solve the Hermitian toeplitz with respect to a. Using the
-        special symmetry in the matrix, the inversion can be done in O(p^2)
-        instead of O(p^3).
-
-    References:
-        .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,
-                        Stackoverflow, https://stackoverflow.com/a/43457190/6939324
-        .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox
-        .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments
-        .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,
-                       <https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents>
-        .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction
-                         <https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html>
     """
     p = order + 1
     r = np.zeros(p, frame.dtype)
@@ -128,6 +85,49 @@ def lpc(
 
            Architecture of linear prediction components extraction algorithm.
 
+
+        The premis of linear predictive analysis is that the nth sample can be estimated by a
+        linear combination of the previous p samples:
+
+        .. math::
+            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] ... - a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor
+        coefficents and p is called the model order and n is the sample index.
+        Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:
+
+        .. math::
+            e[n] = x[n] - xp[n] \\implies  x[n] = e[n] - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        The unknown here are the LP coefficients a, hence we need to minimize e to find those.
+        We can further rewrite the previous equations for all samples [Collomb]_:
+
+        .. math::
+            E = \\sum_{i=1}^{N} (x[i] - (-\\sum_{k=1}^{p+1} a_{k} . x[i-k])) \\text{for x\\in[1,p]}
+
+
+        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0
+                           _          _
+            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]
+             :      :      :          :         :
+             :      :      :          _      *  :
+            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]
+
+        To solve this, one can use the Levinson-Durbin, which is a well-known
+        algorithm to solve the Hermitian toeplitz with respect to a. Using the
+        special symmetry in the matrix, the inversion can be done in O(p^2)
+        instead of O(p^3).
+
+    References:
+        .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,
+                        Stackoverflow, https://stackoverflow.com/a/43457190/6939324
+        .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox
+        .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments
+        .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,
+                       <https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents>
+        .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction
+                         <https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html>
+
     Examples
         .. plot::
 
@@ -175,7 +175,7 @@ def lpc(
         a_mat[i, :] = a
         e_vec[i] = e
 
-    return np.array(a_mat), np.sqrt(e_vec)
+    return np.array(a_mat), np.array(e_vec)
 
 
 def lpc2lpcc(a, e, nceps):
@@ -196,7 +196,7 @@ def lpc2lpcc(a, e, nceps):
 
             C_{m}=\\left\\{\\begin{array}{l}
             log_{e}(p), & \\text{if } m = 0 \\\\
-            a_{m} + \\sum_{k=1}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , & \\text{if } 1 < m < p \\\\
+            a_{m} + \\sum_{k=1}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , & \\text{if } 1 <= m <= p \\\\
             \\sum_{k=m-p}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , & \\text{if } m > p \\end{array}\\right.
 
     References:
@@ -207,19 +207,16 @@ def lpc2lpcc(a, e, nceps):
                    SpringerBriefs in Electrical and Computer Engineering. doi:10.1007/978-3-319-17163-0
     """
     p = len(a)
-    c = [0 for i in range(nceps)]
+    c = [1] * nceps
 
     c[0] = np.log(zero_handling(e))
-    c[1:p] = [
-        a[m] + sum([(k / m) * c[k] * a[m - k] for k in range(1, m)])
-        for m in range(1, p)
-    ]
+
+    for m in range(1, p):
+        c[m] = a[m] + sum([(k / m) * c[k] * a[m - k] for k in range(1, m)])
 
     if nceps > p:
-        c[p:nceps] = [
-            sum([(k / m) * c[k] * a[m - k] for k in range(m - p, m)])
-            for m in range(p, nceps)
-        ]
+        for m in range(p + 1, nceps):
+            c[m] = sum([(k / m) * c[k] * a[m - k] for k in range(m - p, m)])
 
     return c
 
