@@ -1,7 +1,7 @@
 """
 
 - Description : Normalized Gammachirp Cepstral Coefficients (NGCCs) extraction algorithm implementation.
-- Copyright (c) 2019-2023 Ayoub Malek.
+- Copyright (c) 2019-2024 Ayoub Malek.
   This source code is licensed under the terms of the BSD 3-Clause License.
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
