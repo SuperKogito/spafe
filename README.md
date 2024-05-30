@@ -148,9 +148,9 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
 -  **If you want to cite spafe as a software, please cite the version used as indexed in** [Zenodo](https://zenodo.org/):
 
    *Ayoub Malek, Hadrien Titeux, Stefano Borzì, Christian Heider Nielsen, Fabian-Robert Stöter, Hervé Bredin, Eryk Urbański & Kevin Mattheus Moerman. (2023). SuperKogito/spafe: v0.3.3 (v0.3.3). Zenodo.* https://doi.org/10.5281/zenodo.11396240
-   
-  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11396240.svg)](https://doi.org/10.5281/zenodo.11396240)
-
+  
+   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11396240.svg)](https://doi.org/10.5281/zenodo.11396240)
+ 
 
 - **You can also site spafe's paper as follows:**
 
