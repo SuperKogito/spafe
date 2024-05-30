@@ -66,7 +66,7 @@ def __lpc_helper(frame, order):
         algorithm to solve the Hermitian toeplitz with respect to a. Using the
         special symmetry in the matrix, the inversion can be done in O(p^2)
         instead of O(p^3).
-                                 
+
     Returns:
         - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).
         - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).
@@ -139,7 +139,7 @@ def lpc(
         .. math::
             E = \\sum_{i=1}^{N} \\left( x[i] - \\sum_{k=1}^{p} a_{k} x[i-k] \\right)^2
 
-        All the previous steps can be presented in a matrix, which is a Toeplitz matrix :math:`R.A = 0`          
+        All the previous steps can be presented in a matrix, which is a Toeplitz matrix :math:`R.A = 0`
 
     References:
         .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,
