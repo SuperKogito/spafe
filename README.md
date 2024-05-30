@@ -18,17 +18,23 @@ Simplified Python Audio Features Extraction
 
 #  Table of Contents
 
-- [Structure](#Structure)
-  - [Filter banks](#Filter-banks)
-  - [Spectrograms](#Spectrograms)
-  - [Features](#Features)
-  - [Frequencies](#Frequencies)
-- [Installation](#Installation)
-  - [Dependencies](#Dependencies)
-  - [Installation guide](#Installation-guide)
-- [How to use](#How-to-use)
-- [Contributing](#Contributing)
-- [Citing](#Citing)
+- [Spafe](#spafe)
+- [Table of Contents](#table-of-contents)
+- [Structure](#structure)
+  - [Filter banks](#filter-banks)
+  - [Spectrograms](#spectrograms)
+  - [Features](#features)
+  - [Frequencies](#frequencies)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Installation guide](#installation-guide)
+      - [Install from PyPI](#install-from-pypi)
+      - [Install from Anaconda](#install-from-anaconda)
+    - [Install from source](#install-from-source)
+  - [Why use Spafe?](#why-use-spafe)
+  - [How to use](#how-to-use)
+  - [Contributing](#contributing)
+  - [Citing](#citing)
 
 # Structure
 spafe aims to simplify feature extractions from **mono audio** files.
@@ -131,7 +137,7 @@ Most existing libraries and to their credits provide great implementations for f
 
 Various examples on how to use spafe are present in the documentation [https://superkogito.github.io/spafe](https://superkogito.github.io/spafe).
 
-**<!>** Please make sure you are referring to the correct documentation version.
+> !Please make sure you are referring to the correct documentation version.
 
 ## Contributing
 
