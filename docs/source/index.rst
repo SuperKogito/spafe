@@ -63,8 +63,8 @@ Citation
 
 
 
-.. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7686438.svg
-   :target: https://doi.org/10.5281/zenodo.7686438
+.. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.11396240.svg
+   :target: https://doi.org/10.5281/zenodo.11396240
 
 .. |DOI2| image:: https://joss.theoj.org/papers/10.21105/joss.04739/status.svg
   :target: https://doi.org/10.21105/joss.04739
