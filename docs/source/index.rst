@@ -55,6 +55,7 @@ Citation
    * *Ayoub Malek, Hadrien Titeux, Stefano Borzì, Christian Heider Nielsen, Fabian-Robert Stöter, Hervé BREDIN, & Kevin Mattheus Moerman. (2023). SuperKogito/spafe: v0.3.2 (v0.3.2). Zenodo.* https://doi.org/10.5281/zenodo.7686438
 
 |
+
 - You can also site spafe's paper on `JOSS <https://https://joss.theoj.org/>`__: |DOI2|
 
   * *Malek, A., (2023). Spafe: Simplified python audio features extraction. Journal of Open Source Software, 8(81), 4739,* https://doi.org/10.21105/joss.04739
