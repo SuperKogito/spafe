@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.3
+- correct features initialization for lpccs.
+- correct shape/ dowsampling for cqccs.
+- accelerate liftering.
+
+## v0.3.2
+- correct features initialization for ngccs.
+- add citing options.
+
+## v0.3.1
+- update documentation.
+- add spafe paper.
+
 ## v0.3.0
 - improve code based on Joss reviewers recommendations.
 - add type hinting.
