@@ -235,11 +235,11 @@ def lpc2lpcc(a, e, nceps):
     c[0] = np.log(zero_handling(e))
 
     for m in range(1, p):
-        c[m] = a[m] + sum([(k / m) * c[k] * a[m - k] for k in range(1, m)])
+        c[m] = a[m] + sum([(k / m) * c[m] * a[m - k] for k in range(1, m)])
 
     if nceps > p:
         for m in range(p + 1, nceps):
-            c[m] = sum([(k / m) * c[k] * a[m - k] for k in range(m - p, m)])
+            c[m] = sum([(k / m) * c[m] * a[m - k] for k in range(m - p, m)])
 
     return c
 
