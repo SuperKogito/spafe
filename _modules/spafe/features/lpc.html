@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.features.lpc &#8212; 🧠 SuperKogito/Spafe 0.3.2 documentation</title>
+    <title>spafe.features.lpc &#8212; 🧠 SuperKogito/Spafe 0.3.3 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -44,17 +44,15 @@
     rel="stylesheet"  type='text/css'>
     
 
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-133660046-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GPWJJB9TRK');
+    </script>
 
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
@@ -129,7 +127,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.3.2  <!-- this text may get changed later by javascript -->
+        0.3.3  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -139,7 +137,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/features/lpc and {'json_url': '_static/switcher.json', 'version_match': '0.3.2'}.
+     variables _modules/spafe/features/lpc and {'json_url': '_static/switcher.json', 'version_match': '0.3.3'}.
 -->
 
 <script type="text/javascript">
@@ -190,10 +188,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.2 variable.
+            // this version, rather than using sphinx's 0.3.3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.3.2") {
+            if (entry.version == "0.3.3") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -282,11 +280,12 @@ function checkPageExistsAndRedirect(event) {
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">- Description : Linear Prediction Components and Cepstral Coefﬁcients (LPCs and LPCCs) extraction algorithm implementation.</span>
-<span class="sd">- Copyright (c) 2019-2023 Ayoub Malek.</span>
+<span class="sd">- Copyright (c) 2019-2024 Ayoub Malek.</span>
 <span class="sd">  This source code is licensed under the terms of the BSD 3-Clause License.</span>
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -303,7 +302,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <span class="k">def</span> <span class="nf">__lpc_helper</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes for each given sequence the LPC ( Linear predictive components ) as</span>
 <span class="sd">    described in . Further references are [Draconi]_ and [Cournapeau] and [Menares]_.</span>
 
@@ -313,16 +312,13 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                                 we use len(seq) as default, otherwise order+1.</span>
 <span class="sd">                                 (Default is 13).</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).</span>
-<span class="sd">        - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).</span>
-
 <span class="sd">    Note:</span>
+
 <span class="sd">        The premis of linear predictive analysis is that the nth sample can be estimated by a</span>
 <span class="sd">        linear combination of the previous p samples:</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] ... - a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]</span>
+<span class="sd">            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] - ... -a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]</span>
 
 <span class="sd">        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor</span>
 <span class="sd">        coefficents and p is called the model order and n is the sample index.</span>
@@ -339,26 +335,20 @@ function checkPageExistsAndRedirect(event) {
 
 
 <span class="sd">        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0</span>
-<span class="sd">                           _          _</span>
+<span class="sd">                            _          _</span>
 <span class="sd">            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]</span>
-<span class="sd">             :      :      :          :         :</span>
-<span class="sd">             :      :      :          _      *  :</span>
+<span class="sd">                :      :      :          :         :</span>
+<span class="sd">                :      :      :          :   *     :</span>
 <span class="sd">            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]</span>
 
 <span class="sd">        To solve this, one can use the Levinson-Durbin, which is a well-known</span>
 <span class="sd">        algorithm to solve the Hermitian toeplitz with respect to a. Using the</span>
 <span class="sd">        special symmetry in the matrix, the inversion can be done in O(p^2)</span>
 <span class="sd">        instead of O(p^3).</span>
-
-<span class="sd">    References:</span>
-<span class="sd">        .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,</span>
-<span class="sd">                        Stackoverflow, https://stackoverflow.com/a/43457190/6939324</span>
-<span class="sd">        .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox</span>
-<span class="sd">        .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments</span>
-<span class="sd">        .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,</span>
-<span class="sd">                       &lt;https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents&gt;</span>
-<span class="sd">        .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction</span>
-<span class="sd">                         &lt;https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html&gt;</span>
+<span class="sd">                                 </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).</span>
+<span class="sd">        - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
@@ -382,21 +372,21 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">pre_emph_coeff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.97</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SlidingWindow</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Linear prediction coefficents (LPC) from an audio signal.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sig    (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.</span>
 <span class="sd">        fs               (int) : the sampling frequency of the signal we are working with.</span>
-<span class="sd">                                 (Default is 16000).</span>
+<span class="sd">                                    (Default is 16000).</span>
 <span class="sd">        order            (int) : order of the LP model and number of cepstral components.</span>
-<span class="sd">                                 (Default is 13).</span>
+<span class="sd">                                    (Default is 13).</span>
 <span class="sd">        pre_emph        (bool) : apply pre-emphasis if 1.</span>
-<span class="sd">                                 (Default is 1).</span>
+<span class="sd">                                    (Default is 1).</span>
 <span class="sd">        pre_emph_coeff (float) : pre-emphasis filter coefficient.</span>
-<span class="sd">                                 (Default is 0.97).</span>
+<span class="sd">                                    (Default is 0.97).</span>
 <span class="sd">        window (SlidingWindow) : sliding window object.</span>
-<span class="sd">                                 (Default is None).</span>
+<span class="sd">                                    (Default is None).</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (tuple) :</span>
@@ -406,7 +396,39 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    Note:</span>
 <span class="sd">        .. figure:: ../_static/architectures/lpcs.png</span>
 
-<span class="sd">           Architecture of linear prediction components extraction algorithm.</span>
+<span class="sd">            Architecture of linear prediction components extraction algorithm.</span>
+
+
+<span class="sd">        The premis of linear predictive analysis is that the nth sample can be estimated by a</span>
+<span class="sd">        linear combination of the previous p samples:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            xp[n] = -a[1] * x[n-1] - \dots - a[k] * x[n-k] - \dots - a[p] * x[n-p] = - \\sum_{k=1}^{p} a_{k} x[n-k]</span>
+
+<span class="sd">        where :math:`xp` is the predicted signal, :math:`a_{1}, \dots, a_{p}` are the predictor</span>
+<span class="sd">        coefficients, :math:`p` is the model order, and :math:`n` is the sample index.</span>
+<span class="sd">        Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            e[n] = x[n] - xp[n] \\implies x[n] = e[n] + \\sum_{k=1}^{p} a_{k} x[n-k]</span>
+
+<span class="sd">        The unknown here are the LP coefficients :math:`a`, hence we need to minimize e to find those.</span>
+<span class="sd">        We can further rewrite the previous equations for all samples [Collomb]_:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            E = \\sum_{i=1}^{N} \\left( x[i] - \\sum_{k=1}^{p} a_{k} x[i-k] \\right)^2</span>
+
+<span class="sd">        All the previous steps can be presented in a matrix, which is a Toeplitz matrix :math:`R.A = 0`          </span>
+
+<span class="sd">    References:</span>
+<span class="sd">        .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,</span>
+<span class="sd">                        Stackoverflow, https://stackoverflow.com/a/43457190/6939324</span>
+<span class="sd">        .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox</span>
+<span class="sd">        .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments</span>
+<span class="sd">        .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,</span>
+<span class="sd">                        &lt;https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents&gt;</span>
+<span class="sd">        .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction</span>
+<span class="sd">                            &lt;https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html&gt;</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">        .. plot::</span>
@@ -422,10 +444,10 @@ function checkPageExistsAndRedirect(event) {
 
 <span class="sd">            # compute lpcs</span>
 <span class="sd">            lpcs, _ = lpc(sig,</span>
-<span class="sd">                          fs=fs,</span>
-<span class="sd">                          pre_emph=0,</span>
-<span class="sd">                          pre_emph_coeff=0.97,</span>
-<span class="sd">                          window=SlidingWindow(0.030, 0.015, &quot;hamming&quot;))</span>
+<span class="sd">                            fs=fs,</span>
+<span class="sd">                            pre_emph=0,</span>
+<span class="sd">                            pre_emph_coeff=0.97,</span>
+<span class="sd">                            window=SlidingWindow(0.030, 0.015, &quot;hamming&quot;))</span>
 
 <span class="sd">            # visualize features</span>
 <span class="sd">            show_features(lpcs, &quot;Linear prediction coefficents&quot;, &quot;LPCs Index&quot;, &quot;Frame Index&quot;)</span>
@@ -455,11 +477,11 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">a_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">a</span>
         <span class="n">e_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_mat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">e_vec</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_mat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">e_vec</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="lpc2lpcc"><a class="viewcode-back" href="../../../features/lpc.html#spafe.features.lpc.lpc2lpcc">[docs]</a><span class="k">def</span> <span class="nf">lpc2lpcc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">nceps</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert linear prediction coefficents (LPC) to linear prediction cepstral coefﬁcients (LPCC)</span>
 <span class="sd">    as described in [Rao]_ and [Makhoul]_.</span>
 
@@ -476,7 +498,7 @@ function checkPageExistsAndRedirect(event) {
 
 <span class="sd">            C_{m}=\\left\\{\\begin{array}{l}</span>
 <span class="sd">            log_{e}(p), &amp; \\text{if } m = 0 \\\\</span>
-<span class="sd">            a_{m} + \\sum_{k=1}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , &amp; \\text{if } 1 &lt; m &lt; p \\\\</span>
+<span class="sd">            a_{m} + \\sum_{k=1}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , &amp; \\text{if } 1 &lt;= m &lt;= p \\\\</span>
 <span class="sd">            \\sum_{k=m-p}^{m-1} \\frac{k}{m} C_{m} a_{m-k} , &amp; \\text{if } m &gt; p \\end{array}\\right.</span>
 
 <span class="sd">    References:</span>
@@ -487,19 +509,16 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                   SpringerBriefs in Electrical and Computer Engineering. doi:10.1007/978-3-319-17163-0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nceps</span><span class="p">)]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nceps</span>
 
     <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">zero_handling</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-    <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([(</span><span class="n">k</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)])</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([(</span><span class="n">k</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)])</span>
 
     <span class="k">if</span> <span class="n">nceps</span> <span class="o">&gt;</span> <span class="n">p</span><span class="p">:</span>
-        <span class="n">c</span><span class="p">[</span><span class="n">p</span><span class="p">:</span><span class="n">nceps</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="nb">sum</span><span class="p">([(</span><span class="n">k</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">p</span><span class="p">,</span> <span class="n">m</span><span class="p">)])</span>
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">nceps</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nceps</span><span class="p">):</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([(</span><span class="n">k</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">p</span><span class="p">,</span> <span class="n">m</span><span class="p">)])</span>
 
     <span class="k">return</span> <span class="n">c</span></div>
 
@@ -514,7 +533,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">lifter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NormalizationType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the linear predictive cepstral components / coefficents from an</span>
 <span class="sd">    audio signal.</span>
 
@@ -629,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2024, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>spafe.utils.converters &#8212; 🧠 SuperKogito/Spafe 0.3.2 documentation</title>
+    <title>spafe.utils.converters &#8212; 🧠 SuperKogito/Spafe 0.3.3 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -49,17 +49,15 @@
     rel="stylesheet"  type='text/css'>
     
 
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-133660046-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GPWJJB9TRK');
+    </script>
 
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
@@ -134,7 +132,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.3.2  <!-- this text may get changed later by javascript -->
+        0.3.3  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -144,7 +142,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables utils/converters and {'json_url': '_static/switcher.json', 'version_match': '0.3.2'}.
+     variables utils/converters and {'json_url': '_static/switcher.json', 'version_match': '0.3.3'}.
 -->
 
 <script type="text/javascript">
@@ -195,10 +193,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.2 variable.
+            // this version, rather than using sphinx's 0.3.3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.3.2") {
+            if (entry.version == "0.3.3") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -476,19 +474,19 @@ function checkPageExistsAndRedirect(event) {
 <span id="spafe-utils-converters"></span><h1>spafe.utils.converters<a class="headerlink" href="#module-spafe.utils.converters" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Description : Frequency converters implementation.</p></li>
-<li><p>Copyright (c) 2019-2023 Ayoub Malek.
+<li><p>Copyright (c) 2019-2024 Ayoub Malek.
 This source code is licensed under the terms of the BSD 3-Clause License.
 For a copy, see &lt;<a class="reference external" href="https://github.com/SuperKogito/spafe/blob/master/LICENSE">https://github.com/SuperKogito/spafe/blob/master/LICENSE</a>&gt;.</p></li>
 </ul>
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.hz2erb">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2erb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Glasberg'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Glasberg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2erb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2erb" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2erb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Glasberg</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Glasberg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2erb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2erb" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert Hz frequencies to Erb as referenced in <a class="reference internal" href="#glasberg" id="id1"><span>[Glasberg]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Hz].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Hz].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Glasberg”).</p></li>
 </ul>
 </dd>
@@ -496,7 +494,7 @@ For a copy, see &lt;<a class="reference external" href="https://github.com/Super
 <dd class="field-even"><p>frequency in Erb [Erb].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -544,13 +542,13 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.erb2hz">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">erb2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Glasberg'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Glasberg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#erb2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.erb2hz" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">erb2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Glasberg</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Glasberg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#erb2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.erb2hz" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert Erb frequencies to Hz as referenced in <a class="reference internal" href="#glasberg" id="id2"><span>[Glasberg]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Erb].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>fe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Erb].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Glasberg”).</p></li>
 </ul>
 </dd>
@@ -558,7 +556,7 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 <dd class="field-even"><p>frequency in Hz [Hz].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -598,13 +596,13 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.hz2bark">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2bark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Wang'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Tjomov'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Schroeder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Terhardt'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Zwicker'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Traunmueller'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Wang'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2bark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2bark" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2bark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Wang</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tjomov</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Schroeder</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Terhardt</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Zwicker</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Traunmueller</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Wang'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2bark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2bark" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert Hz frequencies to Bark as mentioned in <a class="reference internal" href="#carter" id="id3"><span>[Carter]</span></a> and <a class="reference internal" href="#traunmueller" id="id4"><span>[Traunmueller]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Hz].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Hz].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Wang”).</p></li>
 </ul>
 </dd>
@@ -612,7 +610,7 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 <dd class="field-even"><p>frequency in Bark [Bark].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -675,13 +673,13 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.bark2hz">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">bark2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Wang'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Tjomov'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Schroeder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Terhardt'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Zwicker'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Traunmueller'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Wang'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#bark2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.bark2hz" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">bark2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Wang</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tjomov</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Schroeder</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Terhardt</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Zwicker</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Traunmueller</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Wang'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#bark2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.bark2hz" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert Bark frequencies to Hz as mentioned in <a class="reference internal" href="#carter" id="id5"><span>[Carter]</span></a> and <a class="reference internal" href="#traunmueller" id="id6"><span>[Traunmueller]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Bark].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>fb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Bark].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Wang”).</p></li>
 </ul>
 </dd>
@@ -689,7 +687,7 @@ Research. Vol. 47, Issues 1–2, 1990, pp. 103–138.</p>
 <dd class="field-even"><p>frequency in Hz [Hz].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -764,13 +762,13 @@ The Journal of the Acoustical Society of America, 88(1), 97–100. doi:10.1121/1
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.hz2mel">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2mel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Oshaghnessy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Lindsay'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Oshaghnessy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2mel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2mel" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">hz2mel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Oshaghnessy</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Lindsay</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Oshaghnessy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#hz2mel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.hz2mel" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert a value in Hertz to Mels <a class="reference internal" href="#oshaghnessy" id="id7"><span>[Oshaghnessy]</span></a>, <a class="reference internal" href="#beranek" id="id8"><span>[Beranek]</span></a> and <a class="reference internal" href="#lindsay" id="id9"><span>[Lindsay]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Hz].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Hz].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Oshaghnessy”).</p></li>
 </ul>
 </dd>
@@ -778,7 +776,7 @@ The Journal of the Acoustical Society of America, 88(1), 97–100. doi:10.1121/1
 <dd class="field-even"><p>frequency in Mel scale [Mel].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -844,13 +842,13 @@ Human information processing: An introduction to psychology
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.utils.converters.mel2hz">
-<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">mel2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Oshaghnessy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Lindsay'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Oshaghnessy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#mel2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.mel2hz" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.utils.converters.</span></span><span class="sig-name descname"><span class="pre">mel2hz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">approach</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">Oshaghnessy</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Lindsay</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Oshaghnessy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/spafe/utils/converters.html#mel2hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.utils.converters.mel2hz" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert a value in Mels to Hertz</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – input frequency [Mel].</p></li>
-<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – conversion approach.
+<li><p><strong>fm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – input frequency [Mel].</p></li>
+<li><p><strong>approach</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – conversion approach.
 (Default is “Wang”).</p></li>
 </ul>
 </dd>
@@ -858,7 +856,7 @@ Human information processing: An introduction to psychology
 <dd class="field-even"><p>frequency in Hz [Hz].</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -925,7 +923,7 @@ Human information processing: An introduction to psychology
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2024, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>

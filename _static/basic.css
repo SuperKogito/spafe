@@ -335,13 +335,13 @@ p.sidebar-title {
     font-weight: bold;
 }
 
-div.admonition, div.topic, aside.topic, blockquote {
+div.admonition, div.topic, blockquote {
     clear: left;
 }
 
 /* -- topics ---------------------------------------------------------------- */
 
-div.topic, aside.topic {
+div.topic {
     border: 1px solid #ccc;
     padding: 7px;
     margin: 10px 0 10px 0;
@@ -380,7 +380,6 @@ div.body p.centered {
 div.sidebar > :last-child,
 aside.sidebar > :last-child,
 div.topic > :last-child,
-aside.topic > :last-child,
 div.admonition > :last-child {
     margin-bottom: 0;
 }
@@ -388,7 +387,6 @@ div.admonition > :last-child {
 div.sidebar::after,
 aside.sidebar::after,
 div.topic::after,
-aside.topic::after,
 div.admonition::after,
 blockquote::after {
     display: block;

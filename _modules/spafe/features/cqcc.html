@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spafe.features.cqcc &#8212; 🧠 SuperKogito/Spafe 0.3.2 documentation</title>
+    <title>spafe.features.cqcc &#8212; 🧠 SuperKogito/Spafe 0.3.3 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -44,17 +44,15 @@
     rel="stylesheet"  type='text/css'>
     
 
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-133660046-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GPWJJB9TRK');
+    </script>
 
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
@@ -129,7 +127,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.3.2  <!-- this text may get changed later by javascript -->
+        0.3.3  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -139,7 +137,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables _modules/spafe/features/cqcc and {'json_url': '_static/switcher.json', 'version_match': '0.3.2'}.
+     variables _modules/spafe/features/cqcc and {'json_url': '_static/switcher.json', 'version_match': '0.3.3'}.
 -->
 
 <script type="text/javascript">
@@ -190,10 +188,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.2 variable.
+            // this version, rather than using sphinx's 0.3.3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.3.2") {
+            if (entry.version == "0.3.3") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -282,11 +280,12 @@ function checkPageExistsAndRedirect(event) {
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">- Description : Constant Q-transform Cepstral Coeﬃcients (CQCCs) extraction algorithm implementation.</span>
-<span class="sd">- Copyright (c) 2019-2023 Ayoub Malek.</span>
+<span class="sd">- Copyright (c) 2019-2024 Ayoub Malek.</span>
 <span class="sd">  This source code is licensed under the terms of the BSD 3-Clause License.</span>
 <span class="sd">  For a copy, see &lt;https://github.com/SuperKogito/spafe/blob/master/LICENSE&gt;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -320,7 +319,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">f0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
     <span class="n">q_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Constant-Q Cepstral spectrogram from an audio signal as in [Todisco]_.</span>
 
 <span class="sd">    Args:</span>
@@ -447,12 +446,12 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NormalizationType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">number_of_octaves</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
     <span class="n">number_of_bins_per_octave</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
-    <span class="n">resampling_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">resampling_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">spectral_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span>
     <span class="n">f0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
     <span class="n">q_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Constant-Q Cepstral Coeﬃcients (CQCC features) from an audio signal</span>
 <span class="sd">    as described in [Todisco]_.</span>
 
@@ -489,7 +488,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        number_of_bins_per_octave   (int) : numbers of bins oer occtave.</span>
 <span class="sd">                                            (Default is 24).</span>
 <span class="sd">        resampling_ratio          (float) : ratio to use for the uniform resampling.</span>
-<span class="sd">                                            (Default is 0.95).</span>
+<span class="sd">                                            (Default is 1.00).</span>
 <span class="sd">        spectral_threshold        (float) : spectral threshold.</span>
 <span class="sd">                                            (Default is 0.005).</span>
 <span class="sd">        f0                        (float) : fundamental frequency.</span>
@@ -498,7 +497,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">                                            (Default is 1.0).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        (numpy.ndarray) : 2d array of BFCC features (num_frames x num_ceps).</span>
+<span class="sd">        (numpy.ndarray) : 2d array of BFCC features (num_frames*resampling_ratio x num_ceps).</span>
 
 <span class="sd">    Tip:</span>
 <span class="sd">        - :code:`dct` : can take the following options [1, 2, 3, 4].</span>
@@ -564,7 +563,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="c1"># -&gt; log(.)</span>
     <span class="c1"># handle zeros: if feat is zero, we get problems with log</span>
     <span class="n">features_no_zero</span> <span class="o">=</span> <span class="n">zero_handling</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">power_spectrum</span><span class="p">)</span>
-    <span class="n">log_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">features_no_zero</span><span class="p">)</span>
+    <span class="n">log_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">features_no_zero</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
     <span class="c1"># uniform resampling</span>
     <span class="n">resampled_features</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span>
@@ -581,6 +580,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="c1"># normalization</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
         <span class="n">cqccs</span> <span class="o">=</span> <span class="n">normalize_ceps</span><span class="p">(</span><span class="n">cqccs</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">cqccs</span></div>
 </pre></div>
 
@@ -608,7 +608,7 @@ function checkPageExistsAndRedirect(event) {
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2024, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>

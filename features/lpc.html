@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>spafe.features.lpc &#8212; 🧠 SuperKogito/Spafe 0.3.2 documentation</title>
+    <title>spafe.features.lpc &#8212; 🧠 SuperKogito/Spafe 0.3.3 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -49,17 +49,15 @@
     rel="stylesheet"  type='text/css'>
     
 
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-133660046-1', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPWJJB9TRK"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GPWJJB9TRK');
+    </script>
 
     <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8554106698532684" crossorigin="anonymous"></script>
@@ -134,7 +132,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.3.2  <!-- this text may get changed later by javascript -->
+        0.3.3  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -144,7 +142,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables features/lpc and {'json_url': '_static/switcher.json', 'version_match': '0.3.2'}.
+     variables features/lpc and {'json_url': '_static/switcher.json', 'version_match': '0.3.3'}.
 -->
 
 <script type="text/javascript">
@@ -195,10 +193,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.2 variable.
+            // this version, rather than using sphinx's 0.3.3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.3.2") {
+            if (entry.version == "0.3.3") {
                 node.classList.add("active");
                 let btn = document.getElementById("version_switcher_button");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
@@ -476,25 +474,25 @@ function checkPageExistsAndRedirect(event) {
 <span id="spafe-features-lpc"></span><h1>spafe.features.lpc<a class="headerlink" href="#module-spafe.features.lpc" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Description : Linear Prediction Components and Cepstral Coefﬁcients (LPCs and LPCCs) extraction algorithm implementation.</p></li>
-<li><p>Copyright (c) 2019-2023 Ayoub Malek.
+<li><p>Copyright (c) 2019-2024 Ayoub Malek.
 This source code is licensed under the terms of the BSD 3-Clause License.
 For a copy, see &lt;<a class="reference external" href="https://github.com/SuperKogito/spafe/blob/master/LICENSE">https://github.com/SuperKogito/spafe/blob/master/LICENSE</a>&gt;.</p></li>
 </ul>
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.lpc.lpc">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.lpc.</span></span><span class="sig-name descname"><span class="pre">lpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.97</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><span class="pre">SlidingWindow</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/lpc.html#lpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.lpc.lpc" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.lpc.</span></span><span class="sig-name descname"><span class="pre">lpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.97</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><span class="pre">SlidingWindow</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/lpc.html#lpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.lpc.lpc" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the Linear prediction coefficents (LPC) from an audio signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – a mono audio signal (Nx1) from which to compute features.</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – a mono audio signal (Nx1) from which to compute features.</p></li>
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – the sampling frequency of the signal we are working with.
 (Default is 16000).</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – order of the LP model and number of cepstral components.
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – order of the LP model and number of cepstral components.
 (Default is 13).</p></li>
-<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – apply pre-emphasis if 1.
+<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – apply pre-emphasis if 1.
 (Default is 1).</p></li>
-<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pre-emphasis filter coefficient.
+<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – pre-emphasis filter coefficient.
 (Default is 0.97).</p></li>
 <li><p><strong>window</strong> (<a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><em>SlidingWindow</em></a>) – sliding window object.
 (Default is None).</p></li>
@@ -508,18 +506,53 @@ For a copy, see &lt;<a class="reference external" href="https://github.com/Super
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<figure class="align-default" id="id3">
+<figure class="align-default" id="id5">
 <img alt="../_images/lpcs.png" src="../_images/lpcs.png" />
 <figcaption>
-<p><span class="caption-text">Architecture of linear prediction components extraction algorithm.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Architecture of linear prediction components extraction algorithm.</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
+<p>The premis of linear predictive analysis is that the nth sample can be estimated by a
+linear combination of the previous p samples:</p>
+<div class="math notranslate nohighlight">
+\[xp[n] = -a[1] * x[n-1] - \dots - a[k] * x[n-k] - \dots - a[p] * x[n-p] = - \sum_{k=1}^{p} a_{k} x[n-k]\]</div>
+<p>where <span class="math notranslate nohighlight">\(xp\)</span> is the predicted signal, <span class="math notranslate nohighlight">\(a_{1}, \dots, a_{p}\)</span> are the predictor
+coefficients, <span class="math notranslate nohighlight">\(p\)</span> is the model order, and <span class="math notranslate nohighlight">\(n\)</span> is the sample index.
+Based on the previous equation, we can estimate the prediction error as follows <a class="reference internal" href="#ucl-brain" id="id1"><span>[Ucl-brain]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[e[n] = x[n] - xp[n] \implies x[n] = e[n] + \sum_{k=1}^{p} a_{k} x[n-k]\]</div>
+<p>The unknown here are the LP coefficients <span class="math notranslate nohighlight">\(a\)</span>, hence we need to minimize e to find those.
+We can further rewrite the previous equations for all samples <a class="reference internal" href="#collomb" id="id2"><span>[Collomb]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[E = \sum_{i=1}^{N} \left( x[i] - \sum_{k=1}^{p} a_{k} x[i-k] \right)^2\]</div>
+<p>All the previous steps can be presented in a matrix, which is a Toeplitz matrix <span class="math notranslate nohighlight">\(R.A = 0\)</span></p>
 </div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="darconis"><span class="brackets">Darconis</span></dt>
+<dd><p>: Draconi, Replacing Levinson implementation in scikits.talkbox,
+Stackoverflow, <a class="reference external" href="https://stackoverflow.com/a/43457190/6939324">https://stackoverflow.com/a/43457190/6939324</a></p>
+</dd>
+<dt class="label" id="cournapeau"><span class="brackets">Cournapeau</span></dt>
+<dd><p>: David Cournapeau D. talkbox, <a class="reference external" href="https://github.com/cournape/talkbox">https://github.com/cournape/talkbox</a></p>
+</dd>
+<dt class="label" id="menares"><span class="brackets">Menares</span></dt>
+<dd><p>: Menares E. F. M., ML-experiments, <a class="reference external" href="https://github.com/erickfmm/ML-experiments">https://github.com/erickfmm/ML-experiments</a></p>
+</dd>
+<dt class="label" id="collomb"><span class="brackets"><a class="fn-backref" href="#id2">Collomb</a></span></dt>
+<dd><p>: Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,
+&lt;<a class="reference external" href="https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents">https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents</a>&gt;</p>
+</dd>
+<dt class="label" id="ucl-brain"><span class="brackets"><a class="fn-backref" href="#id1">Ucl-brain</a></span></dt>
+<dd><p>: Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction
+&lt;<a class="reference external" href="https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html">https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html</a>&gt;</p>
+</dd>
+</dl>
 <dl>
 <dt>Examples</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="kn">import</span> <span class="n">read</span>
 <span class="kn">from</span> <span class="nn">spafe.features.lpc</span> <span class="kn">import</span> <span class="n">lpc</span>
@@ -532,10 +565,10 @@ For a copy, see &lt;<a class="reference external" href="https://github.com/Super
 
 <span class="c1"># compute lpcs</span>
 <span class="n">lpcs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lpc</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span>
-              <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
-              <span class="n">pre_emph</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-              <span class="n">pre_emph_coeff</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span>
-              <span class="n">window</span><span class="o">=</span><span class="n">SlidingWindow</span><span class="p">(</span><span class="mf">0.030</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">,</span> <span class="s2">&quot;hamming&quot;</span><span class="p">))</span>
+                <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+                <span class="n">pre_emph</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">pre_emph_coeff</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span>
+                <span class="n">window</span><span class="o">=</span><span class="n">SlidingWindow</span><span class="p">(</span><span class="mf">0.030</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">,</span> <span class="s2">&quot;hamming&quot;</span><span class="p">))</span>
 
 <span class="c1"># visualize features</span>
 <span class="n">show_features</span><span class="p">(</span><span class="n">lpcs</span><span class="p">,</span> <span class="s2">&quot;Linear prediction coefficents&quot;</span><span class="p">,</span> <span class="s2">&quot;LPCs Index&quot;</span><span class="p">,</span> <span class="s2">&quot;Frame Index&quot;</span><span class="p">)</span>
@@ -552,20 +585,20 @@ For a copy, see &lt;<a class="reference external" href="https://github.com/Super
 <dt class="sig sig-object py" id="spafe.features.lpc.lpc2lpcc">
 <span class="sig-prename descclassname"><span class="pre">spafe.features.lpc.</span></span><span class="sig-name descname"><span class="pre">lpc2lpcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nceps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spafe/features/lpc.html#lpc2lpcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.lpc.lpc2lpcc" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert linear prediction coefficents (LPC) to linear prediction cepstral coefﬁcients (LPCC)
-as described in <a class="reference internal" href="#rao" id="id1"><span>[Rao]</span></a> and <a class="reference internal" href="#makhoul" id="id2"><span>[Makhoul]</span></a>.</p>
+as described in <a class="reference internal" href="#rao" id="id3"><span>[Rao]</span></a> and <a class="reference internal" href="#makhoul" id="id4"><span>[Makhoul]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – linear prediction coefficents.</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – linear prediction model order.</p></li>
-<li><p><strong>nceps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of cepstral coefficients.</p></li>
+<li><p><strong>a</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – linear prediction coefficents.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – linear prediction model order.</p></li>
+<li><p><strong>nceps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – number of cepstral coefficients.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>linear prediction cepstrum coefficents (LPCC).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a>)</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -573,16 +606,16 @@ as described in <a class="reference internal" href="#rao" id="id1"><span>[Rao]</
 <div class="math notranslate nohighlight">
 \[\begin{split}C_{m}=\left\{\begin{array}{l}
 log_{e}(p), &amp; \text{if } m = 0 \\
-a_{m} + \sum_{k=1}^{m-1} \frac{k}{m} C_{m} a_{m-k} , &amp; \text{if } 1 &lt; m &lt; p \\
+a_{m} + \sum_{k=1}^{m-1} \frac{k}{m} C_{m} a_{m-k} , &amp; \text{if } 1 &lt;= m &lt;= p \\
 \sum_{k=m-p}^{m-1} \frac{k}{m} C_{m} a_{m-k} , &amp; \text{if } m &gt; p \end{array}\right.\end{split}\]</div>
 </div>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="makhoul"><span class="brackets"><a class="fn-backref" href="#id2">Makhoul</a></span></dt>
+<dt class="label" id="makhoul"><span class="brackets"><a class="fn-backref" href="#id4">Makhoul</a></span></dt>
 <dd><p>: Makhoul, J. (1975). Linear prediction: A tutorial review.
 Proceedings of the IEEE, 63(4), 561–580. doi:10.1109/proc.1975.9792</p>
 </dd>
-<dt class="label" id="rao"><span class="brackets"><a class="fn-backref" href="#id1">Rao</a></span></dt>
+<dt class="label" id="rao"><span class="brackets"><a class="fn-backref" href="#id3">Rao</a></span></dt>
 <dd><p>: Rao, K. S., Reddy, V. R., &amp; Maity, S. (2015).
 Language Identification Using Spectral and Prosodic Features.
 SpringerBriefs in Electrical and Computer Engineering. doi:10.1007/978-3-319-17163-0</p>
@@ -592,26 +625,26 @@ SpringerBriefs in Electrical and Computer Engineering. doi:10.1007/978-3-319-171
 
 <dl class="py function">
 <dt class="sig sig-object py" id="spafe.features.lpc.lpcc">
-<span class="sig-prename descclassname"><span class="pre">spafe.features.lpc.</span></span><span class="sig-name descname"><span class="pre">lpcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.97</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><span class="pre">SlidingWindow</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'mvn'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ms'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'vn'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mn'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/lpc.html#lpcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.lpc.lpcc" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">spafe.features.lpc.</span></span><span class="sig-name descname"><span class="pre">lpcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_emph_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.97</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><span class="pre">SlidingWindow</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Literal</span><span class="p"><span class="pre">[</span></span><span class="pre">mvn</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ms</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">vn</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mn</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/spafe/features/lpc.html#lpcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spafe.features.lpc.lpcc" title="Permalink to this definition">#</a></dt>
 <dd><p>Computes the linear predictive cepstral components / coefficents from an
 audio signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – input mono audio signal (Nx1).</p></li>
-<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the sampling frequency of the signal.
+<li><p><strong>sig</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – input mono audio signal (Nx1).</p></li>
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – the sampling frequency of the signal.
 (Default is 16000).</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – order of the LP model and number of cepstral components.
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – order of the LP model and number of cepstral components.
 (Default is 13).</p></li>
-<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – apply pre-emphasis if 1.
+<li><p><strong>pre_emph</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – apply pre-emphasis if 1.
 (Default is 1).</p></li>
-<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pre-emphasis filter coefficient.
+<li><p><strong>pre_emph_coeff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – pre-emphasis filter coefficient.
 (Default is 0.97).</p></li>
 <li><p><strong>window</strong> (<a class="reference internal" href="../utils/preprocessing.html#spafe.utils.preprocessing.SlidingWindow" title="spafe.utils.preprocessing.SlidingWindow"><em>SlidingWindow</em></a>) – sliding window object.
 (Default is None).</p></li>
-<li><p><strong>lifter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – apply liftering if specified.
+<li><p><strong>lifter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – apply liftering if specified.
 (Default is None).</p></li>
-<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – apply normalization if provided.
+<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – apply normalization if provided.
 (Default is None).</p></li>
 </ul>
 </dd>
@@ -619,7 +652,7 @@ audio signal.</p>
 <dd class="field-even"><p>2d array of LPCC features (num_frames x num_ceps)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a>)</p>
+<dd class="field-odd"><p>(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a>)</p>
 </dd>
 </dl>
 <div class="admonition tip">
@@ -631,10 +664,10 @@ audio signal.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Returned values are in the frequency domain</p>
-<figure class="align-default" id="id4">
+<figure class="align-default" id="id6">
 <img alt="../_images/lpccs.png" src="../_images/lpccs.png" />
 <figcaption>
-<p><span class="caption-text">Architecture of linear prediction cepstral coefﬁcients extraction algorithm.</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Architecture of linear prediction cepstral coefﬁcients extraction algorithm.</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -707,7 +740,7 @@ audio signal.</p>
           <div class="col-xs-6 col-md-6">
             <ul class="footer-links">
               <li>
-                    &copy; Copyright 2019-2023, Ayoub Malek.<br/>
+                    &copy; Copyright 2019-2024, Ayoub Malek.<br/>
                   This blog is created using <a href="http://sphinx-doc.org/">Sphinx</a> and the tools from <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>.<br/>
               </li>
             </ul>
