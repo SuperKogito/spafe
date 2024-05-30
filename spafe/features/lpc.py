@@ -1,7 +1,7 @@
 """
 
 - Description : Linear Prediction Components and Cepstral Coefﬁcients (LPCs and LPCCs) extraction algorithm implementation.
-- Copyright (c) 2019-2023 Ayoub Malek.
+- Copyright (c) 2019-2024 Ayoub Malek.
   This source code is licensed under the terms of the BSD 3-Clause License.
   For a copy, see <https://github.com/SuperKogito/spafe/blob/master/LICENSE>.
 
@@ -33,6 +33,40 @@ def __lpc_helper(frame, order):
                                  we use len(seq) as default, otherwise order+1.
                                  (Default is 13).
 
+    Note:
+
+        The premis of linear predictive analysis is that the nth sample can be estimated by a
+        linear combination of the previous p samples:
+
+        .. math::
+            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] - ... -a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor
+        coefficents and p is called the model order and n is the sample index.
+        Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:
+
+        .. math::
+            e[n] = x[n] - xp[n] \\implies  x[n] = e[n] - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+
+        The unknown here are the LP coefficients a, hence we need to minimize e to find those.
+        We can further rewrite the previous equations for all samples [Collomb]_:
+
+        .. math::
+            E = \\sum_{i=1}^{N} (x[i] - (-\\sum_{k=1}^{p+1} a_{k} . x[i-k])) \\text{for x\\in[1,p]}
+
+
+        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0
+                            _          _
+            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]
+                :      :      :          :         :
+                :      :      :          :   *     :
+            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]
+
+        To solve this, one can use the Levinson-Durbin, which is a well-known
+        algorithm to solve the Hermitian toeplitz with respect to a. Using the
+        special symmetry in the matrix, the inversion can be done in O(p^2)
+        instead of O(p^3).
+                                 
     Returns:
         - (numpy.ndarray) : linear prediction coefficents (lpc coefficents: a).
         - (numpy.ndarray) : the error term is the square root of the squared prediction error (e**2).
@@ -65,15 +99,15 @@ def lpc(
     Args:
         sig    (numpy.ndarray) : a mono audio signal (Nx1) from which to compute features.
         fs               (int) : the sampling frequency of the signal we are working with.
-                                 (Default is 16000).
+                                    (Default is 16000).
         order            (int) : order of the LP model and number of cepstral components.
-                                 (Default is 13).
+                                    (Default is 13).
         pre_emph        (bool) : apply pre-emphasis if 1.
-                                 (Default is 1).
+                                    (Default is 1).
         pre_emph_coeff (float) : pre-emphasis filter coefficient.
-                                 (Default is 0.97).
+                                    (Default is 0.97).
         window (SlidingWindow) : sliding window object.
-                                 (Default is None).
+                                    (Default is None).
 
     Returns:
         (tuple) :
@@ -83,40 +117,29 @@ def lpc(
     Note:
         .. figure:: ../_static/architectures/lpcs.png
 
-           Architecture of linear prediction components extraction algorithm.
+            Architecture of linear prediction components extraction algorithm.
 
 
         The premis of linear predictive analysis is that the nth sample can be estimated by a
         linear combination of the previous p samples:
 
         .. math::
-            xp[n] = -a[1] * x[n-1] - ... -a[k] * x[n-k] ... - a[p] * x[n-p] = - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+            xp[n] = -a[1] * x[n-1] - \dots - a[k] * x[n-k] - \dots - a[p] * x[n-p] = - \\sum_{k=1}^{p} a_{k} x[n-k]
 
-        where xp is the predicted signal. a_{1},.., a_{p} are known as the predictor
-        coefficents and p is called the model order and n is the sample index.
+        where :math:`xp` is the predicted signal, :math:`a_{1}, \dots, a_{p}` are the predictor
+        coefficients, :math:`p` is the model order, and :math:`n` is the sample index.
         Based on the previous equation, we can estimate the prediction error as follows [Ucl-brain]_:
 
         .. math::
-            e[n] = x[n] - xp[n] \\implies  x[n] = e[n] - \\sum_{k=1}^{p+1} a_{k} . x[n-k]
+            e[n] = x[n] - xp[n] \\implies x[n] = e[n] + \\sum_{k=1}^{p} a_{k} x[n-k]
 
-        The unknown here are the LP coefficients a, hence we need to minimize e to find those.
+        The unknown here are the LP coefficients :math:`a`, hence we need to minimize e to find those.
         We can further rewrite the previous equations for all samples [Collomb]_:
 
         .. math::
-            E = \\sum_{i=1}^{N} (x[i] - (-\\sum_{k=1}^{p+1} a_{k} . x[i-k])) \\text{for x\\in[1,p]}
+            E = \\sum_{i=1}^{N} \\left( x[i] - \\sum_{k=1}^{p} a_{k} x[i-k] \\right)^2
 
-
-        All the previous steps can be presented in a matrix, which is a toeplitz matrix: R.A = 0
-                           _          _
-            -r[1] = r[0]   r[1]   ... r[p-1]    a[1]
-             :      :      :          :         :
-             :      :      :          _      *  :
-            -r[p] = r[p-1] r[p-2] ... r[0]      a[p]
-
-        To solve this, one can use the Levinson-Durbin, which is a well-known
-        algorithm to solve the Hermitian toeplitz with respect to a. Using the
-        special symmetry in the matrix, the inversion can be done in O(p^2)
-        instead of O(p^3).
+        All the previous steps can be presented in a matrix, which is a Toeplitz matrix :math:`R.A = 0`          
 
     References:
         .. [Darconis] : Draconi, Replacing Levinson implementation in scikits.talkbox,
@@ -124,9 +147,9 @@ def lpc(
         .. [Cournapeau] : David Cournapeau D. talkbox, https://github.com/cournape/talkbox
         .. [Menares] : Menares E. F. M., ML-experiments, https://github.com/erickfmm/ML-experiments
         .. [Collomb] : Collomb C. Linear Prediction and Levinson-Durbin Algorithm, 03.02.2009,
-                       <https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents>
+                        <https://www.academia.edu/8479430/Linear_Prediction_and_Levinson-Durbin_Algorithm_Contents>
         .. [Ucl-brain] : Ucl psychology and language sciences, Faculty of brain Sciences, Unit 8 linear prediction
-                         <https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html>
+                            <https://www.phon.ucl.ac.uk/courses/spsci/dsp/lpc.html>
 
     Examples
         .. plot::
@@ -142,10 +165,10 @@ def lpc(
 
             # compute lpcs
             lpcs, _ = lpc(sig,
-                          fs=fs,
-                          pre_emph=0,
-                          pre_emph_coeff=0.97,
-                          window=SlidingWindow(0.030, 0.015, "hamming"))
+                            fs=fs,
+                            pre_emph=0,
+                            pre_emph_coeff=0.97,
+                            window=SlidingWindow(0.030, 0.015, "hamming"))
 
             # visualize features
             show_features(lpcs, "Linear prediction coefficents", "LPCs Index", "Frame Index")
