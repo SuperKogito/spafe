@@ -152,7 +152,7 @@ Contributions are welcome and encouraged. To learn more about how to contribute 
    [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11396240.svg)](https://doi.org/10.5281/zenodo.11396240)
  
 
-- **You can also site spafe's paper as follows:**
+- **You can also cite spafe's paper as follows:**
 
   *Malek, A., (2023). Spafe: Simplified python audio features extraction. Journal of Open Source Software, 8(81), 4739,* https://doi.org/10.21105/joss.04739
 
