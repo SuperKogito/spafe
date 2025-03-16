@@ -60,6 +60,6 @@ setup(
             "pydata-sphinx-theme==0.8.1",
             "matplotlib",
         ],
-        "plotting": {"maplotlib"},
+        "plotting": ["matplotlib"],
     },
 )
