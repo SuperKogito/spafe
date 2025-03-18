@@ -3,35 +3,37 @@ name: CI
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
 jobs:
-  paper:
-    runs-on: ubuntu-latest
-    name: Paper Draft
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build draft PDF
-        uses: openjournals/openjournals-draft-action@master
-        with:
-          journal: joss
-          # This should be the path to the paper within your repo.
-          paper-path: paper/paper.md
-      - name: Upload
-        uses: actions/upload-artifact@v1
-        with:
-          name: paper
-          # This is the output path where Pandoc will write the compiled
-          # PDF. Note, this should be the same directory as the input
-          # paper.md
-          path: paper/paper.pdf
+  # paper:
+  #   runs-on: ubuntu-latest
+  #   name: Paper Draft
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+      
+  #     # This step builds a draft PDF of the paper using the Open Journals draft action.
+  #     - name: Build draft PDF
+  #       uses: openjournals/openjournals-draft-action@master
+  #       with:
+  #         journal: joss  # Specifies the journal format (e.g., JOSS).
+  #         # Path to the paper markdown file within the repository.
+  #         paper-path: paper/paper.md
+
+  #     # This step uploads the generated PDF as an artifact for later access.
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v1
+  #       with:
+  #         name: paper  # Artifact name.
+  #         # Path to the generated paper PDF file.
+  #         path: paper/paper.pdf
           
   formatting:
-    needs: paper
+    # needs: paper  # Removed dependency on the paper job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
